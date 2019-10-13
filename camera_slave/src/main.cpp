@@ -3,7 +3,12 @@
 
 namespace carpi {
     int main(int argc, char* argv[]) {
+        utils::log::Logger log{"main"};
         bluetooth::BluetoothManager mgr{};
+        for(const auto& device : mgr.scan_devices()) {
+            log->info("Device: {} @ {}", device.device_name(), device.address_string());
+        }
+
         return 0;
     }
 }

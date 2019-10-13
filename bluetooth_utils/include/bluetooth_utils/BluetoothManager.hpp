@@ -3,12 +3,15 @@
 
 #include <string>
 #include <stdexcept>
+#include <set>
 
 #include <bluetooth/bluetooth.h>
 #include <bluetooth/hci.h>
 #include <bluetooth/hci_lib.h>
 
 #include <common_utils/log/Logger.hpp>
+
+#include "BluetoothDevice.hpp"
 
 namespace carpi::bluetooth {
     class BluetoothManager {
@@ -22,7 +25,7 @@ namespace carpi::bluetooth {
     public:
         BluetoothManager();
 
-        void scan_devices();
+        std::set<BluetoothDevice> scan_devices();
     };
 }
 
