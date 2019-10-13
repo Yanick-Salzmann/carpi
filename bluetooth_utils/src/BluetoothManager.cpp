@@ -41,6 +41,8 @@ namespace carpi::bluetooth {
             return {};
         }
 
+        log->debug("Scanned for devices, found {}", num_devices);
+
         std::set<BluetoothDevice> ret_set{};
 
         for(auto i = 0; i < num_devices; ++i) {
