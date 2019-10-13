@@ -5,7 +5,7 @@ namespace carpi {
     int main(int argc, char* argv[]) {
         utils::log::Logger log{"main"};
         bluetooth::BluetoothManager mgr{};
-        for(const auto& device : mgr.scan_devices()) {
+        for(const auto& device : mgr.scan_devices(std::chrono::seconds{2})) {
             log->info("Device: {} @ {}", device.device_name(), device.address_string());
         }
 
