@@ -14,5 +14,5 @@ elif [ $LOCAL = $BASE ]; then
     git pull origin master
     mkdir -p cmake-build-debug
     (cd cmake-build-debug && /usr/local/bin/cmake ..)
-    (cd cmake-build-debug && /usr/local/bin/cmake --build .)
+    (cd cmake-build-debug && /usr/local/bin/cmake --build . -- -j $(( $(lscpu | awk '/^Socket\(s\)/{ print $2 }') * $(lscpu | awk '/^Core\(s\) per socket/{ print $4 }') )))
 fi

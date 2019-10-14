@@ -1,10 +1,15 @@
 #include <iostream>
 #include <bluetooth_utils/BluetoothServer.hpp>
+#include <bluetooth_utils/BluetoothConnection.hpp>
 
 namespace carpi {
     int main(int argc, char* argv[]) {
+        utils::log::Logger log{"main"};
         bluetooth::BluetoothServer server{0x1001};
-        server.accept_connection();
+        auto connection = server.accept_connection();
+        std::string payload{};
+        (*connection) >> payload;
+        log->info("Received: {}", payload);
         return 0;
     }
 }
