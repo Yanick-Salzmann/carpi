@@ -65,7 +65,6 @@ namespace carpi::bluetooth {
 
         template<typename T>
         BluetoothConnection &operator>>(T &value) {
-            log->info(__PRETTY_FUNCTION__);
             read_data(&value, sizeof(T));
             return *this;
         }
@@ -91,7 +90,6 @@ namespace carpi::bluetooth {
 
     template<>
     inline BluetoothConnection& BluetoothConnection::operator>> <std::string>(std::string &value) {
-        log->info(__PRETTY_FUNCTION__);
         char char_elem{};
         std::vector<char> buffer{};
         do {
