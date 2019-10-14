@@ -34,7 +34,10 @@ namespace carpi::bluetooth {
         const auto rc = send(_socket, data, num_bytes, 0);
         if (rc < 0) {
             log->warn("Error sending data over connection: {} (errno={})", utils::error_to_string(), errno);
+            return;
         }
+
+        log->info("Sent {} bytes", rc);
     }
 
     void BluetoothConnection::read_data(void *buffer, std::size_t num_bytes) {
@@ -47,6 +50,8 @@ namespace carpi::bluetooth {
                 log->error("Error reading data from connection: {} (errno={})", utils::error_to_string(), errno);
                 throw std::runtime_error("Error reading from connection");
             }
+
+            log->info("Read {} bytes", num_read);
 
             cur_ptr += num_read;
             remaining -= num_read;
