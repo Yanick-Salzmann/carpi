@@ -49,6 +49,8 @@ namespace carpi::bluetooth {
         sockaddr_l2 l2_addr{};
         l2_addr.l2_bdaddr_type = AF_BLUETOOTH;
         bacpy(&l2_addr.l2_bdaddr, &_device_address);
+        l2_addr.l2_psm = htobs(psm);
+
         const auto rc = ::connect(ret_client, (const sockaddr*) &l2_addr, sizeof l2_addr);
         if(rc < 0) {
             log->error("Error opening connection to device {} with psm={} and cid={}: {} (errno={})", _address_string, psm, cid, utils::error_to_string(), errno);
