@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION ${CMAKE_VERSION})
 project(carpi_master)
 
-find_package(ffmpeg REQUIRED)
+find_package(FFmpeg REQUIRED)
 
 add_executable(carpi_master src/main.cpp)
 
