@@ -39,7 +39,7 @@ namespace carpi::bluetooth {
         return !(*this == other);
     }
 
-    std::shared_ptr<BluetoothConnection> BluetoothDevice::connect(uint16_t psm, uint16_t cid) {
+    std::shared_ptr<BluetoothConnection> BluetoothDevice::connect(uint16_t psm) {
         const auto ret_client = socket(AF_BLUETOOTH, SOCK_SEQPACKET, BTPROTO_L2CAP);
         if(ret_client < 0) {
             log->error("Error creating client socket: {} (errno={})", utils::error_to_string(), errno);
@@ -53,7 +53,7 @@ namespace carpi::bluetooth {
 
         const auto rc = ::connect(ret_client, (const sockaddr*) &l2_addr, sizeof l2_addr);
         if(rc < 0) {
-            log->error("Error opening connection to device {} with psm={} and cid={}: {} (errno={})", _address_string, psm, cid, utils::error_to_string(), errno);
+            log->error("Error opening connection to device {} with psm={}: {} (errno={})", _address_string, psm, utils::error_to_string(), errno);
             throw std::runtime_error("Error opening connection to device");
         }
 
@@ -64,7 +64,7 @@ namespace carpi::bluetooth {
         ba2str(&l2_addr.l2_bdaddr, remote_addr);
         remote_addr[17] = '\0';
 
-        log->debug("Created bluetooth connection to {} with psm={} and cid={}", remote_addr, psm, cid);
+        log->debug("Created bluetooth connection to {} with psm={}", remote_addr, psm);
 
         return std::make_shared<BluetoothConnection>(ret_client);
     }

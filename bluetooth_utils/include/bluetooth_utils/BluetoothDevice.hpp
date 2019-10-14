@@ -25,7 +25,7 @@ namespace carpi::bluetooth {
     public:
         explicit BluetoothDevice(int32_t socket, bdaddr_t address);
 
-        std::shared_ptr<BluetoothConnection> connect(uint16_t psm, uint16_t cid);
+        std::shared_ptr<BluetoothConnection> connect(uint16_t psm);
 
         bool operator<(const BluetoothDevice &other) const;
 

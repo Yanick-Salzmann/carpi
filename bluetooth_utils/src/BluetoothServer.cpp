@@ -8,7 +8,7 @@
 namespace carpi::bluetooth {
     LOGGER_IMPL(BluetoothServer);
 
-    BluetoothServer::BluetoothServer(uint16_t psm, uint16_t cid) {
+    BluetoothServer::BluetoothServer(uint16_t psm) {
         _socket = socket(AF_BLUETOOTH, SOCK_SEQPACKET, BTPROTO_L2CAP);
         if (_socket < 0) {
             log->error("Error creating bluetooth socket: {} (errno={})", utils::error_to_string(), errno);
@@ -20,7 +20,6 @@ namespace carpi::bluetooth {
         sockaddr_l2 loc_addr{};
         loc_addr.l2_family = AF_BLUETOOTH;
         bacpy(&loc_addr.l2_bdaddr, &any_addr);
-        //loc_addr.l2_cid = htobs(cid);
         loc_addr.l2_psm = htobs(psm);
 
         auto rc = bind(_socket, (const sockaddr*) &loc_addr, sizeof loc_addr);
@@ -41,7 +40,7 @@ namespace carpi::bluetooth {
         ba2str(&loc_addr.l2_bdaddr, addr_name);
         addr_name[17] = '\0';
 
-        log->debug("Bluetooth server listening on socket {X}, addr={}, psm={}, cid={}", _socket, addr_name, psm, cid);
+        log->debug("Bluetooth server listening on socket {:X}, addr={}, psm={}", _socket, addr_name, psm);
     }
 
     std::shared_ptr<BluetoothConnection> BluetoothServer::accept_connection() {

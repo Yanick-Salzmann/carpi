@@ -3,7 +3,7 @@
 
 namespace carpi {
     int main(int argc, char* argv[]) {
-        bluetooth::BluetoothServer server{0x1001, 0x1234};
+        bluetooth::BluetoothServer server{0x1001};
         server.accept_connection();
         return 0;
     }

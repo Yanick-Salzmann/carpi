@@ -15,7 +15,7 @@ namespace carpi::bluetooth {
         int _socket = -1;
 
     public:
-        BluetoothServer(uint16_t psm, uint16_t cid);
+        explicit BluetoothServer(uint16_t psm);
 
         std::shared_ptr<BluetoothConnection> accept_connection();
     };
