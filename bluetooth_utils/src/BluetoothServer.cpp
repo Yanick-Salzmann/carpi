@@ -20,7 +20,7 @@ namespace carpi::bluetooth {
         sockaddr_l2 loc_addr{};
         loc_addr.l2_family = AF_BLUETOOTH;
         bacpy(&loc_addr.l2_bdaddr, &any_addr);
-        loc_addr.l2_cid = htobs(cid);
+        //loc_addr.l2_cid = htobs(cid);
         loc_addr.l2_psm = htobs(psm);
 
         auto rc = bind(_socket, (const sockaddr*) &loc_addr, sizeof loc_addr);
