@@ -2,13 +2,20 @@
 #define CARPI_BLUETOOTH_UTILS_BLUETOOTHDEVICE_HPP
 
 #include <string>
+#include <memory>
 
 #include <bluetooth/bluetooth.h>
 #include <bluetooth/hci.h>
 #include <bluetooth/hci_lib.h>
 
+#include "common_utils/log/Logger.hpp"
+
 namespace carpi::bluetooth {
+    class BluetoothConnection;
+
     class BluetoothDevice {
+        LOGGER;
+
         bdaddr_t _device_address;
         int32_t _socket;
 
@@ -17,6 +24,8 @@ namespace carpi::bluetooth {
 
     public:
         explicit BluetoothDevice(int32_t socket, bdaddr_t address);
+
+        std::shared_ptr<BluetoothConnection> connect(uint16_t psm, uint16_t cid);
 
         bool operator<(const BluetoothDevice &other) const;
 

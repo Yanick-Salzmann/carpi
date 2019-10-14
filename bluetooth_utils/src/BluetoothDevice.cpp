@@ -1,6 +1,12 @@
 #include "bluetooth_utils/BluetoothDevice.hpp"
+#include "bluetooth_utils/BluetoothConnection.hpp"
+
+#include <bluetooth/l2cap.h>
+#include <common_utils/error.hpp>
 
 namespace carpi::bluetooth {
+    LOGGER_IMPL(BluetoothDevice);
+
     BluetoothDevice::BluetoothDevice(int32_t socket, bdaddr_t address) : _socket(socket), _device_address(address) {
         char device_name[248]{};
 
@@ -31,5 +37,33 @@ namespace carpi::bluetooth {
 
     bool BluetoothDevice::operator!=(const BluetoothDevice &other) const {
         return !(*this == other);
+    }
+
+    std::shared_ptr<BluetoothConnection> BluetoothDevice::connect(uint16_t psm, uint16_t cid) {
+        const auto ret_client = socket(AF_BLUETOOTH, SOCK_SEQPACKET, BTPROTO_L2CAP);
+        if(ret_client < 0) {
+            log->error("Error creating client socket: {} (errno={})", utils::error_to_string(), errno);
+            throw std::runtime_error("Error creating client socket");
+        }
+
+        sockaddr_l2 l2_addr{};
+        l2_addr.l2_bdaddr_type = AF_BLUETOOTH;
+        bacpy(&l2_addr.l2_bdaddr, &_device_address);
+        const auto rc = ::connect(ret_client, (const sockaddr*) &l2_addr, sizeof l2_addr);
+        if(rc < 0) {
+            log->error("Error opening connection to device {} with psm={} and cid={}: {} (errno={})", _address_string, psm, cid, utils::error_to_string(), errno);
+            throw std::runtime_error("Error opening connection to device");
+        }
+
+        socklen_t addr_size = sizeof l2_addr;
+        getsockname(ret_client, (sockaddr*) &l2_addr, &addr_size);
+
+        char remote_addr[18]{};
+        ba2str(&l2_addr.l2_bdaddr, remote_addr);
+        remote_addr[17] = '\0';
+
+        log->debug("Created bluetooth connection to {} with psm={} and cid={}", remote_addr, psm, cid);
+
+        return std::make_shared<BluetoothConnection>(ret_client);
     }
 }

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION ${CMAKE_VERSION})
 project(common_utils)
 
-add_library(common_utils SHARED src/log/Logger.cpp)
+add_library(common_utils SHARED src/log/Logger.cpp include/common_utils/error.hpp src/error.cpp)
 
 add_dependencies(common_utils spdlog)
 

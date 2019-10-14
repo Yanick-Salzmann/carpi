@@ -9,4 +9,5 @@ add_subdirectory(third_party)
 add_subdirectory(common_utils)
 add_subdirectory(bluetooth_utils)
 
+add_subdirectory(carpi_master)
 add_subdirectory(camera_slave)

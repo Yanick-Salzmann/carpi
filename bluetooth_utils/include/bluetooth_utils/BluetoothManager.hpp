@@ -21,8 +21,6 @@ namespace carpi::bluetooth {
         int32_t _device_id = 0;
         int32_t _socket = 0;
 
-        static std::string error_to_string();
-
     public:
         BluetoothManager();
 

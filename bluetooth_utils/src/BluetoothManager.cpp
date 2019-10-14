@@ -1,4 +1,5 @@
 #include "bluetooth_utils/BluetoothManager.hpp"
+#include "common_utils/error.hpp"
 
 namespace carpi::bluetooth {
     LOGGER_IMPL(BluetoothManager);
@@ -6,14 +7,14 @@ namespace carpi::bluetooth {
     BluetoothManager::BluetoothManager() {
         _device_id = hci_get_route(nullptr);
         if (_device_id < 0) {
-            log->error("Error finding bluetooth device: {} (errno={})", error_to_string(), errno);
+            log->error("Error finding bluetooth device: {} (errno={})", utils::error_to_string(), errno);
             throw std::runtime_error("Error finding bluetooth device");
         }
 
         _socket = hci_open_dev(_device_id);
 
         if (_socket < 0) {
-            log->error("Error opening bluetooth device: {} (errno={})", error_to_string(), errno);
+            log->error("Error opening bluetooth device: {} (errno={})", utils::error_to_string(), errno);
             throw std::runtime_error("Error opening bluetooth device");
         }
 
@@ -27,17 +28,12 @@ namespace carpi::bluetooth {
         }
     }
 
-    std::string BluetoothManager::error_to_string() {
-        char error_buffer[1024]{};
-        return strerror_r(errno, error_buffer, sizeof error_buffer);
-    }
-
     std::set<BluetoothDevice> BluetoothManager::scan_devices(uint32_t search_ticks) {
         std::array<inquiry_info, 255> device_inquiry{};
         auto ii = device_inquiry.data();
         const auto num_devices = hci_inquiry(_device_id, search_ticks, 255, nullptr, &ii, IREQ_CACHE_FLUSH);
         if(num_devices < 0) {
-            log->warn("Error scanning for devices: {} (errno={})", error_to_string(), errno);
+            log->warn("Error scanning for devices: {} (errno={})", utils::error_to_string(), errno);
             return {};
         }
 
