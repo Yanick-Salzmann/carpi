@@ -2,7 +2,7 @@
 #include "bluetooth_utils/BluetoothConnection.hpp"
 
 #include "bluetooth/bluetooth.h"
-#include "bluetooth/l2cap.h"
+#include "bluetooth/rfcomm.h"
 
 #include <common_utils/error.hpp>
 
@@ -10,13 +10,13 @@ namespace carpi::bluetooth {
     LOGGER_IMPL(BluetoothConnection);
 
     BluetoothConnection::BluetoothConnection(int socket) : _socket(socket) {
-        sockaddr_l2 addr{};
+        sockaddr_rc addr{};
         socklen_t addr_len = sizeof addr;
 
         getsockname(_socket, (sockaddr *) &addr, &addr_len);
 
         char addr_name[18]{};
-        ba2str(&addr.l2_bdaddr, addr_name);
+        ba2str(&addr.rc_bdaddr, addr_name);
         addr_name[17] = '\0';
 
         _address.assign(addr_name);

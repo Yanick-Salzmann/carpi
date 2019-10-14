@@ -14,7 +14,7 @@ namespace carpi {
         bluetooth::BluetoothManager mgr{};
         for(auto device : mgr.scan_devices(std::chrono::seconds{10})) {
             log->info("Device: {} @ {}", device.device_name(), device.address_string());
-            auto connection = device.connect(0x1001);
+            auto connection = device.connect(1);
             *connection << fmt::format("Hello from {}@{}", std::string{username}, std::string{hostname});
         }
 

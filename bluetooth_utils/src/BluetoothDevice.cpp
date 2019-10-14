@@ -1,7 +1,7 @@
 #include "bluetooth_utils/BluetoothDevice.hpp"
 #include "bluetooth_utils/BluetoothConnection.hpp"
 
-#include <bluetooth/l2cap.h>
+#include <bluetooth/rfcomm.h>
 #include <common_utils/error.hpp>
 
 namespace carpi::bluetooth {
@@ -39,32 +39,32 @@ namespace carpi::bluetooth {
         return !(*this == other);
     }
 
-    std::shared_ptr<BluetoothConnection> BluetoothDevice::connect(uint16_t psm) {
-        const auto ret_client = socket(AF_BLUETOOTH, SOCK_SEQPACKET, BTPROTO_L2CAP);
+    std::shared_ptr<BluetoothConnection> BluetoothDevice::connect(uint8_t channel) {
+        const auto ret_client = socket(AF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM);
         if(ret_client < 0) {
             log->error("Error creating client socket: {} (errno={})", utils::error_to_string(), errno);
             throw std::runtime_error("Error creating client socket");
         }
 
-        sockaddr_l2 l2_addr{};
-        l2_addr.l2_family = AF_BLUETOOTH;
-        bacpy(&l2_addr.l2_bdaddr, &_device_address);
-        l2_addr.l2_psm = htobs(psm);
+        sockaddr_rc rc_addr{};
+        rc_addr.rc_family = AF_BLUETOOTH;
+        bacpy(&rc_addr.rc_bdaddr, &_device_address);
+        rc_addr.rc_channel = channel;
 
-        const auto rc = ::connect(ret_client, (const sockaddr*) &l2_addr, sizeof l2_addr);
+        const auto rc = ::connect(ret_client, (const sockaddr*) &rc_addr, sizeof rc_addr);
         if(rc < 0) {
-            log->error("Error opening connection to device {} with psm={}: {} (errno={})", _address_string, psm, utils::error_to_string(), errno);
+            log->error("Error opening connection to device {} with channel={}: {} (errno={})", _address_string, channel, utils::error_to_string(), errno);
             throw std::runtime_error("Error opening connection to device");
         }
 
-        socklen_t addr_size = sizeof l2_addr;
-        getsockname(ret_client, (sockaddr*) &l2_addr, &addr_size);
+        socklen_t addr_size = sizeof rc_addr;
+        getsockname(ret_client, (sockaddr*) &rc_addr, &addr_size);
 
         char remote_addr[18]{};
-        ba2str(&l2_addr.l2_bdaddr, remote_addr);
+        ba2str(&rc_addr.rc_bdaddr, remote_addr);
         remote_addr[17] = '\0';
 
-        log->debug("Created bluetooth connection to {} with psm={}", remote_addr, psm);
+        log->debug("Created bluetooth connection to {} with channel={}", remote_addr, channel);
 
         return std::make_shared<BluetoothConnection>(ret_client);
     }
