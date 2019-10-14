@@ -47,7 +47,7 @@ namespace carpi::bluetooth {
         }
 
         sockaddr_l2 l2_addr{};
-        l2_addr.l2_bdaddr_type = AF_BLUETOOTH;
+        l2_addr.l2_family = AF_BLUETOOTH;
         bacpy(&l2_addr.l2_bdaddr, &_device_address);
         l2_addr.l2_psm = htobs(psm);
 
