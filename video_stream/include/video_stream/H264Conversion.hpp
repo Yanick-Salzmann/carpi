@@ -22,11 +22,17 @@ namespace carpi::video {
         std::thread _converter_thread;
         bool _is_running = true;
 
+        std::shared_ptr<AVIOContext> _io_context;
+        std::shared_ptr<unsigned char> _io_buffer;
+        std::size_t _io_buffer_size;
+
         std::shared_ptr<H264Stream> _stream;
         std::function<void(void *, std::size_t)> _write_callback;
         std::function<void()> _complete_callback;
 
         void process_conversion();
+
+        static int on_write_data(void* ptr, uint8_t* data, int size);
 
         static void log_ffmpeg_message(void *, int, const char *, va_list);
 

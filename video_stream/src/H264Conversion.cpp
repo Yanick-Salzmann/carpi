@@ -20,6 +20,15 @@ namespace carpi::video {
         _write_callback(std::move(write_callback)),
         _complete_callback(std::move(complete_callback)) {
 
+        _io_buffer_size = getpagesize();
+
+        _io_buffer = std::shared_ptr<unsigned char>((unsigned char *) av_malloc(_io_buffer_size), [](unsigned char *ptr) { av_free(ptr); });
+
+        _io_context = std::shared_ptr<AVIOContext>(
+                avio_alloc_context(_io_buffer.get(), _io_buffer_size, 1, this, nullptr, H264Conversion::on_write_data, nullptr),
+                [](AVIOContext *ctx) { av_free(ctx); }
+        );
+
         auto output_format = av_guess_format(output_extension.c_str(), nullptr, nullptr);
         if (output_format == nullptr) {
             log->error("Error determining output format for extension '{}'", output_extension);
@@ -34,6 +43,8 @@ namespace carpi::video {
         }
 
         _format_context = std::shared_ptr<AVFormatContext>(format_context, [](AVFormatContext* ctx) { avformat_free_context(ctx); });
+
+        _format_context->pb = _io_context.get();
 
         _converter_thread = std::thread{[=]() { process_conversion(); }};
     }
@@ -63,6 +74,11 @@ namespace carpi::video {
         if(_complete_callback) {
             _complete_callback();
         }
+    }
+
+    int H264Conversion::on_write_data(void *ptr, uint8_t *data, int size) {
+        ((H264Conversion*) ptr)->_write_callback(data, static_cast<std::size_t>(size));
+        return size;
     }
 
     void H264Conversion::initialize_ffmpeg() {
