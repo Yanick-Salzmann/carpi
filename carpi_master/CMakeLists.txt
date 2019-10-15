@@ -3,7 +3,7 @@ project(carpi_master)
 
 add_executable(carpi_master src/main.cpp)
 
-add_dependencies(carpi_master bluetooth_utils video_stream)
+add_dependencies(carpi_master bluetooth_utils video_stream obd)
 
 target_include_directories(carpi_master PUBLIC
         ${CMAKE_SOURCE_DIR}/bluetooth_utils/include
