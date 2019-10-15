@@ -33,7 +33,7 @@ namespace carpi::video {
     public:
         explicit H264Stream(std::shared_ptr<IStreamSource> stream_source);
 
-        bool read_next_packet(AVPacket* out_packet);
+        bool read_next_packet(AVPacket& out_packet);
     };
 }
 
