@@ -57,6 +57,10 @@ namespace carpi::video {
     }
 
     void H264Conversion::process_conversion() {
+        if(avformat_write_header(_format_context.get(), nullptr) < 0) {
+
+        }
+
         std::shared_ptr<AVPacket> packet = std::shared_ptr<AVPacket>(av_packet_alloc(), [](AVPacket *packet) { av_packet_free(&packet); });
         while(_is_running) {
             try {
