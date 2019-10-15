@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION ${CMAKE_VERSION})
 project(obd)
 
-add_library(obd SHARED src/ObdInterface.cpp)
+add_library(obd SHARED src/ObdInterface.cpp include/obd/ObdCommand.hpp src/ObdCommand.cpp include/obd/ResponseConverter.hpp src/ResponseConverter.cpp)
 
 add_dependencies(obd bluetooth_utils common_utils)
 
