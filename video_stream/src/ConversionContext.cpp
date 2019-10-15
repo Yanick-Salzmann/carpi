@@ -1,4 +1,5 @@
 #include "video_stream/ConversionContext.hpp"
+#include <video_stream/ErrorHelper.hpp>
 
 extern "C" {
 #include <libavcodec/avcodec.h>
@@ -16,11 +17,7 @@ namespace carpi::video {
 
         const auto rc = avformat_alloc_output_context2(&_format_context, _output_format, nullptr, nullptr);
         if(rc < 0) {
-            char error_buffer[AV_ERROR_MAX_STRING_SIZE]{};
-            av_make_error_string(error_buffer, AV_ERROR_MAX_STRING_SIZE, rc);
-            error_buffer[AV_ERROR_MAX_STRING_SIZE - 1] = '\0';
-
-            log->error("Error creating ffmpeg output context: {}", std::string{error_buffer});
+            log->error("Error creating ffmpeg output context: {}", av_error_to_string(rc));
             throw std::runtime_error{"Error creating ffmpeg output context"};
         }
     }
