@@ -41,4 +41,18 @@ namespace carpi::video {
         auto stream = (H264Stream *) ptr;
         return static_cast<int>(stream->_stream_source->read(buffer, size));
     }
+
+    bool H264Stream::read_next_packet(AVPacket *out_packet) {
+        const auto res = av_read_frame(_format_context.get(), out_packet);
+        if(res == 0) {
+            return true;
+        }
+
+        if(res == AVERROR_EOF) {
+            return false;
+        }
+
+        log->error("Error reading frame from H264 input stream: {}", av_error_to_string(res));
+        throw std::runtime_error("Error reading frame from H264 stream");
+    }
 }
