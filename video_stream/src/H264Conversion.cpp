@@ -57,14 +57,20 @@ namespace carpi::video {
     }
 
     void H264Conversion::process_conversion() {
-        if(avformat_write_header(_format_context.get(), nullptr) < 0) {
-
+        auto rc = avformat_write_header(_format_context.get(), nullptr);
+        if(rc < 0) {
+            log->error("Error writing target header: {}", av_error_to_string(rc));
+            _complete_callback();
+            return;
         }
+
+        auto did_complete_regularly = false;
 
         std::shared_ptr<AVPacket> packet = std::shared_ptr<AVPacket>(av_packet_alloc(), [](AVPacket *packet) { av_packet_free(&packet); });
         while(_is_running) {
             try {
                 if (!_stream->read_next_packet(*packet.get())) {
+                    did_complete_regularly = true;
                     break;
                 }
             } catch (std::exception& e) {
@@ -73,6 +79,10 @@ namespace carpi::video {
             }
 
             av_write_frame(_format_context.get(), packet.get());
+        }
+
+        if(did_complete_regularly) {
+            av_write_trailer(_format_context.get());
         }
 
         if(_complete_callback) {
