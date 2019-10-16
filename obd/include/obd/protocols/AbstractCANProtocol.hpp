@@ -19,6 +19,8 @@ namespace carpi::obd::protocols {
 
         std::size_t _num_id_bits = 11;
 
+        static bool verify_frame_order(const std::vector<msg::ObdFrame> &frames);
+
     protected:
         explicit AbstractCANProtocol(const StringVector& init_lines, std::size_t num_id_bits);
 

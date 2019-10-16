@@ -77,7 +77,7 @@ namespace carpi::obd::protocols {
                 auto frame_data = frames[0].data();
                 std::vector<uint8_t> msg_data{{frame_data[0], frame_data[1]}};
                 msg_data.insert(msg_data.end(), frame_data.begin() + 3, frame_data.end());
-                for(auto i = std::size_t{1}; i < frames.size(); ++i) {
+                for (auto i = std::size_t{1}; i < frames.size(); ++i) {
                     frame_data = frames[i].data();
                     msg_data.insert(msg_data.end(), frame_data.begin() + 3, frame_data.end());
                 }
