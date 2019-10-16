@@ -7,12 +7,19 @@
 
 namespace carpi::obd::commands {
     class ObdCommand {
+        uint32_t _service_id;
         std::string _pid;
 
     public:
-        explicit ObdCommand(std::string pid);
+        ObdCommand(uint32_t service, std::string pid);
 
-        void write_to_buffer(std::vector<uint8_t>& buffer);
+        [[nodiscard]] uint32_t service_id() const {
+            return _service_id;
+        }
+
+        [[nodiscard]] std::string pid() const {
+            return _pid;
+        }
     };
 }
 

@@ -2,7 +2,7 @@
 
 namespace carpi::obd::commands {
 
-    ObdCommand::ObdCommand(std::string pid) : _pid(std::move(pid)) {
+    ObdCommand::ObdCommand(uint32_t service, std::string pid) : _service_id(service), _pid(std::move(pid)) {
 
     }
 }
