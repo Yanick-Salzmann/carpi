@@ -1,5 +1,5 @@
-#ifndef CARPI_ABSTRACTLEGACYPROTOCOL_HPP
-#define CARPI_ABSTRACTLEGACYPROTOCOL_HPP
+#ifndef CARPI_OBD_ABSTRACTLEGACYPROTOCOL_HPP
+#define CARPI_OBD_ABSTRACTLEGACYPROTOCOL_HPP
 
 namespace carpi::obd::protocols {
     class AbstractLegacyProtocol {
@@ -7,4 +7,4 @@ namespace carpi::obd::protocols {
     };
 }
 
-#endif //CARPI_ABSTRACTLEGACYPROTOCOL_HPP
+#endif //CARPI_OBD_ABSTRACTLEGACYPROTOCOL_HPP
