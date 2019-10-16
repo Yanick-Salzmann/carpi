@@ -1,9 +1,9 @@
-#include "common_utils/log/Logger.hpp"
+#include "common_utils/log.hpp"
 #include <cstdlib>
 #include <memory>
 #include <cxxabi.h>
 
-namespace carpi::utils::log {
+namespace carpi::utils {
     std::string demangle(const char* name) {
         int status = -1;
 

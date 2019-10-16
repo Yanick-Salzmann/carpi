@@ -8,7 +8,7 @@
 #include <bluetooth/hci.h>
 #include <bluetooth/hci_lib.h>
 
-#include "common_utils/log/Logger.hpp"
+#include "common_utils/log.hpp"
 
 namespace carpi::bluetooth {
     class BluetoothConnection;

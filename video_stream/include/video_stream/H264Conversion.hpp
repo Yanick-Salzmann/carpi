@@ -9,7 +9,7 @@ extern "C" {
 #include <libavformat/avformat.h>
 }
 
-#include <common_utils/log/Logger.hpp>
+#include <common_utils/log.hpp>
 
 namespace carpi::video {
     class H264Stream;

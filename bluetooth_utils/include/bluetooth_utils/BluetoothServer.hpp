@@ -4,7 +4,7 @@
 #include <sys/socket.h>
 #include <memory>
 
-#include "common_utils/log/Logger.hpp"
+#include "common_utils/log.hpp"
 
 namespace carpi::bluetooth {
     class BluetoothConnection;

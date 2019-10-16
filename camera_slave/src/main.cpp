@@ -10,7 +10,7 @@ namespace carpi {
         gethostname(hostname, HOST_NAME_MAX);
         getlogin_r(username, LOGIN_NAME_MAX);
 
-        utils::log::Logger log{"main"};
+        utils::Logger log{"main"};
         bluetooth::BluetoothManager mgr{};
         for(auto device : mgr.scan_devices(std::chrono::seconds{10})) {
             log->info("Device: {} @ {}", device.device_name(), device.address_string());

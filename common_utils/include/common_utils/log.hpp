@@ -5,7 +5,7 @@
 #include <memory>
 #include <spdlog/spdlog.h>
 
-namespace carpi::utils::log {
+namespace carpi::utils {
     class Logger {
         std::shared_ptr<spdlog::logger> _logger;
 
@@ -33,7 +33,7 @@ namespace carpi::utils::log {
     };
 }
 
-#define LOGGER static carpi::utils::log::Logger log
-#define LOGGER_IMPL(T) carpi::utils::log::Logger T::log = carpi::utils::log::Logger{carpi::utils::log::Logger::type_tag<T>()}
+#define LOGGER static carpi::utils::Logger log
+#define LOGGER_IMPL(T) carpi::utils::Logger T::log = carpi::utils::Logger{carpi::utils::Logger::type_tag<T>()}
 
 #endif //CARPI_COMMON_UTILS_LOGGER_HPP

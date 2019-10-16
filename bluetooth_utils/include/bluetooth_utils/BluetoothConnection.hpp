@@ -7,7 +7,7 @@
 #include <array>
 #include <vector>
 
-#include "common_utils/log/Logger.hpp"
+#include "common_utils/log.hpp"
 
 namespace carpi::bluetooth {
     class BluetoothConnection {

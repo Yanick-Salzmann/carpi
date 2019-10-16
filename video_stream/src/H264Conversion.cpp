@@ -110,7 +110,7 @@ namespace carpi::video {
     }
 
     void H264Conversion::log_ffmpeg_message(void *, int level, const char *format, va_list vargs) {
-        static utils::log::Logger logger{"ffmpeg"};
+        static utils::Logger logger{"ffmpeg"};
         char log_buffer[2048]{};
         vsnprintf(log_buffer, sizeof log_buffer, format, vargs);
         switch (level) {

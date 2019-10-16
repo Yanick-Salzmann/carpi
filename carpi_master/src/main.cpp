@@ -7,7 +7,7 @@ namespace carpi {
     int main(int argc, char* argv[]) {
         video::H264Conversion::initialize_ffmpeg();
 
-        utils::log::Logger log{"main"};
+        utils::Logger log{"main"};
         bluetooth::BluetoothServer server{1};
         auto connection = server.accept_connection();
         std::string payload{};
