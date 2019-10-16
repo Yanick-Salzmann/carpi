@@ -10,13 +10,26 @@
 namespace carpi::obd::msg {
     class ObdMessage {
         std::vector<ObdFrame> _frames;
+        std::vector<uint8_t> _data;
         EcuType _ecu_type = EcuType::UNKNOWN;
 
     public:
         explicit ObdMessage(std::vector<ObdFrame> frames) : _frames(std::move(frames)) {}
 
+        [[nodiscard]] std::vector<ObdFrame> frames() const {
+            return _frames;
+        }
+
         [[nodiscard]] EcuType ecu_type() const {
             return _ecu_type;
+        }
+
+        [[nodiscard]] std::vector<uint8_t> data() const {
+            return _data;
+        }
+
+        [[nodiscard]] std::vector<uint8_t>& data() {
+            return _data;
         }
 
         ObdMessage& ecu_type(const EcuType& ecu_type) {

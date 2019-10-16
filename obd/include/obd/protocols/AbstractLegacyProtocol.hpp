@@ -15,6 +15,8 @@ namespace carpi::obd::protocols {
         uint32_t _tx_id_engine = 0;
         uint32_t _tx_id_transmission = 0;
 
+        static bool verify_frame_order(const std::vector<msg::ObdFrame>& frames);
+
     protected:
         explicit AbstractLegacyProtocol(const StringVector& init_lines);
         AbstractLegacyProtocol(const StringVector& init_lines, uint32_t tx_id_engine);
