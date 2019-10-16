@@ -108,7 +108,7 @@ namespace carpi::obd::protocols {
         }
 
         if (raw_data.size() > max_size) {
-            log->debug("Received frame that is too long. Frame '{}' has size {}, needs to be less than {}", raw, raw_data.size(), max_size);
+            log->debug("Received frame that is too long. Frame '{}' has size {}, needs to be less than {}", raw, raw_data.size(), max_size + 1);
             return false;
         }
 
