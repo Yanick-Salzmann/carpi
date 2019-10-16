@@ -14,6 +14,8 @@ namespace carpi::obd::protocols {
 
         partition_lines(lines, obd_lines, invalid_lines);
 
+        const auto frames = parse_frames(obd_lines);
+
         return {};
     }
 
@@ -27,5 +29,17 @@ namespace carpi::obd::protocols {
                 obd_lines.emplace_back(trimmed_line);
             }
         }
+    }
+
+    std::vector<msg::ObdFrame> AbstractOBDProtocol::parse_frames(const StringVector &obd_lines) {
+        std::vector<msg::ObdFrame> frames{};
+        for(const auto& line : obd_lines) {
+            msg::ObdFrame frame{line};
+            if(parse_frame(frame)) {
+                frames.emplace_back(frame);
+            }
+        }
+
+        return frames;
     }
 }

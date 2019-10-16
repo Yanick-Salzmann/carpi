@@ -7,4 +7,8 @@ namespace carpi::obd::protocols {
             _num_id_bits(num_id_bits) {
 
     }
+
+    bool AbstractCANProtocol::parse_frame(msg::ObdFrame &frame) {
+        return false;
+    }
 }

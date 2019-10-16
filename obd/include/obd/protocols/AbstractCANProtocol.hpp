@@ -10,6 +10,8 @@ namespace carpi::obd::protocols {
 
     protected:
         explicit AbstractCANProtocol(const StringVector& init_lines, std::size_t num_id_bits);
+
+        bool parse_frame(msg::ObdFrame &frame) override;
     };
 }
 

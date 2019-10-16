@@ -6,6 +6,9 @@
 namespace carpi::obd::msg {
     class ObdFrame {
         std::string _raw;
+
+    public:
+        explicit ObdFrame(std::string raw) : _raw(std::move(raw)) { }
     };
 }
 
