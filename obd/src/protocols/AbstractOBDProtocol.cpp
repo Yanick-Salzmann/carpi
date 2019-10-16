@@ -1,6 +1,7 @@
 #include "obd/protocols/AbstractOBDProtocol.hpp"
 
 #include <algorithm>
+#include <map>
 
 namespace carpi::obd::protocols {
 
@@ -16,7 +17,19 @@ namespace carpi::obd::protocols {
 
         const auto frames = parse_frames(obd_lines);
 
-        return {};
+        std::map<uint32_t, std::vector<msg::ObdFrame>> frames_by_tx_id{};
+        for(const auto& frame : frames) {
+            frames_by_tx_id[frame.tx_id()].emplace_back(frame);
+        }
+
+        std::vector<msg::ObdMessage> messages{};
+        messages.reserve(frames_by_tx_id.size());
+
+        for(const auto& ecu_pair : frames_by_tx_id) {
+            messages.emplace_back(ecu_pair.second);
+        }
+
+        return messages;
     }
 
     void AbstractOBDProtocol::partition_lines(const StringVector &raw_lines, StringVector &obd_lines, StringVector &invalid_lines) {
