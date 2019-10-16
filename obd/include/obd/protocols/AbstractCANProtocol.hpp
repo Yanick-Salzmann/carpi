@@ -9,7 +9,7 @@ namespace carpi::obd::protocols {
         std::size_t _num_id_bits = 11;
 
     protected:
-        explicit AbstractCANProtocol(const std::vector<std::string>& init_lines, std::size_t num_id_bits);
+        explicit AbstractCANProtocol(const StringVector& init_lines, std::size_t num_id_bits);
     };
 }
 

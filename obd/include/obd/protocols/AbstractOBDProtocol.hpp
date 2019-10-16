@@ -6,9 +6,9 @@
 #include <obd/msg/ObdMessage.hpp>
 
 namespace carpi::obd::protocols {
-    class AbstractOBDProtocol {
-        typedef std::vector<std::string> StringVector;
+    typedef std::vector<std::string> StringVector;
 
+    class AbstractOBDProtocol {
         static void partition_lines(const StringVector& raw_lines, StringVector& obd_lines, StringVector& invalid_lines);
 
     protected:

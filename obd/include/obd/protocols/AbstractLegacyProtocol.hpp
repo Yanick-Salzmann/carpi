@@ -6,7 +6,7 @@
 namespace carpi::obd::protocols {
     class AbstractLegacyProtocol : public AbstractOBDProtocol {
     protected:
-        explicit AbstractLegacyProtocol(const std::vector<std::string>& init_lines);
+        explicit AbstractLegacyProtocol(const StringVector& init_lines);
     };
 }
 

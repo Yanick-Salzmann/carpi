@@ -2,7 +2,7 @@
 
 namespace carpi::obd::protocols {
 
-    AbstractLegacyProtocol::AbstractLegacyProtocol(const std::vector<std::string> &init_lines) : AbstractOBDProtocol(init_lines) {
+    AbstractLegacyProtocol::AbstractLegacyProtocol(const StringVector &init_lines) : AbstractOBDProtocol(init_lines) {
 
     }
 }
