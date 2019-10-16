@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION ${CMAKE_VERSION})
 project(obd)
 
-add_library(obd SHARED src/ObdInterface.cpp include/obd/ObdCommand.hpp src/ObdCommand.cpp include/obd/ResponseConverter.hpp src/ResponseConverter.cpp include/obd/protocols/AbstractLegacyProtocol.hpp include/obd/protocols/AbstractCANProtocol.hpp src/protocols/AbstractCANProtocol.cpp src/protocols/AbstractLegacyProtocol.cpp)
+add_library(obd SHARED src/ObdInterface.cpp include/obd/ObdCommand.hpp src/ObdCommand.cpp include/obd/ResponseConverter.hpp src/ResponseConverter.cpp include/obd/protocols/AbstractLegacyProtocol.hpp include/obd/protocols/AbstractCANProtocol.hpp src/protocols/AbstractCANProtocol.cpp src/protocols/AbstractLegacyProtocol.cpp include/obd/protocols/AbstractOBDProtocol.hpp src/protocols/AbstractOBDProtocol.cpp)
 
 add_dependencies(obd bluetooth_utils common_utils)
 
