@@ -11,19 +11,8 @@ namespace carpi::obd::protocols {
 
     bool AbstractLegacyProtocol::parse_frame(msg::ObdFrame &frame) {
         const auto raw = frame.raw();
-        if (raw.size() % 2) {
-            log->debug("Received odd sized OBD frame which will be ignored: {}", frame);
-            return false;
-        }
-
-        const auto raw_data = utils::hex2bytes(raw);
-        if (raw_data.size() < 6) {
-            log->debug("Received frame that is too small. Frame {} has size {}, needs to be at least 6", frame, raw_data.size());
-            return false;
-        }
-
-        if (raw_data.size() > 11) {
-            log->debug("Received frame that is too long. Frame {} has size {}, needs to be less than 11", frame, raw_data.size());
+        std::vector<uint8_t> raw_data{};
+        if (!parse_and_verify_frame_data(raw, raw_data, 6, 11)) {
             return false;
         }
 

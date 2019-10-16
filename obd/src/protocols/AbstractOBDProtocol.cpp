@@ -1,8 +1,11 @@
 #include "obd/protocols/AbstractOBDProtocol.hpp"
 
 #include <algorithm>
+#include <common_utils/conversion.hpp>
 
 namespace carpi::obd::protocols {
+    LOGGER_IMPL(AbstractOBDProtocol);
+
     std::vector<msg::ObdMessage> AbstractOBDProtocol::parse_messages(const StringVector &lines) {
         StringVector obd_lines{};
         StringVector invalid_lines{};
@@ -86,5 +89,26 @@ namespace carpi::obd::protocols {
     void AbstractOBDProtocol::process_init_lines(const StringVector &init_lines) {
         const auto init_messages = parse_messages(init_lines);
         load_ecu_mapping_from_init_messages(init_messages);
+    }
+
+    bool AbstractOBDProtocol::parse_and_verify_frame_data(const std::string& raw, std::vector<uint8_t> &data, std::size_t min_size, std::size_t max_size) {
+        if (raw.size() % 2) {
+            log->debug("Received odd sized OBD frame which will be ignored: '{}'", raw);
+            return false;
+        }
+
+        const auto raw_data = utils::hex2bytes(raw);
+        if (raw_data.size() < min_size) {
+            log->debug("Received frame that is too small. Frame '{}' has size {}, needs to be at least {}", raw, raw_data.size(), min_size);
+            return false;
+        }
+
+        if (raw_data.size() > max_size) {
+            log->debug("Received frame that is too long. Frame '{}' has size {}, needs to be less than {}", raw, raw_data.size(), max_size);
+            return false;
+        }
+
+        data = raw_data;
+        return true;
     }
 }

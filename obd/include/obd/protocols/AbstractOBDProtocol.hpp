@@ -8,11 +8,14 @@
 #include <obd/msg/ObdMessage.hpp>
 #include <obd/msg/ObdFrame.hpp>
 #include <obd/EcuType.hpp>
+#include <common_utils/log.hpp>
 
 namespace carpi::obd::protocols {
     typedef std::vector<std::string> StringVector;
 
     class AbstractOBDProtocol {
+        LOGGER;
+
         std::map<uint32_t, EcuType> _ecu_map;
 
         static void partition_lines(const StringVector& raw_lines, StringVector& obd_lines, StringVector& invalid_lines);
@@ -23,6 +26,8 @@ namespace carpi::obd::protocols {
 
     protected:
         AbstractOBDProtocol() = default;
+
+        static bool parse_and_verify_frame_data(const std::string& raw, std::vector<uint8_t>& data, std::size_t min_size, std::size_t max_size);
 
         void process_init_lines(const StringVector& init_lines);
 
