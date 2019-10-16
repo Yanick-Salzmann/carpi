@@ -12,6 +12,10 @@ namespace carpi::obd::msg {
         uint32_t _priority = 0;
         uint32_t _tx_id = 0;
         uint32_t _rx_id = 0;
+        uint32_t _addr_mode = 0;
+        uint32_t _type = 0;
+        uint32_t _data_size = 0;
+        uint32_t _sequence = 0;
 
     public:
         explicit ObdFrame(std::string raw) : _raw(std::move(raw)) { }
@@ -36,6 +40,22 @@ namespace carpi::obd::msg {
             return _data;
         }
 
+        [[nodiscard]] uint32_t addr_mode() const {
+            return _addr_mode;
+        }
+
+        [[nodiscard]] uint32_t type() const {
+            return _type;
+        }
+
+        [[nodiscard]] uint32_t data_size() const {
+            return _data_size;
+        }
+
+        [[nodiscard]] uint32_t sequence() const {
+            return _sequence;
+        }
+
         ObdFrame& tx_id(uint32_t tx_id) {
             _tx_id = tx_id;
             return *this;
@@ -53,6 +73,26 @@ namespace carpi::obd::msg {
 
         ObdFrame& data(std::vector<uint8_t> data) {
             _data = std::move(data);
+            return *this;
+        }
+
+        ObdFrame& addr_mode(uint32_t addr_mode) {
+            _addr_mode = addr_mode;
+            return *this;
+        }
+
+        ObdFrame& type(uint32_t type) {
+            _type = type;
+            return *this;
+        }
+
+        ObdFrame& data_size(uint32_t data_size) {
+            _data_size = data_size;
+            return *this;
+        }
+
+        ObdFrame& sequence(uint32_t sequence) {
+            _sequence = sequence;
             return *this;
         }
 

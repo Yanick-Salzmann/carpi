@@ -11,9 +11,9 @@ namespace carpi::obd::protocols {
         static const uint32_t TX_ID_ENGINE = 0;
         static const uint32_t TX_ID_TRANSMISSION = 1;
 
-        static const uint32_t FRAME_TYPE_SINGLE = 0x00;
-        static const uint32_t FRAME_TYPE_FIRST = 0x10;
-        static const uint32_t FRAME_TYPE_SEQUENCE = 0x20;
+        static const uint32_t FRAME_TYPE_SINGLE = 0;
+        static const uint32_t FRAME_TYPE_FIRST = 1;
+        static const uint32_t FRAME_TYPE_SEQUENCE = 2;
 
         LOGGER;
 
