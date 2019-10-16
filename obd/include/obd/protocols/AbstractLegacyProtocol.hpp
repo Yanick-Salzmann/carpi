@@ -13,6 +13,7 @@ namespace carpi::obd::protocols {
         explicit AbstractLegacyProtocol(const StringVector& init_lines);
 
         bool parse_frame(msg::ObdFrame &frame) override;
+        bool parse_message(msg::ObdMessage& msg) override;
     };
 }
 

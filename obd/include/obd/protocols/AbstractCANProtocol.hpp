@@ -27,6 +27,7 @@ namespace carpi::obd::protocols {
         bool tx_id_transmission_constant(uint32_t &tx_id) const override;
 
         bool parse_frame(msg::ObdFrame &frame) override;
+        bool parse_message(msg::ObdMessage& msg) override;
     };
 }
 

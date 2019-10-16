@@ -85,4 +85,8 @@ namespace carpi::obd::protocols {
         tx_id = TX_ID_TRANSMISSION;
         return true;
     }
+
+    bool AbstractCANProtocol::parse_message(msg::ObdMessage &msg) {
+        return false;
+    }
 }

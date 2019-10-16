@@ -32,6 +32,8 @@ namespace carpi::obd::protocols {
         void process_init_lines(const StringVector& init_lines);
 
         virtual bool parse_frame(msg::ObdFrame& frame) = 0;
+        virtual bool parse_message(msg::ObdMessage& msg) = 0;
+
         virtual bool tx_id_engine_constant(uint32_t& tx_id) const { return false; };
         virtual bool tx_id_transmission_constant(uint32_t& tx_id) const { return false; }
 

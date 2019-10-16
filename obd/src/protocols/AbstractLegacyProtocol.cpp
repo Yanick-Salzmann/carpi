@@ -26,4 +26,8 @@ namespace carpi::obd::protocols {
 
         return true;
     }
+
+    bool AbstractLegacyProtocol::parse_message(msg::ObdMessage &msg) {
+        return false;
+    }
 }

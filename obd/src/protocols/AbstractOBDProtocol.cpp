@@ -32,6 +32,10 @@ namespace carpi::obd::protocols {
                 msg.ecu_type(EcuType::UNKNOWN);
             }
 
+            if(!parse_message(msg)) {
+                continue;
+            }
+
             messages.emplace_back(msg);
         }
 
