@@ -9,6 +9,18 @@ namespace carpi::obd::protocols {
         process_init_lines(init_lines);
     }
 
+    AbstractLegacyProtocol::AbstractLegacyProtocol(const StringVector &init_lines, uint32_t tx_id_engine) :
+            AbstractLegacyProtocol(init_lines) {
+        _has_tx_id_engine = true;
+        _tx_id_engine = tx_id_engine;
+    }
+
+    AbstractLegacyProtocol::AbstractLegacyProtocol(const StringVector &init_lines, uint32_t tx_id_engine, uint32_t tx_id_transmission) :
+            AbstractLegacyProtocol(init_lines, tx_id_engine) {
+        _has_tx_id_transmission = true;
+        _tx_id_transmission = tx_id_transmission;
+    }
+
     bool AbstractLegacyProtocol::parse_frame(msg::ObdFrame &frame) {
         const auto raw = frame.raw();
         std::vector<uint8_t> raw_data{};
@@ -29,5 +41,23 @@ namespace carpi::obd::protocols {
 
     bool AbstractLegacyProtocol::parse_message(msg::ObdMessage &msg) {
         return false;
+    }
+
+    bool AbstractLegacyProtocol::tx_id_engine_constant(uint32_t &tx_id) const {
+        if(!_has_tx_id_engine) {
+            return false;
+        }
+
+        tx_id = _tx_id_engine;
+        return true;
+    }
+
+    bool AbstractLegacyProtocol::tx_id_transmission_constant(uint32_t &tx_id) const {
+        if(!_has_tx_id_transmission) {
+            return false;
+        }
+
+        tx_id = _tx_id_transmission;
+        return true;
     }
 }
