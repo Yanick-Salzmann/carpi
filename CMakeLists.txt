@@ -8,6 +8,8 @@ set(CMAKE_CXX_STANDARD 17)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 set(ENV{PKG_CONFIG_PATH} "${CMAKE_SOURCE_DIR}/pkgconfig:$ENV{PKG_CONFIG_PATH}")
 
+add_definitions("-Wno-psabi")
+
 find_package(PkgConfig)
 
 add_subdirectory(third_party)
