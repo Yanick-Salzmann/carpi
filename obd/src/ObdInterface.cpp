@@ -103,6 +103,7 @@ namespace carpi::obd {
 
         log->info("Trying to initialize OBD protocol");
 
+        _is_in_lower_power_mode = false;
         //trigger_normal_power(false);
         std::this_thread::sleep_for(std::chrono::seconds{2});
 
