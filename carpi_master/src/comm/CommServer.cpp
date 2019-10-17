@@ -19,6 +19,12 @@ namespace carpi {
 
     void CommServer::network_runner() {
         while(_is_running) {
+            const auto connection = _server->accept_connection();
+            log->info("Accepted new bluetooth connection: {}", connection->to_string());
+            _connections.emplace_back(connection);
+
+            continue;
+
             fd_set socket_set{};
             FD_ZERO(&socket_set);
             FD_SET(_server->fd(), &socket_set);
