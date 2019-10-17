@@ -162,6 +162,13 @@ namespace carpi::obd {
             return false;
         }
 
+        auto protocol_line = response[0];
+        if(protocol_line.size() > 1 && protocol_line[0] == 'A') {
+            protocol_line = protocol_line.substr(1);
+        }
+
+
+
         return false;
     }
 

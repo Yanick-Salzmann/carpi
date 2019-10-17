@@ -39,6 +39,9 @@ namespace carpi::obd::protocols {
 
     public:
         std::vector<msg::ObdMessage> parse_messages(const StringVector& lines);
+
+        [[nodiscard]] virtual std::string protocol_name() const = 0;
+        [[nodiscard]] virtual std::string protocol_id() const = 0;
     };
 }
 

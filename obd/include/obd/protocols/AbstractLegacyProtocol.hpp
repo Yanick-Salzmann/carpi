@@ -19,6 +19,7 @@ namespace carpi::obd::protocols {
 
     protected:
         explicit AbstractLegacyProtocol(const StringVector& init_lines);
+
         AbstractLegacyProtocol(const StringVector& init_lines, uint32_t tx_id_engine);
         AbstractLegacyProtocol(const StringVector& init_lines, uint32_t tx_id_engine, uint32_t tx_id_transmission);
 
