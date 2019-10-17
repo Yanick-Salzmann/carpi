@@ -72,7 +72,9 @@ namespace carpi::obd {
         std::sregex_token_iterator end{};
 
         for (; itr != end; ++itr) {
-            if ((*itr).str().empty()) {
+            const auto content = (*itr).str();
+
+            if (content.empty() || (content.size() == 1 && content[0] == '>')) {
                 continue;
             }
 
@@ -97,9 +99,6 @@ namespace carpi::obd {
     }
 
     void ObdInterface::initialize() {
-        auto flags = fcntl(_connection->fd(), F_GETFL, 0);
-        flags |= O_NONBLOCK;
-        //fcntl(_connection->fd(), F_SETFL, flags);
         timeval read_timeout{
             .tv_sec = 2,
             .tv_usec = 0
