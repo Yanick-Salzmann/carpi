@@ -95,7 +95,9 @@ namespace carpi::obd {
     }
 
     void ObdInterface::initialize() {
-        fcntl(_connection->fd(), F_SETFL, O_NONBLOCK);
+        auto flags = fcntl(_connection->fd(), F_GETFL, 0);
+        flags |= O_NONBLOCK;
+        fcntl(_connection->fd(), F_SETFL, flags);
 
         log->info("Trying to initialize OBD protocol");
 
