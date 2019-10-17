@@ -70,6 +70,10 @@ namespace carpi::obd {
         std::sregex_token_iterator end{};
 
         for(; itr != end; ++itr) {
+            if((*itr).str().empty()) {
+                continue;
+            }
+
             lines.emplace_back(*itr);
         }
 
