@@ -37,6 +37,7 @@ namespace carpi {
                     }
 
                     selected_device = device_itr->connect(0x01);
+                    break;
                 }
             }
         } while(line != "q");
