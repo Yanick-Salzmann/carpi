@@ -119,8 +119,10 @@ namespace carpi::obd {
             throw std::runtime_error("Error initializing ELM327");
         }
 
-        if (!is_ok_message(send_raw_command("ATH1"))) {
-            log->error("Error invoking ATH1 command. Expected 'OK' response");
+        const auto header_resp = send_raw_command("ATH1");
+
+        if (header_resp.empty()) {
+            log->error("Error invoking ATH1 command. Expected some response");
             throw std::runtime_error("Error initializing ELM327");
         }
 
