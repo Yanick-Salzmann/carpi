@@ -1,4 +1,4 @@
-set(CMAKE_VERSION 3.15)
+set(CMAKE_VERSION 3.14)
 
 cmake_minimum_required(VERSION ${CMAKE_VERSION})
 project(carpi)

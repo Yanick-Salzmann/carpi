@@ -2,6 +2,7 @@
 #define CARPI_COMMON_UTILS_ERROR_HPP
 
 #include <string>
+#include <errno.h>
 
 namespace carpi::utils {
     std::string error_to_string(int error_number = errno);
