@@ -17,7 +17,7 @@ namespace carpi::obd {
 
     void ObdInterface::trigger_normal_power(bool await_response) {
         log->info("Triggering high power mode");
-        _connection->write_data(" \r", 2);
+        _connection->write_data(" ", 1);
         if (await_response) {
             read_raw();
         }
@@ -31,7 +31,7 @@ namespace carpi::obd {
 
         std::string actual_payload = payload;
         if (payload[payload.size() - 1] != '\r') {
-            actual_payload += '\r';
+            //actual_payload += '\r';
         }
 
         if (_is_in_lower_power_mode) {
