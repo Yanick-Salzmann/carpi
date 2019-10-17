@@ -64,8 +64,6 @@ namespace carpi::obd {
             }
         } while (true);
 
-        log->debug("FROM ELM327: {}", resp_buffer);
-
         static std::regex eol_regex{"[\r\n]"};
 
         std::vector<std::string> lines{};
@@ -80,6 +78,8 @@ namespace carpi::obd {
 
             lines.emplace_back(*itr);
         }
+
+        log->debug("FROM ELM: {}", combine_lines_for_output(lines));
 
         return lines;
     }
