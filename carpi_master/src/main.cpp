@@ -5,6 +5,8 @@
 #include <bluetooth_utils/BluetoothConnection.hpp>
 #include "comm/CommServer.hpp"
 
+#include <obd/ObdInterface.hpp>
+
 namespace carpi {
     int main(int argc, char* argv[]) {
         video::H264Conversion::initialize_ffmpeg();
@@ -44,6 +46,7 @@ namespace carpi {
 
         if(line != "q") {
             log->info("Selected a device");
+            obd::ObdInterface obd_iface{selected_device};
         }
 
         server.shutdown_acceptor();
