@@ -9,6 +9,8 @@
 #include <sstream>
 
 #include "common_utils/log.hpp"
+#include <bluetooth/bluetooth.h>
+#include <bluetooth/rfcomm.h>
 
 namespace carpi::bluetooth {
     class BluetoothConnection {
@@ -22,7 +24,7 @@ namespace carpi::bluetooth {
         bool _is_open = true;
 
     public:
-        explicit BluetoothConnection(int socket);
+        explicit BluetoothConnection(int socket, sockaddr_rc address);
 
         BluetoothConnection(const BluetoothConnection &) = delete;
 

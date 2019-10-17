@@ -9,14 +9,9 @@
 namespace carpi::bluetooth {
     LOGGER_IMPL(BluetoothConnection);
 
-    BluetoothConnection::BluetoothConnection(int socket) : _socket(socket) {
-        sockaddr_rc addr{};
-        socklen_t addr_len = sizeof addr;
-
-        getsockname(_socket, (sockaddr *) &addr, &addr_len);
-
+    BluetoothConnection::BluetoothConnection(int socket, sockaddr_rc address) : _socket(socket) {
         char addr_name[18]{};
-        ba2str(&addr.rc_bdaddr, addr_name);
+        ba2str(&address.rc_bdaddr, addr_name);
         addr_name[17] = '\0';
 
         _address.assign(addr_name);

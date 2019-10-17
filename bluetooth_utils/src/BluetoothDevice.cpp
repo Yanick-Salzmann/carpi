@@ -57,15 +57,8 @@ namespace carpi::bluetooth {
             throw std::runtime_error("Error opening connection to device");
         }
 
-        socklen_t addr_size = sizeof rc_addr;
-        getsockname(ret_client, (sockaddr*) &rc_addr, &addr_size);
+        log->debug("Created bluetooth connection to {} with channel={}", _address_string, channel);
 
-        char remote_addr[18]{};
-        ba2str(&rc_addr.rc_bdaddr, remote_addr);
-        remote_addr[17] = '\0';
-
-        log->debug("Created bluetooth connection to {} with channel={}", remote_addr, channel);
-
-        return std::make_shared<BluetoothConnection>(ret_client);
+        return std::make_shared<BluetoothConnection>(ret_client, rc_addr);
     }
 }
