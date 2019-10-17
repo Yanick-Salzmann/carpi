@@ -48,6 +48,8 @@ namespace carpi::bluetooth {
 
         void read_data(void *buffer, std::size_t num_bytes);
 
+        std::size_t read_some(void* buffer, std::size_t max_bytes);
+
         template<typename T>
         BluetoothConnection &operator<<(const T &value) {
             write_data(&value, sizeof value);

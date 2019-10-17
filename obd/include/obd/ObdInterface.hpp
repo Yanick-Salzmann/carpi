@@ -66,7 +66,7 @@ namespace carpi::obd {
 
         void trigger_normal_power();
 
-        std::vector<std::string> read_raw();
+        std::vector<std::string> read_raw(int32_t timeout = 0);
 
         std::vector<msg::ObdMessage> read_messages();
 

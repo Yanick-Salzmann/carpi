@@ -40,18 +40,24 @@ namespace carpi::obd {
         _connection->write_data(actual_payload.c_str(), actual_payload.size());
     }
 
-    std::vector<std::string> ObdInterface::read_raw() {
+    std::vector<std::string> ObdInterface::read_raw(int32_t timeout) {
+        uint8_t read_chunk[0x1000]{};
+        std::vector<uint8_t> resp_data{};
         std::string resp_buffer{};
-        uint8_t chr{};
-        uint8_t last_chr = '\0';
+
         do {
-            (*_connection) >> chr;
-            resp_buffer += chr;
-            if(chr == '>' || (chr == 'K' && last_chr == 'O')) {
-                break;
+            const auto num_read = _connection->read_some(read_chunk, sizeof read_chunk);
+            if(num_read == 0) {
+                std::this_thread::sleep_for(std::chrono::milliseconds(1));
+                continue;
             }
 
-            last_chr = chr;
+            resp_data.insert(resp_data.end(), read_chunk, read_chunk + num_read);
+            resp_buffer.assign(resp_data.begin(), resp_data.end());
+
+            if(resp_buffer.find('>') != std::string::npos || resp_buffer.find("OK") != std::string::npos) {
+                break;
+            }
         } while(true);
 
         log->debug("FROM ELM327: {}", resp_buffer);
@@ -83,6 +89,8 @@ namespace carpi::obd {
     }
 
     void ObdInterface::initialize() {
+        fcntl(_connection->fd(), F_SETFL, O_NONBLOCK);
+
         log->info("Trying to initialize OBD protocol");
 
         trigger_normal_power();

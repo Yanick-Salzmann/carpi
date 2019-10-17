@@ -59,4 +59,14 @@ namespace carpi::bluetooth {
 
         _is_open = false;
     }
+
+    std::size_t BluetoothConnection::read_some(void *buffer, std::size_t max_bytes) {
+        const auto num_read = recv(_socket, buffer, max_bytes, 0);
+        if(num_read < 0) {
+            log->error("Error reading any data: {} (errno={})", utils::error_to_string(), errno);
+            throw std::runtime_error("Error reading any data");
+        }
+
+        return static_cast<std::size_t>(num_read);
+    }
 }
