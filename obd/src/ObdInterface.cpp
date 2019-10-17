@@ -35,7 +35,7 @@ namespace carpi::obd {
         }
 
         if (_is_in_lower_power_mode) {
-            trigger_normal_power();
+            trigger_normal_power(false);
         }
 
         log->debug("TO ELM327: {} (={} bytes)", actual_payload, actual_payload.size());
@@ -99,17 +99,22 @@ namespace carpi::obd {
     void ObdInterface::initialize() {
         auto flags = fcntl(_connection->fd(), F_GETFL, 0);
         flags |= O_NONBLOCK;
-        fcntl(_connection->fd(), F_SETFL, flags);
+        //fcntl(_connection->fd(), F_SETFL, flags);
+        timeval read_timeout{
+            .tv_sec = 2,
+            .tv_usec = 0
+        };
+
+        setsockopt(_connection->fd(), SOL_SOCKET, SO_RCVTIMEO, &read_timeout, sizeof read_timeout);
 
         log->info("Trying to initialize OBD protocol");
 
-        _is_in_lower_power_mode = false;
-        //trigger_normal_power(false);
+        trigger_normal_power(false);
         std::this_thread::sleep_for(std::chrono::seconds{2});
 
         send_raw_command("ATZ", 1);
 
-        /*if (!is_ok_message(send_raw_command("ATE0"), true)) {
+        if (!is_ok_message(send_raw_command("ATE0"), true)) {
             log->error("Error invoking ATE0 command. Expected 'OK' response");
             throw std::runtime_error("Error initializing ELM327");
         }
@@ -122,7 +127,7 @@ namespace carpi::obd {
         if (!is_ok_message(send_raw_command("ATL0"))) {
             log->error("Error invoking ATL0 command. Expected 'OK' response");
             throw std::runtime_error("Error initializing ELM327");
-        }*/
+        }
 
         if (!check_voltage()) {
             log->error("Voltage check failed");
