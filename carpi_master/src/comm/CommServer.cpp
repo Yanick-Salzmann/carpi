@@ -19,18 +19,15 @@ namespace carpi {
 
     void CommServer::network_runner() {
         while(_is_running) {
-            const auto connection = _server->accept_connection();
-            log->info("Accepted new bluetooth connection: {}", connection->to_string());
-            _connections.emplace_back(connection);
-
-            continue;
-
             fd_set socket_set{};
             FD_ZERO(&socket_set);
+            auto max_socket = _server->fd();
+
             FD_SET(_server->fd(), &socket_set);
 
             for(const auto& connection : _connections) {
                 FD_SET(connection->fd(), &socket_set);
+                max_socket = std::max(max_socket, connection->fd());
             }
 
             timeval timeout{
@@ -38,7 +35,7 @@ namespace carpi {
                 .tv_usec = 0
             };
 
-            const auto rc = select(1, &socket_set, nullptr, nullptr, &timeout);
+            const auto rc = select(max_socket + 1, &socket_set, nullptr, nullptr, &timeout);
             log->debug("Selected sockets. Readable sockets: {}", rc);
 
             if(rc < 0) {
@@ -52,6 +49,8 @@ namespace carpi {
                     log->info("Accepted new bluetooth connection: {}", connection->to_string());
                     _connections.emplace_back(connection);
                 }
+
+                // TODO: handle active connections
             }
         }
     }
