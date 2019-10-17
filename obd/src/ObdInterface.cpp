@@ -47,12 +47,12 @@ namespace carpi::obd {
 
         do {
             const auto num_read = _connection->read_some(read_chunk, sizeof read_chunk);
+            log->debug("Read {} bytes", num_read);
             if(num_read == 0) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(1));
                 continue;
             }
 
-            log->debug("Read {} bytes", num_read);
 
             resp_data.insert(resp_data.end(), read_chunk, read_chunk + num_read);
             resp_buffer.assign(resp_data.begin(), resp_data.end());
