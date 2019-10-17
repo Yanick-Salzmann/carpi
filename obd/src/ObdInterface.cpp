@@ -253,4 +253,9 @@ namespace carpi::obd {
 
         return false;
     }
+
+    std::vector<msg::ObdMessage> ObdInterface::dispatch_raw_command(const std::string &command) {
+        send_raw_command(command);
+        return read_messages();
+    }
 }

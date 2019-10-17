@@ -86,6 +86,7 @@ namespace carpi::obd {
         explicit ObdInterface(std::shared_ptr<bluetooth::BluetoothConnection> connection);
 
         void send_command(ObdCommand &command);
+        std::vector<msg::ObdMessage> dispatch_raw_command(const std::string& command);
     };
 }
 

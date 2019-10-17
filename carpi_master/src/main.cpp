@@ -47,6 +47,18 @@ namespace carpi {
         if(line != "q") {
             log->info("Selected a device");
             obd::ObdInterface obd_iface{selected_device};
+            while(true) {
+                std::string command{};
+                if(!std::getline(std::cin, command)) {
+                    break;
+                }
+
+                if(command[0] == 'q') {
+                    break;
+                }
+
+                obd_iface.dispatch_raw_command(command);
+            }
         }
 
         server.shutdown_acceptor();
