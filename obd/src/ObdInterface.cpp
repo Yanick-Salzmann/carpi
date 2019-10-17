@@ -47,12 +47,7 @@ namespace carpi::obd {
         do {
             (*_connection) >> chr;
             resp_buffer += chr;
-            if(chr == '>') {
-                break;
-            }
-
-            if(chr == 'K' && last_chr == 'O') {
-                _is_in_lower_power_mode = true;
+            if(chr == '>' || (chr == 'K' && last_chr == 'O')) {
                 break;
             }
 
