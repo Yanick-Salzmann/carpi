@@ -52,6 +52,8 @@ namespace carpi::obd {
                 continue;
             }
 
+            log->debug("Read {} bytes", num_read);
+
             resp_data.insert(resp_data.end(), read_chunk, read_chunk + num_read);
             resp_buffer.assign(resp_data.begin(), resp_data.end());
 
