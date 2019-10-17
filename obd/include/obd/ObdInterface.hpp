@@ -6,6 +6,8 @@
 #include <thread>
 #include <chrono>
 
+#include <common_utils/log.hpp>
+
 #include "protocols/AbstractOBDProtocol.hpp"
 
 namespace carpi::bluetooth {
@@ -16,6 +18,8 @@ namespace carpi::obd {
     class ObdCommand;
 
     class ObdInterface {
+        LOGGER;
+
         std::shared_ptr<bluetooth::BluetoothConnection> _connection{};
         std::shared_ptr<protocols::AbstractOBDProtocol> _protocol{};
 
@@ -39,6 +43,12 @@ namespace carpi::obd {
         std::vector<msg::ObdMessage> read_messages();
 
         void initialize();
+
+        bool check_voltage();
+        bool try_load_protocol();
+
+        static bool is_ok_message(const std::vector<std::string>& lines, bool allow_multi_line = false);
+        static bool contains_in_lines(const std::vector<std::string>& lines, const std::string& search);
 
     public:
         explicit ObdInterface(std::shared_ptr<bluetooth::BluetoothConnection> connection);

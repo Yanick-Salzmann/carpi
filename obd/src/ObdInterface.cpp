@@ -5,8 +5,10 @@
 
 #include <regex>
 #include <iomanip>
+#include <common_utils/any.hpp>
 
 namespace carpi::obd {
+    LOGGER_IMPL(ObdInterface);
 
     ObdInterface::ObdInterface(std::shared_ptr<bluetooth::BluetoothConnection> connection) :
             _connection(std::move(connection)) {
@@ -33,6 +35,7 @@ namespace carpi::obd {
             trigger_normal_power();
         }
 
+        log->debug("TO ELM327: {}", actual_payload);
         _connection->write_data(actual_payload.c_str(), actual_payload.size());
     }
 
@@ -54,6 +57,8 @@ namespace carpi::obd {
 
             last_chr = chr;
         } while(true);
+
+        log->debug("FROM ELM327: {}", resp_buffer);
 
         static std::regex eol_regex{"[\r\n]"};
 
@@ -84,6 +89,26 @@ namespace carpi::obd {
     void ObdInterface::initialize() {
         trigger_normal_power();
         send_raw_command("ATZ", 1);
+
+        if(!is_ok_message(send_raw_command("ATE0"), true)) {
+            log->error("Error invoking ATE0 command. Expected 'OK' response");
+            throw std::runtime_error("Error initializing ELM327");
+        }
+
+        if(!is_ok_message(send_raw_command("ATH1"))) {
+            log->error("Error invoking ATH1 command. Expected 'OK' response");
+            throw std::runtime_error("Error initializing ELM327");
+        }
+
+        if(!is_ok_message(send_raw_command("ATL0"))) {
+            log->error("Error invoking ATL0 command. Expected 'OK' response");
+            throw std::runtime_error("Error initializing ELM327");
+        }
+
+        if(!check_voltage()) {
+            log->error("Voltage check failed");
+            throw std::runtime_error("Voltage check failed");
+        }
     }
 
     std::vector<std::string> ObdInterface::send_raw_command(const std::string &command, int32_t delay_seconds) {
@@ -93,5 +118,49 @@ namespace carpi::obd {
         }
 
         return read_raw();
+    }
+
+    bool ObdInterface::is_ok_message(const std::vector<std::string> &lines, bool allow_multi_line) {
+        if(lines.empty()) {
+            return false;
+        }
+
+        if(!allow_multi_line) {
+            return lines.size() == 1 && lines[0] == "OK";
+        } else {
+            return contains_in_lines(lines, "OK");
+        }
+    }
+
+    bool ObdInterface::check_voltage() {
+        const auto response = send_raw_command("AT RV");
+        if(response.size() != 1 || response[0].empty()) {
+            return false;
+        }
+
+        try {
+            const auto voltage = utils::lexical_cast<float>(response[0].substr(1)); // skip the 'v' prefix
+            return voltage >= 6.0f;
+        } catch (std::bad_cast&) {
+            log->warn("Incorrect voltage response received: {}", response[0]);
+            return false;
+        }
+    }
+
+    bool ObdInterface::try_load_protocol() {
+        send_raw_command("ATSP0");
+        auto init_lines = send_raw_command("0100");
+
+        return false;
+    }
+
+    bool ObdInterface::contains_in_lines(const std::vector<std::string> &lines, const std::string &search) {
+        for(const auto& line : lines) {
+            if(line.find(search) != std::string::npos) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
