@@ -106,7 +106,7 @@ namespace carpi::obd {
         trigger_normal_power(false);
         send_raw_command("ATZ", 1);
 
-        if (!is_ok_message(send_raw_command("ATE0"), true)) {
+        /*if (!is_ok_message(send_raw_command("ATE0"), true)) {
             log->error("Error invoking ATE0 command. Expected 'OK' response");
             throw std::runtime_error("Error initializing ELM327");
         }
@@ -119,7 +119,7 @@ namespace carpi::obd {
         if (!is_ok_message(send_raw_command("ATL0"))) {
             log->error("Error invoking ATL0 command. Expected 'OK' response");
             throw std::runtime_error("Error initializing ELM327");
-        }
+        }*/
 
         if (!check_voltage()) {
             log->error("Voltage check failed");
