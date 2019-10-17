@@ -171,7 +171,11 @@ namespace carpi::obd {
         }
 
         try {
-            const auto voltage = utils::lexical_cast<float>(response[0].substr(1)); // skip the 'v' prefix
+            auto voltage_string = response[0];
+            if(voltage_string[0] == 'v' || voltage_string[0] == 'V') {
+                voltage_string = voltage_string.substr(1); // skip v prefix
+            }
+            const auto voltage = utils::lexical_cast<float>(voltage_string);
             return voltage >= 6.0f;
         } catch (std::bad_cast &) {
             log->warn("Incorrect voltage response received: {}", response[0]);
