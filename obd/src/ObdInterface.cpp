@@ -15,24 +15,26 @@ namespace carpi::obd {
         initialize();
     }
 
-    void ObdInterface::trigger_normal_power() {
+    void ObdInterface::trigger_normal_power(bool await_response) {
         log->info("Triggering high power mode");
         _connection->write_data(" \r", 2);
-        read_raw();
+        if (await_response) {
+            read_raw();
+        }
         _is_in_lower_power_mode = false;
     }
 
     void ObdInterface::send_raw(const std::string &payload) {
-        if(payload.empty()) {
+        if (payload.empty()) {
             return;
         }
 
         std::string actual_payload = payload;
-        if(payload[payload.size() - 1] != '\r') {
+        if (payload[payload.size() - 1] != '\r') {
             actual_payload += '\r';
         }
 
-        if(_is_in_lower_power_mode) {
+        if (_is_in_lower_power_mode) {
             trigger_normal_power();
         }
 
@@ -47,7 +49,7 @@ namespace carpi::obd {
 
         do {
             const auto num_read = _connection->read_some(read_chunk, sizeof read_chunk);
-            if(num_read == 0) {
+            if (num_read == 0) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(1));
                 continue;
             }
@@ -56,10 +58,10 @@ namespace carpi::obd {
             resp_data.insert(resp_data.end(), read_chunk, read_chunk + num_read);
             resp_buffer.assign(resp_data.begin(), resp_data.end());
 
-            if(resp_buffer.find('>') != std::string::npos || resp_buffer.find("OK") != std::string::npos) {
+            if (resp_buffer.find('>') != std::string::npos || resp_buffer.find("OK") != std::string::npos) {
                 break;
             }
-        } while(true);
+        } while (true);
 
         log->debug("FROM ELM327: {}", resp_buffer);
 
@@ -70,8 +72,8 @@ namespace carpi::obd {
         std::sregex_token_iterator itr{resp_buffer.begin(), resp_buffer.end(), eol_regex, -1};
         std::sregex_token_iterator end{};
 
-        for(; itr != end; ++itr) {
-            if((*itr).str().empty()) {
+        for (; itr != end; ++itr) {
+            if ((*itr).str().empty()) {
                 continue;
             }
 
@@ -100,30 +102,30 @@ namespace carpi::obd {
 
         log->info("Trying to initialize OBD protocol");
 
-        trigger_normal_power();
+        trigger_normal_power(false);
         send_raw_command("ATZ", 1);
 
-        if(!is_ok_message(send_raw_command("ATE0"), true)) {
+        if (!is_ok_message(send_raw_command("ATE0"), true)) {
             log->error("Error invoking ATE0 command. Expected 'OK' response");
             throw std::runtime_error("Error initializing ELM327");
         }
 
-        if(!is_ok_message(send_raw_command("ATH1"))) {
+        if (!is_ok_message(send_raw_command("ATH1"))) {
             log->error("Error invoking ATH1 command. Expected 'OK' response");
             throw std::runtime_error("Error initializing ELM327");
         }
 
-        if(!is_ok_message(send_raw_command("ATL0"))) {
+        if (!is_ok_message(send_raw_command("ATL0"))) {
             log->error("Error invoking ATL0 command. Expected 'OK' response");
             throw std::runtime_error("Error initializing ELM327");
         }
 
-        if(!check_voltage()) {
+        if (!check_voltage()) {
             log->error("Voltage check failed");
             throw std::runtime_error("Voltage check failed");
         }
 
-        if(!try_load_protocol()) {
+        if (!try_load_protocol()) {
             log->error("Error finding any compatible ELM327 underlying protocol");
             throw std::runtime_error("Error negotiating protocol with car");
         }
@@ -133,7 +135,7 @@ namespace carpi::obd {
 
     std::vector<std::string> ObdInterface::send_raw_command(const std::string &command, int32_t delay_seconds) {
         send_raw(command);
-        if(delay_seconds > 0) {
+        if (delay_seconds > 0) {
             std::this_thread::sleep_for(std::chrono::seconds{delay_seconds});
         }
 
@@ -141,11 +143,11 @@ namespace carpi::obd {
     }
 
     bool ObdInterface::is_ok_message(const std::vector<std::string> &lines, bool allow_multi_line) {
-        if(lines.empty()) {
+        if (lines.empty()) {
             return false;
         }
 
-        if(!allow_multi_line) {
+        if (!allow_multi_line) {
             return lines.size() == 1 && lines[0] == "OK";
         } else {
             return contains_in_lines(lines, "OK");
@@ -154,14 +156,14 @@ namespace carpi::obd {
 
     bool ObdInterface::check_voltage() {
         const auto response = send_raw_command("AT RV");
-        if(response.size() != 1 || response[0].empty()) {
+        if (response.size() != 1 || response[0].empty()) {
             return false;
         }
 
         try {
             const auto voltage = utils::lexical_cast<float>(response[0].substr(1)); // skip the 'v' prefix
             return voltage >= 6.0f;
-        } catch (std::bad_cast&) {
+        } catch (std::bad_cast &) {
             log->warn("Incorrect voltage response received: {}", response[0]);
             return false;
         }
@@ -171,32 +173,34 @@ namespace carpi::obd {
         send_raw_command("ATSP0");
         auto init_lines = send_raw_command("0100");
 
-        if(contains_in_lines(init_lines, "UNABLE TO CONNECT")) {
-            log->error("Unable to launch SEARCH PROTOCOL (0100) request to ELM327. Response was {}", combine_lines_for_output(init_lines));
+        if (contains_in_lines(init_lines, "UNABLE TO CONNECT")) {
+            log->error("Unable to launch SEARCH PROTOCOL (0100) request to ELM327. Response was {}",
+                       combine_lines_for_output(init_lines));
             return false;
         }
 
         auto response = send_raw_command("ATDPN");
-        if(response.size() != 1) {
-            log->error("Expected a single line response from 'ATDPN' ELM327 request, but got: {}", combine_lines_for_output(response));
+        if (response.size() != 1) {
+            log->error("Expected a single line response from 'ATDPN' ELM327 request, but got: {}",
+                       combine_lines_for_output(response));
             return false;
         }
 
         auto protocol_line = response[0];
-        if(protocol_line.size() > 1 && protocol_line[0] == 'A') {
+        if (protocol_line.size() > 1 && protocol_line[0] == 'A') {
             protocol_line = protocol_line.substr(1);
         }
 
         auto protocol_id = protocol_line[0];
         const auto proto_itr = _protocol_map.find(protocol_id);
-        if(proto_itr != _protocol_map.end()) {
+        if (proto_itr != _protocol_map.end()) {
             _protocol = proto_itr->second(init_lines);
             return true;
         } else {
-            for(const auto& guessed_proto : _guessed_protocols) {
+            for (const auto &guessed_proto : _guessed_protocols) {
                 send_raw_command(std::string{"ATTP"} + guessed_proto);
                 init_lines = send_raw_command("0100");
-                if(!contains_in_lines(init_lines, "UNABLE TO CONNECT")) {
+                if (!contains_in_lines(init_lines, "UNABLE TO CONNECT")) {
                     _protocol = _protocol_map[guessed_proto](init_lines);
                     return true;
                 }
@@ -211,8 +215,8 @@ namespace carpi::obd {
         std::stringstream stream;
         stream << "[";
         auto is_first = true;
-        for(const auto& line : lines) {
-            if(is_first) {
+        for (const auto &line : lines) {
+            if (is_first) {
                 is_first = false;
             } else {
                 stream << ", ";
@@ -227,8 +231,8 @@ namespace carpi::obd {
     }
 
     bool ObdInterface::contains_in_lines(const std::vector<std::string> &lines, const std::string &search) {
-        for(const auto& line : lines) {
-            if(line.find(search) != std::string::npos) {
+        for (const auto &line : lines) {
+            if (line.find(search) != std::string::npos) {
                 return true;
             }
         }

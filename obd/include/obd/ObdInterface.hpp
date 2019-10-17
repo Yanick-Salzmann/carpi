@@ -64,7 +64,7 @@ namespace carpi::obd {
 
         std::vector<std::string> send_raw_command(const std::string &command, int32_t delay_seconds = -1);
 
-        void trigger_normal_power();
+        void trigger_normal_power(bool await_response = true);
 
         std::vector<std::string> read_raw(int32_t timeout = 0);
 
