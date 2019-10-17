@@ -151,7 +151,37 @@ namespace carpi::obd {
         send_raw_command("ATSP0");
         auto init_lines = send_raw_command("0100");
 
+        if(contains_in_lines(init_lines, "UNABLE TO CONNECT")) {
+            log->error("Unable to launch SEARCH PROTOCOL (0100) request to ELM327. Response was {}", combine_lines_for_output(init_lines));
+            return false;
+        }
+
+        auto response = send_raw_command("ATDPN");
+        if(response.size() != 1) {
+            log->error("Expected a single line response from 'ATDPN' ELM327 request, but got: {}", combine_lines_for_output(response));
+            return false;
+        }
+
         return false;
+    }
+
+    std::string ObdInterface::combine_lines_for_output(const std::vector<std::string> &lines) {
+        std::stringstream stream;
+        stream << "[";
+        auto is_first = true;
+        for(const auto& line : lines) {
+            if(is_first) {
+                is_first = false;
+            } else {
+                stream << ", ";
+            }
+
+            stream << "'" << line << "'";
+        }
+
+        stream << "]";
+
+        return stream.str();
     }
 
     bool ObdInterface::contains_in_lines(const std::vector<std::string> &lines, const std::string &search) {

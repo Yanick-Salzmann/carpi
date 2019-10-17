@@ -50,6 +50,8 @@ namespace carpi::obd {
         static bool is_ok_message(const std::vector<std::string>& lines, bool allow_multi_line = false);
         static bool contains_in_lines(const std::vector<std::string>& lines, const std::string& search);
 
+        static std::string combine_lines_for_output(const std::vector<std::string>& lines);
+
     public:
         explicit ObdInterface(std::shared_ptr<bluetooth::BluetoothConnection> connection);
 
