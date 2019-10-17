@@ -1,18 +1,17 @@
 #include <iostream>
-#include <bluetooth_utils/BluetoothServer.hpp>
-#include <bluetooth_utils/BluetoothConnection.hpp>
 #include <video_stream/H264Conversion.hpp>
+#include "comm/CommServer.hpp"
 
 namespace carpi {
     int main(int argc, char* argv[]) {
         video::H264Conversion::initialize_ffmpeg();
+        CommServer server{};
+        std::string line{};
+        do {
+            std::getline(std::cin, line);
+        } while(line != "q");
 
-        utils::Logger log{"main"};
-        bluetooth::BluetoothServer server{1};
-        auto connection = server.accept_connection();
-        std::string payload{};
-        (*connection) >> payload;
-        log->info("Received: {}", payload);
+        server.shutdown_acceptor();
         return 0;
     }
 }

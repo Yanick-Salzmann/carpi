@@ -27,7 +27,7 @@ namespace carpi::bluetooth {
     }
 
     std::ostream &operator<<(std::ostream &os, const BluetoothConnection &conn) {
-        return os << "<BluetoothConnection address=" << conn._address << ">";
+        return os << conn.to_string();
     }
 
     void BluetoothConnection::write_data(const void *data, std::size_t num_bytes) {

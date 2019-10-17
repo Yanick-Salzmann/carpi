@@ -6,6 +6,7 @@
 #include <iostream>
 #include <array>
 #include <vector>
+#include <sstream>
 
 #include "common_utils/log.hpp"
 
@@ -28,6 +29,12 @@ namespace carpi::bluetooth {
         BluetoothConnection(BluetoothConnection &&) = delete;
 
         ~BluetoothConnection();
+
+        [[nodiscard]] std::string to_string() const {
+            std::stringstream stream;
+            stream << "<BluetoothConnection address=" << _address << ">";
+            return stream.str();
+        }
 
         void operator=(const BluetoothConnection &) = delete;
 
@@ -79,6 +86,10 @@ namespace carpi::bluetooth {
         BluetoothConnection &operator>>(std::vector<T> &data) {
             read_data(data.data(), data.size() * sizeof(T));
             return *this;
+        }
+
+        [[nodiscard]] int fd() const {
+            return _socket;
         }
     };
 
