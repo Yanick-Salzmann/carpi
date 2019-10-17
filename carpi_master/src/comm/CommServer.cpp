@@ -35,8 +35,7 @@ namespace carpi {
                 .tv_usec = 0
             };
 
-            const auto rc = select(max_socket + 1, &socket_set, nullptr, nullptr, &timeout);
-            log->debug("Selected sockets. Readable sockets: {}", rc);
+            const auto rc = select(max_socket + 1, &socket_set, nullptr, nullptr, &timeout);ß
 
             if(rc < 0) {
                 log->error("Error selecting from sockets: {} (errno={})", utils::error_to_string(errno), errno);
