@@ -33,6 +33,8 @@ namespace carpi {
             };
 
             const auto rc = select(1, &socket_set, nullptr, nullptr, &timeout);
+            log->debug("Selected sockets. Readable sockets: {}", rc);
+
             if(rc < 0) {
                 log->error("Error selecting from sockets: {} (errno={})", utils::error_to_string(errno), errno);
                 return; // TODO: trigger error
