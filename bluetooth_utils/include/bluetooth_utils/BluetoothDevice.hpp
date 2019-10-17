@@ -10,6 +10,9 @@
 
 #include "common_utils/log.hpp"
 
+#include <spdlog/spdlog.h>
+#include <spdlog/fmt/ostr.h>
+
 namespace carpi::bluetooth {
     class BluetoothConnection;
 
@@ -39,6 +42,15 @@ namespace carpi::bluetooth {
 
         [[nodiscard]] std::string address_string() const {
             return _address_string;
+        }
+
+        [[nodiscard]] std::string to_string() const {
+            return fmt::format("<BluetoothDevice name='{}', address='{}'>", _device_name, _address_string);
+        }
+
+        template<typename OStream>
+        friend OStream& operator << (OStream& os, const BluetoothDevice& device) {
+            return os << device.to_string();
         }
     };
 }
