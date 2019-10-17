@@ -24,7 +24,7 @@ namespace carpi::obd {
     class ObdInterface {
         LOGGER;
 
-        typedef std::map<char, std::function<std::shared_ptr<protocols::AbstractOBDProtocol>(const protocols::StringVector&)>> ProtocolMap;
+        typedef std::map<char, std::function<std::shared_ptr<protocols::AbstractOBDProtocol>(const protocols::StringVector &)>> ProtocolMap;
 
 #define PROTO_ENTRY(chr, type) { chr, [](const protocols::StringVector& init_lines) { return std::make_shared<protocols::type>(init_lines); } }
 
@@ -45,6 +45,8 @@ namespace carpi::obd {
         };
 
 #undef PROTO_ENTRY
+
+        std::vector<char> _guessed_protocols = {'6', '8', '1', '7', '9', '2', '3', '4', '5', 'A'};
 
         std::shared_ptr<bluetooth::BluetoothConnection> _connection{};
         std::shared_ptr<protocols::AbstractOBDProtocol> _protocol{};

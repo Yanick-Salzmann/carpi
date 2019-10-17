@@ -109,6 +109,13 @@ namespace carpi::obd {
             log->error("Voltage check failed");
             throw std::runtime_error("Voltage check failed");
         }
+
+        if(!try_load_protocol()) {
+            log->error("Error finding any compatible ELM327 underlying protocol");
+            throw std::runtime_error("Error negotiating protocol with car");
+        }
+
+        log->info("Connected to ELM327 chip and car using protocol '{}'", _protocol->protocol_name());
     }
 
     std::vector<std::string> ObdInterface::send_raw_command(const std::string &command, int32_t delay_seconds) {
@@ -167,8 +174,23 @@ namespace carpi::obd {
             protocol_line = protocol_line.substr(1);
         }
 
+        auto protocol_id = protocol_line[0];
+        const auto proto_itr = _protocol_map.find(protocol_id);
+        if(proto_itr != _protocol_map.end()) {
+            _protocol = proto_itr->second(init_lines);
+            return true;
+        } else {
+            for(const auto& guessed_proto : _guessed_protocols) {
+                send_raw_command(std::string{"ATTP"} + guessed_proto);
+                init_lines = send_raw_command("0100");
+                if(!contains_in_lines(init_lines, "UNABLE TO CONNECT")) {
+                    _protocol = _protocol_map[guessed_proto](init_lines);
+                    return true;
+                }
+            }
+        }
 
-
+        log->error("Unable to find any detectable ELM327 underlying protocol, out of luck...");
         return false;
     }
 
