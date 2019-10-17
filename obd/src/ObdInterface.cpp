@@ -31,7 +31,7 @@ namespace carpi::obd {
 
         std::string actual_payload = payload;
         if (payload[payload.size() - 1] != '\r') {
-            //actual_payload += '\r';
+            actual_payload += '\r';
         }
 
         if (_is_in_lower_power_mode) {
@@ -59,7 +59,7 @@ namespace carpi::obd {
             resp_data.insert(resp_data.end(), read_chunk, read_chunk + num_read);
             resp_buffer.assign(resp_data.begin(), resp_data.end());
 
-            if (resp_buffer.find('>') != std::string::npos || resp_buffer.find("OK") != std::string::npos) {
+            if (resp_buffer.find('>') != std::string::npos) {
                 break;
             }
         } while (true);
@@ -108,9 +108,6 @@ namespace carpi::obd {
         setsockopt(_connection->fd(), SOL_SOCKET, SO_RCVTIMEO, &read_timeout, sizeof read_timeout);
 
         log->info("Trying to initialize OBD protocol");
-
-        send_raw_command("@1");
-        send_raw_command("@2");
 
         trigger_normal_power(false);
         std::this_thread::sleep_for(std::chrono::seconds{2});
