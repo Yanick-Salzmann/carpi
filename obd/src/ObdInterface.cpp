@@ -109,6 +109,9 @@ namespace carpi::obd {
 
         log->info("Trying to initialize OBD protocol");
 
+        send_raw_command("@1");
+        send_raw_command("@2");
+
         trigger_normal_power(false);
         std::this_thread::sleep_for(std::chrono::seconds{2});
 
