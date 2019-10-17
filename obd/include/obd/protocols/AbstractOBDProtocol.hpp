@@ -37,6 +37,7 @@ namespace carpi::obd::protocols {
         virtual bool tx_id_engine_constant(uint32_t& tx_id) const { return false; };
         virtual bool tx_id_transmission_constant(uint32_t& tx_id) const { return false; }
 
+    public:
         std::vector<msg::ObdMessage> parse_messages(const StringVector& lines);
     };
 }
