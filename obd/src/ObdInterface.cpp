@@ -16,6 +16,7 @@ namespace carpi::obd {
     }
 
     void ObdInterface::trigger_normal_power() {
+        log->info("Triggering high power mode");
         send_raw(" ");
         read_raw();
         _is_in_lower_power_mode = false;
@@ -87,6 +88,8 @@ namespace carpi::obd {
     }
 
     void ObdInterface::initialize() {
+        log->info("Trying to initialize OBD protocol");
+
         trigger_normal_power();
         send_raw_command("ATZ", 1);
 
