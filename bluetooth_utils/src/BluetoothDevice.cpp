@@ -39,7 +39,7 @@ namespace carpi::bluetooth {
         return !(*this == other);
     }
 
-    std::shared_ptr<BluetoothConnection> BluetoothDevice::connect(uint8_t channel) {
+    std::shared_ptr<BluetoothConnection> BluetoothDevice::connect(uint8_t channel) const {
         const auto ret_client = socket(AF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM);
         if(ret_client < 0) {
             log->error("Error creating client socket: {} (errno={})", utils::error_to_string(), errno);

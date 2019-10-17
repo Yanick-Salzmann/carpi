@@ -17,9 +17,9 @@ namespace carpi {
         std::shared_ptr<bluetooth::BluetoothConnection> selected_device = nullptr;
 
         do {
-            auto devices = btmgr.scan_devices(5);
+            std::set<bluetooth::BluetoothDevice> devices = btmgr.scan_devices(5);
             uint32_t index = 1;
-            for(const auto& device : devices) {
+            for(auto& device : devices) {
                 log->info("{}) {}", index++, device);
             }
 
@@ -29,17 +29,21 @@ namespace carpi {
             parse_stream << line;
             if(parse_stream >> device_index) {
                 if(device_index < devices.size()) {
-                    auto itr = devices.begin();
-                    auto index = 0u;
-                    while(index < device_index) {
-                        ++itr;
-                        ++index;
+                    auto device_itr = devices.begin();
+                    auto dev_index = 0u;
+                    while(dev_index < device_index) {
+                        ++device_itr;
+                        ++dev_index;
                     }
 
-                    selected_device = (*itr).connect();
+                    selected_device = device_itr->connect(0x01);
                 }
             }
         } while(line != "q");
+
+        if(line != "q") {
+            log->info("Selected a device");
+        }
 
         server.shutdown_acceptor();
         return 0;
