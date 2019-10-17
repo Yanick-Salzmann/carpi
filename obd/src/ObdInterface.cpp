@@ -126,7 +126,7 @@ namespace carpi::obd {
             throw std::runtime_error("Error initializing ELM327");
         }
 
-        if (!is_ok_message(send_raw_command("ATL0", true))) {
+        if (!is_ok_message(send_raw_command("ATL0"), true)) {
             log->error("Error invoking ATL0 command. Expected 'OK' response");
             throw std::runtime_error("Error initializing ELM327");
         }
