@@ -17,7 +17,7 @@ namespace carpi::obd {
 
     void ObdInterface::trigger_normal_power() {
         log->info("Triggering high power mode");
-        _connection->write_data(" \\r", 2);
+        _connection->write_data(" \r", 2);
         read_raw();
         _is_in_lower_power_mode = false;
     }
