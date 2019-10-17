@@ -31,7 +31,7 @@ namespace carpi::obd {
 
         std::string actual_payload = payload;
         if (payload[payload.size() - 1] != '\r') {
-            actual_payload += '\r';
+            //actual_payload += '\r';
         }
 
         if (_is_in_lower_power_mode) {
