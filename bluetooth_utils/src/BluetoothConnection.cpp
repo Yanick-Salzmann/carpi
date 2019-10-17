@@ -67,7 +67,7 @@ namespace carpi::bluetooth {
             throw std::runtime_error("Error reading any data");
         } else if(errno == EAGAIN) {
             return 0;
-        } else {
+        } else if(num_read <= 0) {
             return 0;
         }
 
