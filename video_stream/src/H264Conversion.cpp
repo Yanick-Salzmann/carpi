@@ -96,8 +96,6 @@ namespace carpi::video {
     }
 
     void H264Conversion::initialize_ffmpeg() {
-        avcodec_register_all();
-        av_register_all();
         av_log_set_callback(H264Conversion::log_ffmpeg_message);
 #ifndef NDEBUG
         av_log_set_level(AV_LOG_DEBUG);
