@@ -104,6 +104,8 @@ namespace carpi::obd {
         log->info("Trying to initialize OBD protocol");
 
         trigger_normal_power(false);
+        std::this_thread::sleep_for(std::chrono::seconds{2});
+
         send_raw_command("ATZ", 1);
 
         /*if (!is_ok_message(send_raw_command("ATE0"), true)) {
