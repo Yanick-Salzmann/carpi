@@ -38,7 +38,7 @@ namespace carpi::obd {
             trigger_normal_power();
         }
 
-        log->debug("TO ELM327: {}", actual_payload);
+        log->debug("TO ELM327: {} (={} bytes)", actual_payload, actual_payload.size());
         _connection->write_data(actual_payload.c_str(), actual_payload.size());
     }
 
