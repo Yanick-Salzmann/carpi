@@ -101,7 +101,8 @@ namespace carpi::obd {
             return false;
         }
 
-        response = command.decoder()->decode(data);
+        std::vector<uint8_t> actual_data{data.begin() + 2, data.end()};
+        response = command.decoder()->decode(actual_data);
         return true;
     }
 
