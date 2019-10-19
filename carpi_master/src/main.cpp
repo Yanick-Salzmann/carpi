@@ -48,30 +48,16 @@ namespace carpi {
         if(line != "q") {
             log->info("Selected a device");
             obd::ObdInterface obd_iface{selected_device};
+            auto cmd = obd::COMMAND_LIST["RPM"];
+
             while(true) {
-                std::string command{};
-                if(!std::getline(std::cin, command)) {
-                    break;
-                }
-
-                if(command[0] == 'q') {
-                    break;
-                }
-
-                std::transform(command.begin(), command.end(), command.begin(), [](const auto& chr) { return std::toupper(chr); });
-                const auto cmd_itr = obd::COMMAND_LIST.find(command);
-                if(cmd_itr == obd::COMMAND_LIST.end()) {
-                    log->warn("No command found: {}", command);
-                    continue;
-                }
-
                 utils::Any response{};
-                if(!obd_iface.send_command(cmd_itr->second, response)) {
-                    log->warn("There was an error executing the command '{}'", command);
+                if(!obd_iface.send_command(cmd, response)) {
+                    log->warn("There was an error executing the command '{}'", "RPM");
                     continue;
                 }
 
-                log->debug("Received: {}", response.to_string());
+                std::cout << "\rRPM: " << utils::any_cast<float>(response) << "       ";
             }
         }
 
