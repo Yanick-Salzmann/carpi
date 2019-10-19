@@ -5,8 +5,8 @@ add_library(obd SHARED
         src/ObdInterface.cpp
         include/obd/ObdCommand.hpp
         src/ObdCommand.cpp
-        include/obd/ResponseConverter.hpp
-        src/ResponseConverter.cpp include/obd/protocols/AbstractLegacyProtocol.hpp include/obd/protocols/AbstractCANProtocol.hpp src/protocols/AbstractCANProtocol.cpp src/protocols/AbstractLegacyProtocol.cpp include/obd/protocols/AbstractOBDProtocol.hpp src/protocols/AbstractOBDProtocol.cpp include/obd/msg/ObdMessage.hpp include/obd/msg/ObdFrame.hpp src/msg/ObdMessage.cpp src/msg/ObdFrame.cpp include/obd/EcuType.hpp include/obd/protocols/LegacyProtocols.hpp include/obd/protocols/CANProtocols.hpp src/protocols/LegacyProtocols.cpp src/protocols/CANProtocols.cpp)
+        include/obd/response/ResponseConverter.hpp
+        src/response/ResponseConverter.cpp include/obd/protocols/AbstractLegacyProtocol.hpp include/obd/protocols/AbstractCANProtocol.hpp src/protocols/AbstractCANProtocol.cpp src/protocols/AbstractLegacyProtocol.cpp include/obd/protocols/AbstractOBDProtocol.hpp src/protocols/AbstractOBDProtocol.cpp include/obd/msg/ObdMessage.hpp include/obd/msg/ObdFrame.hpp src/msg/ObdMessage.cpp src/msg/ObdFrame.cpp include/obd/EcuType.hpp include/obd/protocols/LegacyProtocols.hpp include/obd/protocols/CANProtocols.hpp src/protocols/LegacyProtocols.cpp src/protocols/CANProtocols.cpp include/obd/response/BitArrayResponseCodec.hpp src/response/BitArrayResponseCodec.cpp)
 
 add_dependencies(obd bluetooth_utils common_utils)
 

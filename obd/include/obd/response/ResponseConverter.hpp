@@ -5,7 +5,7 @@
 #include <common_utils/any.hpp>
 #include <vector>
 
-namespace carpi::obd {
+namespace carpi::obd::response {
     class IResponseConverter {
     public:
         virtual ~IResponseConverter() = default;
