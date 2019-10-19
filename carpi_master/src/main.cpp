@@ -48,11 +48,10 @@ namespace carpi {
         if(line != "q") {
             log->info("Selected a device");
             obd::ObdInterface obd_iface{selected_device};
-            auto cmd = obd::COMMAND_LIST["RPM"];
 
             while(true) {
                 utils::Any response{};
-                if(!obd_iface.send_command(cmd, response)) {
+                if(!obd_iface.send_command(obd::COMMAND_LIST.at("RPM"), response)) {
                     log->warn("There was an error executing the command '{}'", "RPM");
                     continue;
                 }
