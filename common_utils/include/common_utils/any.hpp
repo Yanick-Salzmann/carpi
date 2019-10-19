@@ -23,6 +23,8 @@ namespace carpi::utils {
 
         template<typename ValueType>
         class Holder : public Placeholder {
+            friend class Any;
+
             const ValueType _held;
         public:
             explicit Holder(ValueType value) : _held(std::move(value)) {}
