@@ -96,7 +96,7 @@ namespace carpi::obd {
         const auto raw_messages = read_messages();
         const auto message = raw_messages[0];
         const auto data = message.data();
-        if(command.decoder()->response_size() + 2 >= data.size()) {
+        if(command.decoder()->response_size() + 2 > data.size()) {
             log->warn("Response for OBD command is supposed to have at least {} bytes, but only {} were returned", command.decoder()->response_size(), data.size());
             return false;
         }
