@@ -2,6 +2,7 @@
 #include "bluetooth_utils/BluetoothConnection.hpp"
 #include "obd/ObdCommand.hpp"
 #include "obd/msg/ObdMessage.hpp"
+#include "obd/ObdCommandList.hpp"
 
 #include <regex>
 #include <iomanip>
@@ -97,6 +98,8 @@ namespace carpi::obd {
     }
 
     void ObdInterface::initialize() {
+        initialize_commands();
+
         timeval read_timeout{
             .tv_sec = 2,
             .tv_usec = 0
