@@ -28,12 +28,12 @@ namespace carpi::obd::response {
         }
     };
 
-    class BitArrayResponseCodec : public IResponseConverter {
+    class BitArrayCodec : public IResponseConverter {
         uint32_t _bit_count;
         uint32_t _byte_count;
 
     public:
-        explicit BitArrayResponseCodec(uint32_t num_bits) : _bit_count(num_bits), _byte_count((num_bits + 7u) / 8u) { }
+        explicit BitArrayCodec(uint32_t num_bits) : _bit_count(num_bits), _byte_count((num_bits + 7u) / 8u) { }
 
         [[nodiscard]] size_t response_size() const override {
             return _byte_count;
