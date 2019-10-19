@@ -35,6 +35,10 @@ namespace carpi::obd {
         [[nodiscard]] EcuType ecu_type() const {
             return _ecu_type;
         }
+
+        [[nodiscard]] std::shared_ptr<response::IResponseConverter> decoder() const {
+            return _response_converter;
+        }
     };
 }
 

@@ -4,11 +4,14 @@
 #include <cstdint>
 #include <vector>
 #include <stdexcept>
+#include <iostream>
 
 #include "ResponseConverter.hpp"
 
 namespace carpi::obd::response {
     class BitArray {
+        friend std::ostream& operator << (std::ostream&, const BitArray&);
+
         std::vector<uint8_t> _data;
 
     public:
@@ -27,6 +30,8 @@ namespace carpi::obd::response {
             return ((_data[byte_index] >> bit_index) & 1u) != 0;
         }
     };
+
+    std::ostream& operator << (std::ostream& stream, const BitArray& array);
 
     class BitArrayCodec : public IResponseConverter {
         uint32_t _bit_count;

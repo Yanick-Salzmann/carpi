@@ -5,6 +5,9 @@
 #include <algorithm>
 #include <sstream>
 
+#include <spdlog/spdlog.h>
+#include <spdlog/fmt/ostr.h>
+
 namespace carpi::utils {
     class Any {
         class Placeholder {
@@ -14,6 +17,8 @@ namespace carpi::utils {
             [[nodiscard]] virtual const std::type_info &type_info() const = 0;
 
             [[nodiscard]] virtual Placeholder *clone() const = 0;
+
+            [[nodiscard]] virtual std::string to_string() const = 0;
         };
 
         template<typename ValueType>
@@ -28,6 +33,12 @@ namespace carpi::utils {
 
             [[nodiscard]] Placeholder *clone() const override {
                 return new Holder(_held);
+            }
+
+            [[nodiscard]] std::string to_string() const override {
+                std::stringstream stream;
+                stream << _held;
+                return stream.str();
             }
         };
 
@@ -90,6 +101,19 @@ namespace carpi::utils {
             return type_info() == typeid(ValueType) ?
                    &static_cast<Holder<ValueType> *>(_content)->_held :
                    nullptr;
+        }
+
+        [[nodiscard]] std::string to_string() const {
+            if(_content == nullptr) {
+                return "(null)";
+            } else {
+                return _content->to_string();
+            }
+        }
+
+        template<typename OStream>
+        friend OStream& operator << (OStream& os, const Any& value) {
+            return os << value.to_string();
         }
     };
 

@@ -6,6 +6,7 @@
 #include "comm/CommServer.hpp"
 
 #include <obd/ObdInterface.hpp>
+#include <obd/ObdCommandList.hpp>
 
 namespace carpi {
     int main(int argc, char* argv[]) {
@@ -57,7 +58,20 @@ namespace carpi {
                     break;
                 }
 
-                obd_iface.dispatch_raw_command(command);
+                std::transform(command.begin(), command.end(), command.begin(), [](const auto& chr) { return std::toupper(chr); });
+                const auto cmd_itr = obd::COMMAND_LIST.find(command);
+                if(cmd_itr == obd::COMMAND_LIST.end()) {
+                    log->warn("No command found: {}", command);
+                    continue;
+                }
+
+                utils::Any response{};
+                if(!obd_iface.send_command(cmd_itr->second, response)) {
+                    log->warn("There was an error executing the command '{}'", command);
+                    continue;
+                }
+
+                log->debug("Received: {}", response.to_string());
             }
         }
 

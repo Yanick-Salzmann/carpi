@@ -9,6 +9,7 @@
 #include <map>
 
 #include <common_utils/log.hpp>
+#include <common_utils/any.hpp>
 
 #include "protocols/AbstractOBDProtocol.hpp"
 #include "protocols/LegacyProtocols.hpp"
@@ -85,7 +86,7 @@ namespace carpi::obd {
     public:
         explicit ObdInterface(std::shared_ptr<bluetooth::BluetoothConnection> connection);
 
-        void send_command(ObdCommand &command);
+        bool send_command(const ObdCommand &command, utils::Any& response);
         std::vector<msg::ObdMessage> dispatch_raw_command(const std::string& command);
     };
 }

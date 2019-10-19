@@ -89,12 +89,20 @@ namespace carpi::obd {
         return _protocol->parse_messages(read_raw());
     }
 
-    void ObdInterface::send_command(ObdCommand &command) {
+    bool ObdInterface::send_command(const ObdCommand &command, utils::Any& response) {
         std::stringstream command_string;
         command_string << std::setw(2) << std::setfill('0') << command.service_id() << command.pid();
         send_raw(command_string.str());
         const auto raw_messages = read_messages();
+        const auto message = raw_messages[0];
+        const auto data = message.data();
+        if(command.decoder()->response_size() + 2 >= data.size()) {
+            log->warn("Response for OBD command is supposed to have at least {} bytes, but only {} were returned", command.decoder()->response_size(), data.size());
+            return false;
+        }
 
+        response = command.decoder()->decode(data);
+        return true;
     }
 
     void ObdInterface::initialize() {
