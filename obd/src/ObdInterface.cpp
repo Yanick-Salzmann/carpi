@@ -109,13 +109,6 @@ namespace carpi::obd {
     void ObdInterface::initialize() {
         initialize_commands();
 
-        timeval read_timeout{
-            .tv_sec = 0,
-            .tv_usec = 100000
-        };
-
-        setsockopt(_connection->fd(), SOL_SOCKET, SO_RCVTIMEO, &read_timeout, sizeof read_timeout);
-
         log->info("Trying to initialize OBD protocol");
 
         trigger_normal_power(false);
