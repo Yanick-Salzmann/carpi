@@ -56,7 +56,7 @@ namespace carpi {
                     continue;
                 }
 
-                std::cout << "\rRPM: " << utils::any_cast<float>(response) << " rpm       ";
+                log->debug("RPM: {} rpm", utils::any_cast<float>(response));
             }
         }
 
