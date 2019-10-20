@@ -9,6 +9,8 @@
 #include <obd/response/IntakeMainfoldPressureCodec.hpp>
 #include <obd/response/EngineRpmCodec.hpp>
 #include <obd/response/SpeedCodec.hpp>
+#include <obd/response/TimingAdvanceCodec.hpp>
+#include <obd/response/EngineRuntimeCodec.hpp>
 
 namespace carpi::obd {
     std::map<std::string, ObdCommand> COMMAND_LIST{};
@@ -31,7 +33,10 @@ namespace carpi::obd {
                     {"FUEL PRESSURE",      {1, "0A", EcuType::ENGINE, std::make_shared<FuelPressureCodec>()}},
                     {"INTAKE PRESSURE",    {1, "0B", EcuType::ENGINE, std::make_shared<IntakeManifoldPressureCodec>()}},
                     {"RPM",                {1, "0C", EcuType::ENGINE, std::make_shared<EngineRpmCodec>()}},
-                    {"SPEED",              {1, "0D", EcuType::ENGINE, std::make_shared<SpeedCodec>()}}
+                    {"SPEED",              {1, "0D", EcuType::ENGINE, std::make_shared<SpeedCodec>()}},
+                    {"TIMING ADVANCE",     {1, "0E", EcuType::ENGINE, std::make_shared<TimingAdvanceCodec>()}},
+
+                    {"CUR ENGINE RUNTIME", {1, "1F", EcuType::ENGINE, std::make_shared<EngineRuntimeCodec>()}}
             };
         });
     }
