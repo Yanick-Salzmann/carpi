@@ -39,7 +39,7 @@ namespace carpi::obd {
             trigger_normal_power(false);
         }
 
-        //log->debug("TO ELM327: {} (={} bytes)", actual_payload, actual_payload.size());
+        log->debug("TO ELM327: {} (={} bytes)", actual_payload, actual_payload.size());
         _connection->write_data(actual_payload.c_str(), actual_payload.size());
     }
 
@@ -80,7 +80,7 @@ namespace carpi::obd {
             lines.emplace_back(*itr);
         }
 
-        //log->debug("FROM ELM: {}", combine_lines_for_output(lines));
+        log->debug("FROM ELM: {}", combine_lines_for_output(lines));
 
         return lines;
     }
@@ -110,8 +110,8 @@ namespace carpi::obd {
         initialize_commands();
 
         timeval read_timeout{
-            .tv_sec = 2,
-            .tv_usec = 0
+            .tv_sec = 0,
+            .tv_usec = 100000
         };
 
         setsockopt(_connection->fd(), SOL_SOCKET, SO_RCVTIMEO, &read_timeout, sizeof read_timeout);
