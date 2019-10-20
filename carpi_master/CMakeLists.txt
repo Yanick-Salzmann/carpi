@@ -1,7 +1,10 @@
 cmake_minimum_required(VERSION ${CMAKE_VERSION})
 project(carpi_master)
 
-add_executable(carpi_master src/main.cpp src/comm/CommServer.hpp src/comm/CommServer.cpp src/gl/GraphicsDevice.hpp src/gl/GraphicsDevice.cpp src/gl/Buffers.hpp src/gl/Buffers.cpp src/gl/VertexElement.hpp src/gl/VertexElement.cpp src/gl/Program.hpp)
+add_executable(carpi_master src/main.cpp src/comm/CommServer.hpp src/comm/CommServer.cpp
+
+    #    src/gl/GraphicsDevice.hpp src/gl/GraphicsDevice.cpp src/gl/Buffers.hpp src/gl/Buffers.cpp src/gl/VertexElement.hpp src/gl/VertexElement.cpp src/gl/Program.hpp
+        )
 
 add_dependencies(carpi_master bluetooth_utils video_stream obd)
 
@@ -18,4 +21,4 @@ target_include_directories(carpi_master PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
-target_link_libraries(carpi_master bluetooth_utils video_stream obd Threads::Threads ${OPENGLES2_LIBRARIES} ${EGL_LIBRARIES} /opt/vc/lib/libbcm_host.so)
+target_link_libraries(carpi_master bluetooth_utils video_stream obd Threads::Threads ${OPENGLES2_LIBRARIES} ${EGL_LIBRARIES})
