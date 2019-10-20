@@ -90,6 +90,8 @@ namespace carpi::obd {
     }
 
     bool ObdInterface::send_command(const ObdCommand &command, utils::Any& response) {
+        std::lock_guard<std::mutex> l{_command_lock};
+
         std::stringstream command_string;
         command_string << std::setw(2) << std::setfill('0') << command.service_id() << command.pid();
         send_raw(command_string.str());
