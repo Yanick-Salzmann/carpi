@@ -56,7 +56,7 @@ namespace carpi {
                     continue;
                 }
 
-                log->debug("RPM: {} rpm", utils::any_cast<float>(response));
+                log->info("RPM: {} rpm", utils::any_cast<float>(response));
             }
         }
 
