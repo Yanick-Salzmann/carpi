@@ -1,8 +1,4 @@
-if (APPLE)
-    create_search_paths(/Developer/Platforms)
-    findpkg_framework(OpenGLES2)
-    set(OPENGLES2_LIBRARY "-framework OpenGLES")
-else ()
+
     find_path(OPENGLES2_INCLUDE_DIR GLES2/gl2.h
             PATHS /usr/openwin/share/include
             /opt/graphics/OpenGL/include
@@ -43,25 +39,24 @@ else ()
                 /usr/lib
                 )
     endif ()
-endif ()
 
-set(OPENGLES2_LIBRARIES ${OPENGLES2_LIBRARY})
+    set(OPENGLES2_LIBRARIES ${OPENGLES2_LIBRARY})
 
-if (OPENGLES2_LIBRARY AND EGL_LIBRARY)
-    set(EGL_LIBRARIES ${EGL_LIBRARY})
-    set(OPENGLES2_FOUND TRUE)
-endif ()
+    if (OPENGLES2_LIBRARY AND EGL_LIBRARY)
+        set(EGL_LIBRARIES ${EGL_LIBRARY})
+        set(OPENGLES2_FOUND TRUE)
+    endif ()
 
-mark_as_advanced(
-        OPENGLES2_INCLUDE_DIR
-        OPENGLES2_LIBRARY
-        EGL_INCLUDE_DIR
-        EGL_LIBRARY
-)
+    mark_as_advanced(
+            OPENGLES2_INCLUDE_DIR
+            OPENGLES2_LIBRARY
+            EGL_INCLUDE_DIR
+            EGL_LIBRARY
+    )
 
-if (OPENGLES2_FOUND)
-    message(STATUS "Found system OpenGL ES 2 library: ${OPENGLES2_LIBRARIES}")
-    message(STATUS "Found system EGL library: ${EGL_LIBRARIES}")
-else ()
-    set(OPENGLES2_LIBRARIES "")
-endif ()
+    if (OPENGLES2_FOUND)
+        message(STATUS "Found system OpenGL ES 2 library: ${OPENGLES2_LIBRARIES}")
+        message(STATUS "Found system EGL library: ${EGL_LIBRARIES}")
+    else ()
+        set(OPENGLES2_LIBRARIES "")
+    endif ()
