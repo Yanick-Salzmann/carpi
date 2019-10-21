@@ -62,7 +62,7 @@ namespace carpi::camera {
         }
 
         status = mmal_port_enable(camera->control, &RawCameraStream::camera_control_callback);
-        if(status != MMAL_SUCCESS) {
+        if (status != MMAL_SUCCESS) {
             log->error("Error sending camera event callback to camera: {} (errno={})", utils::error_to_string(status), status);
             throw std::runtime_error("Error setting up camera");
         }
@@ -85,6 +85,20 @@ namespace carpi::camera {
         }
 
         video_port->userdata = reinterpret_cast<struct MMAL_PORT_USERDATA_T *>(this);
+
+        video_port->buffer_size = video_port->buffer_size_recommended;
+        video_port->buffer_num = video_port->buffer_num_recommended;
+
+        const auto pool = mmal_port_pool_create(video_port, video_port->buffer_num, video_port->buffer_size);
+        if(pool == nullptr) {
+            log->error("Error creating mmal buffer queue");
+            throw std::runtime_error("Error setting up camera");
+        }
+
+        _video_pool = std::shared_ptr<MMAL_POOL_T>(pool, [video_port](auto* pool) { mmal_port_pool_destroy(video_port, pool); });
+
+        _camera = camera_component;
+        _video_port = video_port;
     }
 
     uint32_t RawCameraStream::map_format(VideoFormat format) {
@@ -97,27 +111,70 @@ namespace carpi::camera {
     void RawCameraStream::camera_control_callback(MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buffer) {
         std::shared_ptr<MMAL_BUFFER_HEADER_T> p{buffer, [](auto *buff) { mmal_buffer_header_release(buff); }};
 
-        if(port->userdata == nullptr) {
+        if (port->userdata == nullptr) {
             return;
         }
 
-        auto* camera_stream = (RawCameraStream*) port->userdata;
+        auto *camera_stream = (RawCameraStream *) port->userdata;
         camera_stream->handle_camera_control(port, buffer);
     }
 
     void RawCameraStream::handle_camera_control(MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buffer) {
-        switch(buffer->cmd) {
+        switch (buffer->cmd) {
             case MMAL_EVENT_ERROR: {
-                const auto status = *(MMAL_STATUS_T*) buffer->data;
+                const auto status = *(MMAL_STATUS_T *) buffer->data;
                 log->error("Error event received from camera. No data will be received. Error = {}, errno = {}", utils::error_to_string(status), status);
                 break;
             }
 
             case MMAL_EVENT_EOS: {
-                const auto eos_event = (MMAL_EVENT_END_OF_STREAM_T*) buffer->data;
+                const auto eos_event = (MMAL_EVENT_END_OF_STREAM_T *) buffer->data;
                 log->info("Camera stream on port {} of type {} ended", eos_event->port_index, eos_event->port_type);
                 break;
             }
         }
+    }
+
+    void RawCameraStream::video_data_callback(MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buffer) {
+        std::shared_ptr<MMAL_BUFFER_HEADER_T> p{buffer, [](auto *buff) { mmal_buffer_header_release(buff); }};
+
+        if (port->userdata == nullptr) {
+            return;
+        }
+
+        auto *camera_stream = (RawCameraStream *) port->userdata;
+        camera_stream->handle_video_data(port, buffer);
+    }
+
+    void RawCameraStream::handle_video_data(MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buffer) {
+        if (buffer->length <= 0 || _camera == nullptr || _video_port == nullptr) {
+            return;
+        }
+
+        std::unique_lock<std::mutex> l{_data_read_lock};
+        auto status = mmal_buffer_header_mem_lock(buffer);
+        if (status != MMAL_SUCCESS) {
+            log->warn("Could not lock buffer memory: {} (errno={})", utils::error_to_string(status), status);
+            return;
+        }
+
+        std::shared_ptr<MMAL_BUFFER_HEADER_T> bp{buffer, [](auto *buff) { mmal_buffer_header_mem_unlock(buff); }};
+        if (_buffer_data.size() < buffer->length) {
+            _buffer_data.resize(buffer->length);
+        }
+
+        memcpy(_buffer_data.data(), buffer->data, buffer->length);
+
+        status = MMAL_SUCCESS;
+        const auto new_buffer = mmal_queue_get(_video_pool.get()->queue);
+        if(new_buffer != nullptr) {
+            status = mmal_port_send_buffer(port, new_buffer);
+        }
+
+        if(!new_buffer || status != MMAL_SUCCESS) {
+            log->warn("Error sending new buffer to camera");
+        }
+
+        _data_variable.notify_all();
     }
 }

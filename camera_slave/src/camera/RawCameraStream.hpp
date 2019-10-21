@@ -4,6 +4,8 @@
 #include "interface/mmal/mmal.h"
 #include "interface/mmal/util/mmal_util.h"
 
+#include <mutex>
+
 #include <common_utils/log.hpp>
 
 namespace carpi::camera {
@@ -61,11 +63,23 @@ namespace carpi::camera {
     class RawCameraStream {
         LOGGER;
 
+        std::mutex _data_read_lock{};
+        std::condition_variable _data_variable;
+
+        std::shared_ptr<MMAL_POOL_T> _video_pool{};
+
+        std::shared_ptr<MMAL_COMPONENT_T> _camera{};
+        MMAL_PORT_T* _video_port = nullptr;
+
+        std::vector<uint8_t> _buffer_data{};
+
         static uint32_t map_format(VideoFormat format);
 
         static void camera_control_callback(MMAL_PORT_T* port, MMAL_BUFFER_HEADER_T* buffer);
+        static void video_data_callback(MMAL_PORT_T* port, MMAL_BUFFER_HEADER_T* buffer);
 
         void handle_camera_control(MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buffer);
+        void handle_video_data(MMAL_PORT_T* port, MMAL_BUFFER_HEADER_T* buffer);
 
     private:
         void initialize_camera(const CameraConfiguration& configuration);
