@@ -11,10 +11,10 @@ namespace carpi::ui {
 
     WebCore::WebCore() : _application(new WebApplication()) {
         std::filesystem::path cur_dir{"."};
-        cur_dir = absolute(cur_dir);
+        cur_dir = canonical(absolute(cur_dir));
 
-        const auto subprocess_path = absolute(cur_dir / ".." / "carpi_browser_subprocess" / "carpi_browser_subprocess");
-        const auto cache_path = absolute(cur_dir / "cache");
+        const auto subprocess_path = canonical(absolute(cur_dir / ".." / "carpi_browser_subprocess" / "carpi_browser_subprocess"));
+        const auto cache_path = canonical(absolute(cur_dir / "cache"));
         if(!exists(cache_path)) {
             create_directories(cache_path);
         }
@@ -29,6 +29,7 @@ namespace carpi::ui {
         settings.ignore_certificate_errors = 1;
         settings.windowless_rendering_enabled = 1;
         settings.log_severity = LOGSEVERITY_VERBOSE;
+        CefString(&settings.resources_dir_path) = cur_dir.string();
 
         const auto init_result = CefInitialize(args, settings, _application, nullptr);
         if(!init_result) {
