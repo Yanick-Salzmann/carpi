@@ -1,6 +1,7 @@
 #include "WebCore.hpp"
 
 #include "main.hpp"
+#include "WebClient.hpp"
 
 #include <include/cef_version.h>
 
@@ -43,6 +44,11 @@ namespace carpi::ui {
         }
 
         log->info("CEF initialized @ version: {}", CEF_VERSION);
+
+        CefWindowInfo window_info{};
+        CefBrowserSettings browser_settings{};
+
+        CefBrowserHost::CreateBrowser(window_info, CefRefPtr<WebClient>(new WebClient()), CefString("https://www.sbb.ch"), browser_settings, nullptr, nullptr);
 
         CefRunMessageLoop();
     }
