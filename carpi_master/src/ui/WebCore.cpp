@@ -30,6 +30,7 @@ namespace carpi::ui {
         settings.windowless_rendering_enabled = 1;
         settings.log_severity = LOGSEVERITY_VERBOSE;
         CefString(&settings.resources_dir_path) = cur_dir.string();
+        CefString(&settings.main_bundle_path) = cur_dir.string();
 
         const auto init_result = CefInitialize(args, settings, _application, nullptr);
         if(!init_result) {
