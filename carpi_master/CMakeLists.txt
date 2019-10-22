@@ -6,7 +6,7 @@ add_executable(carpi_master src/main.cpp src/comm/CommServer.hpp src/comm/CommSe
     #    src/gl/GraphicsDevice.hpp src/gl/GraphicsDevice.cpp src/gl/Buffers.hpp src/gl/Buffers.cpp src/gl/VertexElement.hpp src/gl/VertexElement.cpp src/gl/Program.hpp
         src/ui/WebCore.hpp src/ui/WebCore.cpp src/ui/WebApplication.hpp src/ui/WebApplication.cpp src/main.hpp)
 
-add_dependencies(carpi_master bluetooth_utils video_stream obd)
+add_dependencies(carpi_master bluetooth_utils video_stream obd carpi_browser_subprocess)
 
 find_package(Threads)
 
