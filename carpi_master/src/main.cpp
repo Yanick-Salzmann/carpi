@@ -8,13 +8,15 @@
 #include <obd/ObdInterface.hpp>
 #include <obd/ObdCommandList.hpp>
 
-#include <include/cef_app.h>
+#include "main.hpp"
 
 namespace carpi {
-    int main(int argc, char* argv[]) {
-        CefMainArgs args{argc, argv};
+    int _argc;
+    char** _argv;
 
-        CefExecuteProcess(args, nullptr, nullptr);
+    int main(int argc, char* argv[]) {
+        _argc = argc;
+        _argv = argv;
 
         video::H264Conversion::initialize_ffmpeg();
         CommServer server{};

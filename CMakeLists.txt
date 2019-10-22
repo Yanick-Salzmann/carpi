@@ -20,5 +20,6 @@ add_subdirectory(video_stream)
 
 add_subdirectory(obd)
 
+add_subdirectory(carpi_browser_subprocess)
 add_subdirectory(carpi_master)
 add_subdirectory(camera_slave)
