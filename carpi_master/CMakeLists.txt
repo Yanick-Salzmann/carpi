@@ -19,6 +19,7 @@ target_include_directories(carpi_master PUBLIC
         ${OPENGLES2_INCLUDE_DIR}
         ${EGL_INCLUDE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/src
+        /usr/local/include/cef
 )
 
-target_link_libraries(carpi_master bluetooth_utils video_stream obd Threads::Threads ${OPENGLES2_LIBRARIES} ${EGL_LIBRARIES})
+target_link_libraries(carpi_master bluetooth_utils video_stream obd Threads::Threads ${OPENGLES2_LIBRARIES} ${EGL_LIBRARIES} /usr/local/lib/libcef_dll_wrapper.a)
