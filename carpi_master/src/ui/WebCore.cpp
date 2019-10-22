@@ -23,6 +23,7 @@ namespace carpi::ui {
         log->info("CEF cache: {}", cache_path.string());
 
         CefMainArgs args{_argc, _argv};
+
         CefSettings settings{};
         CefString(&settings.browser_subprocess_path) = subprocess_path.string();
         CefString(&settings.cache_path) = cache_path.string();
@@ -31,6 +32,10 @@ namespace carpi::ui {
         settings.log_severity = LOGSEVERITY_VERBOSE;
         CefString(&settings.resources_dir_path) = cur_dir.string();
         CefString(&settings.main_bundle_path) = cur_dir.string();
+        CefString(&settings.root_cache_path) = cur_dir.string();
+        CefString(&settings.framework_dir_path) = cur_dir.string();
+        CefString(&settings.locales_dir_path) = cur_dir.string();
+        CefString(&settings.user_data_path) = cur_dir.string();
 
         const auto init_result = CefInitialize(args, settings, _application, nullptr);
         if(!init_result) {
