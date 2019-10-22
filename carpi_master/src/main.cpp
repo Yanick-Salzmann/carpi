@@ -8,8 +8,14 @@
 #include <obd/ObdInterface.hpp>
 #include <obd/ObdCommandList.hpp>
 
+#include <include/cef_app.h>
+
 namespace carpi {
     int main(int argc, char* argv[]) {
+        CefMainArgs args{argc, argv};
+
+        CefExecuteProcess(args, nullptr, nullptr);
+
         video::H264Conversion::initialize_ffmpeg();
         CommServer server{};
         bluetooth::BluetoothManager btmgr{};
