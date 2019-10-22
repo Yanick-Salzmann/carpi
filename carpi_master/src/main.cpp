@@ -7,6 +7,7 @@
 
 #include <obd/ObdInterface.hpp>
 #include <obd/ObdCommandList.hpp>
+#include <ui/WebCore.hpp>
 
 #include "main.hpp"
 
@@ -17,6 +18,8 @@ namespace carpi {
     int main(int argc, char* argv[]) {
         _argc = argc;
         _argv = argv;
+
+        ui::WebCore core{};
 
         video::H264Conversion::initialize_ffmpeg();
         CommServer server{};

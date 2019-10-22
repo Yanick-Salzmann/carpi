@@ -3,8 +3,12 @@
 
 #include "WebApplication.hpp"
 
+#include <common_utils/log.hpp>
+
 namespace carpi::ui {
     class WebCore {
+        LOGGER;
+
         CefRefPtr<WebApplication> _application;
 
     public:
