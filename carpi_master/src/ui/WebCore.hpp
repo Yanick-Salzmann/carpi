@@ -9,7 +9,11 @@ namespace carpi::ui {
     class WebCore {
         LOGGER;
 
+        std::thread _cef_runner_thread;
+
         CefRefPtr<WebApplication> _application;
+
+        void cef_run_callback();
 
     public:
         WebCore();
