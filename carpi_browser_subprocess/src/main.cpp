@@ -1,7 +1,6 @@
 #include <iostream>
 
 #include <include/cef_app.h>
-#include <common_utils/log.hpp>
 
 class MainApp : public CefApp {
     IMPLEMENT_REFCOUNTING(MainApp);
