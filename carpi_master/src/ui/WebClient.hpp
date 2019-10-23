@@ -5,18 +5,9 @@
 #include <X11/Xlib.h>
 
 namespace carpi::ui {
-    class WebClient : public CefClient/*, public CefRenderHandler*/ {
+class WebClient : public CefClient {
         IMPLEMENT_REFCOUNTING(WebClient);
-        XDisplay* _display;
-
     public:
-        explicit WebClient(XDisplay* display) : _display{display} {
-
-        }
-
-        /*CefRefPtr<CefRenderHandler> GetRenderHandler() override {
-            return CefRefPtr<CefRenderHandler>(this);
-        }*/
 
     };
 }

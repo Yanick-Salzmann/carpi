@@ -6,6 +6,7 @@
 #include <include/cef_version.h>
 
 #include <filesystem>
+#include <io/LocalSchemeHandler.hpp>
 
 namespace carpi::ui {
     LOGGER_IMPL(WebCore);
@@ -15,7 +16,7 @@ namespace carpi::ui {
     }
 
     WebCore::~WebCore() {
-        if(_display != nullptr) {
+        if (_display != nullptr) {
             XCloseDisplay(_display);
             _display = nullptr;
         }
@@ -56,6 +57,8 @@ namespace carpi::ui {
 
         log->info("CEF initialized @ version: {}", CEF_VERSION);
 
+        CefRegisterSchemeHandlerFactory("local", CefString{}, CefRefPtr<CefSchemeHandlerFactory>{new io::LocalSchemeHandler::Factory{}});
+
         CefWindowInfo window_info{};
         CefBrowserSettings browser_settings{};
 
@@ -63,7 +66,7 @@ namespace carpi::ui {
         window_info.width = screen->width;
         window_info.height = screen->height;
 
-        CefBrowserHost::CreateBrowser(window_info, CefRefPtr<WebClient>(new WebClient(_display)), CefString("https://codepen.io/micjamking/pen/obdGw"), browser_settings, nullptr, nullptr);
+        CefBrowserHost::CreateBrowser(window_info, CefRefPtr<WebClient>(new WebClient()), CefString("local://UI/test.html"), browser_settings, nullptr, nullptr);
 
         CefRunMessageLoop();
     }
