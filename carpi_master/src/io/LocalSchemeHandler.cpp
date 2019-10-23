@@ -28,6 +28,8 @@ namespace carpi::io {
             url_path = url_path.substr(1);
         }
 
+        log->info("Trying to load: {}", url_path);
+
         const auto file_path = std::filesystem::path{url_path};
 
         auto target_path = std::filesystem::path{"./../../carpi_master"};
