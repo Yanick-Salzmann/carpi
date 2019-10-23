@@ -70,7 +70,7 @@ namespace carpi::io {
             response_length = 0;
         } else {
             const auto mime_type = CefGetMimeType(!_extension.empty() ? _extension.substr(1) : _extension);
-            log->debug("Mime Type: {}, Extension: {}", mime_type.ToString(), _extension);
+            log->info("Mime Type: {}, Extension: {}", mime_type.ToString(), _extension);
             response_length = static_cast<int64_t>(_file_data.size());
             response->SetStatus(200);
             response->SetStatusText("OK");
