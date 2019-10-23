@@ -17,9 +17,20 @@ namespace carpi::io {
             return false;
         }
 
-        const auto file_path = std::filesystem::path{CefString{&url_parts.path}};
+        auto url_path = CefString{&url_parts.path}.ToString();
+        if(url_path.empty()) {
+            log->warn("Invalid empty URL path in CEF request: {}", url.ToString());
+            handle_request = true;
+            return false;
+        }
 
-        auto target_path = std::filesystem::path{"../../carpi_master/ui"};
+        if(url_path[0] == '/') {
+            url_path = url_path.substr(1);
+        }
+
+        const auto file_path = std::filesystem::path{url_path};
+
+        auto target_path = std::filesystem::path{"./../../carpi_master"};
         target_path /= file_path;
 
         _extension = file_path.extension().string();
