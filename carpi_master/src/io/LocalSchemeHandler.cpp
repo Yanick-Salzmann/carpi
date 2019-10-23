@@ -24,8 +24,8 @@ namespace carpi::io {
             return false;
         }
 
-        if(url_path[0] == '/') {
-            url_path = url_path.substr(1);
+        if(url_path[0] == '/' && url_path.size() >= 2 && url_path[1] == '/') {
+            url_path = url_path.substr(2);
         }
 
         log->info("Trying to load: {}", url_path);
