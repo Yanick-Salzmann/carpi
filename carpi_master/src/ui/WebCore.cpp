@@ -46,7 +46,7 @@ namespace carpi::ui {
         CefString(&settings.cache_path) = cache_path.string();
         settings.ignore_certificate_errors = 1;
         settings.windowless_rendering_enabled = 0;
-        settings.log_severity = LOGSEVERITY_FATAL;
+        settings.log_severity = LOGSEVERITY_DEFAULT;
         CefString(&settings.locales_dir_path) = "/usr/local/bin/locales";
 
         const auto init_result = CefInitialize(args, settings, _application, nullptr);
