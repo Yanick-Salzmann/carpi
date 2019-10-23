@@ -7,13 +7,18 @@
 
 #include <filesystem>
 
-#include <X11/Xlib.h>
-
 namespace carpi::ui {
     LOGGER_IMPL(WebCore);
 
     WebCore::WebCore() : _application(new WebApplication()) {
         _cef_runner_thread = std::thread{[this]() { cef_run_callback(); }};
+    }
+
+    WebCore::~WebCore() {
+        if(_display != nullptr) {
+            XCloseDisplay(_display);
+            _display = nullptr;
+        }
     }
 
     void WebCore::cef_run_callback() {
@@ -26,9 +31,9 @@ namespace carpi::ui {
             create_directories(cache_path);
         }
 
-        const auto display = XOpenDisplay(nullptr);
-        const auto screen = DefaultScreenOfDisplay(display);
-        log->info("Screen: {}x{}", screen->width, screen->height);
+        _display = XOpenDisplay(nullptr);
+        const auto screen = DefaultScreenOfDisplay(_display);
+        log->info("Screen size: {}x{}", screen->width, screen->height);
 
         log->info("CEF subprocess: {}", subprocess_path.string());
         log->info("CEF cache: {}", cache_path.string());
@@ -54,7 +59,11 @@ namespace carpi::ui {
         CefWindowInfo window_info{};
         CefBrowserSettings browser_settings{};
 
-        CefBrowserHost::CreateBrowser(window_info, CefRefPtr<WebClient>(new WebClient()), CefString("https://codepen.io/micjamking/pen/obdGw"), browser_settings, nullptr, nullptr);
+        window_info.x = window_info.y = 0;
+        window_info.width = screen->width;
+        window_info.height = screen->height;
+
+        CefBrowserHost::CreateBrowser(window_info, CefRefPtr<WebClient>(new WebClient(_display)), CefString("https://codepen.io/micjamking/pen/obdGw"), browser_settings, nullptr, nullptr);
 
         CefRunMessageLoop();
     }

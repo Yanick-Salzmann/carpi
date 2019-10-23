@@ -4,6 +4,7 @@
 #include "WebApplication.hpp"
 
 #include <common_utils/log.hpp>
+#include <X11/Xlib.h>
 
 namespace carpi::ui {
     class WebCore {
@@ -13,10 +14,14 @@ namespace carpi::ui {
 
         CefRefPtr<WebApplication> _application;
 
+        XDisplay* _display = nullptr;
+
         void cef_run_callback();
 
     public:
         WebCore();
+
+        ~WebCore();
     };
 }
 
