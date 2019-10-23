@@ -22,4 +22,4 @@ target_include_directories(carpi_master PUBLIC
         /usr/local/include/cef
 )
 
-target_link_libraries(carpi_master bluetooth_utils video_stream obd Threads::Threads ${OPENGLES2_LIBRARIES} ${EGL_LIBRARIES} stdc++fs /usr/local/lib/libcef_dll_wrapper.a /usr/local/bin/libcef.so)
+target_link_libraries(carpi_master bluetooth_utils video_stream obd Threads::Threads ${OPENGLES2_LIBRARIES} ${EGL_LIBRARIES} stdc++fs /usr/local/lib/libcef_dll_wrapper.a /usr/local/bin/libcef.so x)

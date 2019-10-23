@@ -7,6 +7,8 @@
 
 #include <filesystem>
 
+#include <X11/Xlib.h>
+
 namespace carpi::ui {
     LOGGER_IMPL(WebCore);
 
@@ -23,6 +25,10 @@ namespace carpi::ui {
         if (!exists(cache_path)) {
             create_directories(cache_path);
         }
+
+        const auto display = XOpenDisplay(nullptr);
+        const auto screen = DefaultScreenOfDisplay(display);
+        log->info("Screen: {}x{}", screen->width, screen->height);
 
         log->info("CEF subprocess: {}", subprocess_path.string());
         log->info("CEF cache: {}", cache_path.string());
