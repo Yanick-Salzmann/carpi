@@ -14,30 +14,38 @@ namespace carpi::io {
         if(!CefParseURL(url, url_parts)) {
             log->warn("Error parsing URL in CEF request: {}", url.ToString());
             handle_request = true;
-            return false;
+            _has_file_error = true;
+            return true;
         }
 
         auto url_path = CefString{&url_parts.path}.ToString();
         if(url_path.empty()) {
             log->warn("Invalid empty URL path in CEF request: {}", url.ToString());
+            _has_file_error = true;
             handle_request = true;
-            return false;
+            return true;
         }
 
         if(url_path[0] == '/' && url_path.size() >= 2 && url_path[1] == '/') {
             url_path = url_path.substr(2);
         }
 
-        log->info("Trying to load: {}", url_path);
-
-        const auto file_path = std::filesystem::path{url_path};
+        std::filesystem::path file_path;
+        try {
+            file_path = std::filesystem::path{url_path};
+        } catch (std::exception& e) {
+            _has_file_error = true;
+            _file_error = e.what();
+            handle_request = true;
+            return true;
+        }
 
         auto target_path = std::filesystem::path{"./../../carpi_master"};
         target_path /= file_path;
 
         _extension = file_path.extension().string();
 
-        log->debug("Serving request from {}", canonical(absolute(target_path)).string());
+        log->info("Serving {} from {}", url.ToString(), canonical(absolute(target_path)).string());
 
         std::ifstream is{target_path.string(), std::ios::binary};
         if(is) {
@@ -56,9 +64,9 @@ namespace carpi::io {
     }
 
     void LocalSchemeHandler::GetResponseHeaders(CefRefPtr<CefResponse> response, int64 &response_length, CefString &redirectUrl) {
-        if(!_is_found) {
+        if(!_is_found || _has_file_error) {
             response->SetStatus(404);
-            response->SetStatusText("File Not Found");
+            response->SetStatusText(_has_file_error ? _file_error : "File Not Found");
             response_length = 0;
         } else {
             const auto mime_type = CefGetMimeType(!_extension.empty() ? _extension.substr(1) : _extension);

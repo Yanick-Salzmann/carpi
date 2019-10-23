@@ -13,6 +13,8 @@ namespace carpi::io {
 
         std::vector<uint8_t> _file_data;
         bool _is_found = false;
+        bool _has_file_error = false;
+        std::string _file_error;
         std::size_t _position = 0;
         std::string _extension{};
 
