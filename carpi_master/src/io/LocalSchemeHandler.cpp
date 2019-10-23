@@ -12,7 +12,7 @@ namespace carpi::io {
         const auto url = request->GetURL();
         CefURLParts url_parts{};
         if(!CefParseURL(url, url_parts)) {
-            log->warn("Error parsing URL in CEF request: {}", url);
+            log->warn("Error parsing URL in CEF request: {}", url.ToString());
             handle_request = true;
             return false;
         }
@@ -49,7 +49,7 @@ namespace carpi::io {
             response_length = 0;
         } else {
             const auto mime_type = CefGetMimeType(!_extension.empty() ? _extension.substr(1) : _extension);
-            log->debug("Mime Type: {}, Extension: {}", mime_type, _extension);
+            log->debug("Mime Type: {}, Extension: {}", mime_type.ToString(), _extension);
             response_length = static_cast<int64_t>(_file_data.size());
             response->SetStatus(200);
             response->SetStatusText("OK");
