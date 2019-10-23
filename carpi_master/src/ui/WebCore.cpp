@@ -48,7 +48,7 @@ namespace carpi::ui {
         CefWindowInfo window_info{};
         CefBrowserSettings browser_settings{};
 
-        CefBrowserHost::CreateBrowser(window_info, CefRefPtr<WebClient>(new WebClient()), CefString("https://www.sbb.ch"), browser_settings, nullptr, nullptr);
+        CefBrowserHost::CreateBrowser(window_info, CefRefPtr<WebClient>(new WebClient()), CefString("https://codepen.io/micjamking/pen/obdGw"), browser_settings, nullptr, nullptr);
 
         CefRunMessageLoop();
     }
