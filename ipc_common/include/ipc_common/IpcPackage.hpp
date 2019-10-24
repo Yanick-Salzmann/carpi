@@ -40,6 +40,10 @@ namespace carpi::ipc {
         IpcPackage& operator >> (T& value) {
             return read(value);
         }
+
+        Opcodes opcode() const {
+            return _opcode;
+        }
     };
 }
 
