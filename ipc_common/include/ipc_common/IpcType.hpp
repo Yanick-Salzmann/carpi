@@ -5,7 +5,8 @@
 
 namespace carpi::ipc {
     enum class IpcType : uint32_t {
-        CAMERA_SOURCE = 0
+        CAMERA_SOURCE = 0,
+        FIRST_UNKNOWN_IPC_TYPE = 1
     };
 }
 

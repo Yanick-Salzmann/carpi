@@ -28,7 +28,7 @@ namespace carpi::comm {
         ipc::IpcType type;
         init_package >> type;
 
-        if(type != ipc::IpcType::CAMERA_SOURCE) {
+        if(type >= ipc::IpcType::FIRST_UNKNOWN_IPC_TYPE) {
             log->warn("Invalid IPC init packet received");
             return;
         }
