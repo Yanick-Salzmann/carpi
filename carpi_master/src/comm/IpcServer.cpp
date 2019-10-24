@@ -15,7 +15,7 @@ namespace carpi::comm {
 
         sockaddr_un sun{};
         sun.sun_family = AF_UNIX;
-        strcpy(sun.sun_path, "carpi.comm.socket");
+        strcpy(sun.sun_path, "/var/run/carpi.comm.socket");
 
         auto rc = bind(_server, (const sockaddr *) &sun, sizeof sun);
         if (rc < 0) {

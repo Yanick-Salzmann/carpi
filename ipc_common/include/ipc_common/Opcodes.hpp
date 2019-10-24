@@ -6,7 +6,7 @@
 namespace carpi::ipc {
     enum class Opcodes : uint32_t {
         MSG_IPC_TYPE = 0,
-        MAX_KNOWN_OPCODE = 0
+        FIRST_UNKNOWN_OPCODE
     };
 }
 

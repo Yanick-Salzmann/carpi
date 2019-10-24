@@ -12,7 +12,7 @@ namespace carpi::ipc {
         }
 
         const auto opcode = utils::read<Opcodes>(socket);
-        if(opcode > Opcodes::MAX_KNOWN_OPCODE) {
+        if(opcode >= Opcodes::FIRST_UNKNOWN_OPCODE) {
             log->error("Invalid IPC opcode received: {}", static_cast<uint32_t>(opcode));
             throw std::runtime_error{"Invalid IPC package"};
         }
