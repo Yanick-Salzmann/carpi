@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION ${CMAKE_VERSION})
 project(common_utils)
 
-add_library(common_utils SHARED src/log.cpp include/common_utils/error.hpp src/error.cpp include/common_utils/any.hpp src/any.cpp include/common_utils/conversion.hpp src/conversion.cpp include/common_utils/byte_stream.hpp src/byte_stream.cpp)
+add_library(common_utils SHARED src/log.cpp include/common_utils/error.hpp src/error.cpp include/common_utils/any.hpp src/any.cpp include/common_utils/conversion.hpp src/conversion.cpp include/common_utils/byte_stream.hpp src/byte_stream.cpp include/common_utils/singleton.hpp include/common_utils/network.hpp src/network.cpp)
 
 add_dependencies(common_utils spdlog)
 

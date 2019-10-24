@@ -15,6 +15,7 @@ find_package(PkgConfig)
 add_subdirectory(third_party)
 
 add_subdirectory(common_utils)
+add_subdirectory(ipc_common)
 add_subdirectory(bluetooth_utils)
 add_subdirectory(video_stream)
 

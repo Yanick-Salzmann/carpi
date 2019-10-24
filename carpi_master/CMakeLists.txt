@@ -4,9 +4,9 @@ project(carpi_master)
 add_executable(carpi_master src/main.cpp src/comm/CommServer.hpp src/comm/CommServer.cpp
 
     #    src/gl/GraphicsDevice.hpp src/gl/GraphicsDevice.cpp src/gl/Buffers.hpp src/gl/Buffers.cpp src/gl/VertexElement.hpp src/gl/VertexElement.cpp src/gl/Program.hpp
-        src/ui/WebCore.hpp src/ui/WebCore.cpp src/ui/WebApplication.hpp src/ui/WebApplication.cpp src/main.hpp src/ui/WebClient.hpp src/ui/WebClient.cpp src/io/LocalSchemeHandler.hpp src/io/LocalSchemeHandler.cpp)
+        src/ui/WebCore.hpp src/ui/WebCore.cpp src/ui/WebApplication.hpp src/ui/WebApplication.cpp src/main.hpp src/ui/WebClient.hpp src/ui/WebClient.cpp src/io/LocalSchemeHandler.hpp src/io/LocalSchemeHandler.cpp src/comm/IpcServer.hpp src/comm/IpcServer.cpp src/comm/IpcClientManager.hpp src/comm/IpcClientManager.cpp src/comm/IpcConnection.hpp src/comm/IpcConnection.cpp)
 
-add_dependencies(carpi_master bluetooth_utils video_stream obd carpi_browser_subprocess)
+add_dependencies(carpi_master bluetooth_utils video_stream obd carpi_browser_subprocess ipc_common)
 
 find_package(Threads)
 
