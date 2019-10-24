@@ -79,6 +79,7 @@ namespace carpi::video {
             }
 
             av_write_frame(_format_context.get(), packet.get());
+            av_packet_unref(packet.get());
         }
 
         if(did_complete_regularly) {
