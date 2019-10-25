@@ -9,8 +9,8 @@ namespace carpi::comm {
         fd_set socket_set{};
         FD_SET(connection, &socket_set);
         struct timeval read_timeout{
-            .tv_usec = 100000,
-            .tv_sec = 0
+            .tv_sec = 0,
+            .tv_usec = 100000
         };
 
         const auto ret = select(connection, &socket_set, nullptr, nullptr, &read_timeout);
