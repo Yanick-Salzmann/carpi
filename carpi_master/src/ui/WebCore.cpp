@@ -73,7 +73,7 @@ namespace carpi::ui {
         window_info.width = screen->width;
         window_info.height = screen->height;
 
-        CefBrowserHost::CreateBrowser(window_info, CefRefPtr<WebClient>(new WebClient()), CefString("local://ui/test.html"), browser_settings, nullptr, nullptr);
+        CefBrowserHost::CreateBrowser(window_info, CefRefPtr<WebClient>(new WebClient()), "", browser_settings, nullptr, nullptr);
 
         CefRunMessageLoop();
     }
