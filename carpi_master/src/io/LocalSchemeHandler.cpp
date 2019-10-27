@@ -87,7 +87,7 @@ namespace carpi::io {
             response_length = 0;
         } else {
             const auto mime_type = CefGetMimeType(!_extension.empty() ? _extension.substr(1) : _extension);
-            log->info("Mime Type: {}, Extension: {}", mime_type.ToString(), _extension);
+            log->info("Mime Type: {}, Extension: {}, Size: {}", mime_type.ToString(), _extension, _file_size);
             response_length = static_cast<int64_t>(_file_size);
             response->SetStatus(200);
             response->SetStatusText("OK");
@@ -96,7 +96,7 @@ namespace carpi::io {
     }
 
     bool LocalSchemeHandler::Skip(int64 bytes_to_skip, int64 &bytes_skipped, CefRefPtr<CefResourceSkipCallback> callback) {
-        const auto available = (_position < _file_size) ? _file_size - _position : 0;
+        const auto available = (_position < _file_size) ? (_file_size - _position) : 0;
         const auto to_move = std::min<int64_t>(bytes_to_skip, available);
         _position += to_move;
         bytes_skipped = to_move;
@@ -105,7 +105,7 @@ namespace carpi::io {
     }
 
     bool LocalSchemeHandler::Read(void *data_out, int bytes_to_read, int &bytes_read, CefRefPtr<CefResourceReadCallback> callback) {
-        const auto available = (_position < _file_size) ? _file_size - _position : 0;
+        const auto available = (_position < _file_size) ? (_file_size - _position) : 0;
         if (available <= 0) {
             bytes_read = 0;
             return false;
