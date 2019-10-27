@@ -23,8 +23,6 @@ public:
     explicit MemoryStreamSource(std::vector<uint8_t> data) : _data(std::move(data)) { }
 
     size_t read(void *buffer, std::size_t num_bytes) override {
-        log->info("Reading {} bytes from stream", num_bytes);
-
         if(_position >= _data.size()) {
             return 0;
         }
