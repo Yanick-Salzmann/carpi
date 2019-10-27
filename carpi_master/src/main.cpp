@@ -20,10 +20,10 @@ class MemoryStreamSource : public carpi::video::IStreamSource {
     std::size_t _position = 0;
 
 public:
-    explicit MemoryStreamSource(std::vector<uint8_t> data) : _data(std::move(data)) { }
+    explicit MemoryStreamSource(std::vector<uint8_t> data) : _data(std::move(data)) {}
 
     size_t read(void *buffer, std::size_t num_bytes) override {
-        if(_position >= _data.size()) {
+        if (_position >= _data.size()) {
             return 0;
         }
 
@@ -38,9 +38,9 @@ LOGGER_IMPL(MemoryStreamSource);
 
 namespace carpi {
     int _argc;
-    char** _argv;
+    char **_argv;
 
-    int main(int argc, char* argv[]) {
+    int main(int argc, char *argv[]) {
         _argc = argc;
         _argv = argv;
 
@@ -53,14 +53,23 @@ namespace carpi {
         const auto data_size = is.tellg();
         is.seekg(0, std::ios::beg);
         std::vector<uint8_t> data(data_size);
-        is.read((char*) data.data(), data_size);
+        is.read((char *) data.data(), data_size);
         const auto stream_source = std::make_shared<MemoryStreamSource>(data);
         const auto stream = std::make_shared<video::H264Stream>(stream_source, 1920, 1080, 30);
         utils::Logger log{"main"};
 
         std::ofstream os{"camera.webm", std::ios::binary};
 
-        video::H264Conversion conversion{stream, "webm", [&os](void* data, std::size_t size) { os.write((const char*) data, size); }, [&os, &log]() { os.close(); log->info("DONE"); }};
+        video::H264Conversion conversion{stream,
+                                         "webm",
+                                         [&os](void *data, std::size_t size) {
+                                             os.write((const char *) data, size);
+                                         },
+                                         [&os, &log]() {
+                                             os.close();
+                                             log->info("DONE");
+                                         }
+        };
 
         CommServer server{};
 
@@ -76,6 +85,6 @@ namespace carpi {
     }
 }
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
     return carpi::main(argc, argv);
 }
