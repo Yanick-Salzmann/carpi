@@ -47,6 +47,8 @@ namespace carpi::video {
         auto video_stream = avformat_new_stream(format_context, codec);
         video_stream->codec->width = _stream->width();
         video_stream->codec->height = _stream->height();
+        video_stream->codec->time_base.den = 30;
+        video_stream->codec->time_base.num = 1;
         AVStream** streams = new AVStream*[1];
         streams[0] = video_stream;
         format_context->nb_streams = 1;

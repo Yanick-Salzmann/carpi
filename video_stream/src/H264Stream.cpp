@@ -60,6 +60,9 @@ namespace carpi::video {
             log->error("Error loading stream information: {}", av_error_to_string(res));
             throw std::runtime_error("Error loading stream information");
         }
+
+        formatPtr->streams[res]->r_frame_rate.num = 30;
+        formatPtr->streams[res]->r_frame_rate.den = 1;
     }
 
     int H264Stream::on_read_buffer(void *ptr, uint8_t *buffer, int size) {
