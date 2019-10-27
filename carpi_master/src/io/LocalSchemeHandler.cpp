@@ -47,6 +47,12 @@ namespace carpi::io {
 
         log->info("Serving {} from {}", url.ToString(), canonical(absolute(target_path)).string());
 
+        if(!exists(target_path)) {
+            _has_file_error = true;
+            handle_request = true;
+            return true;
+        }
+
         std::ifstream is{target_path.string(), std::ios::binary};
         if(is) {
             _is_found = true;
