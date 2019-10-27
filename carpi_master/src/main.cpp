@@ -56,14 +56,14 @@ namespace carpi {
         is.read((char*) data.data(), data_size);
         const auto stream_source = std::make_shared<MemoryStreamSource>(data);
         const auto stream = std::make_shared<video::H264Stream>(stream_source, 1920, 1080, 30);
+        utils::Logger log{"main"};
 
         std::ofstream os{"camera.webm", std::ios::binary};
 
-        video::H264Conversion conversion{stream, "webm", [&os](void* data, std::size_t size) { os.write((const char*) data, size); }, [&os, &log]() { os.close(); log->info("DONE"); }};
+        video::H264Conversion conversion{stream, "webm", [&os](void* data, std::size_t size) { os.write((const char*) data, size); }, [&os]() { os.close(); log->info("DONE"); }};
 
         CommServer server{};
 
-        utils::Logger log{"main"};
         log->info("Press ENTER to shut down application");
         std::cin.sync();
         std::string line{};
