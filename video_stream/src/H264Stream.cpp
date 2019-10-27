@@ -73,7 +73,12 @@ namespace carpi::video {
 
     int H264Stream::on_read_buffer(void *ptr, uint8_t *buffer, int size) {
         auto stream = (H264Stream *) ptr;
-        return static_cast<int>(stream->_stream_source->read(buffer, size));
+        const auto ret_val = static_cast<int>(stream->_stream_source->read(buffer, size));
+        if(ret_val <= 0) {
+            return AVERROR_EOF;
+        }
+
+        return ret_val;
     }
 
     bool H264Stream::read_next_packet(AVPacket &out_packet) {
