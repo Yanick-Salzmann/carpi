@@ -72,7 +72,6 @@ namespace carpi::video {
     void H264Conversion::process_conversion() {
         AVDictionary* dict = nullptr;
         av_dict_set(&dict, "movflags", "frag_keyframe+empty_moov", 0);
-        av_dict_set(&dict, "framerate", "30", 0);
         auto rc = avformat_write_header(_format_context.get(), &dict);
         if(rc < 0) {
             av_dict_free(&dict);
