@@ -9,7 +9,7 @@ namespace carpi::video {
     LOGGER_IMPL(H264Stream);
 
     H264Stream::H264Stream(std::shared_ptr<IStreamSource> stream_source, uint32_t width, uint32_t height, uint32_t fps)
-            : _stream_source(std::move(stream_source)) {
+            : _stream_source(std::move(stream_source)), _width{width}, _height{height}, _fps{fps} {
 
         _io_buffer_size = getpagesize();
 
