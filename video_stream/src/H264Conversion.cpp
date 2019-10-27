@@ -48,6 +48,7 @@ namespace carpi::video {
         video_stream->codecpar->codec_type = AVMEDIA_TYPE_VIDEO;
         video_stream->codecpar->width = _stream->width();
         video_stream->codecpar->height = _stream->height();
+        video_stream->codecpar->codec_id = AV_CODEC_ID_VP8;
         AVStream** streams = new AVStream*[1];
         streams[0] = video_stream;
         format_context->nb_streams = 1;
