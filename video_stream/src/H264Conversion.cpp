@@ -50,7 +50,7 @@ namespace carpi::video {
         video_stream->codecpar->height = _stream->height();
         video_stream->codecpar->codec_id = AV_CODEC_ID_H264;
         video_stream->codecpar->format = AV_PIX_FMT_YUV420P;
-        video_stream->time_base = AVRational{.num = 1, .den = 90000};
+        video_stream->time_base = AVRational{.num = 1, .den = 90001};
         video_stream->r_frame_rate = AVRational{.num = (int) _stream->fps(), .den = 1};
         video_stream->avg_frame_rate = AVRational {.num = (int) _stream->fps(), .den = 1};
 
@@ -76,8 +76,8 @@ namespace carpi::video {
     void H264Conversion::process_conversion() {
         AVDictionary* dict = nullptr;
         av_dict_set(&dict, "movflags", "frag_keyframe+empty_moov", 0);
-        av_dict_set(&dict, "r", "30", 0);
-        av_dict_set(&dict, "framerate", "30", 0);
+        av_dict_set(&dict, "r", std::to_string(_stream->fps()).c_str(), 0);
+        av_dict_set(&dict, "framerate", std::to_string(_stream->fps()).c_str(), 0);
 
         auto rc = avformat_write_header(_format_context.get(), &dict);
         if(rc < 0) {
@@ -87,7 +87,7 @@ namespace carpi::video {
             return;
         }
 
-        //av_dict_free(&dict);
+        av_dict_free(&dict);
 
         auto did_complete_regularly = false;
 
