@@ -45,7 +45,6 @@ namespace carpi::video {
         const auto codec = avcodec_find_encoder(AV_CODEC_ID_VP8);
         log->info("Output format: {}", codec->name);
         auto video_stream = avformat_new_stream(format_context, codec);
-        video_stream->codec = nullptr;
         video_stream->codecpar->width = _stream->width();
         video_stream->codecpar->height = _stream->height();
         AVStream** streams = new AVStream*[1];
