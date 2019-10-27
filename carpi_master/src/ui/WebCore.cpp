@@ -4,6 +4,8 @@
 #include "WebClient.hpp"
 
 #include <include/cef_version.h>
+#include <include/base/cef_bind.h>
+#include <include/wrapper/cef_closure_task.h>
 
 #include <filesystem>
 #include <io/LocalSchemeHandler.hpp>
@@ -20,6 +22,8 @@ namespace carpi::ui {
             XCloseDisplay(_display);
             _display = nullptr;
         }
+
+        manual_shutdown();
     }
 
     void WebCore::cef_run_callback() {
@@ -69,5 +73,19 @@ namespace carpi::ui {
         CefBrowserHost::CreateBrowser(window_info, CefRefPtr<WebClient>(new WebClient()), CefString("local://ui/test.html"), browser_settings, nullptr, nullptr);
 
         CefRunMessageLoop();
+    }
+
+    void WebCore::manual_shutdown() {
+        if(_is_shut_down) {
+            return;
+        }
+
+        _is_shut_down = true;
+
+        CefPostTask(TID_UI, CefCreateClosureTask(base::Bind(&CefQuitMessageLoop)));
+
+        if (_cef_runner_thread.joinable()) {
+            _cef_runner_thread.join();
+        }
     }
 }

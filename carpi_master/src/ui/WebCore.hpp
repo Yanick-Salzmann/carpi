@@ -15,6 +15,7 @@ namespace carpi::ui {
         CefRefPtr<WebApplication> _application;
 
         XDisplay* _display = nullptr;
+        bool _is_shut_down = false;
 
         void cef_run_callback();
 
@@ -22,6 +23,8 @@ namespace carpi::ui {
         WebCore();
 
         ~WebCore();
+
+        void manual_shutdown();
     };
 }
 

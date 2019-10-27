@@ -23,53 +23,14 @@ namespace carpi {
 
         video::H264Conversion::initialize_ffmpeg();
         CommServer server{};
-        bluetooth::BluetoothManager btmgr{};
 
         utils::Logger log{"main"};
-
+        log->info("Press ENTER to shut down application");
+        std::cin.sync();
         std::string line{};
-        std::shared_ptr<bluetooth::BluetoothConnection> selected_device = nullptr;
+        std::getline(std::cin, line);
 
-        do {
-            std::set<bluetooth::BluetoothDevice> devices = btmgr.scan_devices(5);
-            uint32_t index = 1;
-            for(auto& device : devices) {
-                log->info("{}) {}", index++, device);
-            }
-
-            std::getline(std::cin, line);
-            uint32_t device_index = 0;
-            std::stringstream parse_stream;
-            parse_stream << line;
-            if(parse_stream >> device_index) {
-                if(device_index < devices.size()) {
-                    auto device_itr = devices.begin();
-                    auto dev_index = 0u;
-                    while(dev_index < device_index) {
-                        ++device_itr;
-                        ++dev_index;
-                    }
-
-                    selected_device = device_itr->connect(0x01);
-                    break;
-                }
-            }
-        } while(line != "q");
-
-        if(line != "q") {
-            log->info("Selected a device");
-            obd::ObdInterface obd_iface{selected_device};
-
-            while(true) {
-                utils::Any response{};
-                if(!obd_iface.send_command(obd::COMMAND_LIST.at("RPM"), response)) {
-                    log->warn("There was an error executing the command '{}'", "RPM");
-                    continue;
-                }
-
-                log->info("RPM: {} rpm", utils::any_cast<float>(response));
-            }
-        }
+        core.manual_shutdown();
 
         server.shutdown_acceptor();
         return 0;
