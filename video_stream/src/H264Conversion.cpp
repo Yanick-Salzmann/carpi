@@ -50,8 +50,9 @@ namespace carpi::video {
         video_stream->codecpar->height = _stream->height();
         video_stream->codecpar->codec_id = AV_CODEC_ID_H264;
         video_stream->codecpar->format = AV_PIX_FMT_YUV420P;
-        video_stream->time_base = AVRational{.num = 1, .den = 30};
-        video_stream->r_frame_rate = AVRational{.num = 1, .den = 1};
+
+        _stream->read_extra_data(_extra_data);
+        video_stream->codecpar->extradata = _extra_data.data();
 
         AVStream** streams = new AVStream*[1];
         streams[0] = video_stream;
