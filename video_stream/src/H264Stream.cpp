@@ -51,11 +51,6 @@ namespace carpi::video {
             throw std::runtime_error("Error opening input stream");
         }
 
-        log->info("Video Codec: ptr={}", formatPtr->video_codec);
-        AVStream* stream = avformat_new_stream(formatPtr, formatPtr->video_codec);
-        stream->r_frame_rate.num = fps;
-        stream->r_frame_rate.den = 1;
-
         res = avformat_find_stream_info(formatPtr, &input_options);
         if (res != 0) {
             log->error("Error loading stream information: {}", av_error_to_string(res));
