@@ -59,7 +59,7 @@ namespace carpi {
 
         std::ofstream os{"camera.webm", std::ios::binary};
 
-        video::H264Conversion conversion{stream, "webm", [&os](void* data, std::size_t size) { os.write((const char*) data, size); }, [&os]() { os.close(); }};
+        video::H264Conversion conversion{stream, "webm", [&os](void* data, std::size_t size) { os.write((const char*) data, size); }, [&os]() { os.close(); log->info("DONE"); }};
 
         CommServer server{};
 
