@@ -42,6 +42,12 @@ namespace carpi::video {
             throw std::runtime_error{"Error creating ffmpeg output context"};
         }
 
+        auto video_stream = avformat_new_stream(format_context, format_context->video_codec);
+        AVStream** streams = new AVStream*[1];
+        streams[0] = video_stream;
+        format_context->nb_streams = 1;
+        format_context->streams = streams;
+
         _format_context = std::shared_ptr<AVFormatContext>(format_context, [](AVFormatContext* ctx) { avformat_free_context(ctx); });
 
         _format_context->pb = _io_context.get();
