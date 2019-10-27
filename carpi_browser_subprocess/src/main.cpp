@@ -4,6 +4,11 @@
 
 class MainApp : public CefApp {
     IMPLEMENT_REFCOUNTING(MainApp);
+
+public:
+    void OnRegisterCustomSchemes(CefRawPtr<CefSchemeRegistrar> registrar) override {
+        registrar->AddCustomScheme("local", cef_scheme_options_t::CEF_SCHEME_OPTION_STANDARD)
+    }
 };
 
 int main(int argc, char* argv[]) {
