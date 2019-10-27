@@ -44,7 +44,7 @@ namespace carpi::video {
         av_dict_set(&input_options, "s", size_stream.str().c_str(), 0);
 
         auto formatPtr = _format_context.get();
-        const auto res = avformat_open_input(&formatPtr, "(memory file)", h264_input_format, &input_options);
+        auto res = avformat_open_input(&formatPtr, "(memory file)", h264_input_format, &input_options);
         if(input_options != nullptr) {
             av_dict_free(&input_options);
         }
@@ -52,6 +52,12 @@ namespace carpi::video {
         if (res != 0) {
             log->error("Error opening input stream: {}", av_error_to_string(res));
             throw std::runtime_error("Error opening input stream");
+        }
+
+        res = avformat_find_stream_info(formatPtr, nullptr);
+        if (res != 0) {
+            log->error("Error loading stream information: {}", av_error_to_string(res));
+            throw std::runtime_error("Error loading stream information");
         }
     }
 
