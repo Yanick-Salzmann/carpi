@@ -15,11 +15,11 @@ namespace carpi::io {
     }
 
     bool LocalSchemeHandler::Open(CefRefPtr<CefRequest> request, bool &handle_request, CefRefPtr<CefCallback> callback) {
+        handle_request = true;
         const auto url = request->GetURL();
         CefURLParts url_parts{};
         if (!CefParseURL(url, url_parts)) {
             log->warn("Error parsing URL in CEF request: {}", url.ToString());
-            handle_request = true;
             _has_file_error = true;
             return true;
         }
@@ -28,7 +28,6 @@ namespace carpi::io {
         if (url_path.empty()) {
             log->warn("Invalid empty URL path in CEF request: {}", url.ToString());
             _has_file_error = true;
-            handle_request = true;
             return true;
         }
 
@@ -42,7 +41,6 @@ namespace carpi::io {
         } catch (std::exception &e) {
             _has_file_error = true;
             _file_error = e.what();
-            handle_request = true;
             return true;
         }
 
@@ -52,13 +50,11 @@ namespace carpi::io {
         } catch (std::exception &e) {
             _has_file_error = true;
             _file_error = e.what();
-            handle_request = true;
             return true;
         }
 
         if (!exists(target_path)) {
             _has_file_error = true;
-            handle_request = true;
             return true;
         }
 
@@ -76,11 +72,15 @@ namespace carpi::io {
             _is_found = false;
         }
 
-        handle_request = true;
         return true;
     }
 
     void LocalSchemeHandler::GetResponseHeaders(CefRefPtr<CefResponse> response, int64 &response_length, CefString &redirectUrl) {
+        CefResponse::HeaderMap headers;
+        response->GetHeaderMap (headers);
+        headers.emplace ("Access-Control-Allow-Origin", "*");
+        response->SetHeaderMap (headers);
+
         if (!_is_found || _has_file_error) {
             response->SetStatus(404);
             response->SetStatusText(_has_file_error ? _file_error : "File Not Found");
