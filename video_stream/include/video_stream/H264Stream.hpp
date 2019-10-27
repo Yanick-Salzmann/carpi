@@ -30,6 +30,8 @@ namespace carpi::video {
         uint32_t _height;
         uint32_t _fps;
 
+        uint32_t _packets_read = 0;
+
         std::shared_ptr<IStreamSource> _stream_source;
 
         static int on_read_buffer(void* ptr, uint8_t* buffer, int size);
