@@ -38,7 +38,7 @@ namespace carpi::video {
         fps_stream << fps;
         size_stream << width << "x" << height;
 
-        AVDictionary* input_options = nullptr;
+        AVDictionary *input_options = nullptr;
         av_dict_set(&input_options, "framerate", fps_stream.str().c_str(), 0);
         av_dict_set(&input_options, "r", fps_stream.str().c_str(), 0);
         av_dict_set(&input_options, "s", size_stream.str().c_str(), 0);
@@ -46,7 +46,7 @@ namespace carpi::video {
         auto formatPtr = _format_context.get();
         auto res = avformat_open_input(&formatPtr, "(memory file)", h264_input_format, &input_options);
 
-        if(input_options != nullptr) {
+        if (input_options != nullptr) {
             av_dict_free(&input_options);
         }
 
@@ -74,11 +74,7 @@ namespace carpi::video {
     bool H264Stream::read_next_packet(AVPacket &out_packet) {
         const auto res = av_read_frame(_format_context.get(), &out_packet);
         if (res == 0) {
-            if(out_packet.pts == AV_NOPTS_VALUE) {
-                out_packet.pts = _packets_read;
-            }
-
-            ++_packets_read;
+            out_packet.pts = _packets_read++;
             return true;
         }
 
