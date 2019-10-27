@@ -7,7 +7,7 @@ class MainApp : public CefApp {
 
 public:
     void OnRegisterCustomSchemes(CefRawPtr<CefSchemeRegistrar> registrar) override {
-        registrar->AddCustomScheme("local", CEF_SCHEME_OPTION_LOCAL);
+        registrar->AddCustomScheme("carpi", CEF_SCHEME_OPTION_STANDARD | CEF_SCHEME_OPTION_SECURE);
     }
 };
 

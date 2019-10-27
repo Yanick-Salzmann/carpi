@@ -99,8 +99,6 @@ namespace carpi::io {
     }
 
     bool LocalSchemeHandler::Skip(int64 bytes_to_skip, int64 &bytes_skipped, CefRefPtr<CefResourceSkipCallback> callback) {
-        log->info("Skipping some");
-
         const auto available = (_position < _file_size) ? (_file_size - _position) : 0;
         const auto to_move = std::min<int64_t>(bytes_to_skip, available);
         _position += to_move;

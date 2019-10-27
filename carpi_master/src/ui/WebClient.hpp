@@ -13,7 +13,7 @@ class WebClient : public CefClient, public CefLifeSpanHandler {
     }
 
     void OnAfterCreated(CefRefPtr<CefBrowser> browser) override {
-        browser->GetMainFrame()->LoadURL(CefString("local://ui/test.html"));
+        browser->GetMainFrame()->LoadURL(CefString("carpi://ui/test.html"));
     }
 };
 }
