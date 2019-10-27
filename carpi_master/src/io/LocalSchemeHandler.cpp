@@ -56,6 +56,7 @@ namespace carpi::io {
         }
 
         if (!exists(target_path)) {
+            log->warn("File does not exist: {}", target_path.string());
             _has_file_error = true;
             return true;
         }
