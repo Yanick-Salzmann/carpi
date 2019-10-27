@@ -44,8 +44,6 @@ namespace carpi {
         _argc = argc;
         _argv = argv;
 
-        //ui::WebCore core{};
-
         video::H264Conversion::initialize_ffmpeg();
 
         std::ifstream is{"camera.h264", std::ios::binary};
@@ -78,7 +76,9 @@ namespace carpi {
         std::string line{};
         std::getline(std::cin, line);
 
-        //core.manual_shutdown();
+        ui::WebCore core{};
+        std::getline(std::cin, line);
+        core.manual_shutdown();
 
         server.shutdown_acceptor();
         return 0;
