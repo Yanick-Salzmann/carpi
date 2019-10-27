@@ -48,7 +48,7 @@ namespace carpi::video {
             throw std::runtime_error("Error opening input stream");
         }
 
-        AVCodec* decoder = nullptr;
+        AVCodec *decoder = nullptr;
         res = av_find_best_stream(formatPtr, AVMEDIA_TYPE_VIDEO, 0, -1, &decoder, 0);
         if (res < 0) {
             log->error("Error loading stream information: {}", av_error_to_string(res));
@@ -56,12 +56,16 @@ namespace carpi::video {
         }
 
         log->info("Stream decoder: {}", decoder->name);
+
+        auto s = formatPtr->streams[res];
+        s->time_base = AVRational{.num = 1, .den = (int) fps};
+        s->r_frame_rate = AVRational{.num = (int) fps, .den = 1};
     }
 
     int H264Stream::on_read_buffer(void *ptr, uint8_t *buffer, int size) {
         auto stream = (H264Stream *) ptr;
         const auto ret_val = static_cast<int>(stream->_stream_source->read(buffer, size));
-        if(ret_val <= 0) {
+        if (ret_val <= 0) {
             return AVERROR_EOF;
         }
 
@@ -71,7 +75,7 @@ namespace carpi::video {
     bool H264Stream::read_next_packet(AVPacket &out_packet) {
         const auto res = av_read_frame(_format_context.get(), &out_packet);
         if (res == 0) {
-            if(out_packet.pts == AV_NOPTS_VALUE) {
+            if (out_packet.pts == AV_NOPTS_VALUE) {
                 out_packet.pts = _packets_read;
                 out_packet.dts = out_packet.pts;
             }
