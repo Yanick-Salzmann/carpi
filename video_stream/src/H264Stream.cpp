@@ -55,11 +55,14 @@ namespace carpi::video {
             throw std::runtime_error("Error opening input stream");
         }
 
-        res = av_find_best_stream(formatPtr, AVMEDIA_TYPE_VIDEO, 0, -1, nullptr, 0);
+        AVCodec* decoder = nullptr;
+        res = av_find_best_stream(formatPtr, AVMEDIA_TYPE_VIDEO, 0, -1, &decoder, 0);
         if (res < 0) {
             log->error("Error loading stream information: {}", av_error_to_string(res));
             throw std::runtime_error("Error loading stream information");
         }
+
+        log->info("Stream decoder: {}", decoder->name);
 
         auto stream = formatPtr->streams[res];
         stream->r_frame_rate.num = _fps;
