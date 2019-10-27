@@ -55,7 +55,7 @@ namespace carpi {
         std::vector<uint8_t> data(data_size);
         is.read((char *) data.data(), data_size);
         const auto stream_source = std::make_shared<MemoryStreamSource>(data);
-        const auto stream = std::make_shared<video::H264Stream>(stream_source, 1920, 1080, 30);
+        const auto stream = std::make_shared<video::H264Stream>(stream_source, 1920, 1080, 25);
         utils::Logger log{"main"};
 
         std::ofstream os{"camera.mp4", std::ios::binary};
