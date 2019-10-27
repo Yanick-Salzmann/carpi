@@ -15,5 +15,5 @@ int main(int argc, char* argv[]) {
     CefMainArgs main_args{argc, argv};
     CefRefPtr<MainApp> app{new MainApp{}};
 
-    return CefExecuteProcess(main_args, app.get(), nullptr);
+    return CefExecuteProcess(main_args, app, nullptr);
 }

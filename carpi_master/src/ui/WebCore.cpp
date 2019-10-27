@@ -52,6 +52,7 @@ namespace carpi::ui {
         settings.windowless_rendering_enabled = 0;
         settings.log_severity = LOGSEVERITY_VERBOSE;
         settings.no_sandbox = 1;
+        settings.remote_debugging_port = 52100;
         CefString(&settings.locales_dir_path) = "/usr/local/bin/locales";
 
         const auto init_result = CefInitialize(args, settings, _application, nullptr);
