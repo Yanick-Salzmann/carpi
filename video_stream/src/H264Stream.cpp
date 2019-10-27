@@ -58,7 +58,7 @@ namespace carpi::video {
         log->info("Stream decoder for stream #{}: {}", res, decoder->name);
 
         auto s = formatPtr->streams[res];
-        s->time_base = AVRational{.num = 1, .den = 90000};
+        s->time_base = AVRational{.num = 1, .den = (int) fps};
         s->r_frame_rate = AVRational{.num = (int) fps, .den = 1};
         s->avg_frame_rate = AVRational{.num = (int) fps, .den = 1};
     }
@@ -77,7 +77,7 @@ namespace carpi::video {
         const auto res = av_read_frame(_format_context.get(), &out_packet);
         if (res == 0) {
             if (out_packet.pts == AV_NOPTS_VALUE) {
-                out_packet.pts = av_rescale_q(_packets_read * 3000, AVRational{.num = 1, .den = 90000}, AVRational{.num = 1, .den = 90000});
+                out_packet.pts = av_rescale_q(_packets_read, AVRational{.num = 1, .den = (int) _fps}, AVRational{.num = 1, .den = 90000});
                 out_packet.dts = out_packet.pts;
             }
 
