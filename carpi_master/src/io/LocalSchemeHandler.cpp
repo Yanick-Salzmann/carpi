@@ -110,6 +110,7 @@ namespace carpi::io {
     }
 
     bool LocalSchemeHandler::Read(void *data_out, int bytes_to_read, int &bytes_read, CefRefPtr<CefResourceReadCallback> callback) {
+        log->info("Position: {}, File Size: {}, To Read: {}", _position, _file_size, bytes_to_read);
         const auto available = (_position < _file_size) ? (_file_size - _position) : 0;
         if (available <= 0) {
             bytes_read = 0;
