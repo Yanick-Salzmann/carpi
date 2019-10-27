@@ -41,8 +41,6 @@ namespace carpi::video {
 
         bool read_next_packet(AVPacket& out_packet);
 
-        void read_extra_data(std::vector<uint8_t>& extra_data);
-
         [[nodiscard]] uint32_t width() const { return _width; }
         [[nodiscard]] uint32_t height() const { return _height; }
         [[nodiscard]] uint32_t fps() const { return _fps; }

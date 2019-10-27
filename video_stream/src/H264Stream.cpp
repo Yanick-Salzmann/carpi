@@ -55,7 +55,7 @@ namespace carpi::video {
             throw std::runtime_error("Error loading stream information");
         }
 
-        log->info("Stream decoder: {}", decoder->name);
+        log->info("Stream decoder for stream #{}: {}", res, decoder->name);
 
         auto s = formatPtr->streams[res];
         s->time_base = AVRational{.num = 1, .den = (int) fps};
@@ -89,11 +89,5 @@ namespace carpi::video {
 
         log->error("Error reading frame from H264 input stream: {}", av_error_to_string(res));
         throw std::runtime_error("Error reading frame from H264 stream");
-    }
-
-    void H264Stream::read_extra_data(std::vector<uint8_t> &extra_data) {
-        log->info("Codec extra data: {}, codec parameter extra data: {}", _format_context->streams[0]->codec->extradata_size, _format_context->streams[0]->codecpar->extradata_size);
-        extra_data.resize(_format_context->streams[0]->codecpar->extradata_size);
-        memcpy(extra_data.data(), _format_context->streams[0]->codecpar->extradata, extra_data.size());
     }
 }

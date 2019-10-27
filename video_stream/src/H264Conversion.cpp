@@ -51,9 +51,6 @@ namespace carpi::video {
         video_stream->codecpar->codec_id = AV_CODEC_ID_H264;
         video_stream->codecpar->format = AV_PIX_FMT_YUV420P;
 
-        _stream->read_extra_data(_extra_data);
-        video_stream->codecpar->extradata = _extra_data.data();
-
         AVStream** streams = new AVStream*[1];
         streams[0] = video_stream;
         format_context->nb_streams = 1;

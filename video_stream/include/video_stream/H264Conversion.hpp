@@ -30,9 +30,6 @@ namespace carpi::video {
         std::function<void(void *, std::size_t)> _write_callback;
         std::function<void()> _complete_callback;
 
-
-        std::vector<uint8_t> _extra_data{};
-
         void process_conversion();
 
         static int on_write_data(void* ptr, uint8_t* data, int size);
