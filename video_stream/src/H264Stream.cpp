@@ -58,8 +58,8 @@ namespace carpi::video {
         log->info("Stream decoder for stream #{}: {}", res, decoder->name);
 
         auto s = formatPtr->streams[res];
-        s->time_base = AVRational{.num = 1, .den = 90000};
-        s->r_frame_rate = AVRational{.num = (int) fps * 2, .den = 1};
+        s->time_base = AVRational{.num = 1, .den = 900000};
+        s->r_frame_rate = AVRational{.num = (int) fps, .den = 1};
     }
 
     int H264Stream::on_read_buffer(void *ptr, uint8_t *buffer, int size) {
