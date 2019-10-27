@@ -11,14 +11,17 @@ namespace carpi::io {
 
         LOGGER;
 
-        std::vector<uint8_t> _file_data;
         bool _is_found = false;
         bool _has_file_error = false;
         std::string _file_error;
         std::size_t _position = 0;
+        std::size_t _file_size = 0;
         std::string _extension{};
+        FILE* _fd = nullptr;
 
     public:
+        ~LocalSchemeHandler() override;
+
         bool Open(CefRefPtr<CefRequest> request, bool &handle_request, CefRefPtr<CefCallback> callback) override;
 
         void GetResponseHeaders(CefRefPtr<CefResponse> response, int64 &response_length, CefString &redirectUrl) override;
