@@ -31,7 +31,7 @@ namespace carpi::io {
             return true;
         }
 
-        log->debug("Attempting to load file: {}", url_path.string());
+        log->debug("Attempting to load file: {}", url_path.ToString());
 
         if (url_path[0] == '/' && url_path.size() >= 2 && url_path[1] == '/') {
             url_path = url_path.substr(2);
