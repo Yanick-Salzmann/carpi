@@ -70,12 +70,17 @@ namespace carpi::video {
     }
 
     void H264Conversion::process_conversion() {
-        auto rc = avformat_write_header(_format_context.get(), nullptr);
+        AVDictionary* dict = nullptr;
+        av_dict_set(&dict, "movflags", "frag_keyframe+empty_moov", 0);
+        auto rc = avformat_write_header(_format_context.get(), &dict);
         if(rc < 0) {
+            av_dict_free(&dict);
             log->error("Error writing target header: {}", av_error_to_string(rc));
             _complete_callback();
             return;
         }
+
+        av_dict_free(&dict);
 
         auto did_complete_regularly = false;
 
