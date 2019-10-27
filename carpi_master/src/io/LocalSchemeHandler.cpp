@@ -95,8 +95,6 @@ namespace carpi::io {
             response->SetStatus(200);
             response->SetStatusText("OK");
             response->SetMimeType(mime_type.empty() ? "text/plain" : mime_type);
-            response->SetHeaderByName("Content-Length", std::to_string(_file_size), true);
-            response->SetHeaderByName("Content-Type", mime_type, true);
         }
     }
 
