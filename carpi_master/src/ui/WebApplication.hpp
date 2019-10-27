@@ -8,7 +8,9 @@ namespace carpi::ui {
         IMPLEMENT_REFCOUNTING(WebApplication);
 
     public:
-
+        void OnRegisterCustomSchemes(CefRawPtr<CefSchemeRegistrar> registrar) override {
+            registrar->AddCustomScheme("local", CEF_SCHEME_OPTION_STANDARD | CEF_SCHEME_OPTION_SECURE);
+        }
     };
 }
 
