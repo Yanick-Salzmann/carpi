@@ -45,29 +45,8 @@ namespace carpi {
         _argv = argv;
 
         video::H264Conversion::initialize_ffmpeg();
-
-        std::ifstream is{"camera.h264", std::ios::binary};
-        is.seekg(0, std::ios::end);
-        const auto data_size = is.tellg();
-        is.seekg(0, std::ios::beg);
-        std::vector<uint8_t> data(data_size);
-        is.read((char *) data.data(), data_size);
-        const auto stream_source = std::make_shared<MemoryStreamSource>(data);
-        const auto stream = std::make_shared<video::H264Stream>(stream_source, 1920, 1080, 25);
         utils::Logger log{"main"};
-
-        std::ofstream os{"camera.mp4", std::ios::binary};
-
-        video::H264Conversion conversion{stream,
-                                         "mp4",
-                                         [&os](void *data, std::size_t size) {
-                                             os.write((const char *) data, size);
-                                         },
-                                         [&os, &log]() {
-                                             os.close();
-                                             log->info("DONE");
-                                         }
-        };
+        ui::WebCore core{};
 
         CommServer server{};
 
@@ -76,8 +55,6 @@ namespace carpi {
         std::string line{};
         std::getline(std::cin, line);
 
-        ui::WebCore core{};
-        std::getline(std::cin, line);
         core.manual_shutdown();
 
         server.shutdown_acceptor();
