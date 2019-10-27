@@ -58,10 +58,10 @@ namespace carpi {
         const auto stream = std::make_shared<video::H264Stream>(stream_source, 1920, 1080, 30);
         utils::Logger log{"main"};
 
-        std::ofstream os{"camera.webm", std::ios::binary};
+        std::ofstream os{"camera.mp4", std::ios::binary};
 
         video::H264Conversion conversion{stream,
-                                         "webm",
+                                         "mp4",
                                          [&os](void *data, std::size_t size) {
                                              os.write((const char *) data, size);
                                          },
