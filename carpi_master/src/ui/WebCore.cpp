@@ -69,6 +69,9 @@ namespace carpi::ui {
         CefWindowInfo window_info{};
         CefBrowserSettings browser_settings{};
 
+        browser_settings.universal_access_from_file_urls = STATE_ENABLED;
+        browser_settings.file_access_from_file_urls = STATE_ENABLED;
+
         window_info.x = window_info.y = 0;
         window_info.width = screen->width;
         window_info.height = screen->height;
