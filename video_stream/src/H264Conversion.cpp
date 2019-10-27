@@ -42,7 +42,7 @@ namespace carpi::video {
             throw std::runtime_error{"Error creating ffmpeg output context"};
         }
 
-        const auto codec = avcodec_find_encoder(AV_CODEC_ID_VP9);
+        const auto codec = avcodec_find_encoder(AV_CODEC_ID_VP8);
         log->info("Output format: {}", codec->name);
         auto video_stream = avformat_new_stream(format_context, codec);
         video_stream->codec->width = _stream->width();
