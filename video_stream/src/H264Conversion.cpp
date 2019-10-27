@@ -42,13 +42,13 @@ namespace carpi::video {
             throw std::runtime_error{"Error creating ffmpeg output context"};
         }
 
-        const auto codec = avcodec_find_encoder(AV_CODEC_ID_MPEG4);
+        const auto codec = avcodec_find_encoder(AV_CODEC_ID_H264);
         log->info("Output format: {}", codec->name);
         auto video_stream = avformat_new_stream(format_context, codec);
         video_stream->codecpar->codec_type = AVMEDIA_TYPE_VIDEO;
         video_stream->codecpar->width = _stream->width();
         video_stream->codecpar->height = _stream->height();
-        video_stream->codecpar->codec_id = AV_CODEC_ID_MPEG4;
+        video_stream->codecpar->codec_id = AV_CODEC_ID_H264;
 
         AVStream** streams = new AVStream*[1];
         streams[0] = video_stream;
@@ -104,7 +104,6 @@ namespace carpi::video {
         }
 
         if(did_complete_regularly) {
-            log->info("Writing trailer");
             av_write_trailer(_format_context.get());
         }
 
