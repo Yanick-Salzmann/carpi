@@ -51,6 +51,8 @@ namespace carpi::ui {
         settings.ignore_certificate_errors = 1;
         settings.windowless_rendering_enabled = 0;
         settings.log_severity = LOGSEVERITY_VERBOSE;
+        settings.no_sandbox = 1;
+        settings.multi_threaded_message_loop = 1;
         CefString(&settings.locales_dir_path) = "/usr/local/bin/locales";
 
         const auto init_result = CefInitialize(args, settings, _application, nullptr);
@@ -60,8 +62,8 @@ namespace carpi::ui {
         }
 
         log->info("CEF initialized @ version: {}", CEF_VERSION);
-        log->info ("CEF version:              {}.{}.{}", CEF_VERSION_MAJOR, CEF_VERSION_MINOR, CEF_COMMIT_NUMBER);
-        log->info ("Chromium version:         {}.{}.{}", CHROME_VERSION_MAJOR, CHROME_VERSION_MINOR, CHROME_VERSION_BUILD);
+        log->info("CEF version:               {}.{}.{}", CEF_VERSION_MAJOR, CEF_VERSION_MINOR, CEF_COMMIT_NUMBER);
+        log->info("Chromium version:          {}.{}.{}", CHROME_VERSION_MAJOR, CHROME_VERSION_MINOR, CHROME_VERSION_BUILD);
 
         CefRegisterSchemeHandlerFactory("local", "", CefRefPtr<CefSchemeHandlerFactory>{new io::LocalSchemeHandler::Factory{}});
 
