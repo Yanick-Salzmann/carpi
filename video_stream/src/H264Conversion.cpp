@@ -50,10 +50,12 @@ namespace carpi::video {
         video_stream->codecpar->height = _stream->height();
         video_stream->codecpar->codec_id = AV_CODEC_ID_H264;
         video_stream->codecpar->format = AV_PIX_FMT_YUV420P;
+
         AVStream** streams = new AVStream*[1];
         streams[0] = video_stream;
         format_context->nb_streams = 1;
         format_context->streams = streams;
+        format_context->video_codec = codec;
 
         _format_context = std::shared_ptr<AVFormatContext>(format_context, [](AVFormatContext* ctx) { avformat_free_context(ctx); });
 
@@ -75,6 +77,8 @@ namespace carpi::video {
         av_dict_set(&dict, "r", "30", 0);
         av_dict_set(&dict, "framerate", "30", 0);
 
+        _format_context->metadata = dict;
+
         auto rc = avformat_write_header(_format_context.get(), &dict);
         if(rc < 0) {
             av_dict_free(&dict);
@@ -83,7 +87,7 @@ namespace carpi::video {
             return;
         }
 
-        av_dict_free(&dict);
+        //av_dict_free(&dict);
 
         auto did_complete_regularly = false;
 
