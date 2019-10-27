@@ -58,7 +58,7 @@ namespace carpi::video {
         log->info("Stream decoder for stream #{}: {}", res, decoder->name);
 
         auto s = formatPtr->streams[res];
-        s->time_base = AVRational{.num = 1, .den = 1};
+        s->time_base = AVRational{.num = 1, .den = 90000};
         s->r_frame_rate = AVRational{.num = (int) fps, .den = 1};
     }
 
