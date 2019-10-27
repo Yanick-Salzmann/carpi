@@ -88,7 +88,10 @@ namespace carpi::io {
         } else {
             const auto mime_type = CefGetMimeType(!_extension.empty() ? _extension.substr(1) : _extension);
             log->info("Mime Type: {}, Extension: {}, Size: {}", mime_type.ToString(), _extension, _file_size);
+
             response_length = static_cast<int64_t>(_file_size);
+            redirectUrl = "";
+
             response->SetStatus(200);
             response->SetStatusText("OK");
             response->SetMimeType(mime_type.empty() ? "text/plain" : mime_type);
@@ -109,6 +112,7 @@ namespace carpi::io {
     bool LocalSchemeHandler::Read(void *data_out, int bytes_to_read, int &bytes_read, CefRefPtr<CefResourceReadCallback> callback) {
         const auto available = (_position < _file_size) ? (_file_size - _position) : 0;
         if (available <= 0) {
+            log->info("Available <= 0: {}", _position);
             bytes_read = 0;
             return false;
         }
