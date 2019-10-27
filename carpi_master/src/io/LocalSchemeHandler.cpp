@@ -67,7 +67,7 @@ namespace carpi::io {
         log->info("Serving {} from {}", url.ToString(), canonical(absolute(target_path)).string());
 
         _fd = fopen(target_path.string().c_str(), "rb");
-        if (_fd == nullptr) {
+        if (_fd != nullptr) {
             _is_found = true;
             fseek(_fd, 0, SEEK_END);
             _file_size = ftell(_fd);
