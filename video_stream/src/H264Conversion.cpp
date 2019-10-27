@@ -4,6 +4,7 @@
 
 extern "C" {
 #include <libavcodec/avcodec.h>
+#include <libavfilter/avfilter.h>
 };
 
 #include <unistd.h>
@@ -78,6 +79,19 @@ namespace carpi::video {
         av_dict_set(&dict, "movflags", "frag_keyframe+empty_moov", 0);
         av_dict_set(&dict, "r", std::to_string(_stream->fps()).c_str(), 0);
         av_dict_set(&dict, "framerate", std::to_string(_stream->fps()).c_str(), 0);
+
+        const auto buffer_src = avfilter_get_by_name("buffer");
+        const auto buffer_sink = avfilter_get_by_name("buffersink");
+
+        const auto inputs = avfilter_inout_alloc();
+        const auto outputs = avfilter_inout_alloc();
+
+        const auto graph = avfilter_graph_alloc();
+        AVFilterContext* filter_ctx = nullptr;
+        auto result = avfilter_graph_create_filter(&filter_ctx, buffer_src, "in", "deshake", nullptr, graph);
+        if(result < 0) {
+            log->error("Error creating filter graph");
+        }
 
         auto rc = avformat_write_header(_format_context.get(), &dict);
         if(rc < 0) {
