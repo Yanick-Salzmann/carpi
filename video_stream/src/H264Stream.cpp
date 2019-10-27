@@ -77,7 +77,8 @@ namespace carpi::video {
         const auto res = av_read_frame(_format_context.get(), &out_packet);
         if (res == 0) {
             if (out_packet.pts == AV_NOPTS_VALUE) {
-                out_packet.pts = av_rescale_q(_packets_read, AVRational{.num = 1, .den = 90000}, AVRational{.num = 1, .den = 90000});
+                out_packet.pts = av_rescale_q(_packets_read * 3000, AVRational{.num = 1, .den = 90000}, AVRational{.num = 1, .den = 90000});
+                out_packet.dts = out_packet.pts;
             }
 
             _packets_read++;
