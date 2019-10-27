@@ -60,8 +60,10 @@ namespace carpi::ui {
         }
 
         log->info("CEF initialized @ version: {}", CEF_VERSION);
+        log->info ("CEF version:              {}.{}.{}", CEF_VERSION_MAJOR, CEF_VERSION_MINOR, CEF_COMMIT_NUMBER);
+        log->info ("Chromium version:         {}.{}.{}", CHROME_VERSION_MAJOR, CHROME_VERSION_MINOR, CHROME_VERSION_BUILD);
 
-        CefRegisterSchemeHandlerFactory("local", CefString{}, CefRefPtr<CefSchemeHandlerFactory>{new io::LocalSchemeHandler::Factory{}});
+        CefRegisterSchemeHandlerFactory("local", "", CefRefPtr<CefSchemeHandlerFactory>{new io::LocalSchemeHandler::Factory{}});
 
         CefWindowInfo window_info{};
         CefBrowserSettings browser_settings{};
