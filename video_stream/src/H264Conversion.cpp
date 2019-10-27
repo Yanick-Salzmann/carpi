@@ -104,6 +104,7 @@ namespace carpi::video {
         }
 
         if(did_complete_regularly) {
+            log->info("Writing trailer");
             av_write_trailer(_format_context.get());
         }
 
