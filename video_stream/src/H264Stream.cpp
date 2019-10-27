@@ -33,15 +33,8 @@ namespace carpi::video {
 
         _format_context->pb = _io_context.get();
 
-        std::stringstream fps_stream;
-        std::stringstream size_stream;
-        fps_stream << fps;
-        size_stream << width << "x" << height;
-
         AVDictionary *input_options = nullptr;
-        av_dict_set(&input_options, "framerate", fps_stream.str().c_str(), 0);
-        av_dict_set(&input_options, "r", fps_stream.str().c_str(), 0);
-        av_dict_set(&input_options, "s", size_stream.str().c_str(), 0);
+        av_dict_set(&input_options, "framerate", std::to_string(fps).c_str(), 0);
 
         auto formatPtr = _format_context.get();
         auto res = avformat_open_input(&formatPtr, "(memory file)", h264_input_format, &input_options);
