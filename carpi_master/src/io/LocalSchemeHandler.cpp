@@ -41,17 +41,24 @@ namespace carpi::io {
         }
 
         auto target_path = std::filesystem::path{"./../../carpi_master"};
-        target_path /= file_path;
-
-        _extension = file_path.extension().string();
-
-        log->info("Serving {} from {}", url.ToString(), canonical(absolute(target_path)).string());
+        try {
+            target_path /= file_path;
+        } catch (std::exception& e) {
+            _has_file_error = true;
+            _file_error = e.what();
+            handle_request = true;
+            return true;
+        }
 
         if(!exists(target_path)) {
             _has_file_error = true;
             handle_request = true;
             return true;
         }
+
+        _extension = file_path.extension().string();
+
+        log->info("Serving {} from {}", url.ToString(), canonical(absolute(target_path)).string());
 
         std::ifstream is{target_path.string(), std::ios::binary};
         if(is) {
