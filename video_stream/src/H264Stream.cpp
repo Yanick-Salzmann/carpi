@@ -71,8 +71,12 @@ namespace carpi::video {
     bool H264Stream::read_next_packet(AVPacket &out_packet) {
         const auto res = av_read_frame(_format_context.get(), &out_packet);
         if (res == 0) {
-            out_packet.pts = _packets_read++;
-            out_packet.dts = out_packet.pts;
+            if(out_packet.pts == AV_NOPTS_VALUE) {
+                out_packet.pts = _packets_read;
+                out_packet.dts = out_packet.pts;
+            }
+
+            _packets_read++;
             return true;
         }
 
