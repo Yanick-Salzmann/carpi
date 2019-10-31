@@ -9,13 +9,10 @@ namespace carpi::wiring {
     }
 
     bool DHT11TemperatureSensor::read_values(DHT11Result &result) {
-        int dht11_dat[5] = {0, 0, 0, 0, 0};
+        uint32_t dht11_dat[5] = {0, 0, 0, 0, 0};
 
-        uint8_t laststate = HIGH;
+        uint8_t last_state = HIGH;
         uint8_t j = 0;
-        float f;
-
-        dht11_dat[0] = dht11_dat[1] = dht11_dat[2] = dht11_dat[3] = dht11_dat[4] = 0;
 
         pinMode(_gpio_pin, OUTPUT);
         digitalWrite(_gpio_pin, LOW);
@@ -26,14 +23,15 @@ namespace carpi::wiring {
 
         for (uint32_t i = 0; i < _timing_count; i++) {
             uint8_t counter = 0;
-            while (digitalRead(_gpio_pin) == laststate) {
+            while (digitalRead(_gpio_pin) == last_state) {
                 counter++;
                 delayMicroseconds(1);
                 if (counter == 255) {
                     break;
                 }
             }
-            laststate = digitalRead(_gpio_pin);
+
+            last_state = digitalRead(_gpio_pin);
 
             if (counter == 255)
                 break;
@@ -41,15 +39,14 @@ namespace carpi::wiring {
             if ((i >= 4) && (i % 2 == 0)) {
                 dht11_dat[j / 8u] <<= 1u;
                 if (counter > 16)
-                    dht11_dat[j / 8] |= 1;
+                    dht11_dat[j / 8] |= 1u;
                 j++;
             }
         }
 
-        if ((j >= 40) &&
-            (dht11_dat[4] == ((dht11_dat[0] + dht11_dat[1] + dht11_dat[2] + dht11_dat[3]) & 0xFF))) {
-            const auto hum_raw = (((uint32_t) dht11_dat[0]) << 8u) | ((uint32_t) dht11_dat[1]);
-            const uint32_t temp_raw = (((uint32_t) dht11_dat[2]) << 8u) | ((uint32_t) dht11_dat[3]);
+        if ((j >= 40) && (dht11_dat[4] == ((dht11_dat[0] + dht11_dat[1] + dht11_dat[2] + dht11_dat[3]) & 0xFFu))) {
+            const auto hum_raw = (dht11_dat[0] << 8u) | dht11_dat[1];
+            const auto temp_raw = (dht11_dat[2] << 8u) | dht11_dat[3];
             const auto hum = hum_raw / 256.0f;
             const auto temp = temp_raw / 256.0f;
 
