@@ -92,10 +92,8 @@ namespace carpi {
         if ( (j >= 40) &&
              (dht11_dat[4] == ( (dht11_dat[0] + dht11_dat[1] + dht11_dat[2] + dht11_dat[3]) & 0xFF) ) )
         {
-            log->info( "Humidity = %02d.%02d %% Temperature = %02d.%02d C",
+            log->info( "Humidity = {}.{}% Temperature = {}.{} °C",
                     dht11_dat[0], dht11_dat[1], dht11_dat[2], dht11_dat[3]);
-        }else  {
-            log->info( "Data not good, skip                                       " );
         }
     }
 
