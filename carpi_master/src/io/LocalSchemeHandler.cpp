@@ -96,6 +96,8 @@ namespace carpi::io {
             response_length = static_cast<int64_t>(_file_size);
             redirectUrl = "";
 
+            log->info("File {}. Response length: {}", _file_name, response_length);
+
             response->SetStatus(200);
             response->SetStatusText("OK");
             response->SetMimeType(mime_type.empty() ? "text/plain" : mime_type);
@@ -115,7 +117,6 @@ namespace carpi::io {
         const auto available = (_position < _file_size) ? (_file_size - _position) : 0;
         if (available <= 0) {
             bytes_read = 0;
-            log->info("End of {}", _file_name);
             return false;
         }
 
@@ -123,7 +124,6 @@ namespace carpi::io {
         fread(data_out, 1, to_read, _fd);
         _position += to_read;
         bytes_read = to_read;
-        log->info("{} -> {}", _file_name, bytes_read);
         return true;
     }
 }
