@@ -48,8 +48,16 @@ namespace carpi::wiring {
 
         if ((j >= 40) &&
             (dht11_dat[4] == ((dht11_dat[0] + dht11_dat[1] + dht11_dat[2] + dht11_dat[3]) & 0xFF))) {
+            const auto hum_raw = (((uint32_t) dht11_dat[0]) << 8u) | ((uint32_t) dht11_dat[1]);
+            const uint32_t temp_raw = (((uint32_t) dht11_dat[2]) << 8u) | ((uint32_t) dht11_dat[3]);
+            const auto hum = hum_raw / 256.0f;
+            const auto temp = temp_raw / 256.0f;
+
+            result.humidity = hum;
+            result.temperature = temp;
+            return true;
         }
 
-        return {};
+        return false;
     }
 }
