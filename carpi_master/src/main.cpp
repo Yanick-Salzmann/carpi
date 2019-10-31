@@ -92,8 +92,12 @@ namespace carpi {
         if ( (j >= 40) &&
              (dht11_dat[4] == ( (dht11_dat[0] + dht11_dat[1] + dht11_dat[2] + dht11_dat[3]) & 0xFF) ) )
         {
-            log->info( "Humidity = {}.{}% Temperature = {}.{} °C",
-                    dht11_dat[0], dht11_dat[1], dht11_dat[2], dht11_dat[3]);
+            uint32_t hum_raw = (uint32_t) (dht11_dat[0] << 8) | (dht11_dat[1]);
+            uint32_t temp_raw = (uint32_t) (dht11_dat[2] << 8) | (dht11_dat[3]);
+            float hum = hum_raw / 256.0f;
+            float temp = temp_raw / 256.0f;
+
+            log->info( "Humidity = {}% Temperature = {}} °C", hum, temp);
         }
     }
 

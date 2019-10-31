@@ -6,7 +6,7 @@ add_executable(carpi_master src/main.cpp src/comm/CommServer.hpp src/comm/CommSe
     #    src/gl/GraphicsDevice.hpp src/gl/GraphicsDevice.cpp src/gl/Buffers.hpp src/gl/Buffers.cpp src/gl/VertexElement.hpp src/gl/VertexElement.cpp src/gl/Program.hpp
         src/ui/WebCore.hpp src/ui/WebCore.cpp src/ui/WebApplication.hpp src/ui/WebApplication.cpp src/main.hpp src/ui/WebClient.hpp src/ui/WebClient.cpp src/io/LocalSchemeHandler.hpp src/io/LocalSchemeHandler.cpp src/comm/IpcServer.hpp src/comm/IpcServer.cpp src/comm/IpcClientManager.hpp src/comm/IpcClientManager.cpp src/comm/IpcConnection.hpp src/comm/IpcConnection.cpp)
 
-add_dependencies(carpi_master bluetooth_utils video_stream obd carpi_browser_subprocess ipc_common)
+add_dependencies(carpi_master bluetooth_utils video_stream obd carpi_browser_subprocess ipc_common wiring_utils)
 
 find_package(Threads)
 
@@ -22,4 +22,4 @@ target_include_directories(carpi_master PUBLIC
         /usr/local/include/cef
 )
 
-target_link_libraries(carpi_master bluetooth_utils video_stream obd ipc_common Threads::Threads ${OPENGLES2_LIBRARIES} ${EGL_LIBRARIES} stdc++fs /usr/local/lib/libcef_dll_wrapper.a /usr/local/bin/libcef.so X11 /usr/lib/libwiringPi.so)
+target_link_libraries(carpi_master bluetooth_utils video_stream obd ipc_common wiring_utils Threads::Threads ${OPENGLES2_LIBRARIES} ${EGL_LIBRARIES} stdc++fs /usr/local/lib/libcef_dll_wrapper.a /usr/local/bin/libcef.so X11)
