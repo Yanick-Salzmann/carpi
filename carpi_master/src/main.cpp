@@ -41,9 +41,9 @@ LOGGER_IMPL(MemoryStreamSource);
 namespace carpi {
     int _argc;
     char **_argv;
+    utils::Logger log{"temperature"};
 
     void temperature_loop() {
-        utils::Logger log{"temperature"};
 
 #define MAXTIMINGS	85
 #define DHTPIN		7
