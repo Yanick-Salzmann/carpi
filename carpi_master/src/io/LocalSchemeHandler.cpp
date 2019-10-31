@@ -83,7 +83,6 @@ namespace carpi::io {
         CefResponse::HeaderMap headers;
         response->GetHeaderMap (headers);
         headers.emplace ("Access-Control-Allow-Origin", "*");
-        response->SetHeaderMap (headers);
 
         if (!_is_found || _has_file_error) {
             response->SetStatus(404);
@@ -101,7 +100,10 @@ namespace carpi::io {
             response->SetStatus(200);
             response->SetStatusText("OK");
             response->SetMimeType(mime_type.empty() ? "text/plain" : mime_type);
+            headers.emplace("Content-Length", std::to_string(response_length));
         }
+
+        response->SetHeaderMap (headers);
     }
 
     bool LocalSchemeHandler::Skip(int64 bytes_to_skip, int64 &bytes_skipped, CefRefPtr<CefResourceSkipCallback> callback) {
