@@ -43,6 +43,8 @@ namespace carpi {
     char **_argv;
 
     void temperature_loop() {
+        utils::Logger log{"temperature"};
+
 #define MAXTIMINGS	85
 #define DHTPIN		7
         int dht11_dat[5] = { 0, 0, 0, 0, 0 };
@@ -90,10 +92,10 @@ namespace carpi {
         if ( (j >= 40) &&
              (dht11_dat[4] == ( (dht11_dat[0] + dht11_dat[1] + dht11_dat[2] + dht11_dat[3]) & 0xFF) ) )
         {
-            printf( "\rHumidity = %02d.%02d %% Temperature = %02d.%02d C",
+            log->info( "Humidity = %02d.%02d %% Temperature = %02d.%02d C",
                     dht11_dat[0], dht11_dat[1], dht11_dat[2], dht11_dat[3]);
         }else  {
-            printf( "\rData not good, skip                                       " );
+            log->info( "Data not good, skip                                       " );
         }
     }
 
