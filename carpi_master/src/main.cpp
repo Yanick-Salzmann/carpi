@@ -44,7 +44,7 @@ namespace carpi {
 
     void temperature_loop() {
 #define MAXTIMINGS	85
-#define DHTPIN		23
+#define DHTPIN		7
         int dht11_dat[5] = { 0, 0, 0, 0, 0 };
 
         uint8_t laststate	= HIGH;
