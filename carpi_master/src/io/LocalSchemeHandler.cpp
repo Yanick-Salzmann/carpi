@@ -67,6 +67,7 @@ namespace carpi::io {
 
         _fd = fopen(target_path.string().c_str(), "rb");
         if (_fd != nullptr) {
+            _file_name = target_path.string();
             _is_found = true;
             fseek(_fd, 0, SEEK_END);
             _file_size = ftell(_fd);
@@ -114,6 +115,7 @@ namespace carpi::io {
         const auto available = (_position < _file_size) ? (_file_size - _position) : 0;
         if (available <= 0) {
             bytes_read = 0;
+            log->info("End of {}", _file_name);
             return false;
         }
 
@@ -121,6 +123,7 @@ namespace carpi::io {
         fread(data_out, 1, to_read, _fd);
         _position += to_read;
         bytes_read = to_read;
+        log->info("{} -> {}", _file_name, bytes_read);
         return true;
     }
 }

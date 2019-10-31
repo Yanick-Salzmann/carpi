@@ -11,6 +11,7 @@ namespace carpi::io {
 
         LOGGER;
 
+        std::string _file_name;
         bool _is_found = false;
         bool _has_file_error = false;
         std::string _file_error;
