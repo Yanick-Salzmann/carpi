@@ -97,7 +97,7 @@ namespace carpi {
             float hum = hum_raw / 256.0f;
             float temp = temp_raw / 256.0f;
 
-            log->info( "Humidity = {}% Temperature = {}} °C", hum, temp);
+            log->info( "Humidity = {}% Temperature = {} °C", hum, temp);
         }
     }
 
