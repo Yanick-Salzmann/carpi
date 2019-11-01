@@ -5,6 +5,7 @@
 #include <common_utils/string.hpp>
 
 namespace carpi::data {
+    LOGGER_IMPL(HttpResponse);
 
     HttpResponse::HttpResponse(HttpStatusCode status, std::string status_text) : _status_code{(int32_t) status}, _status_text{std::move(status_text)} {
 
@@ -55,6 +56,8 @@ namespace carpi::data {
                 }
             } while(num_read > 0);
         }
+
+        log->info("Sent file");
 
         fclose(_response_file);
         _response_file = nullptr;

@@ -4,6 +4,8 @@
 #include <map>
 #include <string>
 
+#include <common_utils/log.hpp>
+
 namespace carpi::data {
     enum class HttpStatusCode {
         OK = 200,
@@ -17,6 +19,8 @@ namespace carpi::data {
     };
 
     class HttpResponse {
+        LOGGER;
+
         std::multimap<std::string, std::string> _headers;
 
         int32_t _status_code = (int32_t) HttpStatusCode::OK;
