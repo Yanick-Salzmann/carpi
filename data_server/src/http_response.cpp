@@ -45,7 +45,6 @@ namespace carpi::data {
         hdr_line << "\r\n";
 
         const auto hdr_string = hdr_line.str();
-        log->info("> Headers: {}", hdr_string);
         ::send(socket, hdr_string.c_str(), hdr_string.size(), 0);
 
         if(_response_file != nullptr) {
@@ -53,6 +52,7 @@ namespace carpi::data {
             auto num_read = 0;
             do {
                 num_read = fread(_response_file, 1, sizeof buffer, _response_file);
+                log->info("Read {} bytes", num_read);
                 if(num_read > 0) {
                     ::send(socket, buffer, num_read, 0);
                 }
