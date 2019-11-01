@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION ${CMAKE_VERSION})
 project(wiring_utils)
 
-add_library(wiring_utils SHARED src/temperature.cpp include/wiring_utils/temperature.hpp src/wiring_context.cpp include/wiring_utils/wiring_context.hpp)
+add_library(wiring_utils SHARED src/temperature.cpp include/wiring_utils/temperature.hpp src/wiring_context.cpp include/wiring_utils/wiring_context.hpp include/wiring_utils/bmp280.hpp src/bmp280.cpp)
 
-target_include_directories(wiring_utils PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_link_libraries(wiring_utils /usr/lib/libwiringPi.so)
+add_dependencies(wiring_utils common_utils)
+
+target_include_directories(wiring_utils PUBLIC ${CMAKE_SOURCE_DIR}/common_utils/include ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_link_libraries(wiring_utils /usr/lib/libwiringPi.so common_utils)

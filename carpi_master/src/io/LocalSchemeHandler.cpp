@@ -85,6 +85,7 @@ namespace carpi::io {
         headers.emplace ("Access-Control-Allow-Origin", "*");
 
         if (!_is_found || _has_file_error) {
+            log->warn("Did not find some file: {}", _file_name);
             response->SetStatus(404);
             response->SetStatusText(_has_file_error ? _file_error : "File Not Found");
             response_length = 0;
@@ -95,12 +96,9 @@ namespace carpi::io {
             response_length = static_cast<int64_t>(_file_size);
             redirectUrl = "";
 
-            log->info("File {}. Response length: {}", _file_name, response_length);
-
             response->SetStatus(200);
             response->SetStatusText("OK");
             response->SetMimeType(mime_type.empty() ? "text/plain" : mime_type);
-            headers.emplace("Content-Length", std::to_string(response_length));
         }
 
         response->SetHeaderMap (headers);
