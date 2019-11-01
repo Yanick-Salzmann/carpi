@@ -3,6 +3,7 @@
 
 #include <sys/socket.h>
 #include <common_utils/string.hpp>
+#include <iostream>
 
 namespace carpi::data {
     LOGGER_IMPL(HttpResponse);
@@ -45,15 +46,16 @@ namespace carpi::data {
         hdr_line << "\r\n";
 
         const auto hdr_string = hdr_line.str();
-        ::send(socket, hdr_string.c_str(), hdr_string.size(), 0);
+        //::send(socket, hdr_string.c_str(), hdr_string.size(), 0);
 
         if(_response_file != nullptr) {
             char buffer[4096]{};
-            log->info("Returning file...");
             auto num_read = 0;
             do {
                 num_read = fread(_response_file, 1, sizeof buffer, _response_file);
                 log->info("Read {} bytes", num_read);
+                std::cout << std::endl;
+                std::this_thread::sleep_for(std::chrono::seconds{2});
                 if(num_read > 0) {
                     ::send(socket, buffer, num_read, 0);
                 }
