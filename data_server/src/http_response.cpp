@@ -36,8 +36,6 @@ namespace carpi::data {
             const auto response_size = ftell(_response_file);
             fseek(_response_file, 0, SEEK_SET);
             add_header("Content-Length", std::to_string(response_size));
-            add_header("Content-Type", "video/mp4");
-            log->info("Sending {} bytes", response_size);
         }
 
         for(const auto& hdr : _headers) {
@@ -46,23 +44,18 @@ namespace carpi::data {
         hdr_line << "\r\n";
 
         const auto hdr_string = hdr_line.str();
-        //::send(socket, hdr_string.c_str(), hdr_string.size(), 0);
+        ::send(socket, hdr_string.c_str(), hdr_string.size(), 0);
 
         if(_response_file != nullptr) {
             char buffer[4096]{};
             auto num_read = 0;
             do {
-                std::cout << std::endl;
-                std::this_thread::sleep_for(std::chrono::seconds{2});
-                num_read = fread(_response_file, 1, sizeof buffer, _response_file);
-                log->info("Read {} bytes", num_read);
+                num_read = fread(buffer, 1, sizeof buffer, _response_file);
                 if(num_read > 0) {
                     ::send(socket, buffer, num_read, 0);
                 }
             } while(num_read > 0);
         }
-
-        log->info("Sent file");
 
         fclose(_response_file);
         _response_file = nullptr;
