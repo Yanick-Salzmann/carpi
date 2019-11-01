@@ -46,10 +46,17 @@ namespace carpi::wiring {
 
         read_coefficients();
         set_parameters();
+        std::this_thread::sleep_for(std::chrono::milliseconds{100});
     }
 
-    void BMP280Sensor::sample() {
-
+    BMP280Sample BMP280Sensor::sample() {
+        const auto temp = read_temperature();
+        const auto pressure = read_pressure();
+        return {
+            .temperature = temp,
+            .pressure = pressure,
+            .altitude = read_altitude(pressure)
+        };
     }
 
     void BMP280Sensor::read_coefficients() {
@@ -157,8 +164,6 @@ namespace carpi::wiring {
     }
 
     float BMP280Sensor::read_pressure() {
-        read_temperature(); // needs to set up _temperature_fine
-
         int32_t adc_p = read24(BMP280_REGISTER_PRESSUREDATA);
         adc_p >>= 4;
 
@@ -181,6 +186,11 @@ namespace carpi::wiring {
         p = ((p + var1 + var2) >> 8) + (((int64_t) _coeff_P7) << 4);
 
         return p / 256.0f;
+    }
+
+    float BMP280Sensor::read_altitude(float pressure) {
+        pressure /= 100.0f;
+        return 44330.0f * (1.0f - powf(pressure / 1013.25f, 0.1903f));
     }
 
 #pragma clang diagnostic pop

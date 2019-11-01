@@ -16,6 +16,7 @@
 #include <wiringPi.h>
 
 #include <data_server/http_server.hpp>
+#include <wiring_utils/bmp280.hpp>
 
 class MemoryStreamSource : public carpi::video::IStreamSource {
     LOGGER;
@@ -45,11 +46,22 @@ namespace carpi {
     char **_argv;
 
     int main(int argc, char *argv[]) {
+        utils::Logger log{"main"};
         _argc = argc;
         _argv = argv;
 
+        bool run = true;
+        wiring::BMP280Sensor temp_sensor{};
+
+        std::thread t{[&run, &temp_sensor, &log](){
+            while(run) {
+                const auto sample = temp_sensor.sample();
+                log->info("Temperature: {} °C, Pressure: {} hPa, Altitude: {}m", sample.temperature, sample.pressure, sample.altitude);
+                std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            }
+        }};
+
         video::H264Conversion::initialize_ffmpeg();
-        utils::Logger log{"main"};
 
         data::HttpServer http_server{8081};
 
@@ -66,6 +78,9 @@ namespace carpi {
 
         server.shutdown_acceptor();
         http_server.shutdown();
+
+        run = false;
+        t.join();
         return 0;
     }
 }

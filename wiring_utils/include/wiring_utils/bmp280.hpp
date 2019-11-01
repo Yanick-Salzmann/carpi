@@ -7,9 +7,10 @@
 #include <common_utils/log.hpp>
 
 namespace carpi::wiring {
-    enum class BMP280Values {
-        TEMPERATURE = 0,
-        PRESURE = 1
+    struct BMP280Sample {
+        float temperature;
+        float pressure;
+        float altitude;
     };
 
     class BMP280Sensor {
@@ -117,12 +118,12 @@ namespace carpi::wiring {
 
         float read_temperature();
         float read_pressure();
-        float read_altitude(float pressure);
+        static float read_altitude(float pressure);
 
     public:
         explicit BMP280Sensor(const std::string &bus = "/dev/i2c-1", uint8_t address = 0x76);
 
-        void sample();
+        BMP280Sample sample();
     };
 }
 
