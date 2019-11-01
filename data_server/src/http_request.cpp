@@ -38,8 +38,6 @@ namespace carpi::data {
             return;
         }
 
-        log->info("Returning file: {}", ui_file.string());
         HttpResponse{HttpStatusCode::OK, "OK"}.respond_with_file(ui_file.string()).write_to_socket(socket);
-        log->info("Responded to HTTP request: {}", path);
     }
 }
