@@ -29,7 +29,7 @@ namespace carpi::data {
         sockaddr_in sin{};
         sin.sin_family = AF_INET;
         sin.sin_port = htons(port);
-        sin.sin_addr.s_addr = INADDR_LOOPBACK;
+        sin.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
 
         auto rc = bind(_server_socket, (const sockaddr *) &sin, sizeof sin);
         if (rc < 0) {
