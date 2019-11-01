@@ -39,12 +39,14 @@ namespace carpi::io {
 
         }
 
+        CefRefPtr<CefResourceHandler> create_stream_handler(CefRefPtr<CefRequest> request);
+
         class Factory : public CefSchemeHandlerFactory {
             IMPLEMENT_REFCOUNTING(CefSchemeHandlerFactory);
 
         public:
             CefRefPtr<CefResourceHandler> Create(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, const CefString &scheme_name, CefRefPtr<CefRequest> request) override {
-                return CefRefPtr<CefResourceHandler>(new LocalSchemeHandler{});
+                return CefRefPtr<LocalSchemeHandler>(new LocalSchemeHandler{})->create_stream_handler(request);
             }
         };
     };

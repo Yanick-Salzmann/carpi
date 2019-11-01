@@ -4,6 +4,7 @@
 #include <string>
 #include <filesystem>
 #include <fstream>
+#include <include/wrapper/cef_stream_resource_handler.h>
 
 namespace carpi::io {
     LOGGER_IMPL(LocalSchemeHandler);
@@ -147,5 +148,54 @@ namespace carpi::io {
 
     bool LocalSchemeHandler::ReadResponse(void *data_out, int bytes_to_read, int &bytes_read, CefRefPtr<CefCallback> callback) {
         return Read(data_out, bytes_to_read, bytes_read, nullptr);
+    }
+
+    CefRefPtr<CefResourceHandler> LocalSchemeHandler::create_stream_handler(CefRefPtr<CefRequest> request) {
+        const auto url = request->GetURL();
+        CefURLParts url_parts{};
+        if (!CefParseURL(url, url_parts)) {
+            log->warn("Error parsing URL in CEF request: {}", url.ToString());
+            return nullptr;
+        }
+
+        auto url_path = CefString{&url_parts.path}.ToString();
+        if (url_path.empty()) {
+            log->warn("Invalid empty URL path in CEF request: {}", url.ToString());
+            return nullptr;
+        }
+
+        log->info("Attempting to load file: {}", url_path);
+
+        if (url_path[0] == '/') {
+            url_path = url_path.substr(1);
+        }
+
+        std::filesystem::path file_path;
+        try {
+            file_path = std::filesystem::path{url_path};
+        } catch (std::exception &e) {
+            return nullptr;
+        }
+
+        auto target_path = std::filesystem::path{"./../../carpi_master/ui"};
+        try {
+            target_path /= file_path;
+        } catch (std::exception &e) {
+            return nullptr;
+        }
+
+        if (!exists(target_path)) {
+            log->warn("File does not exist: {}", target_path.string());
+            return nullptr;
+        }
+
+        const auto extension = file_path.extension().string();
+
+        log->info("Serving {} from {}", url.ToString(), canonical(absolute(target_path)).string());
+
+        auto stream_handler = CefStreamReader::CreateForFile(file_path.string());
+
+        const auto mime_type = CefGetMimeType(!extension.empty() ? extension.substr(1) : extension);
+        return new CefStreamResourceHandler(mime_type.empty() ? "text/plain" : mime_type, stream_handler);
     }
 }
