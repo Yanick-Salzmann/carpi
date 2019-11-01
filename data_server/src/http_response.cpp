@@ -48,6 +48,7 @@ namespace carpi::data {
         ::send(socket, hdr_string.c_str(), hdr_string.size(), 0);
 
         if(_response_file != nullptr) {
+            log->info("Returning file...");
             char buffer[4096]{};
             auto num_read = 0;
             do {
