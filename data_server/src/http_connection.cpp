@@ -4,6 +4,8 @@
 #include <common_utils/string.hpp>
 #include <unistd.h>
 
+#include "data_server/http_request.hpp"
+
 namespace carpi::data {
     LOGGER_IMPL(HttpConnection);
 
@@ -15,14 +17,21 @@ namespace carpi::data {
         while(_is_running) {
             const auto method = utils::trim(read_until(' '));
             const auto path = utils::trim(read_until(' '));
-            const auto version =utils::trim(read_until("\r\n"));
+            const auto version = utils::trim(read_until("\r\n"));
 
             log->info("Got request: Method: {}, Path: {}, Version: {}", method, path, version);
+            HttpRequest req{method, path, version, _socket};
             break;
         }
+
+        shutdown();
     }
 
     void HttpConnection::shutdown() {
+        if(!_is_running) {
+            return;
+        }
+
         _is_running = false;
         ::shutdown(_socket, SHUT_RDWR);
         close(_socket);

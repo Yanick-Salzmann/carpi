@@ -10,6 +10,8 @@ namespace carpi::utils {
     std::string trim(const std::string& value) {
         return trim_left(trim_right(value));
     }
+
+    std::string to_lower(const std::string& value);
 }
 
 #endif //CARPI_COMMON_UTILS_STRING_HPP

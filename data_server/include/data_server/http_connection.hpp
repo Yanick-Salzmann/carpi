@@ -15,6 +15,8 @@ namespace carpi::data {
         std::thread _request_thread;
         volatile bool _is_running = true;
 
+
+
         void request_loop();
 
         std::string read_until(const char& delimiter) {

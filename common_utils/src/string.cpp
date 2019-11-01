@@ -21,4 +21,10 @@ namespace carpi::utils {
 
         return std::string{value.begin(), itr.base()};
     }
+
+    std::string to_lower(const std::string &value) {
+        std::string ret{};
+        std::transform(value.begin(), value.end(), std::back_inserter(ret), [](const auto& chr) { return std::tolower(chr); });
+        return ret;
+    }
 }
