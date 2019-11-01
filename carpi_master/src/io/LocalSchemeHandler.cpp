@@ -106,6 +106,10 @@ namespace carpi::io {
             response->SetStatus(200);
             response->SetStatusText("OK");
             response->SetMimeType(mime_type.empty() ? "text/plain" : mime_type);
+
+            if(mime_type.ToString().find("mp4") != std::string::npos) {
+                headers.emplace("Content-Range", fmt::format("bytes 0-{}/{}", _file_size, _file_size));
+            }
         }
 
         response->SetHeaderMap (headers);
