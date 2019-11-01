@@ -5,6 +5,8 @@
 #include <common_utils/error.hpp>
 #include <arpa/inet.h>
 
+#include "data_server/http_connection.hpp"
+
 namespace carpi::data {
     LOGGER_IMPL(HttpServer);
 
@@ -27,7 +29,7 @@ namespace carpi::data {
         sockaddr_in sin{};
         sin.sin_family = AF_INET;
         sin.sin_port = htons(port);
-        sin.sin_addr.s_addr = INADDR_ANY;
+        sin.sin_addr.s_addr = INADDR_LOOPBACK;
 
         auto rc = bind(_server_socket, (const sockaddr *) &sin, sizeof sin);
         if (rc < 0) {
@@ -55,6 +57,12 @@ namespace carpi::data {
         if (_acceptor_thread.joinable()) {
             _acceptor_thread.join();
         }
+
+        for(auto& connection : _active_connections) {
+            connection->shutdown();
+        }
+
+        _active_connections.clear();
     }
 
     void HttpServer::acceptor_loop() {
@@ -73,6 +81,8 @@ namespace carpi::data {
 
             std::string remote_addr = inet_ntoa(client_addr.sin_addr);
             log->info("Accepted HTTP client from {}:{}", remote_addr, ntohs(client_addr.sin_port));
+            auto connection = std::make_shared<HttpConnection>(rc);
+            _active_connections.emplace_back(connection);
         }
     }
 }

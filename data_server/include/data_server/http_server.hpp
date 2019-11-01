@@ -5,8 +5,12 @@
 #include <common_utils/log.hpp>
 
 #include <thread>
+#include <memory>
+#include <list>
 
 namespace carpi::data {
+    class HttpConnection;
+
     class HttpServer {
         LOGGER;
 
@@ -14,6 +18,8 @@ namespace carpi::data {
 
         std::thread _acceptor_thread;
         volatile bool _is_running = true;
+
+        std::list<std::shared_ptr<HttpConnection>> _active_connections{};
 
         void acceptor_loop();
 
