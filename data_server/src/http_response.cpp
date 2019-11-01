@@ -34,6 +34,7 @@ namespace carpi::data {
             const auto response_size = ftell(_response_file);
             fseek(_response_file, 0, SEEK_SET);
             add_header("Content-Length", std::to_string(response_size));
+            add_header("Content-Type", "video/mp4");
         }
 
         for(const auto& hdr : _headers) {
