@@ -7,7 +7,7 @@ namespace carpi::utils {
     std::string trim_left(const std::string& value);
     std::string trim_right(const std::string& value);
 
-    std::string trim(const std::string& value) {
+    inline std::string trim(const std::string& value) {
         return trim_left(trim_right(value));
     }
 
