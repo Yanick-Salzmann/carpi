@@ -15,6 +15,13 @@ namespace carpi::io {
     }
 
     bool LocalSchemeHandler::Open(CefRefPtr<CefRequest> request, bool &handle_request, CefRefPtr<CefCallback> callback) {
+        CefRequest::HeaderMap headers{};
+        request->GetHeaderMap(headers);
+
+        for(const auto& header : headers) {
+            log->info("{}: {}", header.first.ToString(), header.second.ToString());
+        }
+
         handle_request = true;
         const auto url = request->GetURL();
         CefURLParts url_parts{};
