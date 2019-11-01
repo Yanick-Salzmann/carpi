@@ -128,13 +128,11 @@ namespace carpi::io {
     }
 
     bool LocalSchemeHandler::ProcessRequest(CefRefPtr<CefRequest> request, CefRefPtr<CefCallback> callback) {
-        log->info("Process request was called");
         auto handle_request = false;
         return Open(request, handle_request, callback);
     }
 
     bool LocalSchemeHandler::ReadResponse(void *data_out, int bytes_to_read, int &bytes_read, CefRefPtr<CefCallback> callback) {
-        log->info("ReadResponse was called");
         return CefResourceHandler::ReadResponse(data_out, bytes_to_read, bytes_read, callback);
     }
 }

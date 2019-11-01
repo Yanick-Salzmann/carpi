@@ -15,6 +15,8 @@
 
 #include <wiringPi.h>
 
+#include <data_server/http_server.hpp>
+
 class MemoryStreamSource : public carpi::video::IStreamSource {
     LOGGER;
 
@@ -48,6 +50,9 @@ namespace carpi {
 
         video::H264Conversion::initialize_ffmpeg();
         utils::Logger log{"main"};
+
+        data::HttpServer http_server{8081};
+
         ui::WebCore core{};
 
         CommServer server{};
@@ -60,6 +65,7 @@ namespace carpi {
         core.manual_shutdown();
 
         server.shutdown_acceptor();
+        http_server.shutdown();
         return 0;
     }
 }

@@ -19,6 +19,7 @@ add_subdirectory(ipc_common)
 add_subdirectory(bluetooth_utils)
 add_subdirectory(video_stream)
 add_subdirectory(wiring_utils)
+add_subdirectory(data_server)
 
 add_subdirectory(obd)
 
