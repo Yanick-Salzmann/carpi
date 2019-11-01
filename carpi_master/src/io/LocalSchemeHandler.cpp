@@ -110,6 +110,8 @@ namespace carpi::io {
             if(mime_type.ToString().find("mp4") != std::string::npos) {
                 headers.emplace("Content-Range", fmt::format("bytes 0-{}/{}", _file_size, _file_size));
             }
+
+            headers.emplace("Content-Length", std::to_string(_file_size));
         }
 
         response->SetHeaderMap (headers);
