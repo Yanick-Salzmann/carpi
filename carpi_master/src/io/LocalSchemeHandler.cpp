@@ -146,6 +146,6 @@ namespace carpi::io {
     }
 
     bool LocalSchemeHandler::ReadResponse(void *data_out, int bytes_to_read, int &bytes_read, CefRefPtr<CefCallback> callback) {
-        return CefResourceHandler::ReadResponse(data_out, bytes_to_read, bytes_read, callback);
+        return Read(data_out, bytes_to_read, bytes_read, callback);
     }
 }
