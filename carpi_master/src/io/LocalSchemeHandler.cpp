@@ -191,9 +191,10 @@ namespace carpi::io {
 
         const auto extension = file_path.extension().string();
 
-        log->info("Serving {} from {}", url.ToString(), canonical(absolute(target_path)).string());
+        const auto path = canonical(absolute(target_path)).string();
 
-        auto stream_handler = CefStreamReader::CreateForFile(file_path.string());
+        auto stream_handler = CefStreamReader::CreateForFile(path);
+        log->info("Serving {} from {}", url.ToString(), path);
 
         const auto mime_type = CefGetMimeType(!extension.empty() ? extension.substr(1) : extension);
         return new CefStreamResourceHandler(mime_type.empty() ? "text/plain" : mime_type, stream_handler);
