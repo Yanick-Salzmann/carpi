@@ -52,10 +52,10 @@ namespace carpi::data {
             char buffer[4096]{};
             auto num_read = 0;
             do {
-                num_read = fread(_response_file, 1, sizeof buffer, _response_file);
-                log->info("Read {} bytes", num_read);
                 std::cout << std::endl;
                 std::this_thread::sleep_for(std::chrono::seconds{2});
+                num_read = fread(_response_file, 1, sizeof buffer, _response_file);
+                log->info("Read {} bytes", num_read);
                 if(num_read > 0) {
                     ::send(socket, buffer, num_read, 0);
                 }
