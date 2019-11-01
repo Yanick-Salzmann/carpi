@@ -36,6 +36,7 @@ namespace carpi::data {
             fseek(_response_file, 0, SEEK_SET);
             add_header("Content-Length", std::to_string(response_size));
             add_header("Content-Type", "video/mp4");
+            log->info("Sending {} bytes", response_size);
         }
 
         for(const auto& hdr : _headers) {
