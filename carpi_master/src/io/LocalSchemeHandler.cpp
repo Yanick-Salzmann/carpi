@@ -111,7 +111,7 @@ namespace carpi::io {
                 headers.emplace("Content-Range", fmt::format("bytes 0-{}/{}", _file_size, _file_size));
             }
 
-            headers.emplace("Content-Length", std::to_string(_file_size));
+            headers.emplace("Content-Length", fmt::format("{}", _file_size));
         }
 
         response->SetHeaderMap (headers);
