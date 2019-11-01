@@ -28,7 +28,7 @@ namespace carpi::data {
     public:
         explicit HttpConnection(int32_t socket);
 
-        void shutdown();
+        void shutdown(bool join = true);
     };
 }
 

@@ -14,7 +14,7 @@ namespace carpi::data {
     }
 
     void HttpConnection::request_loop() {
-        while(_is_running) {
+        while (_is_running) {
             const auto method = utils::trim(read_until(' '));
             const auto path = utils::trim(read_until(' '));
             const auto version = utils::trim(read_until("\r\n"));
@@ -24,11 +24,11 @@ namespace carpi::data {
             break;
         }
 
-        shutdown();
+        shutdown(false);
     }
 
-    void HttpConnection::shutdown() {
-        if(!_is_running) {
+    void HttpConnection::shutdown(bool join) {
+        if (!_is_running) {
             return;
         }
 
@@ -36,8 +36,10 @@ namespace carpi::data {
         ::shutdown(_socket, SHUT_RDWR);
         close(_socket);
 
-        if(_request_thread.joinable()) {
-            _request_thread.join();
+        if (join) {
+            if (_request_thread.joinable()) {
+                _request_thread.join();
+            }
         }
     }
 
@@ -45,16 +47,16 @@ namespace carpi::data {
         std::string cur_part{};
         const auto is_single_char_delimiter = delimiter.length() == 1;
 
-        while(true) {
+        while (true) {
             char chr{};
-            if(recv(_socket, &chr, sizeof chr, 0) != sizeof chr) {
+            if (recv(_socket, &chr, sizeof chr, 0) != sizeof chr) {
                 break;
             }
 
             cur_part += chr;
-            if(is_single_char_delimiter && delimiter[0] == chr) {
+            if (is_single_char_delimiter && delimiter[0] == chr) {
                 return cur_part;
-            } else if(cur_part.find(delimiter) != std::string::npos) {
+            } else if (cur_part.find(delimiter) != std::string::npos) {
                 return cur_part;
             }
         }
