@@ -222,7 +222,7 @@ namespace carpi::wiring {
 
     float BMP280Sensor::read_altitude(float pressure) {
         pressure /= 100.0f;
-        return 44330.0f * (1.0f - powf(pressure / 1013.25f, 0.1903f));
+        return 40330.0f * (1.0f - powf(pressure / 1013.25f, 0.1903f));
     }
 
     bool BMP280Sensor::is_calibrating() {
