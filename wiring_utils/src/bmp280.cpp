@@ -54,7 +54,7 @@ namespace carpi::wiring {
         const auto pressure = read_pressure();
         return {
             .temperature = temp,
-            .pressure = pressure,
+            .pressure = pressure / 100.0f,
             .altitude = read_altitude(pressure)
         };
     }
@@ -62,8 +62,8 @@ namespace carpi::wiring {
     void BMP280Sensor::read_coefficients() {
         // temperature coeffs
         _coeff_T1 = read16LE(BMP280_REGISTER_DIG_T1, true);
-        _coeff_T2 = read16LE(BMP280_REGISTER_DIG_T2, true);
-        _coeff_T3 = read16LE(BMP280_REGISTER_DIG_T3, true);
+        _coeff_T2 = read16SLE(BMP280_REGISTER_DIG_T2, true);
+        _coeff_T3 = read16SLE(BMP280_REGISTER_DIG_T3, true);
 
         // pressure coeffs
         _coeff_P1 = read16LE(BMP280_REGISTER_DIG_P1, true);
