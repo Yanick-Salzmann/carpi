@@ -201,7 +201,6 @@ namespace carpi::video {
         }
 
         _data_variable.notify_all();
-        log->info("H264 data received");
     }
 
     bool RawCameraStream::start_capture() {
