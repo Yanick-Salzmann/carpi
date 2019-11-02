@@ -60,15 +60,6 @@ namespace carpi::wiring {
     }
 
     void BMP280Sensor::read_coefficients() {
-        uint8_t addr_req[] = {0x88};
-        write(_device, addr_req, sizeof addr_req);
-        char dig_data[24]{};
-
-        if (read(_device, dig_data, sizeof dig_data) != sizeof dig_data) {
-            log->warn("Error reading sample from BMP280 sensor: {} (errno={})", utils::error_to_string(errno), errno);
-            throw std::runtime_error{"Error reading BMP280 coefficients"};
-        }
-
         // temperature coeffs
         _coeff_T1 = read16LE(BMP280_REGISTER_DIG_T1, true);
         _coeff_T2 = read16LE(BMP280_REGISTER_DIG_T2, true);
