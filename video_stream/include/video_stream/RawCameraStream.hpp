@@ -79,7 +79,7 @@ namespace carpi::video {
         static void video_data_callback(MMAL_PORT_T* port, MMAL_BUFFER_HEADER_T* buffer);
 
         void handle_camera_control(MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buffer);
-        void handle_video_data(MMAL_PORT_T* port, MMAL_BUFFER_HEADER_T* buffer);
+        void handle_video_data(MMAL_PORT_T* port, MMAL_BUFFER_HEADER_T* buffer, std::shared_ptr<MMAL_BUFFER_HEADER_T>& buffer_ptr);
 
     public:
         void initialize_camera(const CameraConfiguration& configuration);

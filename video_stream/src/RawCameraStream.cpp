@@ -164,10 +164,10 @@ namespace carpi::video {
         }
 
         auto *camera_stream = (RawCameraStream *) port->userdata;
-        camera_stream->handle_video_data(port, buffer);
+        camera_stream->handle_video_data(port, buffer, p);
     }
 
-    void RawCameraStream::handle_video_data(MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buffer) {
+    void RawCameraStream::handle_video_data(MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buffer, std::shared_ptr<MMAL_BUFFER_HEADER_T>& buffer_ptr) {
         if (buffer->length <= 0 || _camera == nullptr || _video_port == nullptr) {
             return;
         }
@@ -180,16 +180,15 @@ namespace carpi::video {
         }
 
         {
-            std::shared_ptr<MMAL_BUFFER_HEADER_T> bp{buffer, [this](auto *buff) {
-                mmal_buffer_header_mem_unlock(buff);
-                log->info("mmal_buffer_header_mem_unlock");
-            }};
+            std::shared_ptr<MMAL_BUFFER_HEADER_T> bp{buffer, [this](auto *buff) { mmal_buffer_header_mem_unlock(buff); }};
             if (_buffer_data.size() < buffer->length) {
                 _buffer_data.resize(buffer->length);
             }
 
             memcpy(_buffer_data.data(), buffer->data, buffer->length);
         }
+
+        buffer_ptr.reset();
 
         status = MMAL_SUCCESS;
         const auto new_buffer = mmal_queue_get(_video_pool.get()->queue);
