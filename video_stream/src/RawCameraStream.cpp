@@ -83,31 +83,35 @@ namespace carpi::video {
 
         status = mmal_port_format_commit(video_port);
         if (status != MMAL_SUCCESS) {
-            log->error("Error setting video format: {}",  status);
+            log->error("Error setting video format: {}", status);
             throw std::runtime_error("Error setting up camera");
         }
 
         video_port->userdata = reinterpret_cast<struct MMAL_PORT_USERDATA_T *>(this);
 
         status = mmal_port_enable(video_port, &RawCameraStream::video_data_callback);
-        if(status != MMAL_SUCCESS) {
+        if (status != MMAL_SUCCESS) {
             log->error("Error sending video event callback to camera: {}", status);
             throw std::runtime_error{"Error setting up camera"};
+        }
+
+        if (video_port->buffer_num < VIDEO_OUTPUT_BUFFERS_NUM) {
+            video_port->buffer_num = VIDEO_OUTPUT_BUFFERS_NUM;
         }
 
         video_port->buffer_size = video_port->buffer_size_recommended;
         video_port->buffer_num = video_port->buffer_num_recommended;
 
         const auto pool = mmal_port_pool_create(video_port, video_port->buffer_num, video_port->buffer_size);
-        if(pool == nullptr) {
+        if (pool == nullptr) {
             log->error("Error creating mmal buffer queue");
             throw std::runtime_error("Error setting up camera");
         }
 
-        _video_pool = std::shared_ptr<MMAL_POOL_T>(pool, [video_port](auto* pool) { mmal_port_pool_destroy(video_port, pool); });
+        _video_pool = std::shared_ptr<MMAL_POOL_T>(pool, [video_port](auto *pool) { mmal_port_pool_destroy(video_port, pool); });
 
         status = mmal_component_enable(camera);
-        if(status != MMAL_SUCCESS) {
+        if (status != MMAL_SUCCESS) {
             log->error("Error enabling camera component: {})", status);
             throw std::runtime_error{"Error setting up camera"};
         }
@@ -184,11 +188,11 @@ namespace carpi::video {
 
         status = MMAL_SUCCESS;
         const auto new_buffer = mmal_queue_get(_video_pool.get()->queue);
-        if(new_buffer != nullptr) {
+        if (new_buffer != nullptr) {
             status = mmal_port_send_buffer(port, new_buffer);
         }
 
-        if(!new_buffer || status != MMAL_SUCCESS) {
+        if (!new_buffer || status != MMAL_SUCCESS) {
             log->warn("Error sending new buffer to camera");
         }
 
@@ -197,18 +201,18 @@ namespace carpi::video {
     }
 
     bool RawCameraStream::start_capture() {
-        if(mmal_port_parameter_set_boolean(_video_port, MMAL_PARAMETER_CAPTURE, 1) != MMAL_SUCCESS) {
+        if (mmal_port_parameter_set_boolean(_video_port, MMAL_PARAMETER_CAPTURE, 1) != MMAL_SUCCESS) {
             log->warn("Error setting MMAL_PARAMETER_CAPTURE to true");
             return false;
         }
 
         const auto queue_size = mmal_queue_length(_video_pool.get()->queue);
-        for(auto i = 0u; i < queue_size; ++i) {
+        for (auto i = 0u; i < queue_size; ++i) {
             auto buffer = mmal_queue_get(_video_pool.get()->queue);
-            if(!buffer) {
+            if (!buffer) {
                 log->warn("There was an error getting a buffer from the queue");
             } else {
-                if(mmal_port_send_buffer(_video_port, buffer) != MMAL_SUCCESS) {
+                if (mmal_port_send_buffer(_video_port, buffer) != MMAL_SUCCESS) {
                     log->warn("There was an error sending a buffer to the video port");
                 }
             }
