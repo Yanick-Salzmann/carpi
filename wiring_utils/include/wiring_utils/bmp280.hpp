@@ -116,22 +116,7 @@ namespace carpi::wiring {
 
         uint32_t read24(uint8_t reg, bool do_throw = false);
 
-        void write_data(uint8_t reg, const void *data, std::size_t num_bytes);
-
-        void write_data(uint8_t reg) {
-            write_data(reg, nullptr, 0);
-        }
-
-        template<std::size_t N>
-        void write_data(uint8_t reg, const std::array<uint8_t, N> &data) {
-            write_data(reg, data.data(), data.size());
-        }
-
-        template<typename T>
-        void write_data(uint8_t reg, const T &data) {
-            write_data(reg, &data, sizeof data);
-        }
-
+        void select_register(uint8_t reg);
         void write8(uint8_t reg, uint8_t value);
 
         float read_temperature();

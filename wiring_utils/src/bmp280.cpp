@@ -133,7 +133,7 @@ namespace carpi::wiring {
     }
 
     uint8_t BMP280Sensor::read8(uint8_t reg, bool do_throw) {
-        write_data(reg);
+        select_register(reg);
 
         uint8_t ret_val = 0;
         if (read(_device, &ret_val, sizeof ret_val) != sizeof ret_val) {
@@ -148,7 +148,7 @@ namespace carpi::wiring {
     }
 
     uint16_t BMP280Sensor::read16(uint8_t reg, bool do_throw) {
-        write_data(reg);
+        select_register(reg);
 
         uint16_t ret_val = 0;
         if (read(_device, &ret_val, sizeof ret_val) != sizeof ret_val) {
@@ -168,7 +168,7 @@ namespace carpi::wiring {
     }
 
     uint32_t BMP280Sensor::read24(uint8_t reg, bool do_throw) {
-        write_data(reg);
+        select_register(reg);
         uint8_t byte_vals[3]{};
         if (::read(_device, byte_vals, sizeof byte_vals) != sizeof byte_vals) {
             log->warn("Error reading 24 bit value from BMP sensor: {} (errno={})", utils::error_to_string(errno), errno);
@@ -181,13 +181,6 @@ namespace carpi::wiring {
         }
 
         return ((uint32_t) byte_vals[2]) | (((uint32_t) byte_vals[1]) << 8u) | (((uint32_t) byte_vals[0]) << 16u);
-    }
-
-    void BMP280Sensor::write_data(uint8_t reg, const void *data, std::size_t num_bytes) {
-        ::write(_device, &reg, sizeof reg);
-        if (num_bytes > 0) {
-            ::write(_device, data, num_bytes);
-        }
     }
 
 #pragma clang diagnostic push
@@ -247,6 +240,10 @@ namespace carpi::wiring {
     void BMP280Sensor::write8(uint8_t reg, uint8_t value) {
         uint8_t req[]{reg, value};
         ::write(_device, req, 2);
+    }
+
+    void BMP280Sensor::select_register(uint8_t reg) {
+        ::write(_device, &reg, 1);
     }
 
 #pragma clang diagnostic pop
