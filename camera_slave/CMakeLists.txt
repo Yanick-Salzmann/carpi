@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION ${CMAKE_VERSION})
 project(camera_slave)
 
-add_executable(camera_slave src/main.cpp src/camera/RawCameraStream.hpp src/camera/RawCameraStream.cpp)
+add_executable(camera_slave src/main.cpp)
 
 pkg_search_module(MMAL REQUIRED mmal)
 

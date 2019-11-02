@@ -1,5 +1,5 @@
 #include <common_utils/error.hpp>
-#include "RawCameraStream.hpp"
+#include "video_stream/RawCameraStream.hpp"
 
 #include "interface/mmal/util/mmal_default_components.h"
 
@@ -176,5 +176,6 @@ namespace carpi::camera {
         }
 
         _data_variable.notify_all();
+        log->info("H264 data received");
     }
 }
