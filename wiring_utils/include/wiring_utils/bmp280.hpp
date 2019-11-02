@@ -132,6 +132,8 @@ namespace carpi::wiring {
             write_data(reg, &data, sizeof data);
         }
 
+        void write8(uint8_t reg, uint8_t value);
+
         float read_temperature();
         float read_pressure();
         static float read_altitude(float pressure);

@@ -62,12 +62,12 @@ namespace carpi::wiring {
         auto chip_id = read8(BME280_REGISTER_CHIPID, true);
         log->info("Chip ID: {}", chip_id);
 
-        write_data(BME280_REGISTER_SOFTRESET, uint8_t{0xB6});
+        write8(BME280_REGISTER_SOFTRESET, 0xB6);
 
         std::this_thread::sleep_for(std::chrono::milliseconds{300});
 
         while(is_calibrating()) {
-            std::this_thread::sleep_for(std::chrono::milliseconds{400});
+            std::this_thread::sleep_for(std::chrono::milliseconds{100});
         }
 
         read_coefficients();
@@ -112,24 +112,24 @@ namespace carpi::wiring {
     }
 
     void BMP280Sensor::set_parameters() {
-        write_data(BME280_REGISTER_CONTROL, MODE_SLEEP);
+        write8(BME280_REGISTER_CONTROL, MODE_SLEEP);
 
         HumidityControl hum_ctrl{};
         hum_ctrl.oversampling_humidity = SAMPLING_X16;
-        write_data(BME280_REGISTER_CONTROLHUMID, hum_ctrl.value());
+        write8(BME280_REGISTER_CONTROLHUMID, hum_ctrl.value());
 
         Config config_reg{};
         config_reg.filter = FILTER_OFF;
         config_reg.t_sb = STANDBY_MS_1;
 
-        write_data(BME280_REGISTER_CONFIG, config_reg.value());
+        write8(BME280_REGISTER_CONFIG, config_reg.value());
 
         MeasurementControl meas_reg{};
         meas_reg.mode = MODE_NORMAL;
         meas_reg.oversampling_pressure = SAMPLING_X16;
         meas_reg.oversampling_temperature = SAMPLING_X16;
 
-        write_data(BME280_REGISTER_CONTROL, meas_reg.value());
+        write8(BME280_REGISTER_CONTROL, meas_reg.value());
     }
 
     uint8_t BMP280Sensor::read8(uint8_t reg, bool do_throw) {
@@ -242,6 +242,11 @@ namespace carpi::wiring {
     bool BMP280Sensor::is_calibrating() {
         const auto status = read8(BME280_REGISTER_STATUS);
         return (status & 1) != 0;
+    }
+
+    void BMP280Sensor::write8(uint8_t reg, uint8_t value) {
+        uint8_t req[]{reg, value};
+        ::write(_device, req, 2);
     }
 
 #pragma clang diagnostic pop
