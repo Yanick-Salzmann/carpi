@@ -1,5 +1,5 @@
-#ifndef CARPI_WIRING_UTILS_BMP280_HPP
-#define CARPI_WIRING_UTILS_BMP280_HPP
+#ifndef CARPI_WIRING_UTILS_BME280_HPP
+#define CARPI_WIRING_UTILS_BME280_HPP
 
 #include <cstdint>
 #include <string>
@@ -7,13 +7,13 @@
 #include <common_utils/log.hpp>
 
 namespace carpi::wiring {
-    struct BMP280Sample {
+    struct BME280Sample {
         float temperature;
         float pressure;
         float altitude;
     };
 
-    class BMP280Sensor {
+    class BME280Sensor {
         LOGGER;
 
         enum SensorSampling {
@@ -125,10 +125,10 @@ namespace carpi::wiring {
         static float read_altitude(float pressure);
 
     public:
-        explicit BMP280Sensor(const std::string &bus = "/dev/i2c-1", uint8_t address = 0x76);
+        explicit BME280Sensor(const std::string &bus = "/dev/i2c-1", uint8_t address = 0x76);
 
-        BMP280Sample sample();
+        BME280Sample sample();
     };
 }
 
-#endif //CARPI_WIRING_UTILS_BMP280_HPP
+#endif //CARPI_WIRING_UTILS_BME280_HPP

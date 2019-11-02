@@ -5,5 +5,5 @@ add_library(data_server SHARED src/http_server.cpp include/data_server/http_serv
 
 add_dependencies(data_server common_utils)
 
-target_include_directories(data_server PUBLIC ${CMAKE_SOURCE_DIR}/common_utils/include ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_link_libraries(data_server  common_utils)
+target_include_directories(data_server PUBLIC ${CMAKE_SOURCE_DIR}/common_utils/include ${CMAKE_CURRENT_SOURCE_DIR}/include /usr/local/include/cef)
+target_link_libraries(data_server common_utils /usr/local/lib/libcef_dll_wrapper.a /usr/local/bin/libcef.so)

@@ -15,6 +15,7 @@ namespace carpi::data {
         FORBIDDEN = 403,
         INVALID_METHOD = 405,
         INTERNAL_SERVER_ERROR = 500,
+        NOT_IMPLEMENTED = 501,
         NOT_SUPPORTED = 505
     };
 
@@ -34,7 +35,7 @@ namespace carpi::data {
 
         ~HttpResponse();
 
-        void add_header(const std::string& name, const std::string& value);
+        HttpResponse& add_header(const std::string& name, const std::string& value);
 
         HttpResponse& respond_with_file(const std::string& path);
 

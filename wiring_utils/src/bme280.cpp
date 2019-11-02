@@ -1,4 +1,4 @@
-#include "wiring_utils/bmp280.hpp"
+#include "wiring_utils/bme280.hpp"
 
 #include <fcntl.h>
 #include <sys/ioctl.h>
@@ -7,7 +7,7 @@
 #include <common_utils/error.hpp>
 
 namespace carpi::wiring {
-    LOGGER_IMPL(BMP280Sensor);
+    LOGGER_IMPL(BME280Sensor);
 
     enum {
         BME280_REGISTER_DIG_T1 = 0x88,
@@ -47,7 +47,7 @@ namespace carpi::wiring {
         BME280_REGISTER_HUMIDDATA = 0xFD
     };
 
-    BMP280Sensor::BMP280Sensor(const std::string &bus, uint8_t address) {
+    BME280Sensor::BME280Sensor(const std::string &bus, uint8_t address) {
         _device = open(bus.c_str(), O_RDWR);
         if (_device < 0) {
             log->warn("Error opening i2c bus '{}': {} (errno={})", bus, utils::error_to_string(errno), errno);
@@ -75,7 +75,7 @@ namespace carpi::wiring {
         std::this_thread::sleep_for(std::chrono::milliseconds{100});
     }
 
-    BMP280Sample BMP280Sensor::sample() {
+    BME280Sample BME280Sensor::sample() {
         const auto temp = read_temperature();
         const auto pressure = read_pressure();
         return {
@@ -85,7 +85,7 @@ namespace carpi::wiring {
         };
     }
 
-    void BMP280Sensor::read_coefficients() {
+    void BME280Sensor::read_coefficients() {
         // temperature coeffs
         _coeff_T1 = read16LE(BME280_REGISTER_DIG_T1, true);
         _coeff_T2 = read16SLE(BME280_REGISTER_DIG_T2, true);
@@ -111,7 +111,7 @@ namespace carpi::wiring {
         _coeff_H6 = read8(BME280_REGISTER_DIG_H6);
     }
 
-    void BMP280Sensor::set_parameters() {
+    void BME280Sensor::set_parameters() {
         write8(BME280_REGISTER_CONTROL, MODE_SLEEP);
 
         HumidityControl hum_ctrl{};
@@ -132,7 +132,7 @@ namespace carpi::wiring {
         write8(BME280_REGISTER_CONTROL, meas_reg.value());
     }
 
-    uint8_t BMP280Sensor::read8() {
+    uint8_t BME280Sensor::read8() {
         uint8_t ret{};
         if (read(_device, &ret, 1) != 1) {
             log->warn("Error reading single byte from device: {} (errno={})", utils::error_to_string(errno), errno);
@@ -141,14 +141,14 @@ namespace carpi::wiring {
         return ret;
     }
 
-    uint8_t BMP280Sensor::read8(uint8_t reg, bool do_throw) {
+    uint8_t BME280Sensor::read8(uint8_t reg, bool do_throw) {
         select_register(reg);
 
         uint8_t ret_val = 0;
         if (read(_device, &ret_val, sizeof ret_val) != sizeof ret_val) {
-            log->warn("Error reading uint8 value from BMP sensor: {} (errno={})", utils::error_to_string(errno), errno);
+            log->warn("Error reading uint8 value from BME sensor: {} (errno={})", utils::error_to_string(errno), errno);
             if (do_throw) {
-                throw std::runtime_error{"Error reading uint8 value from BMP sensor"};
+                throw std::runtime_error{"Error reading uint8 value from BME sensor"};
             }
             return 0;
         }
@@ -156,17 +156,17 @@ namespace carpi::wiring {
         return ret_val;
     }
 
-    uint16_t BMP280Sensor::read16(uint8_t reg, bool do_throw) {
+    uint16_t BME280Sensor::read16(uint8_t reg, bool do_throw) {
         select_register(reg);
         return (uint16_t) (((uint16_t) read8()) << 8u) | read8();
     }
 
-    uint16_t BMP280Sensor::read16LE(uint8_t reg, bool do_throw) {
+    uint16_t BME280Sensor::read16LE(uint8_t reg, bool do_throw) {
         const auto be_value = read16(reg, do_throw);
         return (uint16_t) (be_value >> 8u) | (uint16_t) (be_value << 8u);
     }
 
-    uint32_t BMP280Sensor::read24(uint8_t reg, bool do_throw) {
+    uint32_t BME280Sensor::read24(uint8_t reg, bool do_throw) {
         select_register(reg);
         uint32_t value = read8();
         value <<= 8u;
@@ -179,7 +179,7 @@ namespace carpi::wiring {
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "hicpp-signed-bitwise"
 
-    float BMP280Sensor::read_temperature() {
+    float BME280Sensor::read_temperature() {
         int32_t adc_t = read24(BME280_REGISTER_TEMPDATA);
         adc_t >>= 4;
 
@@ -195,7 +195,7 @@ namespace carpi::wiring {
         return T / 100.0f;
     }
 
-    float BMP280Sensor::read_pressure() {
+    float BME280Sensor::read_pressure() {
         int32_t adc_p = read24(BME280_REGISTER_PRESSUREDATA);
         adc_p >>= 4;
 
@@ -220,22 +220,22 @@ namespace carpi::wiring {
         return p / 256.0f;
     }
 
-    float BMP280Sensor::read_altitude(float pressure) {
+    float BME280Sensor::read_altitude(float pressure) {
         pressure /= 100.0f;
-        return 40330.0f * (1.0f - powf(pressure / 1013.25f, 0.1903f));
+        return 44331.0f * (1.0f - powf(pressure / 1013.25f, 0.1903f));
     }
 
-    bool BMP280Sensor::is_calibrating() {
+    bool BME280Sensor::is_calibrating() {
         const auto status = read8(BME280_REGISTER_STATUS);
         return (status & 1) != 0;
     }
 
-    void BMP280Sensor::write8(uint8_t reg, uint8_t value) {
+    void BME280Sensor::write8(uint8_t reg, uint8_t value) {
         uint8_t req[]{reg, value};
         ::write(_device, req, 2);
     }
 
-    void BMP280Sensor::select_register(uint8_t reg) {
+    void BME280Sensor::select_register(uint8_t reg) {
         ::write(_device, &reg, 1);
     }
 

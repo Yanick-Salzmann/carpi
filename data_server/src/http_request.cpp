@@ -2,6 +2,7 @@
 #include "data_server/http_response.hpp"
 
 #include <filesystem>
+#include <common_utils/string.hpp>
 
 namespace carpi::data {
     LOGGER_IMPL(HttpRequest);
@@ -30,8 +31,49 @@ namespace carpi::data {
             file_path = file_path.substr(1);
         }
 
+        switch(find_request_type(file_path, file_path)) {
+            case RequestType::LOCAL_FILE: {
+                process_local_file(file_path, socket);
+                break;
+            }
+
+            case RequestType::CAMERA_STREAM: {
+                process_camera_stream(file_path, socket);
+                break;
+            }
+
+            default: {
+                HttpResponse{HttpStatusCode::BAD_REQUEST, "Unknown request type"}.write_to_socket(socket);
+                break;
+            }
+        }
+    }
+
+    RequestType HttpRequest::find_request_type(const std::string &path, std::string& remainder) {
+        std::string type_part{path};
+        const auto slash = path.find('/');
+        if (slash != std::string::npos) {
+            type_part = path.substr(0, slash);
+            remainder = path.substr(slash + 1);
+        }
+
+        if (type_part.empty()) {
+            return RequestType::UNKNOWN;
+        }
+
+        type_part = utils::to_lower(type_part);
+        if (type_part == "local") {
+            return RequestType::LOCAL_FILE;
+        } else if (type_part == "camera") {
+            return RequestType::CAMERA_STREAM;
+        } else {
+            return RequestType::UNKNOWN;
+        }
+    }
+
+    void HttpRequest::process_local_file(const std::string &path, int socket) {
         std::filesystem::path ui_root{"../../carpi_master/ui"};
-        std::filesystem::path ui_file = canonical(absolute(ui_root / file_path));
+        std::filesystem::path ui_file = canonical(absolute(ui_root / path));
         if (!exists(ui_file)) {
             log->warn("HTTP file not found: {}", ui_file.string());
             HttpResponse{HttpStatusCode::NOT_FOUND, "File not found"}.write_to_socket(socket);
@@ -39,5 +81,9 @@ namespace carpi::data {
         }
 
         HttpResponse{HttpStatusCode::OK, "OK"}.respond_with_file(ui_file.string()).write_to_socket(socket);
+    }
+
+    void HttpRequest::process_camera_stream(const std::string & path, int socket) {
+        HttpResponse{HttpStatusCode::NOT_IMPLEMENTED, "Not Yet Implemented"}.write_to_socket(socket);
     }
 }

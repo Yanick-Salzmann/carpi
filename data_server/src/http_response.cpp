@@ -23,7 +23,7 @@ namespace carpi::data {
         }
     }
 
-    void HttpResponse::add_header(const std::string &name, const std::string &value) {
+    HttpResponse& HttpResponse::add_header(const std::string &name, const std::string &value) {
         _headers.emplace(utils::to_lower(name), value);
     }
 
