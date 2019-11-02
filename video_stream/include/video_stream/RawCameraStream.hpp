@@ -73,6 +73,8 @@ namespace carpi::video {
 
         std::vector<uint8_t> _buffer_data{};
 
+        std::function<void(const std::vector<uint8_t>&, std::size_t)> _data_callback;
+
         static uint32_t map_format(VideoFormat format);
 
         static void camera_control_callback(MMAL_PORT_T* port, MMAL_BUFFER_HEADER_T* buffer);
@@ -82,6 +84,8 @@ namespace carpi::video {
         void handle_video_data(MMAL_PORT_T* port, MMAL_BUFFER_HEADER_T* buffer, std::shared_ptr<MMAL_BUFFER_HEADER_T>& buffer_ptr);
 
     public:
+        explicit RawCameraStream(std::function<void(const std::vector<uint8_t>&, std::size_t)> data_callback);
+
         void initialize_camera(const CameraConfiguration& configuration);
 
         bool start_capture();

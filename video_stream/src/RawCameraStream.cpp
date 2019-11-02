@@ -12,6 +12,10 @@
 namespace carpi::video {
     LOGGER_IMPL(RawCameraStream);
 
+    RawCameraStream::RawCameraStream(std::function<void(const std::vector<uint8_t>&, std::size_t)> data_callback) : _data_callback{std::move(data_callback)} {
+
+    }
+
     void RawCameraStream::initialize_camera(const CameraConfiguration &configuration) {
         MMAL_COMPONENT_T *camera = nullptr;
 
@@ -172,6 +176,7 @@ namespace carpi::video {
             return;
         }
 
+
         std::unique_lock<std::mutex> l{_data_read_lock};
         auto status = mmal_buffer_header_mem_lock(buffer);
         if (status != MMAL_SUCCESS) {
@@ -179,6 +184,7 @@ namespace carpi::video {
             return;
         }
 
+        std::size_t length = buffer->length;
         {
             std::shared_ptr<MMAL_BUFFER_HEADER_T> bp{buffer, [this](auto *buff) { mmal_buffer_header_mem_unlock(buff); }};
             if (_buffer_data.size() < buffer->length) {
@@ -201,6 +207,8 @@ namespace carpi::video {
         }
 
         _data_variable.notify_all();
+
+        _data_callback(_buffer_data, length);
     }
 
     bool RawCameraStream::start_capture() {
