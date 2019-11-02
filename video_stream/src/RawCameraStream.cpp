@@ -2,6 +2,7 @@
 #include "video_stream/RawCameraStream.hpp"
 
 #include "interface/mmal/util/mmal_default_components.h"
+#include "interface/mmal/util/mmal_util_params.h"
 
 #define MMAL_CAMERA_VIDEO_PORT 1
 #define MMAL_CAMERA_CAPTURE_PORT 2
@@ -69,6 +70,8 @@ namespace carpi::video {
 
         auto format = video_port->format;
 
+        format->encoding_variant = map_format(VideoFormat::H264);
+        format->encoding = map_format(VideoFormat::H264);
         format->es->video.width = VCOS_ALIGN_UP(configuration.width(), 32u);
         format->es->video.height = VCOS_ALIGN_UP(configuration.height(), 16u);
         format->es->video.crop.x = 0;
@@ -97,8 +100,16 @@ namespace carpi::video {
 
         _video_pool = std::shared_ptr<MMAL_POOL_T>(pool, [video_port](auto* pool) { mmal_port_pool_destroy(video_port, pool); });
 
+        status = mmal_component_enable(camera);
+        if(status != MMAL_SUCCESS) {
+            log->error("Error enabling camera component: {} (errno={})", utils::error_to_string(status), status);
+            throw std::runtime_error{"Error setting up camera"};
+        }
+
         _camera = camera_component;
         _video_port = video_port;
+
+        start_capture();
     }
 
     uint32_t RawCameraStream::map_format(VideoFormat format) {
@@ -177,5 +188,26 @@ namespace carpi::video {
 
         _data_variable.notify_all();
         log->info("H264 data received");
+    }
+
+    bool RawCameraStream::start_capture() {
+        if(mmal_port_parameter_set_boolean(_video_port, MMAL_PARAMETER_CAPTURE, 1) != MMAL_SUCCESS) {
+            log->warn("Error setting MMAL_PARAMETER_CAPTURE to true");
+            return false;
+        }
+
+        const auto queue_size = mmal_queue_length(_video_pool.get()->queue);
+        for(auto i = 0u; i < queue_size; ++i) {
+            auto buffer = mmal_queue_get(_video_pool.get()->queue);
+            if(!buffer) {
+                log->warn("There was an error getting a buffer from the queue");
+            } else {
+                if(mmal_port_send_buffer(_video_port, buffer) != MMAL_SUCCESS) {
+                    log->warn("There was an error sending a buffer to the video port");
+                }
+            }
+        }
+
+        return true;
     }
 }

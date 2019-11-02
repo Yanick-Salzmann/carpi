@@ -83,6 +83,8 @@ namespace carpi::video {
 
     public:
         void initialize_camera(const CameraConfiguration& configuration);
+
+        bool start_capture();
     };
 };
 
