@@ -79,19 +79,26 @@ namespace carpi::wiring {
 
         int32_t _temperature_fine = 0;
 
-        int32_t _coeff_T1 = 0;
-        int32_t _coeff_T2 = 0;
-        int32_t _coeff_T3 = 0;
+        uint16_t _coeff_T1 = 0;
+        int16_t _coeff_T2 = 0;
+        int16_t _coeff_T3 = 0;
 
-        int32_t _coeff_P1 = 0;
-        int32_t _coeff_P2 = 0;
-        int32_t _coeff_P3 = 0;
-        int32_t _coeff_P4 = 0;
-        int32_t _coeff_P5 = 0;
-        int32_t _coeff_P6 = 0;
-        int32_t _coeff_P7 = 0;
-        int32_t _coeff_P8 = 0;
-        int32_t _coeff_P9 = 0;
+        uint16_t _coeff_P1 = 0;
+        int16_t _coeff_P2 = 0;
+        int16_t _coeff_P3 = 0;
+        int16_t _coeff_P4 = 0;
+        int16_t _coeff_P5 = 0;
+        int16_t _coeff_P6 = 0;
+        int16_t _coeff_P7 = 0;
+        int16_t _coeff_P8 = 0;
+        int16_t _coeff_P9 = 0;
+
+        uint8_t _coeff_H1 = 0;
+        int16_t _coeff_H2 = 0;
+        uint8_t _coeff_H3 = 0;
+        int16_t _coeff_H4 = 0;
+        int16_t _coeff_H5 = 0;
+        int8_t _coeff_H6 = 0;
 
         void read_coefficients();
 

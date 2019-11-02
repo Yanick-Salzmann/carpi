@@ -38,7 +38,7 @@ namespace carpi::wiring {
         BME280_REGISTER_CAL26 = 0xE1,
 
         BME280_REGISTER_CONTROLHUMID = 0xF2,
-        BME280_REGISTER_STATUS = 0XF3,
+        BME280_REGISTER_STATUS = 0xF3,
         BME280_REGISTER_CONTROL = 0xF4,
         BME280_REGISTER_CONFIG = 0xF5,
 
@@ -69,8 +69,6 @@ namespace carpi::wiring {
         while(is_calibrating()) {
             std::this_thread::sleep_for(std::chrono::milliseconds{400});
         }
-
-        log->info("Done calibrating");
 
         read_coefficients();
         set_parameters();
@@ -103,6 +101,14 @@ namespace carpi::wiring {
         _coeff_P7 = read16SLE(BME280_REGISTER_DIG_P7, true);
         _coeff_P8 = read16SLE(BME280_REGISTER_DIG_P8, true);
         _coeff_P9 = read16SLE(BME280_REGISTER_DIG_P9, true);
+
+        // humidity coeffs
+        _coeff_H1 = read8(BME280_REGISTER_DIG_H1);
+        _coeff_H2 = read16SLE(BME280_REGISTER_DIG_H2);
+        _coeff_H3 = read8(BME280_REGISTER_DIG_H3);
+        _coeff_H4 = (read8(BME280_REGISTER_DIG_H4) << 4) | (read8(BME280_REGISTER_DIG_H4 + 1) & 0xF);
+        _coeff_H5 = (read8(BME280_REGISTER_DIG_H5 + 1) << 4) | (read8(BME280_REGISTER_DIG_H5) >> 4);
+        _coeff_H6 = read8(BME280_REGISTER_DIG_H6);
     }
 
     void BMP280Sensor::set_parameters() {
