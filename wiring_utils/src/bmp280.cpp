@@ -106,6 +106,8 @@ namespace carpi::wiring {
     }
 
     void BMP280Sensor::set_parameters() {
+        write_data(BME280_REGISTER_CONTROL, MODE_SLEEP);
+
         HumidityControl hum_ctrl{};
         hum_ctrl.oversampling_humidity = SAMPLING_X16;
         write_data(BME280_REGISTER_CONTROLHUMID, hum_ctrl.value());
