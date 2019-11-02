@@ -80,14 +80,14 @@ namespace carpi::wiring {
     void BMP280Sensor::set_parameters() {
         Config config_reg{};
         config_reg.filter = FILTER_OFF;
-        config_reg.t_sb = STANDBY_MS_1000;
+        config_reg.t_sb = STANDBY_MS_1;
 
         write_data(BMP280_REGISTER_CONFIG, config_reg.value());
 
         CtrlMeas meas_reg{};
         meas_reg.mode = MODE_NORMAL;
-        meas_reg.osrs_p = SAMPLING_X1;
-        meas_reg.osrs_t = SAMPLING_X1;
+        meas_reg.osrs_p = SAMPLING_X16;
+        meas_reg.osrs_t = SAMPLING_X16;
 
         write_data(BMP280_REGISTER_CONTROL, meas_reg.value());
     }
