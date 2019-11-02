@@ -179,7 +179,10 @@ namespace carpi::video {
             return;
         }
 
-        std::shared_ptr<MMAL_BUFFER_HEADER_T> bp{buffer, [](auto *buff) { mmal_buffer_header_mem_unlock(buff); }};
+        std::shared_ptr<MMAL_BUFFER_HEADER_T> bp{buffer, [this](auto *buff) {
+            mmal_buffer_header_mem_unlock(buff);
+            log->info("mmal_buffer_header_mem_unlock");
+        }};
         if (_buffer_data.size() < buffer->length) {
             _buffer_data.resize(buffer->length);
         }
