@@ -17,7 +17,7 @@ namespace carpi {
         video::H264Conversion::initialize_ffmpeg();
 
         video::RawCameraStream camera{};
-        camera.initialize_camera({1920, 1080, 30, 30});
+        camera.initialize_camera({800, 600, 5, 30});
 
         std::cin.get();
 

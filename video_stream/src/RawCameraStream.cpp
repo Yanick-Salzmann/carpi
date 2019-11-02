@@ -17,7 +17,7 @@ namespace carpi::video {
 
         auto status = mmal_component_create(MMAL_COMPONENT_DEFAULT_CAMERA, &camera);
         if (status != MMAL_SUCCESS) {
-            log->error("Error creating MMAL camera component: {} (error={})", utils::error_to_string(status), status);
+            log->error("Error creating MMAL camera component: {}", status);
             throw std::runtime_error("Error setting up camera");
         }
 
@@ -46,7 +46,7 @@ namespace carpi::video {
 
         status = mmal_port_parameter_set(camera->control, &cam_config.hdr);
         if (status != MMAL_SUCCESS) {
-            log->error("Error sending camera parameter config to camera: {} (errno={})", utils::error_to_string(status), status);
+            log->error("Error sending camera parameter config to camera: {}", status);
             throw std::runtime_error("Error setting up camera");
         }
 
@@ -58,13 +58,13 @@ namespace carpi::video {
 
         status = mmal_port_parameter_set(camera->control, &change_event_request.hdr);
         if (status != MMAL_SUCCESS) {
-            log->error("Error sending parameter change event to camera: {} (errno={})", utils::error_to_string(status), status);
+            log->error("Error sending parameter change event to camera: {}", status);
             throw std::runtime_error("Error setting up camera");
         }
 
         status = mmal_port_enable(camera->control, &RawCameraStream::camera_control_callback);
         if (status != MMAL_SUCCESS) {
-            log->error("Error sending camera event callback to camera: {} (errno={})", utils::error_to_string(status), status);
+            log->error("Error sending camera event callback to camera: {}", status);
             throw std::runtime_error("Error setting up camera");
         }
 
@@ -83,7 +83,7 @@ namespace carpi::video {
 
         status = mmal_port_format_commit(video_port);
         if (status != MMAL_SUCCESS) {
-            log->error("Error setting video format: {} (error={})", utils::error_to_string(status), status);
+            log->error("Error setting video format: {}",  status);
             throw std::runtime_error("Error setting up camera");
         }
 
@@ -102,7 +102,7 @@ namespace carpi::video {
 
         status = mmal_component_enable(camera);
         if(status != MMAL_SUCCESS) {
-            log->error("Error enabling camera component: {} (errno={})", utils::error_to_string(status), status);
+            log->error("Error enabling camera component: {})", status);
             throw std::runtime_error{"Error setting up camera"};
         }
 
