@@ -67,14 +67,14 @@ namespace carpi::wiring {
 
         // pressure coeffs
         _coeff_P1 = read16LE(BMP280_REGISTER_DIG_P1, true);
-        _coeff_P2 = read16LE(BMP280_REGISTER_DIG_P2, true);
-        _coeff_P3 = read16LE(BMP280_REGISTER_DIG_P3, true);
-        _coeff_P4 = read16LE(BMP280_REGISTER_DIG_P4, true);
-        _coeff_P5 = read16LE(BMP280_REGISTER_DIG_P5, true);
-        _coeff_P6 = read16LE(BMP280_REGISTER_DIG_P6, true);
-        _coeff_P7 = read16LE(BMP280_REGISTER_DIG_P7, true);
-        _coeff_P8 = read16LE(BMP280_REGISTER_DIG_P8, true);
-        _coeff_P9 = read16LE(BMP280_REGISTER_DIG_P9, true);
+        _coeff_P2 = read16SLE(BMP280_REGISTER_DIG_P2, true);
+        _coeff_P3 = read16SLE(BMP280_REGISTER_DIG_P3, true);
+        _coeff_P4 = read16SLE(BMP280_REGISTER_DIG_P4, true);
+        _coeff_P5 = read16SLE(BMP280_REGISTER_DIG_P5, true);
+        _coeff_P6 = read16SLE(BMP280_REGISTER_DIG_P6, true);
+        _coeff_P7 = read16SLE(BMP280_REGISTER_DIG_P7, true);
+        _coeff_P8 = read16SLE(BMP280_REGISTER_DIG_P8, true);
+        _coeff_P9 = read16SLE(BMP280_REGISTER_DIG_P9, true);
     }
 
     void BMP280Sensor::set_parameters() {
