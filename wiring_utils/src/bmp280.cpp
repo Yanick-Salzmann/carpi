@@ -66,7 +66,7 @@ namespace carpi::wiring {
 
         std::this_thread::sleep_for(std::chrono::milliseconds{300});
 
-        while(is_calibrating()) {
+        while (is_calibrating()) {
             std::this_thread::sleep_for(std::chrono::milliseconds{100});
         }
 
@@ -79,9 +79,9 @@ namespace carpi::wiring {
         const auto temp = read_temperature();
         const auto pressure = read_pressure();
         return {
-            .temperature = temp,
-            .pressure = pressure / 100.0f,
-            .altitude = read_altitude(pressure)
+                .temperature = temp,
+                .pressure = pressure / 100.0f,
+                .altitude = read_altitude(pressure)
         };
     }
 
@@ -132,6 +132,15 @@ namespace carpi::wiring {
         write8(BME280_REGISTER_CONTROL, meas_reg.value());
     }
 
+    uint8_t BMP280Sensor::read8() {
+        uint8_t ret{};
+        if (read(_device, &ret, 1) != 1) {
+            log->warn("Error reading single byte from device: {} (errno={})", utils::error_to_string(errno), errno);
+        }
+
+        return ret;
+    }
+
     uint8_t BMP280Sensor::read8(uint8_t reg, bool do_throw) {
         select_register(reg);
 
@@ -149,17 +158,7 @@ namespace carpi::wiring {
 
     uint16_t BMP280Sensor::read16(uint8_t reg, bool do_throw) {
         select_register(reg);
-
-        uint16_t ret_val = 0;
-        if (read(_device, &ret_val, sizeof ret_val) != sizeof ret_val) {
-            log->warn("Error reading uint16 value from BMP sensor: {} (errno={})", utils::error_to_string(errno), errno);
-            if (do_throw) {
-                throw std::runtime_error{"Error reading uint16 value from BMP sensor"};
-            }
-            return 0;
-        }
-
-        return ret_val;
+        return (uint16_t) (((uint16_t) read8()) << 8u) | read8();
     }
 
     uint16_t BMP280Sensor::read16LE(uint8_t reg, bool do_throw) {
@@ -169,18 +168,12 @@ namespace carpi::wiring {
 
     uint32_t BMP280Sensor::read24(uint8_t reg, bool do_throw) {
         select_register(reg);
-        uint8_t byte_vals[3]{};
-        if (::read(_device, byte_vals, sizeof byte_vals) != sizeof byte_vals) {
-            log->warn("Error reading 24 bit value from BMP sensor: {} (errno={})", utils::error_to_string(errno), errno);
-
-            if (do_throw) {
-                throw std::runtime_error{"Error reading 24 bit value from BMP sensor"};
-            }
-
-            return 0;
-        }
-
-        return ((uint32_t) byte_vals[2]) | (((uint32_t) byte_vals[1]) << 8u) | (((uint32_t) byte_vals[0]) << 16u);
+        uint32_t value = read8();
+        value <<= 8u;
+        value |= read8();
+        value <<= 8u;
+        value |= read8();
+        return value;
     }
 
 #pragma clang diagnostic push
