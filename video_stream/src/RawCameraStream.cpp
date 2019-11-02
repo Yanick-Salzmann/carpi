@@ -89,6 +89,12 @@ namespace carpi::video {
 
         video_port->userdata = reinterpret_cast<struct MMAL_PORT_USERDATA_T *>(this);
 
+        status = mmal_port_enable(video_port, &RawCameraStream::video_data_callback);
+        if(status != MMAL_SUCCESS) {
+            log->error("Error sending video event callback to camera: {}", status);
+            throw std::runtime_error{"Error setting up camera"};
+        }
+
         video_port->buffer_size = video_port->buffer_size_recommended;
         video_port->buffer_num = video_port->buffer_num_recommended;
 
