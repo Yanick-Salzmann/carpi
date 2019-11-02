@@ -8,7 +8,7 @@
 
 #include <common_utils/log.hpp>
 
-namespace carpi::camera {
+namespace carpi::video {
     enum class VideoFormat {
         H264
     };
@@ -81,7 +81,7 @@ namespace carpi::camera {
         void handle_camera_control(MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buffer);
         void handle_video_data(MMAL_PORT_T* port, MMAL_BUFFER_HEADER_T* buffer);
 
-    private:
+    public:
         void initialize_camera(const CameraConfiguration& configuration);
     };
 };

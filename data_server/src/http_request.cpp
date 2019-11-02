@@ -3,6 +3,7 @@
 
 #include <filesystem>
 #include <common_utils/string.hpp>
+#include <include/cef_parser.h>
 
 namespace carpi::data {
     LOGGER_IMPL(HttpRequest);
@@ -31,7 +32,7 @@ namespace carpi::data {
             file_path = file_path.substr(1);
         }
 
-        switch(find_request_type(file_path, file_path)) {
+        switch (find_request_type(file_path, file_path)) {
             case RequestType::LOCAL_FILE: {
                 process_local_file(file_path, socket);
                 break;
@@ -49,7 +50,7 @@ namespace carpi::data {
         }
     }
 
-    RequestType HttpRequest::find_request_type(const std::string &path, std::string& remainder) {
+    RequestType HttpRequest::find_request_type(const std::string &path, std::string &remainder) {
         std::string type_part{path};
         const auto slash = path.find('/');
         if (slash != std::string::npos) {
@@ -80,10 +81,24 @@ namespace carpi::data {
             return;
         }
 
-        HttpResponse{HttpStatusCode::OK, "OK"}.respond_with_file(ui_file.string()).write_to_socket(socket);
+        const auto extension = ui_file.extension().string();
+        std::string mime_type{"application/octet-stream"};
+        if (!extension.empty()) {
+            const auto cef_mime_type = CefGetMimeType(extension);
+            if (!cef_mime_type.ToString().empty()) {
+                mime_type = cef_mime_type;
+            }
+        }
+
+        HttpResponse{HttpStatusCode::OK, "OK"}
+                .add_header("Content-Type", mime_type)
+                .respond_with_file(ui_file.string())
+                .write_to_socket(socket);
     }
 
-    void HttpRequest::process_camera_stream(const std::string & path, int socket) {
-        HttpResponse{HttpStatusCode::NOT_IMPLEMENTED, "Not Yet Implemented"}.write_to_socket(socket);
+    void HttpRequest::process_camera_stream(const std::string &path, int socket) {
+        HttpResponse{HttpStatusCode::NOT_IMPLEMENTED, "Not Yet Implemented"}
+                .add_header("Content-Type", "video/mp4")
+                .write_to_socket(socket);
     }
 }

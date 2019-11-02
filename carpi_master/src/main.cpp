@@ -3,6 +3,7 @@
 #include "comm/CommServer.hpp"
 #include <ui/WebCore.hpp>
 #include <data_server/http_server.hpp>
+#include <video_stream/RawCameraStream.hpp>
 
 namespace carpi {
     int _argc;
@@ -14,6 +15,11 @@ namespace carpi {
         _argv = argv;
 
         video::H264Conversion::initialize_ffmpeg();
+
+        video::RawCameraStream camera{};
+        camera.initialize_camera({1920, 1080, 30, 30});
+
+        std::cin.get();
 
         data::HttpServer http_server{8081};
 

@@ -25,6 +25,7 @@ namespace carpi::data {
 
     HttpResponse& HttpResponse::add_header(const std::string &name, const std::string &value) {
         _headers.emplace(utils::to_lower(name), value);
+        return *this;
     }
 
     void HttpResponse::write_to_socket(int socket) {

@@ -8,7 +8,7 @@
 #define VIDEO_FRAME_RATE_DEN 1
 #define VIDEO_OUTPUT_BUFFERS_NUM 3
 
-namespace carpi::camera {
+namespace carpi::video {
     LOGGER_IMPL(RawCameraStream);
 
     void RawCameraStream::initialize_camera(const CameraConfiguration &configuration) {
