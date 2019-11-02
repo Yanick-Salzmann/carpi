@@ -106,16 +106,20 @@ namespace carpi::wiring {
     }
 
     void BMP280Sensor::set_parameters() {
+        HumidityControl hum_ctrl{};
+        hum_ctrl.oversampling_humidity = SAMPLING_X16;
+        write_data(BME280_REGISTER_CONTROLHUMID, hum_ctrl.value());
+
         Config config_reg{};
         config_reg.filter = FILTER_OFF;
         config_reg.t_sb = STANDBY_MS_1;
 
         write_data(BME280_REGISTER_CONFIG, config_reg.value());
 
-        CtrlMeas meas_reg{};
+        MeasurementControl meas_reg{};
         meas_reg.mode = MODE_NORMAL;
-        meas_reg.osrs_p = SAMPLING_X16;
-        meas_reg.osrs_t = SAMPLING_X16;
+        meas_reg.oversampling_pressure = SAMPLING_X16;
+        meas_reg.oversampling_temperature = SAMPLING_X16;
 
         write_data(BME280_REGISTER_CONTROL, meas_reg.value());
     }

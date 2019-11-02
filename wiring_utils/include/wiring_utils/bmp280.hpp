@@ -60,12 +60,19 @@ namespace carpi::wiring {
             [[nodiscard]] uint8_t value() const { return (uint32_t) (t_sb << 5u) | (uint32_t) (filter << 2u) | spi3w_en; }
         };
 
-        struct CtrlMeas {
-            uint32_t osrs_t : 3;
-            uint32_t osrs_p : 3;
+        struct MeasurementControl {
+            uint32_t oversampling_temperature : 3;
+            uint32_t oversampling_pressure : 3;
             uint32_t mode : 2;
 
-            [[nodiscard]] uint8_t value() const { return (uint32_t) (osrs_t << 5u) | (uint32_t) (osrs_p << 2u) | mode; }
+            [[nodiscard]] uint8_t value() const { return (uint32_t) (oversampling_temperature << 5u) | (uint32_t) (oversampling_pressure << 2u) | mode; }
+        };
+
+        struct HumidityControl {
+            uint32_t none : 5;
+            uint32_t oversampling_humidity : 3;
+
+            [[nodiscard]] uint8_t value() const { return (oversampling_humidity); }
         };
 
         int32_t _device = 0;
