@@ -61,6 +61,8 @@ namespace carpi {
             }
         }};
 
+        std::cin.get();
+
         video::H264Conversion::initialize_ffmpeg();
 
         data::HttpServer http_server{8081};
