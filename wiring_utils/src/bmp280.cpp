@@ -44,6 +44,9 @@ namespace carpi::wiring {
             throw std::runtime_error{"Error setting I2C_SLAVE on i2c bus"};
         }
 
+        auto chip_id = read8(BMP280_REGISTER_CHIPID, true);
+        log->info("Chip ID: {}", chip_id);
+
         read_coefficients();
         set_parameters();
         std::this_thread::sleep_for(std::chrono::milliseconds{100});
@@ -90,6 +93,21 @@ namespace carpi::wiring {
         meas_reg.osrs_t = SAMPLING_X16;
 
         write_data(BMP280_REGISTER_CONTROL, meas_reg.value());
+    }
+
+    uint8_t BMP280Sensor::read8(uint8_t reg, bool do_throw) {
+        write_data(reg);
+
+        uint8_t ret_val = 0;
+        if (read(_device, &ret_val, sizeof ret_val) != sizeof ret_val) {
+            log->warn("Error reading uint8 value from BMP sensor: {} (errno={})", utils::error_to_string(errno), errno);
+            if (do_throw) {
+                throw std::runtime_error{"Error reading uint8 value from BMP sensor"};
+            }
+            return 0;
+        }
+
+        return ret_val;
     }
 
     uint16_t BMP280Sensor::read16(uint8_t reg, bool do_throw) {

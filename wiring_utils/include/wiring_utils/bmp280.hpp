@@ -90,11 +90,11 @@ namespace carpi::wiring {
 
         void set_parameters();
 
+        uint8_t read8(uint8_t reg, bool do_throw = false);
+
         uint16_t read16(uint8_t reg, bool do_throw = false);
 
         uint16_t read16LE(uint8_t reg, bool do_throw = false);
-
-        int16_t read16S(uint8_t reg, bool do_throw = false) { return (int16_t) read16(reg, do_throw); }
 
         int16_t read16SLE(uint8_t reg, bool do_throw = false) { return (int16_t) read16LE(reg, do_throw); }
 
