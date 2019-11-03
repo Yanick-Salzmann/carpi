@@ -25,19 +25,15 @@ namespace carpi::data {
         });
 
 
-        log->info("constructor");
         _camera_stream = std::make_shared<video::RawCameraStream>(
                 [this](const std::vector<uint8_t> &data, std::size_t size) { handle_camera_frame(data, size); }
         );
 
-        log->info("initialize_camera");
         _camera_stream->initialize_camera({800, 600, 1, 30});
         future.get();
-        log->info("Conversion running");
     }
 
     size_t CameraHandler::read(void *buffer, std::size_t num_bytes) {
-        log->info("Reading {} bytes", num_bytes);
         if (!_partial_frame.empty()) {
             if (_partial_position < _partial_frame.size()) {
                 const auto to_read = std::min<std::size_t>(num_bytes, _partial_frame.size() - _partial_position);
