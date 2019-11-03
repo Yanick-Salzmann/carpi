@@ -73,7 +73,6 @@ namespace carpi::data {
         }
 
         _frame_event.notify_all();
-        log->info("Received camera frame");
     }
 
     void CameraHandler::handle_conversion_data(void *data, std::size_t size) {
@@ -86,6 +85,5 @@ namespace carpi::data {
         }
 
         _data_listeners = listeners;
-        log->info("Received conversion data");
     }
 }

@@ -99,7 +99,7 @@ namespace carpi::data {
     }
 
     void HttpRequest::process_camera_stream(const std::string &path, int socket) {
-        HttpResponse{HttpStatusCode::NOT_IMPLEMENTED, "Not Yet Implemented"}
+        HttpResponse{HttpStatusCode::OK, "Not Yet Implemented"}
                 .add_header("Content-Type", "video/mp4")
                 .add_header("Transfer-Encoding", "chunked")
                 .write_to_socket(socket);
