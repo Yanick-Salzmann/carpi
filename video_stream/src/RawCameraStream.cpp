@@ -230,6 +230,7 @@ namespace carpi::video {
             }
         }
 
+        log->info("Camera is capturing");
         return true;
     }
 }
