@@ -1,6 +1,7 @@
 #include "camera_handler.hpp"
 
 namespace carpi::data {
+    LOGGER_IMPL(CameraHandler);
 
     void CameraHandler::begin_streaming(const std::function<bool(void *, std::size_t)> &data_callback) {
         _data_listeners.emplace_back(data_callback);
@@ -28,6 +29,7 @@ namespace carpi::data {
     }
 
     size_t CameraHandler::read(void *buffer, std::size_t num_bytes) {
+        log->info("Reading {} bytes", num_bytes);
         if (!_partial_frame.empty()) {
             if (_partial_position < _partial_frame.size()) {
                 const auto to_read = std::min<std::size_t>(num_bytes, _partial_frame.size() - _partial_position);
@@ -67,6 +69,7 @@ namespace carpi::data {
         }
 
         _frame_event.notify_all();
+        log->info("Received camera frame");
     }
 
     void CameraHandler::handle_conversion_data(void *data, std::size_t size) {
@@ -79,5 +82,6 @@ namespace carpi::data {
         }
 
         _data_listeners = listeners;
+        log->info("Received conversion data");
     }
 }

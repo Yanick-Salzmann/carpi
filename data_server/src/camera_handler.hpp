@@ -12,6 +12,8 @@
 
 namespace carpi::data {
     class CameraHandler : public utils::Singleton<CameraHandler>, public video::IStreamSource {
+        LOGGER;
+
         struct StreamSource : public video::IStreamSource {
             CameraHandler& parent;
 
