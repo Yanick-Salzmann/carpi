@@ -1,9 +1,11 @@
 #include "data_server/http_request.hpp"
 #include "data_server/http_response.hpp"
+#include "camera_handler.hpp"
 
 #include <filesystem>
 #include <common_utils/string.hpp>
 #include <include/cef_parser.h>
+#include <sys/socket.h>
 
 namespace carpi::data {
     LOGGER_IMPL(HttpRequest);
@@ -99,6 +101,39 @@ namespace carpi::data {
     void HttpRequest::process_camera_stream(const std::string &path, int socket) {
         HttpResponse{HttpStatusCode::NOT_IMPLEMENTED, "Not Yet Implemented"}
                 .add_header("Content-Type", "video/mp4")
+                .add_header("Transfer-Encoding", "chunked")
                 .write_to_socket(socket);
+
+        std::mutex final_lock{};
+        std::condition_variable final_var{};
+        auto completed = false;
+
+        sCameraHandler->begin_streaming([socket, &final_lock, &final_var, &completed](void* data, std::size_t size) {
+            std::stringstream hdr_stream{};
+            hdr_stream << std::hex << size << "\r\n";
+            const auto hdr_line = hdr_stream.str();
+            if(::send(socket, hdr_line.c_str(), hdr_line.size(), 0) <= 0) {
+                completed = true;
+                final_var.notify_all();
+                return false;
+            }
+
+            if(::send(socket, data, size, 0) <= 0) {
+                completed = true;
+                final_var.notify_all();
+                return false;
+            }
+
+            if(::send(socket, "\r\n", 2, 0) <= 0) {
+                completed = true;
+                final_var.notify_all();
+                return false;
+            }
+
+            return true;
+        });
+
+        std::unique_lock<std::mutex> l{final_lock};
+        final_var.wait(final_lock, [&completed]() { return completed; });
     }
 }

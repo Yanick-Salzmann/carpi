@@ -56,9 +56,9 @@ namespace carpi::data {
                     ::send(socket, buffer, num_read, 0);
                 }
             } while(num_read > 0);
+            fclose(_response_file);
         }
 
-        fclose(_response_file);
         _response_file = nullptr;
     }
 
