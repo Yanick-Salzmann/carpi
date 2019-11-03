@@ -15,7 +15,7 @@ namespace carpi::data {
         }
 
         _converter = std::make_shared<video::H264Conversion>(
-            std::make_shared<video::H264Stream>(std::make_shared<StreamSource>(*this), 1920, 1080, 30),
+            std::make_shared<video::H264Stream>(std::make_shared<StreamSource>(*this), 800, 600, 30),
             "mp4",
             [this](void* data, std::size_t size) { handle_conversion_data(data, size); },
             []() { }
@@ -25,7 +25,7 @@ namespace carpi::data {
                 [this](const std::vector<uint8_t> &data, std::size_t size) { handle_camera_frame(data, size); }
         );
 
-        _camera_stream->initialize_camera({1920, 1080, 1, 30});
+        _camera_stream->initialize_camera({800, 600, 1, 30});
     }
 
     size_t CameraHandler::read(void *buffer, std::size_t num_bytes) {
