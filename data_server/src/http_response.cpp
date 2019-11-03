@@ -48,15 +48,18 @@ namespace carpi::data {
         ::send(socket, hdr_string.c_str(), hdr_string.size(), 0);
 
         if(_response_file != nullptr) {
+            std::size_t num_sent = 0;
             char buffer[4096]{};
             auto num_read = 0;
             do {
                 num_read = fread(buffer, 1, sizeof buffer, _response_file);
                 if(num_read > 0) {
                     ::send(socket, buffer, num_read, 0);
+                    num_sent += num_read;
                 }
             } while(num_read > 0);
             fclose(_response_file);
+            log->info("Sent {} bytes", num_sent);
         }
 
         _response_file = nullptr;
