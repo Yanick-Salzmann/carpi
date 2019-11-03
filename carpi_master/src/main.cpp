@@ -16,11 +16,6 @@ namespace carpi {
 
         video::H264Conversion::initialize_ffmpeg();
 
-        video::RawCameraStream camera{[](auto, auto) { }};
-        camera.initialize_camera({1920, 1080, 5, 30});
-
-        std::cin.get();
-
         data::HttpServer http_server{8081};
 
         ui::WebCore core{};
