@@ -14,6 +14,7 @@ namespace carpi::data {
             return;
         }
 
+        log->info("Pre Conversion");
         _converter = std::make_shared<video::H264Conversion>(
             std::make_shared<video::H264Stream>(std::make_shared<StreamSource>(*this), 800, 600, 30),
             "mp4",
