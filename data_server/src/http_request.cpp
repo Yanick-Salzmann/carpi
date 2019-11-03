@@ -130,6 +130,8 @@ namespace carpi::data {
                 return false;
             }
 
+            log->info("Sent chunk of {}", size);
+
             return true;
         });
 

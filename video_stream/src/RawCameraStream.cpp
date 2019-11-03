@@ -176,8 +176,6 @@ namespace carpi::video {
             return;
         }
 
-        log->info("Got Video Data");
-
         std::unique_lock<std::mutex> l{_data_read_lock};
         auto status = mmal_buffer_header_mem_lock(buffer);
         if (status != MMAL_SUCCESS) {
@@ -230,7 +228,6 @@ namespace carpi::video {
             }
         }
 
-        log->info("Camera is capturing");
         return true;
     }
 }
