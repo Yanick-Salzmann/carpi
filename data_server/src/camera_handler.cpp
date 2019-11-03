@@ -21,10 +21,12 @@ namespace carpi::data {
             []() { }
         );
 
+        log->info("constructor");
         _camera_stream = std::make_shared<video::RawCameraStream>(
                 [this](const std::vector<uint8_t> &data, std::size_t size) { handle_camera_frame(data, size); }
         );
 
+        log->info("initialize_camera");
         _camera_stream->initialize_camera({800, 600, 1, 30});
     }
 
