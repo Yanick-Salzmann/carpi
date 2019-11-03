@@ -1,3 +1,4 @@
+#include <future>
 #include "camera_handler.hpp"
 
 namespace carpi::data {
@@ -14,13 +15,15 @@ namespace carpi::data {
             return;
         }
 
-        log->info("Pre Conversion");
-        _converter = std::make_shared<video::H264Conversion>(
-            std::make_shared<video::H264Stream>(std::make_shared<StreamSource>(*this), 800, 600, 30),
-            "mp4",
-            [this](void* data, std::size_t size) { handle_conversion_data(data, size); },
-            []() { }
-        );
+        auto future = std::async(std::launch::async, [this]() {
+            _converter = std::make_shared<video::H264Conversion>(
+                    std::make_shared<video::H264Stream>(std::make_shared<StreamSource>(*this), 800, 600, 30),
+                    "mp4",
+                    [this](void *data, std::size_t size) { handle_conversion_data(data, size); },
+                    []() {}
+            );
+        });
+
 
         log->info("constructor");
         _camera_stream = std::make_shared<video::RawCameraStream>(
@@ -29,6 +32,8 @@ namespace carpi::data {
 
         log->info("initialize_camera");
         _camera_stream->initialize_camera({800, 600, 1, 30});
+        future.get();
+        log->info("Conversion running");
     }
 
     size_t CameraHandler::read(void *buffer, std::size_t num_bytes) {
@@ -78,8 +83,8 @@ namespace carpi::data {
     void CameraHandler::handle_conversion_data(void *data, std::size_t size) {
         std::lock_guard<std::mutex> l{_listener_lock};
         std::deque<std::function<bool(void *, std::size_t)>> listeners{};
-        for(const auto& listener : _data_listeners) {
-            if(listener(data, size)) {
+        for (const auto &listener : _data_listeners) {
+            if (listener(data, size)) {
                 listeners.push_back(listener);
             }
         }
