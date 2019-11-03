@@ -129,7 +129,7 @@ namespace carpi::video {
     uint32_t RawCameraStream::map_format(VideoFormat format) {
         switch (format) {
             default:
-                return MMAL_ENCODING_H264;
+                return MMAL_ENCODING_I420;
         }
     }
 

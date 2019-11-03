@@ -25,7 +25,7 @@ namespace carpi::video {
                 [](AVFormatContext *ctx) { avformat_free_context(ctx); }
         );
 
-        const auto h264_input_format = av_find_input_format("h264");
+        const auto h264_input_format = av_find_input_format("rawvideo");
         if (h264_input_format == nullptr) {
             log->error("Could not find H264 input parser in FFmpeg");
             throw std::runtime_error("H264 not found");
@@ -35,6 +35,7 @@ namespace carpi::video {
 
         AVDictionary *input_options = nullptr;
         av_dict_set(&input_options, "framerate", std::to_string(fps).c_str(), 0);
+        av_dict_set(&input_options, "pix_fmt", "yuv420p", 0);
 
         auto formatPtr = _format_context.get();
         auto res = avformat_open_input(&formatPtr, "(memory file)", h264_input_format, &input_options);
