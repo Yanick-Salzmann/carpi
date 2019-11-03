@@ -134,6 +134,6 @@ namespace carpi::data {
         });
 
         std::unique_lock<std::mutex> l{final_lock};
-        final_var.wait(final_lock, [&completed]() { return completed; });
+        final_var.wait(l, [&completed]() { return completed; });
     }
 }
