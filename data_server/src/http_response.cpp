@@ -49,7 +49,7 @@ namespace carpi::data {
 
         if(_response_file != nullptr) {
             std::size_t num_sent = 0;
-            char buffer[4096]{};
+            char buffer[16384]{};
             auto num_read = 0;
             do {
                 num_read = fread(buffer, 1, sizeof buffer, _response_file);
