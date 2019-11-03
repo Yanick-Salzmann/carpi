@@ -36,7 +36,7 @@ namespace carpi::video {
         AVDictionary *input_options = nullptr;
         av_dict_set(&input_options, "framerate", std::to_string(fps).c_str(), 0);
         av_dict_set(&input_options, "pix_fmt", "yuv420p", 0);
-        av_dict_set(&input_options, "s", fmt::format("{}x{}", width, height).c_str(), 0);
+        av_dict_set(&input_options, "size", fmt::format("{}x{}", width, height).c_str(), 0);
 
         auto formatPtr = _format_context.get();
         auto res = avformat_open_input(&formatPtr, "(memory file)", h264_input_format, &input_options);
