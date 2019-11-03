@@ -15,7 +15,7 @@ namespace carpi::data {
 
         context->last_read_index = _write_index;
         context->converter = std::make_shared<video::H264Conversion>(
-                std::make_shared<video::H264Stream>(std::make_shared<StreamSource>(*this, context), 1920, 1080, 30),
+                std::make_shared<video::H264Stream>(std::make_shared<StreamSource>(*this, context.get()), 1920, 1080, 30),
                 "mp4",
                 [this, context](void *data, std::size_t size) { handle_conversion_data(context, data, size); },
                 []() {}
