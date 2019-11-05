@@ -17,6 +17,8 @@ namespace carpi {
 
         data::HttpServer http_server{8081};
 
+        std::cin.get();
+
         ui::WebCore core{};
 
         CommServer server{};
