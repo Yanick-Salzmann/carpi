@@ -8,13 +8,14 @@ namespace carpi::data {
         initialize_camera();
 
         std::shared_ptr<ReaderContext> context = std::make_shared<ReaderContext>();
+
+        context->callback = data_callback;
+        context->ffmpeg_process = utils::launch_subprocess("ffmpeg", {"-pix_format", "yuv420p", "-video_size", "1920x1080", "-framerate", "30", "-i", "-", "-c", "libx264", "-f", "mp4", "-"});
+
         {
             std::lock_guard<std::mutex> l{_listener_lock};
             _data_listeners.emplace(context);
         }
-
-        context->callback = data_callback;
-        context->ffmpeg_process = utils::launch_subprocess("ffmpeg", {"-pix_format", "yuv420p", "-video_size", "1920x1080", "-framerate", "30", "-i", "-", "-c", "libx264", "-f", "mp4", "-"});
 
         std::thread stdout_thread{[this, context]() { handle_stdout_reader(context); }};
         std::thread stderr_thread{[this, context]() { handle_stderr_reader(context); }};
