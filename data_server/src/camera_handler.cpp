@@ -40,10 +40,12 @@ namespace carpi::data {
 
     size_t CameraHandler::read(ReaderContext *context, void *buffer, std::size_t num_bytes) {
         if (!context->partial_frame.empty()) {
+            log->info("Reading partial frame");
             if (context->partial_position < context->partial_frame.size()) {
                 const auto to_read = std::min<std::size_t>(num_bytes, context->partial_frame.size() - context->partial_position);
                 memcpy(buffer, &context->partial_frame[context->partial_position], to_read);
                 context->partial_position += to_read;
+                context->partial_frame.clear();
                 return to_read;
             }
         }
@@ -76,8 +78,6 @@ namespace carpi::data {
         std::size_t incremented = _write_index;
         incremented %= QUEUE_SIZE;
         _write_index = incremented;
-
-        log->info("Frame size: {}", size);
 
         _frame_queue[next_index].assign(data.begin(), data.begin() + size);
         _frame_event.notify_all();
