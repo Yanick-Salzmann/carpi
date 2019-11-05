@@ -16,15 +16,17 @@ namespace carpi {
 
         video::H264Conversion::initialize_ffmpeg();
 
-        int fl = open("output.yuv", O_WRONLY | O_SYNC);
+        FILE* of = fopen("output.yuv", "wb");
 
-        video::RawCameraStream cam_stream{[fl](auto data, auto size) {
-            write(fl, data.data(), size);
+        video::RawCameraStream cam_stream{[of](auto data, auto size) {
+            fwrite(data.data(), 1, size, of);
         }};
 
         cam_stream.initialize_camera({1920, 1080, 5, 30});
 
         std::cin.get();
+        fflush(of);
+        fclose(of);
 
         data::HttpServer http_server{8081};
 
