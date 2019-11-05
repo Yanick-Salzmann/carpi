@@ -108,18 +108,15 @@ namespace carpi::data {
         std::mutex final_lock{};
         std::condition_variable final_var{};
         auto completed = false;
-        std::mutex send_lock{};
 
         auto logger = log;
 
-        sCameraHandler->begin_streaming([socket, &final_lock, &final_var, &completed, &send_lock, logger](void* data, std::size_t size) {
-            std::lock_guard<std::mutex> l{send_lock};
+        FILE* ofile = fopen("camera_out.mp4", "wb");
 
+        sCameraHandler->begin_streaming([socket, &final_lock, &final_var, &completed, ofile](void* data, std::size_t size) {
             std::stringstream hdr_stream{};
             hdr_stream << std::hex << size << "\r\n";
             const auto hdr_line = hdr_stream.str();
-            logger->info("Header: {}, size: {}", utils::bytes2hex(hdr_line.c_str(), hdr_line.size()), hdr_line.size());
-
             if(::send(socket, hdr_line.c_str(), hdr_line.size(), 0) <= 0) {
                 completed = true;
                 final_var.notify_all();
@@ -138,10 +135,14 @@ namespace carpi::data {
                 return false;
             }
 
+            fwrite(data, 1, size, ofile);
+            fflush(ofile);
+
             return true;
         });
 
         std::unique_lock<std::mutex> l{final_lock};
         final_var.wait(l, [&completed]() { return completed; });
+        fclose(ofile);
     }
 }
