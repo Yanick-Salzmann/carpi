@@ -41,8 +41,8 @@ namespace carpi::data {
     size_t CameraHandler::read(ReaderContext *context, void *buffer, std::size_t num_bytes) {
         if (!context->partial_frame.empty()) {
             if (context->partial_position < context->partial_frame.size()) {
-                log->info("Processing from partial frame");
                 const auto to_read = std::min<std::size_t>(num_bytes, context->partial_frame.size() - context->partial_position);
+                log->info("Processing from partial frame: From {} to {} (total: {})", context->partial_position, context->partial_position + to_read, context->partial_frame.size());
                 memcpy(buffer, &context->partial_frame[context->partial_position], to_read);
                 context->partial_position += to_read;
                 return to_read;
