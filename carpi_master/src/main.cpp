@@ -22,6 +22,8 @@ namespace carpi {
             write(fl, data.data(), size);
         }};
 
+        cam_stream.initialize_camera({1920, 1080, 5, 30});
+
         std::cin.get();
 
         data::HttpServer http_server{8081};
