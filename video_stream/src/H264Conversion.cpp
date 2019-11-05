@@ -43,7 +43,7 @@ namespace carpi::video {
             throw std::runtime_error{"Error creating ffmpeg output context"};
         }
 
-        const auto codec = avcodec_find_encoder(AV_CODEC_ID_H264);
+        const auto codec = avcodec_find_encoder(AV_CODEC_ID_YUV4);
         log->info("Output format: {}", codec->name);
         auto video_stream = avformat_new_stream(format_context, codec);
         video_stream->codecpar->codec_type = AVMEDIA_TYPE_VIDEO;
