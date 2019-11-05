@@ -77,6 +77,8 @@ namespace carpi::data {
         incremented %= QUEUE_SIZE;
         _write_index = incremented;
 
+        log->info("Frame size: {}", size);
+
         _frame_queue[next_index].assign(data.begin(), data.begin() + size);
         _frame_event.notify_all();
     }
