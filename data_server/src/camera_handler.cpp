@@ -11,6 +11,7 @@ namespace carpi::data {
 
         context->callback = data_callback;
         context->ffmpeg_process = utils::launch_subprocess("ffmpeg", {"-pix_format", "yuv420p", "-video_size", "1920x1080", "-framerate", "30", "-i", "-", "-c", "libx264", "-f", "mp4", "-"});
+        log->info("Launched ffmpeg process. PID: {}, error: {}", context->ffmpeg_process.process_id, context->ffmpeg_process.error_code);
 
         {
             std::lock_guard<std::mutex> l{_listener_lock};
