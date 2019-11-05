@@ -73,8 +73,9 @@ namespace carpi::data {
     void CameraHandler::handle_camera_frame(const std::vector<uint8_t> &data, std::size_t size) {
         std::lock_guard<std::mutex> l{_frame_lock};
         auto next_index = _write_index++;
-        next_index %= QUEUE_SIZE;
-        _write_index = next_index;
+        std::size_t incremented = _write_index;
+        incremented %= QUEUE_SIZE;
+        _write_index = incremented;
 
         _frame_queue[next_index].assign(data.begin(), data.begin() + size);
         _frame_event.notify_all();
