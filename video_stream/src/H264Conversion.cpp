@@ -43,13 +43,13 @@ namespace carpi::video {
             throw std::runtime_error{"Error creating ffmpeg output context"};
         }
 
-        const auto codec = avcodec_find_encoder(AV_CODEC_ID_YUV4);
+        const auto codec = avcodec_find_encoder(AV_CODEC_ID_VP8);
         log->info("Output format: {}", codec->name);
         auto video_stream = avformat_new_stream(format_context, codec);
         video_stream->codecpar->codec_type = AVMEDIA_TYPE_VIDEO;
         video_stream->codecpar->width = _stream->width();
         video_stream->codecpar->height = _stream->height();
-        video_stream->codecpar->codec_id = AV_CODEC_ID_H264;
+        video_stream->codecpar->codec_id = AV_CODEC_ID_VP8;
         video_stream->codecpar->format = AV_PIX_FMT_YUV420P;
         video_stream->time_base = AVRational{.num = 1, .den = 90001};
         video_stream->r_frame_rate = AVRational{.num = (int) _stream->fps(), .den = 1};
