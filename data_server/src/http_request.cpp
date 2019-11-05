@@ -143,6 +143,7 @@ namespace carpi::data {
 
         std::unique_lock<std::mutex> l{final_lock};
         final_var.wait(l, [&completed]() { return completed; });
+        log->info("Stream complete");
         fclose(ofile);
     }
 }

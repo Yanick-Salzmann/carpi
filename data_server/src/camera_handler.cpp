@@ -47,11 +47,19 @@ namespace carpi::data {
             }
         }
 
+        if(_is_eof) {
+            return AVERROR_EOF;
+        }
+
         std::vector<uint8_t> frame_data{};
         {
             std::unique_lock<std::mutex> l{_frame_lock};
             if (context->last_read_index == _write_index) {
-                _frame_event.wait(l, [this, context]() { return context->last_read_index != _write_index; });
+                _frame_event.wait(l, [this, context]() { return context->last_read_index != _write_index || _is_eof; });
+            }
+
+            if(_is_eof) {
+                return AVERROR_EOF;
             }
 
             frame_data = _frame_queue[context->last_read_index++];
@@ -70,10 +78,20 @@ namespace carpi::data {
     }
 
     void CameraHandler::handle_camera_frame(const std::vector<uint8_t> &data, std::size_t size) {
+        static std::size_t frame_count = 0;
+
         std::lock_guard<std::mutex> l{_frame_lock};
         auto next_index = ++_write_index;
         next_index %= QUEUE_SIZE;
         _write_index = next_index;
+
+        if(++frame_count == 0x1000) {
+            _is_eof = true;
+        }
+
+        if(frame_count > 0x1000) {
+            return;
+        }
 
         _frame_queue[next_index].assign(data.begin(), data.begin() + size);
         _frame_event.notify_all();
