@@ -55,7 +55,7 @@ namespace carpi::video {
         video_stream->r_frame_rate = AVRational{.num = (int) _stream->fps(), .den = 1};
         video_stream->avg_frame_rate = AVRational {.num = (int) _stream->fps(), .den = 1};
 
-        AVStream** streams = new AVStream*[1];
+        auto** streams = new AVStream*[1];
         streams[0] = video_stream;
         format_context->nb_streams = 1;
         format_context->streams = streams;

@@ -18,6 +18,7 @@ namespace carpi::video {
         LOGGER;
 
         std::shared_ptr<AVFormatContext> _format_context = nullptr;
+        std::shared_ptr<AVCodecContext> _codec_context = nullptr;
 
         std::thread _converter_thread;
         bool _is_running = true;
