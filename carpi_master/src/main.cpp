@@ -22,6 +22,8 @@ namespace carpi {
             write(fl, data.data(), size);
         }};
 
+        std::cin.get();
+
         data::HttpServer http_server{8081};
 
         ui::WebCore core{};
