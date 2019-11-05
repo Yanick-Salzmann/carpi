@@ -190,7 +190,7 @@ namespace carpi::video {
                 _buffer_data.resize(buffer->length);
             }
 
-            memcpy(_buffer_data.data(), buffer->data, buffer->length);
+            memcpy(_buffer_data.data(), buffer->data + buffer->offset, buffer->length);
         }
 
         buffer_ptr.reset();
