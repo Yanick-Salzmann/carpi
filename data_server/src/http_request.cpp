@@ -117,7 +117,7 @@ namespace carpi::data {
             std::stringstream hdr_stream{};
             hdr_stream << std::hex << size << "\r\n";
             const auto hdr_line = hdr_stream.str();
-            if(::send(socket, hdr_line.c_str(), hdr_line.size(), 0) <= 0) {
+            /*if(::send(socket, hdr_line.c_str(), hdr_line.size(), 0) <= 0) {
                 completed = true;
                 final_var.notify_all();
                 return false;
@@ -133,12 +133,15 @@ namespace carpi::data {
                 completed = true;
                 final_var.notify_all();
                 return false;
-            }
+            }*/
 
             fwrite(data, 1, size, ofile);
             fflush(ofile);
 
             return true;
+        }, [&completed, &final_var]() {
+            completed = true;
+            final_var.notify_all();
         });
 
         std::unique_lock<std::mutex> l{final_lock};

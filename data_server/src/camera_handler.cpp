@@ -4,22 +4,23 @@
 namespace carpi::data {
     LOGGER_IMPL(CameraHandler);
 
-    void CameraHandler::begin_streaming(const std::function<bool(void *, std::size_t)> &data_callback) {
+    void CameraHandler::begin_streaming(const std::function<bool(void *, std::size_t)> &data_callback, const std::function<void()> &complete_callback) {
         initialize_camera();
 
-        std::shared_ptr <ReaderContext> context = std::make_shared<ReaderContext>();
+        std::shared_ptr<ReaderContext> context = std::make_shared<ReaderContext>();
         {
-            std::lock_guard <std::mutex> l{_listener_lock};
+            std::lock_guard<std::mutex> l{_listener_lock};
             _data_listeners.emplace(context);
         }
 
         context->callback = data_callback;
+        context->complete_callback = complete_callback;
         context->last_read_index = _write_index;
         context->converter = std::make_shared<video::H264Conversion>(
                 std::make_shared<video::H264Stream>(std::make_shared<StreamSource>(*this, context.get()), 1920, 1080, 30),
                 "mp4",
                 [this, context](void *data, std::size_t size) { handle_conversion_data(context, data, size); },
-                []() {}
+                [context]() { if (context->complete_callback) { context->complete_callback(); }}
         );
     }
 
@@ -37,7 +38,7 @@ namespace carpi::data {
         _camera_stream->initialize_camera({1920, 1080, 1, 30});
     }
 
-    size_t CameraHandler::read(ReaderContext* context, void *buffer, std::size_t num_bytes) {
+    size_t CameraHandler::read(ReaderContext *context, void *buffer, std::size_t num_bytes) {
         if (!context->partial_frame.empty()) {
             if (context->partial_position < context->partial_frame.size()) {
                 const auto to_read = std::min<std::size_t>(num_bytes, context->partial_frame.size() - context->partial_position);
@@ -47,7 +48,7 @@ namespace carpi::data {
             }
         }
 
-        if(_is_eof) {
+        if (_is_eof) {
             return AVERROR_EOF;
         }
 
@@ -58,7 +59,7 @@ namespace carpi::data {
                 _frame_event.wait(l, [this, context]() { return context->last_read_index != _write_index || _is_eof; });
             }
 
-            if(_is_eof) {
+            if (_is_eof) {
                 return AVERROR_EOF;
             }
 
@@ -85,11 +86,11 @@ namespace carpi::data {
         next_index %= QUEUE_SIZE;
         _write_index = next_index;
 
-        if(++frame_count == 0x1000) {
+        if (++frame_count == 0x1000) {
             _is_eof = true;
         }
 
-        if(frame_count > 0x1000) {
+        if (frame_count > 0x1000) {
             return;
         }
 

@@ -19,6 +19,7 @@ namespace carpi::data {
 
         struct ReaderContext {
             std::function<bool(void *, std::size_t)> callback;
+            std::function<void()> complete_callback;
             std::shared_ptr<video::H264Conversion> converter;
 
             std::size_t last_read_index{};
@@ -27,10 +28,10 @@ namespace carpi::data {
         };
 
         struct StreamSource : public video::IStreamSource {
-            CameraHandler& parent;
-            ReaderContext* context;
+            CameraHandler &parent;
+            ReaderContext *context;
 
-            explicit StreamSource(CameraHandler& parent, ReaderContext* context) : parent(parent), context(context) { }
+            explicit StreamSource(CameraHandler &parent, ReaderContext *context) : parent(parent), context(context) {}
 
             size_t read(void *buffer, std::size_t num_bytes) override {
                 return parent.read(context, buffer, num_bytes);
@@ -57,12 +58,16 @@ namespace carpi::data {
 
         void handle_camera_frame(const std::vector<uint8_t> &data, std::size_t size);
 
-        void handle_conversion_data(const std::shared_ptr<ReaderContext>& context, void *data, std::size_t size);
-        size_t read(ReaderContext* context, void *buffer, std::size_t num_bytes);
+        void handle_conversion_data(const std::shared_ptr<ReaderContext> &context, void *data, std::size_t size);
+
+        size_t read(ReaderContext *context, void *buffer, std::size_t num_bytes);
 
     public:
 
-        void begin_streaming(const std::function<bool(void *, std::size_t)> &data_callback);
+        void begin_streaming(
+                const std::function<bool(void *, std::size_t)> &data_callback,
+                const std::function<void()> &complete_callback = {}
+        );
     };
 }
 
