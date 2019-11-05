@@ -101,7 +101,7 @@ namespace carpi::data {
 
     void HttpRequest::process_camera_stream(const std::string &path, int socket) {
         HttpResponse{HttpStatusCode::OK, "OK"}
-                .add_header("Content-Type", "video/mp4")
+                .add_header("Content-Type", "video/avi")
                 .add_header("Transfer-Encoding", "chunked")
                 .write_to_socket(socket);
 
@@ -109,15 +109,11 @@ namespace carpi::data {
         std::condition_variable final_var{};
         auto completed = false;
 
-        auto logger = log;
-
-        FILE* ofile = fopen("camera_out.mp4", "wb");
-
-        sCameraHandler->begin_streaming([socket, &final_lock, &final_var, &completed, ofile](void* data, std::size_t size) {
+        sCameraHandler->begin_streaming([socket, &final_lock, &final_var, &completed](void* data, std::size_t size) {
             std::stringstream hdr_stream{};
             hdr_stream << std::hex << size << "\r\n";
             const auto hdr_line = hdr_stream.str();
-            /*if(::send(socket, hdr_line.c_str(), hdr_line.size(), 0) <= 0) {
+            if(::send(socket, hdr_line.c_str(), hdr_line.size(), 0) <= 0) {
                 completed = true;
                 final_var.notify_all();
                 return false;
@@ -133,20 +129,16 @@ namespace carpi::data {
                 completed = true;
                 final_var.notify_all();
                 return false;
-            }*/
-
-            fwrite(data, 1, size, ofile);
-            fflush(ofile);
+            }
 
             return true;
-        }, [&completed, &final_var]() {
+        }, [&completed, &final_var, socket]() {
+            ::send(socket, "0\r\n\r\n", 5, 0);
             completed = true;
             final_var.notify_all();
         });
 
         std::unique_lock<std::mutex> l{final_lock};
         final_var.wait(l, [&completed]() { return completed; });
-        log->info("Stream complete");
-        fclose(ofile);
     }
 }

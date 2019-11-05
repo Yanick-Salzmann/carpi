@@ -52,7 +52,6 @@ namespace carpi::data {
         std::condition_variable _frame_event;
         std::array<std::vector<uint8_t>, QUEUE_SIZE> _frame_queue;
         std::atomic_size_t _write_index{0};
-        bool _is_eof = false;
 
         void initialize_camera();
 
