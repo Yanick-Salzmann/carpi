@@ -16,6 +16,12 @@ namespace carpi {
 
         video::H264Conversion::initialize_ffmpeg();
 
+        int fl = open("output.yuv", O_WRONLY | O_SYNC);
+
+        video::RawCameraStream cam_stream{[fl](auto data, auto size) {
+            write(fl, data.data(), size);
+        }};
+
         data::HttpServer http_server{8081};
 
         ui::WebCore core{};
