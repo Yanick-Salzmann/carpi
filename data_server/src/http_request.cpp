@@ -6,6 +6,7 @@
 #include <common_utils/string.hpp>
 #include <include/cef_parser.h>
 #include <sys/socket.h>
+#include <common_utils/conversion.hpp>
 
 namespace carpi::data {
     LOGGER_IMPL(HttpRequest);
@@ -107,11 +108,18 @@ namespace carpi::data {
         std::mutex final_lock{};
         std::condition_variable final_var{};
         auto completed = false;
+        std::mutex send_lock{};
 
-        sCameraHandler->begin_streaming([socket, &final_lock, &final_var, &completed](void* data, std::size_t size) {
+        auto logger = log;
+
+        sCameraHandler->begin_streaming([socket, &final_lock, &final_var, &completed, &send_lock, logger](void* data, std::size_t size) {
+            std::lock_guard<std::mutex> l{send_lock};
+
             std::stringstream hdr_stream{};
             hdr_stream << std::hex << size << "\r\n";
             const auto hdr_line = hdr_stream.str();
+            logger->info("Header: {}, size: {}", utils::bytes2hex(hdr_line.c_str(), hdr_line.size()), hdr_line.size());
+
             if(::send(socket, hdr_line.c_str(), hdr_line.size(), 0) <= 0) {
                 completed = true;
                 final_var.notify_all();
