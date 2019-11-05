@@ -10,7 +10,7 @@
 namespace carpi::utils {
     utils::Logger logger{"carpi::utils::Subprocess"}; // NOLINT(cert-err58-cpp)
 
-    SubProcess launch_subprocess(const std::string &command, char **arguments) {
+    SubProcess launch_subprocess(const std::string &command, std::vector<std::string> arguments) {
         SubProcess ret_process{};
 
         int32_t stdin_pipe[2];
@@ -53,7 +53,14 @@ namespace carpi::utils {
                 exit(errno);
             }
 
-            const auto result = execv(command.c_str(), arguments);
+            char** proc_args = !arguments.empty() ? new char*[arguments.size()] : nullptr;
+            if(!arguments.empty()) {
+                for(auto i = std::size_t{0}; i < arguments.size(); ++i) {
+                    proc_args[i] = strdup(arguments[i].c_str());
+                }
+            }
+
+            const auto result = execv(command.c_str(), proc_args);
             exit(result);
         } else if(child > 0) {
             close(stdin_pipe[PIPE_READ]);

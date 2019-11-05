@@ -2,6 +2,7 @@
 #define CARPI_COMMON_UTILS_PROCESS_HPP
 
 #include <string>
+#include <vector>
 
 namespace carpi::utils {
     struct SubProcess {
@@ -13,7 +14,7 @@ namespace carpi::utils {
         int error_code;
     };
 
-    SubProcess launch_subprocess(const std::string& command, char* arguments[]);
+    SubProcess launch_subprocess(const std::string& command, std::vector<std::string> arguments);
 }
 
 #endif //CARPI_COMMON_UTILS_PROCESS_HPP

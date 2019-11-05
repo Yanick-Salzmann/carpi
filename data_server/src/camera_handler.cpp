@@ -14,14 +14,13 @@ namespace carpi::data {
         }
 
         context->callback = data_callback;
-        context->complete_callback = complete_callback;
-        context->last_read_index = _write_index;
-        context->converter = std::make_shared<video::H264Conversion>(
-                std::make_shared<video::H264Stream>(std::make_shared<StreamSource>(*this, context.get()), 1920, 1080, 30),
-                "ogg",
-                [this, context](void *data, std::size_t size) { handle_conversion_data(context, data, size); },
-                [context]() { if (context->complete_callback) { context->complete_callback(); }}
-        );
+        context->ffmpeg_process = utils::launch_subprocess("ffmpeg", {"-pix_format", "yuv420p", "-video_size", "1920x1080", "-framerate", "30", "-i", "-", "-c", "libx264", "-f", "mp4", "-"});
+
+        std::thread stdout_thread{[this, context]() { handle_stdout_reader(context); }};
+        std::thread stderr_thread{[this, context]() { handle_stderr_reader(context); }};
+
+        stdout_thread.join();
+        stderr_thread.join();
     }
 
     void CameraHandler::initialize_camera() {
@@ -38,61 +37,26 @@ namespace carpi::data {
         _camera_stream->initialize_camera({1920, 1080, 1, 30});
     }
 
-    size_t CameraHandler::read(ReaderContext *context, void *buffer, std::size_t num_bytes) {
-        if (!context->partial_frame.empty()) {
-            if (context->partial_position < context->partial_frame.size()) {
-                const auto to_read = std::min<std::size_t>(num_bytes, context->partial_frame.size() - context->partial_position);
-                memcpy(buffer, &context->partial_frame[context->partial_position], to_read);
-                context->partial_position += to_read;
-                if(context->partial_position >= context->partial_frame.size()) {
-                    context->partial_frame.clear();
-                }
-
-                return to_read;
-            } else {
-                context->partial_frame.clear();
-            }
-        }
-
-        std::vector<uint8_t> frame_data{};
-        {
-            std::unique_lock<std::mutex> l{_frame_lock};
-            if (context->last_read_index == _write_index) {
-                _frame_event.wait(l, [this, context]() { return context->last_read_index != _write_index; });
-            }
-
-            frame_data = _frame_queue[context->last_read_index++];
-            context->last_read_index %= QUEUE_SIZE;
-        }
-
-        if (frame_data.size() > num_bytes) {
-            context->partial_frame = frame_data;
-            context->partial_position = num_bytes;
-        }
-
-        const auto to_read = std::min<std::size_t>(num_bytes, frame_data.size());
-        memcpy(buffer, frame_data.data(), to_read);
-
-        return to_read;
-    }
-
     void CameraHandler::handle_camera_frame(const std::vector<uint8_t> &data, std::size_t size) {
-        std::lock_guard<std::mutex> l{_frame_lock};
-        auto next_index = _write_index++;
-        std::size_t incremented = _write_index;
-        incremented %= QUEUE_SIZE;
-        _write_index = incremented;
-
-        _frame_queue[next_index].assign(data.begin(), data.begin() + size);
-        _frame_event.notify_all();
+        std::lock_guard<std::mutex> l{_listener_lock};
+        for(const auto& listener : _data_listeners) {
+            write(listener->ffmpeg_process.stdin_pipe, data.data(), size);
+        }
     }
 
-    void CameraHandler::handle_conversion_data(const std::shared_ptr<ReaderContext> &context, void *data, std::size_t size) {
-        if (context->callback(data, size)) {
-            return;
+    void CameraHandler::handle_stderr_reader(const std::shared_ptr<ReaderContext> &context) {
+        char buffer[4096]{};
+        int32_t num_read = 0;
+        while((num_read = read(context->ffmpeg_process.stderr_pipe, buffer, sizeof buffer)) > 0) {
+            log->error("ffmpeg error: {}", std::string{buffer, buffer + num_read});
         }
+    }
 
-        std::lock_guard<std::mutex> l{_listener_lock};
-        _data_listeners.erase(context);
+    void CameraHandler::handle_stdout_reader(const std::shared_ptr<ReaderContext> &context) {
+        char buffer[4096]{};
+        int32_t num_read = 0;
+        while((num_read > read(context->ffmpeg_process.stdout_pipe, buffer, sizeof buffer)) > 0) {
+            context->callback(buffer, num_read);
+        }
     }
 }
