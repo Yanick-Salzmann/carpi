@@ -69,7 +69,7 @@ namespace carpi::utils {
                 }
             }
 
-            std::cout << "Executing: " << command << std::endl;
+            std::cerr << "Executing: " << command << std::endl;
 
             const auto result = execvp(command.c_str(), proc_args);
             exit(result);
