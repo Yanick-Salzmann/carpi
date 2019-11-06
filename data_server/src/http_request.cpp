@@ -101,7 +101,7 @@ namespace carpi::data {
 
     void HttpRequest::process_camera_stream(const std::string &path, int socket) {
         HttpResponse{HttpStatusCode::OK, "OK"}
-                .add_header("Content-Type", "video/ogg")
+                .add_header("Content-Type", "video/mp4")
                 .add_header("Transfer-Encoding", "chunked")
                 .write_to_socket(socket);
 
