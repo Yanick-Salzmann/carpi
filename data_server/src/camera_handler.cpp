@@ -8,8 +8,6 @@ namespace carpi::data {
     LOGGER_IMPL(CameraHandler);
 
     void CameraHandler::begin_streaming(const std::function<bool(void *, std::size_t)> &data_callback, const std::function<void()> &complete_callback) {
-        initialize_camera();
-
         std::shared_ptr<ReaderContext> context = std::make_shared<ReaderContext>();
 
         context->callback = data_callback;
@@ -26,6 +24,8 @@ namespace carpi::data {
 
         std::thread stdout_thread{[this, context]() { handle_stdout_reader(context); }};
         std::thread stderr_thread{[this, context]() { handle_stderr_reader(context); }};
+
+        initialize_camera();
 
         stdout_thread.join();
         stderr_thread.join();
