@@ -38,6 +38,10 @@ namespace carpi::data {
             log->info("FFmpeg child process {} terminated abnormally", child_proc);
         }
 
+        {
+            std::lock_guard<std::mutex> l{_listener_lock};
+            _data_listeners.erase(context);
+        }
     }
 
     void CameraHandler::initialize_camera() {
