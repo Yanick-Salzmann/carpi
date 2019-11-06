@@ -1,6 +1,8 @@
 #include <future>
 #include "camera_handler.hpp"
 
+#include <sys/wait.h>
+
 namespace carpi::data {
     LOGGER_IMPL(CameraHandler);
 
@@ -20,6 +22,10 @@ namespace carpi::data {
 
         std::thread stdout_thread{[this, context]() { handle_stdout_reader(context); }};
         std::thread stderr_thread{[this, context]() { handle_stderr_reader(context); }};
+
+        int32_t status_loc = 0;
+        const auto child_proc = wait(&status_loc);
+        log->info("FFmpeg child process {} terminated (exit code = {})", child_proc, WEXITSTATUS(status_loc));
 
         stdout_thread.join();
         stderr_thread.join();
