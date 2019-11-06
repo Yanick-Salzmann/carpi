@@ -67,7 +67,7 @@ namespace carpi::data {
     void CameraHandler::handle_stdout_reader(const std::shared_ptr<ReaderContext> &context) {
         char buffer[4096]{};
         int32_t num_read = 0;
-        while((num_read > read(context->ffmpeg_process.stdout_pipe, buffer, sizeof buffer)) > 0) {
+        while((num_read = read(context->ffmpeg_process.stdout_pipe, buffer, sizeof buffer)) > 0) {
             context->callback(buffer, num_read);
         }
     }
