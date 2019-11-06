@@ -46,15 +46,15 @@ namespace carpi::utils {
             close(stdout_pipe[PIPE_READ]);
             close(stderr_pipe[PIPE_READ]);
 
-            if (dup2(stdin_pipe[PIPE_READ], STDIN_FILENO) == -1) {
+            if (dup2(STDIN_FILENO, stdin_pipe[PIPE_READ]) == -1) {
                 exit(errno);
             }
 
-            if (dup2(stdout_pipe[PIPE_WRITE], STDOUT_FILENO) == -1) {
+            if (dup2(STDOUT_FILENO, stdout_pipe[PIPE_WRITE]) == -1) {
                 exit(errno);
             }
 
-            if (dup2(stderr_pipe[PIPE_WRITE], STDERR_FILENO) == -1) {
+            if (dup2(STDERR_FILENO, stderr_pipe[PIPE_WRITE]) == -1) {
                 exit(errno);
             }
 
