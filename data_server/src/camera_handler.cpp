@@ -14,8 +14,8 @@ namespace carpi::data {
         context->ffmpeg_process = utils::launch_subprocess(
                 //"ffmpeg",
                 //{"-f", "rawvideo", "-pix_fmt", "yuv420p", "-s", "1920x1080", "-r", "30", "-i", "-", "-c", "libx264", "-f", "mp4", "-movflags", "frag_keyframe+empty_moov", "-", "-loglevel", "trace"}
-                "dd",
-                { "of=dd_output.raw" }
+                "tee",
+                { "dd_output.raw" }
         );
         log->info("Launched ffmpeg process. PID: {}, error: {}", context->ffmpeg_process.process_id, context->ffmpeg_process.error_code);
 
