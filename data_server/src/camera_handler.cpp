@@ -13,7 +13,7 @@ namespace carpi::data {
         std::shared_ptr<ReaderContext> context = std::make_shared<ReaderContext>();
 
         context->callback = data_callback;
-        context->ffmpeg_process = utils::launch_subprocess("ffmpeg", { "-f", "rawvideo", "-pix_fmt", "yuv420p", "-s:v", "1920x1080", "-r", "30", "-i", "-", "-v:c", "libx264", "-f", "mp4", "-"});
+        context->ffmpeg_process = utils::launch_subprocess("ffmpeg", { "-f", "rawvideo", "-pix_fmt", "yuv420p", "-s:v", "1920x1080", "-r", "30", "-i", "-", "-c", "mp4" "-"});
         log->info("Launched ffmpeg process. PID: {}, error: {}", context->ffmpeg_process.process_id, context->ffmpeg_process.error_code);
 
         {
