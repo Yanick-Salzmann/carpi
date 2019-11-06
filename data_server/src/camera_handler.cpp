@@ -50,17 +50,12 @@ namespace carpi::data {
                 [this](const std::vector<uint8_t> &data, std::size_t size) { handle_camera_frame(data, size); }
         );
 
-        _camera_stream->initialize_camera({1920, 1080, 1, 30});
+        _camera_stream->initialize_camera({1920, 1088, 1, 30});
     }
 
     void CameraHandler::handle_camera_frame(const std::vector<uint8_t> &data, std::size_t size) {
         std::lock_guard<std::mutex> l{_listener_lock};
         for (const auto &listener : _data_listeners) {
-            static bool is_first = true;
-            if(is_first) {
-                std::this_thread::sleep_for(std::chrono::seconds(5));
-                is_first = false;
-            }
             write(listener->ffmpeg_process.stdin_pipe, data.data(), size);
         }
     }
