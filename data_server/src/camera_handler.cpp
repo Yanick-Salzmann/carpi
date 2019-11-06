@@ -15,7 +15,7 @@ namespace carpi::data {
         context->callback = data_callback;
         context->ffmpeg_process = utils::launch_subprocess(
                 "ffmpeg",
-                {"-f", "rawvideo", "-pix_fmt", "yuv420p", "-video_size", "1920x1088", "-r", "30", "-i", "-", "-c", "libx264", "-f", "mp4", "-movflags", "frag_keyframe+empty_moov", "-"}
+                { "loglevel", "debug", "-f", "rawvideo", "-pix_fmt", "yuv420p", "-video_size", "1920x1088", "-r", "30", "-i", "-", "-c", "libx264", "-f", "mp4", "-movflags", "frag_keyframe+empty_moov", "-"}
         );
         log->info("Launched ffmpeg process. PID: {}, error: {}", context->ffmpeg_process.process_id, context->ffmpeg_process.error_code);
 
@@ -27,6 +27,9 @@ namespace carpi::data {
         std::thread stdout_thread{[this, context]() { handle_stdout_reader(context); }};
         std::thread stderr_thread{[this, context]() { handle_stderr_reader(context); }};
 
+        stdout_thread.join();
+        stderr_thread.join();
+
         int32_t status_loc = 0;
         const auto child_proc = wait(&status_loc);
         if (WIFEXITED(status_loc)) {
@@ -35,8 +38,6 @@ namespace carpi::data {
             log->info("FFmpeg child process {} terminated abnormally", child_proc);
         }
 
-        stdout_thread.join();
-        stderr_thread.join();
     }
 
     void CameraHandler::initialize_camera() {
@@ -44,7 +45,6 @@ namespace carpi::data {
         if (_camera_stream) {
             return;
         }
-
 
         _camera_stream = std::make_shared<video::RawCameraStream>(
                 [this](const std::vector<uint8_t> &data, std::size_t size) { handle_camera_frame(data, size); }
