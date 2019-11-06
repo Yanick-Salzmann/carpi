@@ -62,7 +62,7 @@ namespace carpi::data {
         int32_t num_read = 0;
         while((num_read = read(context->ffmpeg_process.stderr_pipe, buffer, sizeof buffer)) > 0) {
             std::string content{buffer, buffer + num_read};
-            fputs(content.c_str(), stdin);
+            fputs(content.c_str(), stdout);
         }
     }
 
