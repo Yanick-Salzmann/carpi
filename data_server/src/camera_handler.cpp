@@ -42,6 +42,8 @@ namespace carpi::data {
             std::lock_guard<std::mutex> l{_listener_lock};
             _data_listeners.erase(context);
         }
+
+        complete_callback();
     }
 
     void CameraHandler::initialize_camera() {

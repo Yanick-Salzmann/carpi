@@ -133,7 +133,6 @@ namespace carpi::data {
 
             return true;
         }, [&completed, &final_var, socket]() {
-            ::send(socket, "0\r\n\r\n", 5, 0);
             completed = true;
             final_var.notify_all();
         });
