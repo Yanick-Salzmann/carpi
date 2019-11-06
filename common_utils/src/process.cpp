@@ -71,7 +71,7 @@ namespace carpi::utils {
 
             std::cout << "Executing: " << command << std::endl;
 
-            const auto result = execv(command.c_str(), proc_args);
+            const auto result = execvp(command.c_str(), proc_args);
             exit(result);
         } else if(child > 0) {
             close(stdin_pipe[PIPE_READ]);
