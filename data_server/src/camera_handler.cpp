@@ -65,7 +65,7 @@ namespace carpi::data {
                 const auto num_written = write(listener->ffmpeg_process.stdin_pipe, data.data() + written, size - written);
                 written += num_written;
                 if(num_written < 0) {
-                    log->error("Broken stdin pipe");
+                    log->error("Broken stdin pipe (errno={})", errno);
                     break;
                 }
             }
