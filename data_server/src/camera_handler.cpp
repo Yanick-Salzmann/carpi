@@ -25,7 +25,11 @@ namespace carpi::data {
 
         int32_t status_loc = 0;
         const auto child_proc = wait(&status_loc);
-        log->info("FFmpeg child process {} terminated (exit code = {})", child_proc, WEXITSTATUS(status_loc));
+        if(WIFEXITED(status_loc)) {
+            log->info("FFmpeg child process {} terminated (exit code = {})", child_proc, WEXITSTATUS(status_loc));
+        } else {
+            log->info("FFmpeg child process {} terminated abnormally", child_proc);
+        }
 
         stdout_thread.join();
         stderr_thread.join();
