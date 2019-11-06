@@ -15,7 +15,7 @@ namespace carpi::data {
         context->callback = data_callback;
         context->ffmpeg_process = utils::launch_subprocess(
                 "ffmpeg",
-                {"-f", "rawvideo", "-pix_fmt", "yuv420p", "-video_size", "1920x1080", "-r", "30", "-i", "-", "-c", "libx264", "-f", "mp4", "-movflags", "frag_keyframe+empty_moov", "-"}
+                {"-f", "rawvideo", "-pix_fmt", "yuv420p", "-video_size", "1920x1088", "-r", "30", "-i", "-", "-c", "libx264", "-f", "mp4", "-movflags", "frag_keyframe+empty_moov", "-"}
         );
         log->info("Launched ffmpeg process. PID: {}, error: {}", context->ffmpeg_process.process_id, context->ffmpeg_process.error_code);
 
@@ -54,10 +54,6 @@ namespace carpi::data {
     }
 
     void CameraHandler::handle_camera_frame(const std::vector<uint8_t> &data, std::size_t size) {
-        FILE *f = fopen("output.yuv", "ab");
-        fwrite(data.data(), 1, size, f);
-        fclose(f);
-
         std::lock_guard<std::mutex> l{_listener_lock};
         for (const auto &listener : _data_listeners) {
             write(listener->ffmpeg_process.stdin_pipe, data.data(), size);
