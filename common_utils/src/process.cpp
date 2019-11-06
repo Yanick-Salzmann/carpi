@@ -62,8 +62,6 @@ namespace carpi::utils {
             close(stdout_pipe[PIPE_WRITE]);
             close(stderr_pipe[PIPE_WRITE]);
 
-            setvbuf(stdin, NULL, _IOFBF, (1920 * 1988 * 12 / 8));
-
             char** proc_args = !arguments.empty() ? new char*[arguments.size() + 1] : nullptr;
             if(!arguments.empty()) {
                 for(auto i = std::size_t{0}; i < arguments.size(); ++i) {

@@ -63,6 +63,8 @@ namespace carpi::data {
                 if(num_written < 0) {
                     log->error("Broken stdin pipe");
                     break;
+                } else {
+                    log->info("Sent {} bytes", num_written);
                 }
             }
         }
