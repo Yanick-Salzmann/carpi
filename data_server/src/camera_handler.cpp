@@ -62,9 +62,6 @@ namespace carpi::data {
     }
 
     void CameraHandler::handle_camera_frame(const std::vector<uint8_t> &data, std::size_t size) {
-        FILE* f = fopen("output.yuv4", "ab");
-        fwrite(data.data(), 1, size, f);
-        fclose(f);
 
         std::lock_guard<std::mutex> l{_listener_lock};
         for (const auto &listener : _data_listeners) {
@@ -93,9 +90,9 @@ namespace carpi::data {
         char buffer[4096]{};
         int32_t num_read = 0;
         while ((num_read = read(context->ffmpeg_process.stdout_pipe, buffer, sizeof buffer)) > 0) {
-            std::string content{buffer, buffer + num_read};
-            fputs(content.c_str(), stdout);
-            //context->callback(buffer, num_read);
+            FILE* f = fopen("output.yuv4", "ab");
+            fwrite(buffer, 1, num_read, f);
+            fclose(f);
         }
     }
 }
