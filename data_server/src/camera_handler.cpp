@@ -56,6 +56,7 @@ namespace carpi::data {
     void CameraHandler::handle_camera_frame(const std::vector<uint8_t> &data, std::size_t size) {
         std::lock_guard<std::mutex> l{_listener_lock};
         for (const auto &listener : _data_listeners) {
+            log->info("Writing {} bytes to output", size);
             write(listener->ffmpeg_process.stdin_pipe, data.data(), size);
         }
     }
