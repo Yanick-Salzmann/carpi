@@ -42,6 +42,10 @@ namespace carpi::utils {
 
         const auto child = fork();
         if(child == 0) {
+            close(stdin_pipe[PIPE_WRITE]);
+            close(stdout_pipe[PIPE_READ]);
+            close(stderr_pipe[PIPE_READ]);
+
             if (dup2(stdin_pipe[PIPE_READ], STDIN_FILENO) == -1) {
                 exit(errno);
             }
@@ -53,6 +57,10 @@ namespace carpi::utils {
             if (dup2(stderr_pipe[PIPE_WRITE], STDERR_FILENO) == -1) {
                 exit(errno);
             }
+
+            close(stdin_pipe[PIPE_READ]);
+            close(stdout_pipe[PIPE_WRITE]);
+            close(stderr_pipe[PIPE_WRITE]);
 
             char** proc_args = !arguments.empty() ? new char*[arguments.size()] : nullptr;
             if(!arguments.empty()) {
