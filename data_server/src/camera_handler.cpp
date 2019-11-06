@@ -13,7 +13,10 @@ namespace carpi::data {
         std::shared_ptr<ReaderContext> context = std::make_shared<ReaderContext>();
 
         context->callback = data_callback;
-        context->ffmpeg_process = utils::launch_subprocess("ffmpeg", { "-f", "rawvideo", "-pix_fmt", "yuv420p", "-s:v", "1920x1080", "-r", "30", "-i", "-", "-c", "mp4", "-"});
+        context->ffmpeg_process = utils::launch_subprocess(
+                "ffmpeg",
+                {"-f", "rawvideo", "-pix_fmt", "yuv420p", "-video_size", "1920x1080", "-r", "30", "-i", "-", "-c", "libx264", "-f", "mp4", "-movflags", "frag_keyframe+empty_moov", "-"}
+        );
         log->info("Launched ffmpeg process. PID: {}, error: {}", context->ffmpeg_process.process_id, context->ffmpeg_process.error_code);
 
         {
@@ -26,7 +29,7 @@ namespace carpi::data {
 
         int32_t status_loc = 0;
         const auto child_proc = wait(&status_loc);
-        if(WIFEXITED(status_loc)) {
+        if (WIFEXITED(status_loc)) {
             log->info("FFmpeg child process {} terminated (exit code = {}, error = {})", child_proc, WEXITSTATUS(status_loc), utils::error_to_string(WEXITSTATUS(status_loc)));
         } else {
             log->info("FFmpeg child process {} terminated abnormally", child_proc);
@@ -51,12 +54,12 @@ namespace carpi::data {
     }
 
     void CameraHandler::handle_camera_frame(const std::vector<uint8_t> &data, std::size_t size) {
-        FILE* f = fopen("output.yuv", "ab");
+        FILE *f = fopen("output.yuv", "ab");
         fwrite(data.data(), 1, size, f);
         fclose(f);
 
         std::lock_guard<std::mutex> l{_listener_lock};
-        for(const auto& listener : _data_listeners) {
+        for (const auto &listener : _data_listeners) {
             write(listener->ffmpeg_process.stdin_pipe, data.data(), size);
         }
     }
@@ -64,7 +67,7 @@ namespace carpi::data {
     void CameraHandler::handle_stderr_reader(const std::shared_ptr<ReaderContext> &context) {
         char buffer[4096]{};
         int32_t num_read = 0;
-        while((num_read = read(context->ffmpeg_process.stderr_pipe, buffer, sizeof buffer)) > 0) {
+        while ((num_read = read(context->ffmpeg_process.stderr_pipe, buffer, sizeof buffer)) > 0) {
             std::string content{buffer, buffer + num_read};
             fputs(content.c_str(), stdout);
         }
@@ -73,7 +76,7 @@ namespace carpi::data {
     void CameraHandler::handle_stdout_reader(const std::shared_ptr<ReaderContext> &context) {
         char buffer[4096]{};
         int32_t num_read = 0;
-        while((num_read = read(context->ffmpeg_process.stdout_pipe, buffer, sizeof buffer)) > 0) {
+        while ((num_read = read(context->ffmpeg_process.stdout_pipe, buffer, sizeof buffer)) > 0) {
             context->callback(buffer, num_read);
         }
     }
