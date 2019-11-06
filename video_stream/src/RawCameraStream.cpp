@@ -85,6 +85,8 @@ namespace carpi::video {
         format->es->video.frame_rate.num = configuration.fps();
         format->es->video.frame_rate.den = VIDEO_FRAME_RATE_DEN;
 
+        log->info("Camera dimension: {}/{}", format->es->video.width, format->es->video.height);
+
         status = mmal_port_format_commit(video_port);
         if (status != MMAL_SUCCESS) {
             log->error("Error setting video format: {}", status);
