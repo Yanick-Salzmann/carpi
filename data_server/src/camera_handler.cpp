@@ -54,6 +54,10 @@ namespace carpi::data {
     }
 
     void CameraHandler::handle_camera_frame(const std::vector<uint8_t> &data, std::size_t size) {
+        int fd = open("output.yuv4", O_SYNC | O_APPEND);
+        write(fd, data.data(), size);
+        close(fd);
+
         std::lock_guard<std::mutex> l{_listener_lock};
         for (const auto &listener : _data_listeners) {
             std::size_t written = 0;
