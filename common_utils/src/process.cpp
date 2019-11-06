@@ -3,6 +3,7 @@
 #include "common_utils/log.hpp"
 
 #include <unistd.h>
+#include <iostream>
 
 #define PIPE_READ 0
 #define PIPE_WRITE 1
@@ -59,6 +60,8 @@ namespace carpi::utils {
                     proc_args[i] = strdup(arguments[i].c_str());
                 }
             }
+
+            std::cout << "Executing: " << command << std::endl;
 
             const auto result = execv(command.c_str(), proc_args);
             exit(result);
