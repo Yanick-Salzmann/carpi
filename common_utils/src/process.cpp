@@ -69,7 +69,7 @@ namespace carpi::utils {
                 }
             }
 
-            const auto result = execvp(command.c_str(), proc_args);
+            execvp(command.c_str(), proc_args);
             exit(errno);
         } else if(child > 0) {
             close(stdin_pipe[PIPE_READ]);
