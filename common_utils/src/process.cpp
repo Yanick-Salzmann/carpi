@@ -62,11 +62,13 @@ namespace carpi::utils {
             close(stdout_pipe[PIPE_WRITE]);
             close(stderr_pipe[PIPE_WRITE]);
 
-            char** proc_args = !arguments.empty() ? new char*[arguments.size()] : nullptr;
+            char** proc_args = !arguments.empty() ? new char*[arguments.size() + 1] : nullptr;
             if(!arguments.empty()) {
                 for(auto i = std::size_t{0}; i < arguments.size(); ++i) {
                     proc_args[i] = strdup(arguments[i].c_str());
                 }
+
+                proc_args[arguments.size()] = nullptr;
             }
 
             execvp(command.c_str(), proc_args);
