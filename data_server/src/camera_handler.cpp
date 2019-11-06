@@ -15,7 +15,7 @@ namespace carpi::data {
         context->callback = data_callback;
         context->ffmpeg_process = utils::launch_subprocess(
                 "ffmpeg",
-                { "-f", "rawvideo", "-pix_fmt", "yuv420p", "-s", "1920x1088", "-r", "30", "-i", "-", "-c", "libx264", "-f", "mp4", "-movflags", "frag_keyframe+empty_moov", "-", "-loglevel", "trace"}
+                {"-f", "rawvideo", "-pix_fmt", "yuv420p", "-s", "1920x1088", "-r", "30", "-i", "-", "-c", "libx264", "-f", "mp4", "-movflags", "frag_keyframe+empty_moov", "-", "-loglevel", "trace"}
         );
         log->info("Launched ffmpeg process. PID: {}, error: {}", context->ffmpeg_process.process_id, context->ffmpeg_process.error_code);
 
@@ -56,9 +56,14 @@ namespace carpi::data {
     void CameraHandler::handle_camera_frame(const std::vector<uint8_t> &data, std::size_t size) {
         std::lock_guard<std::mutex> l{_listener_lock};
         for (const auto &listener : _data_listeners) {
-            const auto num_written = write(listener->ffmpeg_process.stdin_pipe, data.data(), size);
-            if(num_written != size) {
-                log->error("Could not write {} bytes, only wrote {}", size, num_written);
+            std::size_t written = 0;
+            while (written < size) {
+                const auto num_written = write(listener->ffmpeg_process.stdin_pipe, data.data() + written, size - written);
+                written += num_written;
+                if(num_written < 0) {
+                    log->error("Broken stdin pipe");
+                    break;
+                }
             }
         }
     }
