@@ -88,9 +88,7 @@ namespace carpi::data {
         char buffer[4096]{};
         int32_t num_read = 0;
         while ((num_read = read(context->ffmpeg_process.stdout_pipe, buffer, sizeof buffer)) > 0) {
-            FILE* f = fopen("output.yuv4", "ab");
-            fwrite(buffer, 1, num_read, f);
-            fclose(f);
+            context->callback(buffer, num_read);
         }
     }
 }
