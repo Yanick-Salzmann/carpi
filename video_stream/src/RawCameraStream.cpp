@@ -76,8 +76,8 @@ namespace carpi::video {
 
         format->encoding_variant = map_format(VideoFormat::H264);
         format->encoding = map_format(VideoFormat::H264);
-        format->es->video.width = VCOS_ALIGN_UP(configuration.width(), 32u);
-        format->es->video.height = VCOS_ALIGN_UP(configuration.height(), 16u);
+        format->es->video.width = 1920; //VCOS_ALIGN_UP(configuration.width(), 32u);
+        format->es->video.height = 1080; //VCOS_ALIGN_UP(configuration.height(), 16u);
         format->es->video.crop.x = 0;
         format->es->video.crop.y = 0;
         format->es->video.crop.width = format->es->video.width;
