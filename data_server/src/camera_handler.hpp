@@ -9,6 +9,7 @@
 #include <array>
 #include <atomic>
 #include <set>
+#include <map>
 
 #include <video_stream/H264Conversion.hpp>
 #include <video_stream/H264Stream.hpp>
@@ -20,10 +21,19 @@ namespace carpi::data {
 
         struct ReaderContext {
             std::function<bool(void *, std::size_t)> callback;
+
             utils::SubProcess ffmpeg_process;
+
+            std::size_t last_sent_position{};
+
+            std::vector<uint8_t> data_buffer{};
+            std::condition_variable data_event{};
+            std::mutex data_lock;
         };
 
         static constexpr std::size_t QUEUE_SIZE = 300;
+
+        std::map<std::string, std::shared_ptr<ReaderContext>> _listener_map{};
 
         std::set<std::shared_ptr<ReaderContext>> _data_listeners;
         std::mutex _listener_lock;
@@ -43,6 +53,8 @@ namespace carpi::data {
                 const std::function<bool(void *, std::size_t)> &data_callback,
                 const std::function<void()> &complete_callback = {}
         );
+
+        bool is_current_stream(const std::string& session_cookie, const std::string& range);
     };
 }
 

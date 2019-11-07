@@ -2,17 +2,18 @@
 #include "data_server/http_response.hpp"
 #include "camera_handler.hpp"
 #include "cookie_helper.hpp"
+#include "range_helper.hpp"
 
 #include <filesystem>
 #include <common_utils/string.hpp>
 #include <include/cef_parser.h>
 #include <sys/socket.h>
-#include <common_utils/conversion.hpp>
+#include <uuid/uuid.h>
 
 namespace carpi::data {
     LOGGER_IMPL(HttpRequest);
 
-    HttpRequest::HttpRequest(const std::string &method, const std::string &path, const std::string &version, const std::multimap<std::string, std::string>& headers, int socket) {
+    HttpRequest::HttpRequest(const std::string &method, const std::string &path, const std::string &version, const std::multimap<std::string, std::string> &headers, int socket) {
         if (method != "GET") {
             log->warn("Invalid HTTP method {}, must be GET", method);
             HttpResponse{HttpStatusCode::INVALID_METHOD, "GET only"}.write_to_socket(socket);
@@ -100,19 +101,32 @@ namespace carpi::data {
                 .write_to_socket(socket);
     }
 
-    void HttpRequest::process_camera_stream(const std::string &path, const std::multimap<std::string, std::string>& headers, int socket) {
-        HttpResponse{HttpStatusCode::OK, "OK"}
-                .add_header("Content-Type", "video/mp4")
-                .write_to_socket(socket);
+    void HttpRequest::process_camera_stream(const std::string &path, const std::multimap<std::string, std::string> &headers, int socket) {
+        HttpResponse response{HttpStatusCode::OK, "OK"};
+        response.add_header("Content-Type", "video/mp4");
 
         CookieHelper cookie_helper{headers};
         cookie_helper.print(log);
+
+        Range range{headers.lower_bound("range")->second};
+        range.print(log);
+
+        const auto is_first_request = !cookie_helper.has_cookie("camera_stream");
+        if(!is_first_request) {
+            const auto stream_id = cookie_helper.cookie("camera_stream");
+        }
+
+        if (!cookie_helper.has_cookie("camera_stream")) {
+
+        }
+
+        response.write_to_socket(socket);
 
         std::mutex final_lock{};
         std::condition_variable final_var{};
         auto completed = false;
 
-        sCameraHandler->begin_streaming([socket, &final_lock, &final_var, &completed](void* data, std::size_t size) {
+        sCameraHandler->begin_streaming([socket, &final_lock, &final_var, &completed](void *data, std::size_t size) {
 //            std::stringstream hdr_stream{};
 //            hdr_stream << std::hex << size << "\r\n";
 //            const auto hdr_line = hdr_stream.str();
@@ -122,7 +136,7 @@ namespace carpi::data {
 //                return false;
 //            }
 
-            if(::send(socket, data, size, 0) <= 0) {
+            if (::send(socket, data, size, 0) <= 0) {
                 completed = true;
                 final_var.notify_all();
                 return false;

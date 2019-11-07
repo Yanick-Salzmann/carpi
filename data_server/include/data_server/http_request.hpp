@@ -19,6 +19,8 @@ namespace carpi::data {
         static void process_local_file(const std::string& path, int socket);
         static void process_camera_stream(const std::string& path, const std::multimap<std::string, std::string>& headers, int socket);
 
+        static void begin_camera_stream(HttpResponse& response, int socket);
+
     public:
         HttpRequest(const std::string& method, const std::string& path, const std::string& version, const std::multimap<std::string, std::string>& headers, int socket);
     };

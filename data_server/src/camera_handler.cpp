@@ -91,4 +91,20 @@ namespace carpi::data {
             context->callback(buffer, num_read);
         }
     }
+
+    bool CameraHandler::is_current_stream(const std::string &session_cookie, const std::string &range) {
+        std::shared_ptr<ReaderContext> ctx{};
+        {
+            std::lock_guard<std::mutex> l{_listener_lock};
+            const auto itr = _listener_map.find(session_cookie);
+            if(itr == _listener_map.end()) {
+                return false;
+            }
+
+            ctx = itr->second;
+        }
+
+
+        return false;
+    }
 }
