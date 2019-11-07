@@ -11,7 +11,7 @@
 namespace carpi::data {
     LOGGER_IMPL(HttpRequest);
 
-    HttpRequest::HttpRequest(const std::string &method, const std::string &path, const std::string &version, int socket) {
+    HttpRequest::HttpRequest(const std::string &method, const std::string &path, const std::string &version, const std::multimap<std::string, std::string>& headers, int socket) {
         if (method != "GET") {
             log->warn("Invalid HTTP method {}, must be GET", method);
             HttpResponse{HttpStatusCode::INVALID_METHOD, "GET only"}.write_to_socket(socket);
@@ -99,12 +99,15 @@ namespace carpi::data {
                 .write_to_socket(socket);
     }
 
-    void HttpRequest::process_camera_stream(const std::string &path, int socket) {
+    void HttpRequest::process_camera_stream(const std::string &path, const std::multimap<std::string, std::string>& headers, int socket) {
         HttpResponse{HttpStatusCode::OK, "OK"}
                 .add_header("Content-Type", "video/mp4")
-                //.add_header("Transfer-Encoding", "chunked")
-                .add_header("Content-Length", "100000000000")
                 .write_to_socket(socket);
+
+        const auto range = headers.find("range");
+        if(range != headers.end()) {
+            log->info("Requested range: {}", range->second);
+        }
 
         std::mutex final_lock{};
         std::condition_variable final_var{};

@@ -17,10 +17,10 @@ namespace carpi::data {
 
         static RequestType find_request_type(const std::string& path, std::string& remainder);
         static void process_local_file(const std::string& path, int socket);
-        static void process_camera_stream(const std::string& path, int socket);
+        static void process_camera_stream(const std::string& path, const std::multimap<std::string, std::string>& headers, int socket);
 
     public:
-        HttpRequest(const std::string& method, const std::string& path, const std::string& version, int socket);
+        HttpRequest(const std::string& method, const std::string& path, const std::string& version, const std::multimap<std::string, std::string>& headers, int socket);
     };
 }
 

@@ -20,7 +20,23 @@ namespace carpi::data {
             const auto version = utils::trim(read_until("\r\n"));
 
             log->info("Got request: Method: {}, Path: {}, Version: {}", method, path, version);
-            HttpRequest req{method, path, version, _socket};
+            auto header_line = utils::trim(read_until("\r\n"));
+            std::multimap<std::string, std::string> header_map{};
+
+            while(!header_line.empty()) {
+                auto hdr_end = header_line.find(':');
+                if(hdr_end == std::string::npos) {
+                    header_map.emplace(header_line, std::string{});
+                } else {
+                    const auto key = utils::trim(header_line.substr(0, hdr_end));
+                    const auto value = utils::trim_left(header_line.substr(hdr_end + 1));
+                    header_map.emplace(utils::to_lower(key), value);
+                }
+
+                header_line = utils::trim(read_until("\r\n"));
+            }
+
+            HttpRequest req{method, path, version, header_map, _socket};
             break;
         }
 
