@@ -1,6 +1,7 @@
 #include "data_server/http_request.hpp"
 #include "data_server/http_response.hpp"
 #include "camera_handler.hpp"
+#include "cookie_helper.hpp"
 
 #include <filesystem>
 #include <common_utils/string.hpp>
@@ -104,10 +105,8 @@ namespace carpi::data {
                 .add_header("Content-Type", "video/mp4")
                 .write_to_socket(socket);
 
-        const auto range = headers.find("range");
-        if(range != headers.end()) {
-            log->info("Requested range: {}", range->second);
-        }
+        CookieHelper cookie_helper{headers};
+        cookie_helper.print(log);
 
         std::mutex final_lock{};
         std::condition_variable final_var{};
