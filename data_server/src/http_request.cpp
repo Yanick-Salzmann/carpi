@@ -42,7 +42,7 @@ namespace carpi::data {
             }
 
             case RequestType::CAMERA_STREAM: {
-                process_camera_stream(file_path, socket);
+                process_camera_stream(file_path, headers, socket);
                 break;
             }
 
