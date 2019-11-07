@@ -44,7 +44,7 @@ namespace carpi::data {
         } else {
             const auto dash = range.find('-');
             const auto start = range.substr(0, dash);
-            const auto end = range.substr(dash);
+            const auto end = range.substr(dash + 1);
             return {
                 .type = end.empty() ? RangeType::OPEN_END : RangeType::BOUNDED,
                 .start = (std::size_t) std::stoull(start),
