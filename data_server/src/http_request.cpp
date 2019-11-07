@@ -102,7 +102,8 @@ namespace carpi::data {
     void HttpRequest::process_camera_stream(const std::string &path, int socket) {
         HttpResponse{HttpStatusCode::OK, "OK"}
                 .add_header("Content-Type", "video/mp4")
-                .add_header("Transfer-Encoding", "chunked")
+                //.add_header("Transfer-Encoding", "chunked")
+                .add_header("Content-Length", "100000000000")
                 .write_to_socket(socket);
 
         std::mutex final_lock{};
@@ -110,14 +111,14 @@ namespace carpi::data {
         auto completed = false;
 
         sCameraHandler->begin_streaming([socket, &final_lock, &final_var, &completed](void* data, std::size_t size) {
-            std::stringstream hdr_stream{};
-            hdr_stream << std::hex << size << "\r\n";
-            const auto hdr_line = hdr_stream.str();
-            if(::send(socket, hdr_line.c_str(), hdr_line.size(), 0) <= 0) {
-                completed = true;
-                final_var.notify_all();
-                return false;
-            }
+//            std::stringstream hdr_stream{};
+//            hdr_stream << std::hex << size << "\r\n";
+//            const auto hdr_line = hdr_stream.str();
+//            if(::send(socket, hdr_line.c_str(), hdr_line.size(), 0) <= 0) {
+//                completed = true;
+//                final_var.notify_all();
+//                return false;
+//            }
 
             if(::send(socket, data, size, 0) <= 0) {
                 completed = true;
@@ -125,15 +126,15 @@ namespace carpi::data {
                 return false;
             }
 
-            if(::send(socket, "\r\n", 2, 0) <= 0) {
-                completed = true;
-                final_var.notify_all();
-                return false;
-            }
+//            if(::send(socket, "\r\n", 2, 0) <= 0) {
+//                completed = true;
+//                final_var.notify_all();
+//                return false;
+//            }
 
             return true;
         }, [&completed, &final_var, socket]() {
-            ::send(socket, "0\r\n\r\n", 5, 0);
+//            ::send(socket, "0\r\n\r\n", 5, 0);
             completed = true;
             final_var.notify_all();
         });
