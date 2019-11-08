@@ -29,6 +29,10 @@ namespace carpi::data {
         explicit Range(const std::string& range_header);
 
         void print(utils::Logger& logger);
+
+        [[nodiscard]] const std::vector<RequestRange>& ranges() const {
+            return _ranges;
+        }
     };
 }
 
