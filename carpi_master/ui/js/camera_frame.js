@@ -4,6 +4,8 @@ $(() => {
     let texture = null;
     let program = null;
     let uniform_texture = null;
+    let vertex_buffer = null;
+    let index_buffer = null;
 
     function on_resize(width, height) {
         canvas.setAttribute('width', width.toString());
@@ -30,7 +32,7 @@ $(() => {
     function compile_shader(shader, code) {
         gl.shaderSource(shader, code);
         gl.compileShader(shader);
-        if(!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
             const error_log = gl.getShaderInfoLog(shader);
             console.error("Error compiling shader:", error_log);
             throw "Error compiling shader";
@@ -72,7 +74,7 @@ $(() => {
         gl.attachShader(program, fs);
 
         gl.linkProgram(program);
-        if(!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+        if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
             console.error("Error linking program:", gl.getProgramInfoLog(program));
             throw "Error linking program";
         }
@@ -80,20 +82,45 @@ $(() => {
         uniform_texture = gl.getUniformLocation(program, "video_texture");
     }
 
+    function setup_data() {
+        vertex_buffer = gl.createBuffer();
+        index_buffer = gl.createBuffer();
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
+        gl.bufferData(gl.ARRAY_BUFFER,
+            Float32Array.of(
+                -1, -1, 0, 0,
+                1, -1, 1, 0,
+                1, 1, 1, 1,
+                -1, 1, 0, 1
+            ),
+            gl.STATIC_DRAW
+        );
+
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, index_buffer);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, Int8Array.of(0, 1, 2, 0, 2, 3), gl.STATIC_DRAW);
+    }
+
+    function on_frame() {
+        gl.clear(gl.COLOR_BUFFER_BIT);
+
+
+        requestAnimationFrame(on_frame);
+    }
+
     gl.clearColor(1.0, 0.5, 0.25, 1.0);
-    gl.clear(gl.COLOR_BUFFER_BIT);
 
     setup_texture();
     setup_program();
+    setup_data();
 
-    let fps = 30;
     let width = 480;
     let height = 360;
 
     on_resize(width, height);
+    on_frame();
 
     event_manager.submitTask('camera_parameters', (data) => {
-        fps = data.fps;
         on_resize(data.width, data.height);
     });
 });
