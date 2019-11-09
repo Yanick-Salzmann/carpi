@@ -66,7 +66,7 @@ namespace carpi::io::camera {
         FILE* f = fopen("output_image.bmp", "wb");
         fwrite(&header, sizeof header, 1, f);
         fwrite(&info, sizeof info, 1, f);
-        fwrite(_data_buffer.data(), 1, _data_buffer.size(), f);
+        fwrite(_data_buffer.data(), 4, _data_buffer.size(), f);
         fflush(f);
         fclose(f);
 
