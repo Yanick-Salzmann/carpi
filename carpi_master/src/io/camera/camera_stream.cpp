@@ -48,7 +48,7 @@ namespace carpi::io::camera {
         width = CAMERA_WIDTH;
         height = CAMERA_HEIGHT;
 
-        std::vector<char> out_data(full_data.size() * 2);
+        std::vector<char> out_data(full_data.size() * 8);
         std::size_t out_size = 0;
         base64_encode((const char*) full_data.data(), full_data.size() * 4, out_data.data(), &out_size, 0);
         return std::string{out_data.begin(), out_data.begin() + out_size};
