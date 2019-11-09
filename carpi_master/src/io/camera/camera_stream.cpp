@@ -26,6 +26,7 @@ namespace carpi::io::camera {
         libyuv::I420ToARGB(data.data(), 0, data.data(), 0, data.data(), 0,
                 (uint8_t *) _data_buffer.data(), CAMERA_WIDTH * 4, CAMERA_WIDTH, CAMERA_HEIGHT);
 
+#pragma pack(push, 1)
         struct BitmapHeader {
             uint16_t header = 0x4D42;
             uint32_t size;
@@ -47,6 +48,7 @@ namespace carpi::io::camera {
             uint32_t clr = 0;
             uint32_t clr_imp = 0;
         };
+#pragma pack(pop)
 
         BitmapHeader header{
                 .size = 54 + CAMERA_WIDTH * CAMERA_HEIGHT * 4
@@ -55,14 +57,9 @@ namespace carpi::io::camera {
         BitmapInfo info{
                 .width = CAMERA_WIDTH,
                 .height = -(int32_t) CAMERA_HEIGHT,
-                .size_image = CAMERA_WIDTH * CAMERA_HEIGHT * 4
+                .size_image = 0
         };
 
-        std::vector<uint8_t> full_data;
-        full_data.resize(54 + _data_buffer.size());
-        memcpy(&full_data[0], &header, sizeof header);
-        memcpy(&full_data[sizeof header], &info, sizeof info);
-        memcpy(&full_data[sizeof header + sizeof info], _data_buffer.data(), _data_buffer.size());
         FILE* f = fopen("output_image.bmp", "wb");
         fwrite(&header, sizeof header, 1, f);
         fwrite(&info, sizeof info, 1, f);
