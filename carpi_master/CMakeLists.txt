@@ -6,7 +6,7 @@ add_executable(carpi_master src/main.cpp src/comm/CommServer.hpp src/comm/CommSe
     #    src/gl/GraphicsDevice.hpp src/gl/GraphicsDevice.cpp src/gl/Buffers.hpp src/gl/Buffers.cpp src/gl/VertexElement.hpp src/gl/VertexElement.cpp src/gl/Program.hpp
         src/ui/WebCore.hpp src/ui/WebCore.cpp src/ui/WebApplication.hpp src/ui/WebApplication.cpp src/main.hpp src/ui/WebClient.hpp src/ui/WebClient.cpp src/io/LocalSchemeHandler.hpp src/io/LocalSchemeHandler.cpp src/comm/IpcServer.hpp src/comm/IpcServer.cpp src/comm/IpcClientManager.hpp src/comm/IpcClientManager.cpp src/comm/IpcConnection.hpp src/comm/IpcConnection.cpp src/io/camera/camera_stream.hpp src/io/camera/camera_stream.cpp)
 
-add_dependencies(carpi_master bluetooth_utils video_stream obd carpi_browser_subprocess ipc_common wiring_utils data_server)
+add_dependencies(carpi_master bluetooth_utils video_stream obd carpi_browser_subprocess ipc_common wiring_utils data_server json)
 
 find_package(Threads)
 
@@ -20,6 +20,7 @@ target_include_directories(carpi_master PUBLIC
         ${CMAKE_SOURCE_DIR}/video_stream/include
         ${CMAKE_SOURCE_DIR}/obd/include
         ${CMAKE_SOURCE_DIR}/data_server/include
+        ${CMAKE_BINARY_DIR}/third_party/json/include
         ${OPENGLES2_INCLUDE_DIR}
         ${EGL_INCLUDE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/src

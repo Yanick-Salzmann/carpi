@@ -125,6 +125,17 @@ $(() => {
         requestAnimationFrame(on_frame);
     }
 
+    function fetch_frame() {
+        event_manager.submitTask('camera_frame', (data) => {
+            console.log("On Frame");
+            const b64_data = data.image;
+            const bin_data = Base64Binary.decodeArrayBuffer(b64_data);
+            gl.bindTexture(gl.TEXTURE_2D, texture);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, data.width, data.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array(bin_data));
+           fetch_frame();
+        });
+    }
+
     gl.clearColor(1.0, 0.5, 0.25, 1.0);
 
     setup_texture();
@@ -137,8 +148,10 @@ $(() => {
 
     on_resize(width, height);
     on_frame();
+    fetch_frame();
 
     event_manager.submitTask('camera_parameters', (data) => {
+        console.log("Resize", data);
         on_resize(data.width, data.height);
     });
 });
