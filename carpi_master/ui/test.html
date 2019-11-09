@@ -15,10 +15,13 @@
 </head>
 <body>
 <h1>Hello, here I am!</h1>
-<!--<video controls autoplay>
-    <source src="http://localhost:8081/camera/stream" type="video/mp4">
-</video>-->
-<button>Button1</button>
+<canvas width="480" height="360" id="video-canvas"></canvas>
+<script>
+    const canvas = document.querySelector('#video-canvas');
+    const gl = canvas.getContext('webgl');
 
+    gl.clearColor(1.0, 0.5, 0.25, 1.0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+</script>
 </body>
 </html>
