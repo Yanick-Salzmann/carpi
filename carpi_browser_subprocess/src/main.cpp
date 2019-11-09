@@ -17,6 +17,8 @@ class CameraFrameCallback : public CefV8Handler, public CefV8ArrayBufferReleaseC
     int32_t _mutex_shm_id = 0;
     int32_t _camera_shm_id = 0;
 
+    uint8_t* _frame_data = new uint8_t[CAMERA_WIDTH * CAMERA_HEIGHT * 4];
+
     void* _camera_frame_buffer;
 
 public:
@@ -46,12 +48,11 @@ public:
     }
 
     bool Execute(const CefString &name, CefRefPtr<CefV8Value> object, const CefV8ValueList &arguments, CefRefPtr<CefV8Value> &retval, CefString &exception) override {
-        CefRefPtr<CefV8Value> ptr_value;
         pthread_mutex_lock(_video_shmem_mutex);
-        ptr_value = CefV8Value::CreateArrayBuffer(_camera_frame_buffer, CAMERA_WIDTH * CAMERA_HEIGHT * 4, this);
+        memcpy(_frame_data, _camera_frame_buffer, CAMERA_WIDTH * CAMERA_HEIGHT * 4);
         pthread_mutex_unlock(_video_shmem_mutex);
 
-        retval = ptr_value;
+        retval = CefV8Value::CreateArrayBuffer(_camera_frame_buffer, CAMERA_WIDTH * CAMERA_HEIGHT * 4, this);
         return true;
     }
 
