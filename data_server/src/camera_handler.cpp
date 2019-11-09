@@ -191,6 +191,7 @@ namespace carpi::data {
 
             const auto offset = itr->start - context->last_sent_position;
             const auto num_bytes = std::min<std::size_t>(context->data_buffer.size() - offset, itr->end - itr->start);
+            log->info("Sending {} bytes from {} (buffer size: {}, last sent position: {})", num_bytes, offset, context->data_buffer.size(), context->last_sent_position);
             std::vector<uint8_t> range_data{context->data_buffer.begin() + offset, context->data_buffer.begin() + offset + num_bytes};
             itr->callback(range_data, num_bytes);
             last_position = std::max<std::size_t>(last_position, context->last_sent_position + offset + num_bytes);
@@ -202,7 +203,6 @@ namespace carpi::data {
         }
 
         std::list<RangeRequest> new_ranges{split, ranges.end()};
-        //std::sort(new_ranges.begin(), new_ranges.end(), [](const auto& r1, const auto& r2) { return r1.start - r2.start; });
         context->pending_requests = new_ranges;
 
         const auto to_remove = last_position - context->last_sent_position;
