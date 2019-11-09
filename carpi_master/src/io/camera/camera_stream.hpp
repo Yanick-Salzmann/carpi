@@ -45,6 +45,8 @@ namespace carpi::io::camera {
         }
 
         std::string buffer_to_base64();
+
+        void begin_capture();
     };
 }
 

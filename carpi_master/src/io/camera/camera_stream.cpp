@@ -50,4 +50,8 @@ namespace carpi::io::camera {
         base64_encode((const char*) full_data.data(), full_data.size() * 4, out_data.data(), &out_size, 0);
         return std::string{out_data.begin(), out_data.begin() + out_size};
     }
+
+    void CameraStream::begin_capture() {
+        _stream->start_capture();
+    }
 }

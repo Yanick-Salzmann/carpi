@@ -41,6 +41,15 @@ namespace carpi::ui {
 
             callback->Success(val.dump());
             return true;
+        } else if(type == "camera_capture") {
+            sCameraStream->begin_capture();
+            json val{
+                    {"type", type},
+                    {"body", {{"success", true}}}
+            };
+
+            callback->Success(val.dump());
+            return true;
         }
 
         return false;
