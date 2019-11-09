@@ -63,9 +63,12 @@ namespace carpi::io::camera {
         memcpy(&full_data[0], &header, sizeof header);
         memcpy(&full_data[sizeof header], &info, sizeof info);
         memcpy(&full_data[sizeof header + sizeof info], _data_buffer.data(), _data_buffer.size());
-        int fd = open("output_image.bmp", O_SYNC | O_CREAT | O_TRUNC);
-        write(fd, full_data.data(), full_data.size());
-        close(fd);
+        FILE* f = fopen("output_image.bmp", "wb");
+        fwrite(&header, sizeof header, 1, f);
+        fwrite(&info, sizeof info, 1, f);
+        fwrite(_data_buffer.data(), 1, _data_buffer.size(), f);
+        fflush(f);
+        fclose(f);
     }
 
     CameraStream::~CameraStream() {
