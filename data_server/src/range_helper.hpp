@@ -16,6 +16,8 @@ namespace carpi::data {
         RangeType type;
         std::size_t start;
         std::size_t end;
+
+        [[nodiscard]] std::string to_string() const;
     };
 
     class Range {

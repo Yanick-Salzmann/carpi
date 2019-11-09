@@ -82,4 +82,28 @@ namespace carpi::data {
         stream << ">";
         logger->info(stream.str());
     }
+
+    std::string RequestRange::to_string() const {
+        std::stringstream stream;
+        stream << "<Range ";
+        switch(type) {
+            case RangeType::SUFFIX: {
+                stream << " type=SUFFIX start=" << start;
+                break;
+            }
+
+            case RangeType::OPEN_END: {
+                stream << " type=OPEN_END start=" << start;
+                break;
+            }
+
+            case RangeType::BOUNDED: {
+                stream << " type=BOUNDED start=" << start << " end=" << end;
+                break;
+            }
+        }
+
+        stream << ">";
+        return stream.str();
+    }
 }

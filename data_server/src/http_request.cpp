@@ -143,7 +143,7 @@ namespace carpi::data {
             return;
         }
 
-        log->info("Requested range {}", req_range);
+        log->info("Requested range {}", req_range.to_string());
 
         auto is_first_request = !cookie_helper.has_cookie("camera_stream");
         std::string stream_id = cookie_helper.cookie("camera_stream");
