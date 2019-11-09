@@ -10,6 +10,7 @@
 #include <sys/socket.h>
 #include <uuid/uuid.h>
 #include <iostream>
+#include <common_utils/error.hpp>
 
 namespace carpi::data {
     LOGGER_IMPL(HttpRequest);
@@ -175,10 +176,13 @@ namespace carpi::data {
             std::size_t num_sent = 0;
             while(num_sent < bytes) {
                 const auto to_send = std::min<std::size_t>(16384, bytes - num_sent);
-                if(send(socket, data.data() + num_sent, to_send, 0) != to_send) {
-                    log->error("Error sending bytes");
+                const auto sent = send(socket, data.data() + num_sent, to_send, 0);
+                if(sent < 0 ) {
+                    log->error("Error sending data: {} (errno={})", utils::error_to_string(errno), errno);
+                    break;
                 }
-                num_sent += to_send;
+
+                num_sent += sent;
             }
 
             completed = true;
