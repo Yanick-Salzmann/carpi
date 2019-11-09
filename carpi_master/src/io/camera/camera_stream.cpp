@@ -27,7 +27,7 @@ namespace carpi::io::camera {
                 (uint8_t *) _data_buffer.data(), CAMERA_WIDTH * 4, CAMERA_WIDTH, CAMERA_HEIGHT);
 
         struct BitmapHeader {
-            uint16_t header = 0x424D;
+            uint16_t header = 0x4D42;
             uint32_t size;
             uint16_t r0 = 0;
             uint16_t r1 = 0;
