@@ -49,6 +49,9 @@ namespace carpi::data {
             std::list<RangeRequest> pending_requests;
         };
 
+        static const uint32_t CAMERA_WIDTH = 480;
+        static const uint32_t CAMERA_HEIGHT = 360;
+
         std::map<std::string, std::shared_ptr<ReaderContext>> _listener_map{};
 
         std::set<std::shared_ptr<ReaderContext>> _data_listeners;

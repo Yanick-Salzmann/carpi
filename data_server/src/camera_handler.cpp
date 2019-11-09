@@ -18,9 +18,7 @@ namespace carpi::data {
                 [this](const std::vector<uint8_t> &data, std::size_t size) { handle_camera_frame(data, size); }
         );
 
-        log->info("Pre initialize_camera");
-        _camera_stream->initialize_camera({480, 360, 1, 30});
-        log->info("Post initialize camera");
+        _camera_stream->initialize_camera({CAMERA_WIDTH, CAMERA_HEIGHT, 1, 30});
     }
 
     void CameraHandler::handle_camera_frame(const std::vector<uint8_t> &data, std::size_t size) {
@@ -106,7 +104,7 @@ namespace carpi::data {
                         "ffmpeg",
                         "-f", "rawvideo",
                         "-pix_fmt", "yuv420p",
-                        "-s", fmt::format("{}x{}", _camera_stream->actual_width(), _camera_stream->actual_height()),
+                        "-s", fmt::format("{}x{}", video::RawCameraStream::calculate_width(CAMERA_WIDTH), video::RawCameraStream::calculate_height(CAMERA_HEIGHT)),
                         "-r", "30",
                         "-i", "-",
                         "-c", "libx264",

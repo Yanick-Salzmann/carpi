@@ -101,6 +101,9 @@ namespace carpi::video {
         [[nodiscard]] std::size_t actual_height() const {
             return _actual_height;
         }
+
+        static uint32_t calculate_width(uint32_t width);
+        static uint32_t calculate_height(uint32_t height);
     };
 };
 

@@ -143,8 +143,6 @@ namespace carpi::data {
             return;
         }
 
-        log->info("Requested range {}", req_range.to_string());
-
         auto is_first_request = !cookie_helper.has_cookie("camera_stream");
         std::string stream_id = cookie_helper.cookie("camera_stream");
         if (!is_first_request) {
@@ -157,8 +155,6 @@ namespace carpi::data {
         if (is_first_request && stream_id.empty()) {
             stream_id = create_uuid();
         }
-
-        log->info("Stream id is {}", stream_id);
 
         if (is_first_request) {
             sCameraHandler->start_stream(stream_id);

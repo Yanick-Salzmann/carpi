@@ -239,4 +239,12 @@ namespace carpi::video {
             log->warn("Error setting MMAL_PARAMETER_CAPTURE to false");
         }
     }
+
+    uint32_t RawCameraStream::calculate_width(uint32_t width) {
+        return VCOS_ALIGN_UP(width, 32u);
+    }
+
+    uint32_t RawCameraStream::calculate_height(uint32_t height) {
+        return VCOS_ALIGN_UP(height, 16u);
+    }
 }
