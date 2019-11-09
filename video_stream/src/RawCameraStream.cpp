@@ -80,8 +80,8 @@ namespace carpi::video {
         format->es->video.height = VCOS_ALIGN_UP(configuration.height(), 16);
         format->es->video.crop.x = 0;
         format->es->video.crop.y = 0;
-        format->es->video.crop.width = configuration.width();
-        format->es->video.crop.height = configuration.height();
+        format->es->video.crop.width = format->es->video.width;
+        format->es->video.crop.height = format->es->video.height;
         format->es->video.frame_rate.num = configuration.fps();
         format->es->video.frame_rate.den = VIDEO_FRAME_RATE_DEN;
 
