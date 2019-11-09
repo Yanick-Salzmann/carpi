@@ -20,10 +20,10 @@ namespace carpi::io::camera {
     }
 
     void CameraStream::handle_camera_frame(const std::vector<uint8_t> &data, std::size_t size) {
-        const uint8_t *src_data[] = {data.data(), data.data() + (CAMERA_WIDTH * CAMERA_HEIGHT) / 2, data.data() + (CAMERA_WIDTH * CAMERA_HEIGHT) + (CAMERA_WIDTH * CAMERA_HEIGHT) / 8};
+        const uint8_t *src_data[] = {data.data()};
         auto *dst_data = (uint8_t *) _data_buffer.data();
 
-        const int src_strides[] = {(int) CAMERA_WIDTH / 2, (int) CAMERA_WIDTH / 4, (int) CAMERA_WIDTH / 4};
+        const int src_strides[] = {(int) (CAMERA_WIDTH * 12) / 8};
         const int dst_stride = CAMERA_WIDTH * 4;
 
         {
