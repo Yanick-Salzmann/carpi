@@ -126,7 +126,7 @@ $(() => {
     }
 
     function fetch_frame() {
-        event_manager.submitTask('camera_frame', (data) => {
+        event_manager.submitTask('camera_frame').then((data) => {
             console.log("On Frame");
             const b64_data = data.image;
             const bin_data = Base64Binary.decodeArrayBuffer(b64_data);
@@ -146,12 +146,12 @@ $(() => {
     let width = 480;
     let height = 360;
 
-    on_resize(width, height);
-    on_frame();
-    fetch_frame();
-
     event_manager.submitTask('camera_parameters').then((data) => {
         console.log("Resize", data);
+        event_manager.submitTask('camera_capture').then(() => {});
         on_resize(data.width, data.height);
+        on_frame();
+        fetch_frame();
     });
+
 });
