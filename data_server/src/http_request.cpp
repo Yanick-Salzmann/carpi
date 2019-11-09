@@ -175,7 +175,9 @@ namespace carpi::data {
             std::size_t num_sent = 0;
             while(num_sent < bytes) {
                 const auto to_send = std::min<std::size_t>(16384, bytes - num_sent);
-                send(socket, data.data() + num_sent, to_send, 0);
+                if(send(socket, data.data() + num_sent, to_send, 0) != to_send) {
+                    log->error("Error sending bytes");
+                }
                 num_sent += to_send;
             }
 
