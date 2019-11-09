@@ -69,6 +69,8 @@ namespace carpi::io::camera {
         fwrite(_data_buffer.data(), 1, _data_buffer.size(), f);
         fflush(f);
         fclose(f);
+
+        std::this_thread::sleep_for(std::chrono::seconds{5});
     }
 
     CameraStream::~CameraStream() {
