@@ -55,12 +55,12 @@ $(() => {
         compile_shader(fs, `
         precision lowp float;
         
-        attribute vec2 texCoord;
+        varying vec2 texCoord;
         
         uniform sampler2D video_texture;
         
         void main() {
-            gl_FragColor = texture(video_texture, texCoord);
+            gl_FragColor = texture2D(video_texture, texCoord);
         }
         `);
 
