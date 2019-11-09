@@ -79,20 +79,20 @@ namespace carpi::io::camera {
             throw std::runtime_error{"Error setting shared mutex attribute"};
         }
 
-        if((_mutex_shm_id = shmget(SHMEM_KEY_MUTEX, sizeof(pthread_mutex_t), IPC_CREAT)) == -1) {
+        if((_mutex_shm_id = shmget(SHMEM_KEY_MUTEX, sizeof(pthread_mutex_t), IPC_CREAT | 0777)) == -1) {
             log->error("Error creating shared memory for video mutex: {} (errno={})", utils::error_to_string(errno), errno);
             throw std::runtime_error{"Error creating shared memory"};
         }
 
         if((_video_shmem_mutex = (pthread_mutex_t*) shmat(_mutex_shm_id, nullptr, 0)) == (void*) -1) {
-            log->error("Error creating shared memory for video data: {} (errno={})", utils::error_to_string(errno), errno);
+            log->error("Error locking shared memory for video mutex: {} (errno={})", utils::error_to_string(errno), errno);
             throw std::runtime_error{"Error creating shared memory"};
         }
 
         pthread_mutex_init(_video_shmem_mutex, &attr);
         pthread_mutexattr_destroy(&attr);
 
-        _camera_shm_id = shmget(SHMEM_KEY_DATA, CAMERA_WIDTH * CAMERA_HEIGHT * 4, IPC_CREAT);
+        _camera_shm_id = shmget(SHMEM_KEY_DATA, CAMERA_WIDTH * CAMERA_HEIGHT * 4, IPC_CREAT | 0777);
         _camera_frame_buffer = shmat(_camera_shm_id, nullptr, 0);
     }
 }
