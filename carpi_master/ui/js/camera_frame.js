@@ -130,6 +130,7 @@ $(() => {
     function fetch_frame() {
         setTimeout(() => {
             const frame_data = fetch_raw_frame();
+            console.log(frame_data);
             gl.bindTexture(gl.TEXTURE_2D, texture);
             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 480, 368, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array(frame_data));
             fetch_frame();
