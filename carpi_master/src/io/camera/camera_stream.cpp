@@ -22,7 +22,8 @@ namespace carpi::io::camera {
 
     void CameraStream::handle_camera_frame(const std::vector<uint8_t> &data, std::size_t size) {
         log->info("Conversion...");
-        libyuv::I420ToARGB(data.data(), (CAMERA_WIDTH * 12) / 8, data.data(), (CAMERA_WIDTH * 12) / 8, data.data(), (CAMERA_WIDTH * 12) / 8, (uint8_t *) _data_buffer.data(), CAMERA_WIDTH * 4, CAMERA_WIDTH, CAMERA_HEIGHT);
+        libyuv::I420ToARGB(data.data(), 0, data.data(), 0, data.data(), 0,
+                (uint8_t *) _data_buffer.data(), CAMERA_WIDTH * 4, CAMERA_WIDTH, CAMERA_HEIGHT);
 
         struct BitmapHeader {
             uint16_t header = 'BM';
