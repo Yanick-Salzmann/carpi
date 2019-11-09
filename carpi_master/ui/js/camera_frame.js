@@ -128,13 +128,12 @@ $(() => {
     }
 
     function fetch_frame() {
-        event_manager.submitTask('camera_frame').then((data) => {
-            const b64_data = data.image;
-            const bin_data = Base64Binary.decodeArrayBuffer(b64_data);
+        setTimeout(() => {
+            const frame_data = fetch_raw_frame();
             gl.bindTexture(gl.TEXTURE_2D, texture);
-            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, data.width, data.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array(bin_data));
-           fetch_frame();
-        });
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 480, 368, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array(frame_data));
+            fetch_frame();
+        }, 0);
     }
 
     gl.clearColor(1.0, 0.5, 0.25, 1.0);

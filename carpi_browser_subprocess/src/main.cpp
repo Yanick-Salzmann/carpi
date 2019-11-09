@@ -2,13 +2,57 @@
 
 #include <include/cef_app.h>
 #include <include/wrapper/cef_message_router.h>
+#include <sys/shm.h>
 
 class CameraFrameCallback : public CefV8Handler {
     IMPLEMENT_REFCOUNTING(CameraFrameCallback);
 
+    static const uint32_t CAMERA_WIDTH = 480;
+    static const uint32_t CAMERA_HEIGHT = 368;
+
+    static const uint32_t SHMEM_KEY_MUTEX = 0x42434455;
+    static const uint32_t SHMEM_KEY_DATA = 0x42434456;
+
+    pthread_mutex_t* _video_shmem_mutex = nullptr;
+    int32_t _mutex_shm_id = 0;
+    int32_t _camera_shm_id = 0;
+
+    void* _camera_frame_buffer;
+
 public:
+    CameraFrameCallback() {
+        pthread_mutexattr_t attr{};
+        if(pthread_mutexattr_init(&attr) < 0) {
+            throw std::runtime_error{"Error initializing mutex attribute"};
+        }
+
+        if(pthread_mutexattr_setpshared(&attr, PTHREAD_PROCESS_SHARED) < 0) {
+            throw std::runtime_error{"Error setting shared mutex attribute"};
+        }
+
+        if((_mutex_shm_id = shmget(SHMEM_KEY_MUTEX, sizeof(pthread_mutex_t), IPC_CREAT | 0777)) == -1) {
+            throw std::runtime_error{"Error creating shared memory"};
+        }
+
+        if((_video_shmem_mutex = (pthread_mutex_t*) shmat(_mutex_shm_id, nullptr, 0)) == (void*) -1) {
+            throw std::runtime_error{"Error creating shared memory"};
+        }
+
+        pthread_mutex_init(_video_shmem_mutex, &attr);
+        pthread_mutexattr_destroy(&attr);
+
+        _camera_shm_id = shmget(SHMEM_KEY_DATA, CAMERA_WIDTH * CAMERA_HEIGHT * 4, IPC_CREAT | 0777);
+        _camera_frame_buffer = shmat(_camera_shm_id, nullptr, 0);
+    }
+
     bool Execute(const CefString &name, CefRefPtr<CefV8Value> object, const CefV8ValueList &arguments, CefRefPtr<CefV8Value> &retval, CefString &exception) override {
-        return false;
+        CefRefPtr<CefV8Value> ptr_value;
+        pthread_mutex_lock(_video_shmem_mutex);
+        ptr_value = CefV8Value::CreateArrayBuffer(_camera_frame_buffer, CAMERA_WIDTH * CAMERA_HEIGHT * 4, nullptr);
+        pthread_mutex_unlock(_video_shmem_mutex);
+
+        retval = ptr_value;
+        return true;
     }
 };
 
