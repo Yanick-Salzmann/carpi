@@ -18,19 +18,20 @@ namespace carpi {
 
         data::HttpServer http_server{8081};
 
-        //ui::WebCore core{};
+        ui::WebCore core{};
 
         CommServer server{};
 
         uint32_t w, h, fps;
         sCameraStream->camera_parameters(w, h, fps);
+        log->info("Initialized R-PI camera with {}x{}@{}", w, h, fps);
 
         log->info("Press ENTER to shut down application");
         std::cin.sync();
         std::string line{};
         std::getline(std::cin, line);
 
-        //core.manual_shutdown();
+        core.manual_shutdown();
 
         server.shutdown_acceptor();
         http_server.shutdown();

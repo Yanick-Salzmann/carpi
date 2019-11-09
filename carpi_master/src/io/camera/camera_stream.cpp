@@ -23,15 +23,17 @@ namespace carpi::io::camera {
     }
 
     void CameraStream::handle_camera_frame(const std::vector<uint8_t> &data, std::size_t size) {
-        log->info("Conversion...");
         const auto y = data.data();
         const auto u = y + CAMERA_WIDTH * CAMERA_HEIGHT;
         const auto v = u + (CAMERA_WIDTH * CAMERA_HEIGHT) / 4;
 
+        const auto stride_y = CAMERA_WIDTH;
+        const auto stride_u = CAMERA_WIDTH / 2;
+        const auto stride_v = CAMERA_WIDTH / 2;
+
         {
             std::lock_guard<std::mutex> l{_data_lock};
-            libyuv::I420ToARGB(y, CAMERA_WIDTH, u, CAMERA_WIDTH / 2, v, CAMERA_WIDTH / 2,
-                               (uint8_t *) _data_buffer.data(), CAMERA_WIDTH * 4, CAMERA_WIDTH, CAMERA_HEIGHT);
+            libyuv::I420ToARGB(y, stride_y, u, stride_u, v, stride_v,(uint8_t *) _data_buffer.data(), CAMERA_WIDTH * 4, CAMERA_WIDTH, CAMERA_HEIGHT);
         }
     }
 }

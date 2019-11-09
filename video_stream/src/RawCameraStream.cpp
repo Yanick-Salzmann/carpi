@@ -125,8 +125,6 @@ namespace carpi::video {
 
         _camera = camera_component;
         _video_port = video_port;
-
-        start_capture();
     }
 
     uint32_t RawCameraStream::map_format(VideoFormat format) {
