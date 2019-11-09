@@ -150,7 +150,7 @@ $(() => {
     on_frame();
     fetch_frame();
 
-    event_manager.submitTask('camera_parameters', (data) => {
+    event_manager.submitTask('camera_parameters').then((data) => {
         console.log("Resize", data);
         on_resize(data.width, data.height);
     });
