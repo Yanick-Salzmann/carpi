@@ -38,7 +38,9 @@ $(() => {
         const vs = gl.createShader(gl.VERTEX_SHADER);
         const fs = gl.createShader(gl.FRAGMENT_SHADER);
 
-        compile_shader(vs, `        
+        compile_shader(vs, `   
+        precision lowp float;
+             
         attribute vec2 position0;
         attribute vec2 texCoord0;
         
@@ -51,6 +53,8 @@ $(() => {
         `);
 
         compile_shader(fs, `
+        precision lowp float;
+        
         attribute vec2 texCoord;
         
         uniform sampler2D video_texture;
