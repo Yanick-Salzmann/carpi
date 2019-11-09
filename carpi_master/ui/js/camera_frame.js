@@ -130,6 +130,7 @@ $(() => {
             console.log("On Frame");
             const b64_data = data.image;
             const bin_data = Base64Binary.decodeArrayBuffer(b64_data);
+            console.log("Width: ", data.width, ", Height: ", data.height, ", Data: ", bin_data.byteLength);
             gl.bindTexture(gl.TEXTURE_2D, texture);
             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, data.width, data.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array(bin_data));
            fetch_frame();
