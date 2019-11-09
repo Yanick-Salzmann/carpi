@@ -28,7 +28,7 @@ namespace carpi::data {
             while (written < size) {
                 const auto num_written = write(listener->ffmpeg_process.stdin_pipe, data.data() + written, size - written);
                 written += num_written;
-                if(num_written < 0) {
+                if (num_written < 0) {
                     log->error("Broken stdin pipe (errno={})", errno);
                     break;
                 }
@@ -49,26 +49,27 @@ namespace carpi::data {
         char buffer[4096]{};
         int32_t num_read = 0;
         while ((num_read = read(context->ffmpeg_process.stdout_pipe, buffer, sizeof buffer)) > 0) {
-                std::lock_guard<std::mutex> l{context->data_lock};
-                context->data_buffer.insert(context->data_buffer.end(), buffer, buffer + num_read);
-                handle_context_data(context);
+            log->info("Read {} bytes", num_read);
+            std::lock_guard<std::mutex> l{context->data_lock};
+            context->data_buffer.insert(context->data_buffer.end(), buffer, buffer + num_read);
+            handle_context_data(context);
         }
     }
 
     void CameraHandler::cancel_stream(const std::string &session_cookie) {
         std::lock_guard<std::mutex> l{_listener_lock};
         const auto listeners = _listener_map.equal_range(session_cookie);
-        if(listeners.first == listeners.second) {
+        if (listeners.first == listeners.second) {
             return;
         }
 
-        for(auto itr = listeners.first; itr != listeners.second; ++itr) {
+        for (auto itr = listeners.first; itr != listeners.second; ++itr) {
             close(itr->second->ffmpeg_process.stdin_pipe);
-            if(itr->second->stdout_thread.joinable()) {
+            if (itr->second->stdout_thread.joinable()) {
                 itr->second->stdout_thread.join();
             }
 
-            if(itr->second->stderr_thread.joinable()) {
+            if (itr->second->stderr_thread.joinable()) {
                 itr->second->stderr_thread.join();
             }
 
@@ -85,7 +86,7 @@ namespace carpi::data {
         {
             std::lock_guard<std::mutex> l{_listener_lock};
             const auto itr = _listener_map.find(session_cookie);
-            if(itr == _listener_map.end()) {
+            if (itr == _listener_map.end()) {
                 return false;
             }
 
@@ -132,8 +133,8 @@ namespace carpi::data {
         initialize_camera();
     }
 
-    bool CameraHandler::request_range(const std::string& token, std::size_t start, std::size_t end, const std::function<bool(const std::vector<uint8_t> &, std::size_t)> &callback) {
-        if(start >= end) {
+    bool CameraHandler::request_range(const std::string &token, std::size_t start, std::size_t end, const std::function<bool(const std::vector<uint8_t> &, std::size_t)> &callback) {
+        if (start >= end) {
             return false;
         }
 
@@ -141,7 +142,7 @@ namespace carpi::data {
         {
             std::lock_guard<std::mutex> l{_listener_lock};
             const auto itr = _listener_map.find(token);
-            if(itr == _listener_map.end()) {
+            if (itr == _listener_map.end()) {
                 return false;
             }
 
@@ -150,7 +151,7 @@ namespace carpi::data {
 
         {
             std::lock_guard<std::mutex> l{context->data_lock};
-            if(start < context->last_sent_position) {
+            if (start < context->last_sent_position) {
                 return false;
             }
 
@@ -160,16 +161,16 @@ namespace carpi::data {
         return true;
     }
 
-    void CameraHandler::handle_context_data(const std::shared_ptr<ReaderContext>& context) {
+    void CameraHandler::handle_context_data(const std::shared_ptr<ReaderContext> &context) {
         log->info("Handling context data");
         const auto data_end = context->last_sent_position + context->data_buffer.size();
-        auto& ranges = context->pending_requests;
-        const auto split = std::partition(ranges.begin(), ranges.end(), [data_end](const auto& range) { return range.start < data_end; });
+        auto &ranges = context->pending_requests;
+        const auto split = std::partition(ranges.begin(), ranges.end(), [data_end](const auto &range) { return range.start < data_end; });
         std::size_t last_position = 0;
         auto has_sent = false;
 
-        for(auto itr = ranges.begin(); itr != split; ++itr) {
-            if(itr->start < context->last_sent_position) {
+        for (auto itr = ranges.begin(); itr != split; ++itr) {
+            if (itr->start < context->last_sent_position) {
                 has_sent = true;
                 last_position = context->last_sent_position;
                 continue;
@@ -184,7 +185,7 @@ namespace carpi::data {
             has_sent = true;
         }
 
-        if(!has_sent) {
+        if (!has_sent) {
             return;
         }
 
