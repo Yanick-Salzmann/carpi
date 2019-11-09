@@ -127,7 +127,6 @@ $(() => {
 
     function fetch_frame() {
         event_manager.submitTask('camera_frame').then((data) => {
-            console.log("On Frame");
             const b64_data = data.image;
             const bin_data = Base64Binary.decodeArrayBuffer(b64_data);
             gl.bindTexture(gl.TEXTURE_2D, texture);
