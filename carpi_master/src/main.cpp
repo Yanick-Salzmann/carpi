@@ -14,6 +14,8 @@ namespace carpi {
         _argc = argc;
         _argv = argv;
 
+        sCameraStream->init_shared_memory();
+
         video::H264Conversion::initialize_ffmpeg();
 
         data::HttpServer http_server{8081};
@@ -21,10 +23,6 @@ namespace carpi {
         ui::WebCore core{};
 
         CommServer server{};
-
-        uint32_t w, h, fps;
-        sCameraStream->camera_parameters(w, h, fps);
-        log->info("Initialized R-PI camera with {}x{}@{}", w, h, fps);
 
         log->info("Press ENTER to shut down application");
         std::cin.sync();

@@ -16,8 +16,14 @@ namespace carpi::io::camera {
         const uint32_t CAMERA_HEIGHT = video::RawCameraStream::calculate_height(360);
         static const uint32_t CAMERA_FPS = 30;
 
-        std::mutex _data_lock;
-        std::vector<uint32_t> _data_buffer;
+        static const uint32_t SHMEM_KEY_MUTEX = 0x42434455;
+        static const uint32_t SHMEM_KEY_DATA = 0x42434456;
+
+        pthread_mutex_t* _video_shmem_mutex = nullptr;
+        int32_t _mutex_shm_id = 0;
+        int32_t _camera_shm_id = 0;
+
+        void* _camera_frame_buffer;
 
         std::shared_ptr<video::RawCameraStream> _stream;
 
@@ -44,9 +50,9 @@ namespace carpi::io::camera {
             fps = CAMERA_FPS;
         }
 
-        std::string buffer_to_base64(uint32_t& width, uint32_t& height);
-
         void begin_capture();
+
+        void init_shared_memory();
     };
 }
 
