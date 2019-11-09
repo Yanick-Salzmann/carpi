@@ -76,16 +76,14 @@ namespace carpi::video {
 
         format->encoding_variant = map_format(VideoFormat::H264);
         format->encoding = map_format(VideoFormat::H264);
-        format->es->video.width = configuration.width();
-        format->es->video.height = configuration.height();
+        format->es->video.width = VCOS_ALIGN_UP(configuration.width(), 32);
+        format->es->video.height = VCOS_ALIGN_UP(configuration.height(), 16);
         format->es->video.crop.x = 0;
         format->es->video.crop.y = 0;
-        format->es->video.crop.width = format->es->video.width;
-        format->es->video.crop.height = format->es->video.height;
+        format->es->video.crop.width = configuration.width();
+        format->es->video.crop.height = configuration.height();
         format->es->video.frame_rate.num = configuration.fps();
         format->es->video.frame_rate.den = VIDEO_FRAME_RATE_DEN;
-
-        log->info("Camera dimension: {}/{}", format->es->video.width, format->es->video.height);
 
         status = mmal_port_format_commit(video_port);
         if (status != MMAL_SUCCESS) {
@@ -192,11 +190,7 @@ namespace carpi::video {
                 _buffer_data.resize(buffer->length);
             }
 
-            if(buffer->offset > 0) {
-                log->info("There is an offset");
-            }
-
-            memcpy(_buffer_data.data(), buffer->data, buffer->length);
+            memcpy(_buffer_data.data(), buffer->data + buffer->offset, buffer->length);
         }
 
         buffer_ptr.reset();
