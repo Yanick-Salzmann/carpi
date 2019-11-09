@@ -6,11 +6,12 @@ namespace carpi::io::camera {
 
     CameraStream::CameraStream() {
         _data_buffer.resize(CAMERA_WIDTH * CAMERA_HEIGHT);
-        log->info("Libswscale version: {}", LIBSWSCALE_IDENT);
-        _sws_context = sws_getContext(CAMERA_WIDTH, CAMERA_HEIGHT, AV_PIX_FMT_YUV420P,
-                                      CAMERA_WIDTH, CAMERA_HEIGHT, AV_PIX_FMT_RGBA, 0, nullptr, nullptr, nullptr);
-
+        log->info("LibYUV version: {}", LIBYUV_VERSION);
         start_camera_streaming();
+    }
+
+    CameraStream::~CameraStream() {
+        _stream->stop_capture();
     }
 
     void CameraStream::start_camera_streaming() {
@@ -27,54 +28,10 @@ namespace carpi::io::camera {
         const auto u = y + CAMERA_WIDTH * CAMERA_HEIGHT;
         const auto v = u + (CAMERA_WIDTH * CAMERA_HEIGHT) / 4;
 
-        libyuv::I420ToARGB(y, CAMERA_WIDTH, u, CAMERA_WIDTH / 2, v, CAMERA_WIDTH / 2,
-                (uint8_t *) _data_buffer.data(), CAMERA_WIDTH * 4, CAMERA_WIDTH, CAMERA_HEIGHT);
-
-#pragma pack(push, 1)
-        struct BitmapHeader {
-            uint16_t header = 0x4D42;
-            uint32_t size;
-            uint16_t r0 = 0;
-            uint16_t r1 = 0;
-            uint32_t ofs_data = 54;
-        };
-
-        struct BitmapInfo {
-            uint32_t size = 40;
-            uint32_t width;
-            int32_t height;
-            uint16_t planes = 1;
-            uint16_t bitCount = 32;
-            uint32_t compression = 0;
-            uint32_t size_image;
-            uint32_t xpels = 0;
-            uint32_t ypels = 0;
-            uint32_t clr = 0;
-            uint32_t clr_imp = 0;
-        };
-#pragma pack(pop)
-
-        BitmapHeader header{
-                .size = 54 + CAMERA_WIDTH * CAMERA_HEIGHT * 4
-        };
-
-        BitmapInfo info{
-                .width = CAMERA_WIDTH,
-                .height = -(int32_t) CAMERA_HEIGHT,
-                .size_image = 0
-        };
-
-        FILE* f = fopen("output_image.bmp", "wb");
-        fwrite(&header, sizeof header, 1, f);
-        fwrite(&info, sizeof info, 1, f);
-        fwrite(_data_buffer.data(), 4, _data_buffer.size(), f);
-        fflush(f);
-        fclose(f);
-
-        std::this_thread::sleep_for(std::chrono::seconds{5});
-    }
-
-    CameraStream::~CameraStream() {
-
+        {
+            std::lock_guard<std::mutex> l{_data_lock};
+            libyuv::I420ToARGB(y, CAMERA_WIDTH, u, CAMERA_WIDTH / 2, v, CAMERA_WIDTH / 2,
+                               (uint8_t *) _data_buffer.data(), CAMERA_WIDTH * 4, CAMERA_WIDTH, CAMERA_HEIGHT);
+        }
     }
 }

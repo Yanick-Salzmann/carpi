@@ -4,10 +4,6 @@
 #include <common_utils/singleton.hpp>
 #include <common_utils/log.hpp>
 
-extern "C" {
-#include <libswscale/swscale.h>
-};
-
 #include <video_stream/RawCameraStream.hpp>
 #include <vector>
 #include <memory>
@@ -24,8 +20,6 @@ namespace carpi::io::camera {
         std::vector<uint32_t> _data_buffer;
 
         std::shared_ptr<video::RawCameraStream> _stream;
-
-        SwsContext *_sws_context;
 
         void handle_camera_frame(const std::vector<uint8_t> &data, std::size_t size);
 
