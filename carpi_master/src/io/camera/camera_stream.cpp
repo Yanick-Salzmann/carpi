@@ -6,7 +6,7 @@ namespace carpi::io::camera {
     CameraStream::CameraStream() {
         log->info("Libswscale version: {}", LIBSWSCALE_IDENT);
         _sws_context = sws_getContext(CAMERA_WIDTH, CAMERA_HEIGHT, AV_PIX_FMT_YUV420P,
-                                      CAMERA_WIDTH, CAMERA_HEIGHT, AV_PIX_FMT_BGRA, 0, nullptr, nullptr, nullptr);
+                                      CAMERA_WIDTH, CAMERA_HEIGHT, AV_PIX_FMT_RGBA, 0, nullptr, nullptr, nullptr);
 
         start_camera_streaming();
     }
