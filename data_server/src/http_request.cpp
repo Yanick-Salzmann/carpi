@@ -162,7 +162,9 @@ namespace carpi::data {
 
         if (is_first_request) {
             sCameraHandler->start_stream(stream_id);
+            log->info("Started new stream");
         }
+
 
         std::mutex final_lock{};
         std::condition_variable final_var{};
