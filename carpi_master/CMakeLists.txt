@@ -35,7 +35,8 @@ target_link_libraries(carpi_master
         Threads::Threads
         ${OPENGLES2_LIBRARIES}
         ${EGL_LIBRARIES}
-        ${FFMPEG_LIBRARIES} avfilter
+        ${FFMPEG_LIBRARIES}
+        avfilter
         stdc++fs
         /usr/local/lib/libcef_dll_wrapper.a
         /usr/local/bin/libcef.so
