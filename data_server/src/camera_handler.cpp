@@ -189,7 +189,7 @@ namespace carpi::data {
         }
 
         std::list<RangeRequest> new_ranges{split, ranges.end()};
-        std::sort(new_ranges.begin(), new_ranges.end(), [](const auto& r1, const auto& r2) { return r1.start < r2.start; });
+        //std::sort(new_ranges.begin(), new_ranges.end(), [](const auto& r1, const auto& r2) { return r1.start - r2.start; });
         context->pending_requests = new_ranges;
 
         const auto to_remove = last_position - context->last_sent_position;
