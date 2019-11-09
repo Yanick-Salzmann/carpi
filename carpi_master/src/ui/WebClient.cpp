@@ -31,6 +31,8 @@ namespace carpi::ui {
             callback->Success(val.dump());
             return true;
         } else if(type == "camera_frame") {
+            static std::chrono::high_resolution_clock clock{};
+            const auto start = clock.now();
             uint32_t w, h;
             const auto b64 = sCameraStream->buffer_to_base64(w, h);
             json val{
@@ -42,6 +44,8 @@ namespace carpi::ui {
                     }}
             };
 
+            const auto end = clock.now();
+            log->info("Local time: {}", std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count());
             callback->Success(val.dump());
             return true;
         } else if(type == "camera_capture") {
