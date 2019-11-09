@@ -1,4 +1,5 @@
 #include "camera_stream.hpp"
+#include <libyuv.h>
 
 namespace carpi::io::camera {
     LOGGER_IMPL(CameraStream);
@@ -26,10 +27,8 @@ namespace carpi::io::camera {
         const int src_strides[] = {(int) std::ceil((CAMERA_WIDTH * 6) / 8)};
         const int dst_stride = CAMERA_WIDTH * 4;
 
-        {
-            std::lock_guard<std::mutex> l{_data_lock};
-            sws_scale(_sws_context, src_data, src_strides, 0, CAMERA_HEIGHT, &dst_data, &dst_stride);
-        }
+        libyuv::I420ToARGB(data.data(), CAMERA_WIDTH, data.data() + (CAMERA_WIDTH * CAMERA_HEIGHT), CAMERA_WIDTH / 2, data.data() + (CAMERA_HEIGHT * CAMERA_WIDTH) + (CAMERA_HEIGHT * CAMERA_WIDTH) / 2,
+                           CAMERA_WIDTH / 2, (uint8_t *) _data_buffer.data(), CAMERA_WIDTH * 4, CAMERA_WIDTH, CAMERA_HEIGHT);
 
         struct BitmapHeader {
             uint16_t header = 'BM';

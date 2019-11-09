@@ -13,6 +13,8 @@ find_package(Threads)
 find_package(OpenGLES2 REQUIRED)
 find_package(FFmpeg REQUIRED)
 
+pkg_search_module(LIBYUV REQUIRED libyuv)
+
 target_include_directories(carpi_master PUBLIC
         ${CMAKE_SOURCE_DIR}/bluetooth_utils/include
         ${CMAKE_SOURCE_DIR}/video_stream/include
@@ -22,6 +24,7 @@ target_include_directories(carpi_master PUBLIC
         ${EGL_INCLUDE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/src
         ${FFMPEG_INCLUDE_DIRS}
+        ${LIBYUV_INCLUDE_DIRS}
         /usr/local/include/cef
 )
 
@@ -36,6 +39,8 @@ target_link_libraries(carpi_master
         ${OPENGLES2_LIBRARIES}
         ${EGL_LIBRARIES}
         ${FFMPEG_LIBRARIES}
+        ${LIBYUV_LIBRARY_DIRS}
+        ${LIBYUV_LIBRARIES}
         swscale
         avfilter
         stdc++fs
