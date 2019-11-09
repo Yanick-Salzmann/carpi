@@ -6,8 +6,8 @@ $(() => {
     let uniform_texture = null;
 
     function on_resize(width, height) {
-        canvas.setAttribute('width', data.width.toString());
-        canvas.setAttribute('height', data.height.toString());
+        canvas.setAttribute('width', width.toString());
+        canvas.setAttribute('height', height.toString());
 
         gl.viewport(0, 0, width, height);
     }
@@ -20,7 +20,11 @@ $(() => {
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 2, 2, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint32Array.of(0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFFF7F3F));
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 2, 2, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint8Array.of(
+            0, 0, 0xFF, 0xFF,
+            0, 0xFF, 0, 0xFF,
+            0xFF, 0, 0, 0xFF,
+            0x3F, 0x7F, 0xFF, 0xFF));
     }
 
     function compile_shader(shader, code) {
