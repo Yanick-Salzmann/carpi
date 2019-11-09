@@ -38,13 +38,11 @@ $(() => {
         const vs = gl.createShader(gl.VERTEX_SHADER);
         const fs = gl.createShader(gl.FRAGMENT_SHADER);
 
-        compile_shader(vs, `
-        #version 150
+        compile_shader(vs, `        
+        attribute vec2 position0;
+        attribute vec2 texCoord0;
         
-        in vec2 position0;
-        in vec2 texCoord0;
-        
-        out vec2 texCoord;
+        varying vec2 texCoord;
         
         void main() {
             gl_Position = vec4(position0, 0.0, 1.0);
@@ -53,16 +51,12 @@ $(() => {
         `);
 
         compile_shader(fs, `
-        #version 150
-        
-        in vec2 texCoord;
-        
-        out vec4 target;
+        attribute vec2 texCoord;
         
         uniform sampler2D video_texture;
         
         void main() {
-            target = texture(video_texture, texCoord);
+            gl_FragColor = texture(video_texture, texCoord);
         }
         `);
 
