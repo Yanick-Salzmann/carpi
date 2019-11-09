@@ -10,6 +10,11 @@ namespace carpi::data {
     LOGGER_IMPL(HttpConnection);
 
     HttpConnection::HttpConnection(int32_t socket) : _socket{socket} {
+        linger l {
+            .l_onoff = 0,
+            .l_linger = 0
+        };
+        setsockopt(socket, SOL_SOCKET, SO_LINGER, &l, sizeof l);
         _request_thread = std::thread{[=]() { request_loop(); }};
     }
 
