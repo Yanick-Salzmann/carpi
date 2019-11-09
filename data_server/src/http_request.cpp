@@ -9,6 +9,7 @@
 #include <include/cef_parser.h>
 #include <sys/socket.h>
 #include <uuid/uuid.h>
+#include <iostream>
 
 namespace carpi::data {
     LOGGER_IMPL(HttpRequest);
