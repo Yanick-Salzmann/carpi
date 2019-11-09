@@ -21,7 +21,7 @@ namespace carpi::io::camera {
         static const uint32_t CAMERA_FPS = 30;
 
         std::mutex _data_lock;
-        std::vector<uint32_t> _data_buffer{CAMERA_WIDTH * CAMERA_HEIGHT, uint32_t{0}};
+        std::vector<uint32_t> _data_buffer;
 
         std::shared_ptr<video::RawCameraStream> _stream;
 

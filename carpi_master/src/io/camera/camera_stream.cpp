@@ -5,6 +5,7 @@ namespace carpi::io::camera {
     LOGGER_IMPL(CameraStream);
 
     CameraStream::CameraStream() {
+        _data_buffer.resize(CAMERA_WIDTH * CAMERA_HEIGHT);
         log->info("Libswscale version: {}", LIBSWSCALE_IDENT);
         _sws_context = sws_getContext(CAMERA_WIDTH, CAMERA_HEIGHT, AV_PIX_FMT_YUV420P,
                                       CAMERA_WIDTH, CAMERA_HEIGHT, AV_PIX_FMT_RGBA, 0, nullptr, nullptr, nullptr);
