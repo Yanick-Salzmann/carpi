@@ -11,6 +11,7 @@ add_dependencies(carpi_master bluetooth_utils video_stream obd carpi_browser_sub
 find_package(Threads)
 
 find_package(OpenGLES2 REQUIRED)
+find_package(FFmpeg REQUIRED)
 
 target_include_directories(carpi_master PUBLIC
         ${CMAKE_SOURCE_DIR}/bluetooth_utils/include
@@ -20,7 +21,22 @@ target_include_directories(carpi_master PUBLIC
         ${OPENGLES2_INCLUDE_DIR}
         ${EGL_INCLUDE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/src
+        ${FFMPEG_INCLUDE_DIRS}
         /usr/local/include/cef
 )
 
-target_link_libraries(carpi_master bluetooth_utils video_stream obd ipc_common wiring_utils data_server Threads::Threads ${OPENGLES2_LIBRARIES} ${EGL_LIBRARIES} stdc++fs /usr/local/lib/libcef_dll_wrapper.a /usr/local/bin/libcef.so X11)
+target_link_libraries(carpi_master
+        bluetooth_utils
+        video_stream
+        obd
+        ipc_common
+        wiring_utils
+        data_server
+        Threads::Threads
+        ${OPENGLES2_LIBRARIES}
+        ${EGL_LIBRARIES}
+        ${FFMPEG_LIBRARIES} avfilter
+        stdc++fs
+        /usr/local/lib/libcef_dll_wrapper.a
+        /usr/local/bin/libcef.so
+        X11)
