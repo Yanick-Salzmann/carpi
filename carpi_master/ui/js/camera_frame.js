@@ -144,7 +144,7 @@ $(() => {
     setup_bindings();
 
     event_manager.submitTask('camera_parameters').then((data) => {
-        console.log("Resize", data);
+        console.log("Resize", data.width, 'x', data.height);;
         event_manager.submitTask('camera_capture').then(() => {});
         on_resize(data.width, data.height);
         on_frame();
