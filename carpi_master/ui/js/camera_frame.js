@@ -131,7 +131,7 @@ $(() => {
             const arr = new Uint8Array(frame_data);
             const slice = arr.slice(0, arr.length);
             gl.bindTexture(gl.TEXTURE_2D, texture);
-            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 480, 368, 0, gl.RGBA, gl.UNSIGNED_BYTE, arr);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 480, 368, 0, gl.RGBA, gl.UNSIGNED_BYTE, slice);
         }, 0);
     }
 
@@ -143,7 +143,7 @@ $(() => {
     setup_bindings();
 
     event_manager.submitTask('camera_parameters').then((data) => {
-        console.log("Resize", data.width, 'x', data.height);;
+        console.log("Resize", data.width, 'x', data.height);
         event_manager.submitTask('camera_capture').then(() => {});
         on_resize(data.width, data.height);
         on_frame();
