@@ -82,6 +82,15 @@ $(() => {
         uniform_texture = gl.getUniformLocation(program, "video_texture");
 
         gl.useProgram(program);
+
+        const pos_attrib = gl.getAttribLocation(program, "position0");
+        const texcoord_attrib = gl.getAttribLocation(program, "texCoord0");
+
+        gl.enableVertexAttribArray(pos_attrib);
+        gl.enableVertexAttribArray(texcoord_attrib);
+
+        gl.vertexAttribPointer(pos_attrib, 2, gl.FLOAT, false, 16, 0);
+        gl.vertexAttribPointer(texcoord_attrib, 2, gl.FLOAT, false, 16, 8);
     }
 
     function setup_data() {
