@@ -104,7 +104,8 @@ namespace carpi::data {
 
     void HttpRequest::process_camera_stream(const std::string &path, const std::multimap<std::string, std::string> &headers, int socket) {
         HttpResponse response{HttpStatusCode::OK, "OK"};
-        response.add_header("Content-Type", "video/mp4");
+        response.add_header("Content-Type", "video/mp4")
+                .add_header("Transfer-Encoding", "chunked");
 
         CookieHelper cookie_helper{headers};
         cookie_helper.print(log);
@@ -113,7 +114,7 @@ namespace carpi::data {
         range.print(log);
 
         const auto is_first_request = !cookie_helper.has_cookie("camera_stream");
-        if(!is_first_request) {
+        if (!is_first_request) {
             const auto stream_id = cookie_helper.cookie("camera_stream");
         }
 
@@ -127,17 +128,17 @@ namespace carpi::data {
         std::condition_variable final_var{};
         auto completed = false;
 
-        FILE* f = fopen("camera_out.mp4", "wb");
+        FILE *f = fopen("camera_out.mp4", "wb");
 
         sCameraHandler->begin_streaming([socket, &final_lock, &final_var, &completed, f](void *data, std::size_t size) {
-//            std::stringstream hdr_stream{};
-//            hdr_stream << std::hex << size << "\r\n";
-//            const auto hdr_line = hdr_stream.str();
-//            if(::send(socket, hdr_line.c_str(), hdr_line.size(), 0) <= 0) {
-//                completed = true;
-//                final_var.notify_all();
-//                return false;
-//            }
+            std::stringstream hdr_stream{};
+            hdr_stream << std::hex << size << "\r\n";
+            const auto hdr_line = hdr_stream.str();
+            if (::send(socket, hdr_line.c_str(), hdr_line.size(), 0) <= 0) {
+                completed = true;
+                final_var.notify_all();
+                return false;
+            }
 
             fwrite(data, 1, size, f);
 
@@ -147,17 +148,16 @@ namespace carpi::data {
                 return false;
             }
 
-//            if(::send(socket, "\r\n", 2, 0) <= 0) {
-//                completed = true;
-//                final_var.notify_all();
-//                return false;
-//            }
+            if (::send(socket, "\r\n", 2, 0) <= 0) {
+                completed = true;
+                final_var.notify_all();
+                return false;
+            }
 
             return true;
         }, [&completed, &final_var, socket, f]() {
             fclose(f);
-            std::cout << "DONE" << std::endl;
-//            ::send(socket, "0\r\n\r\n", 5, 0);
+            ::send(socket, "0\r\n\r\n", 5, 0);
             completed = true;
             final_var.notify_all();
         });
