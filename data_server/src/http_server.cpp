@@ -44,7 +44,7 @@ namespace carpi::data {
         }
 
         linger linger{
-            .l_onoff = 0,
+            .l_onoff = 1,
             .l_linger = 0
         };
 

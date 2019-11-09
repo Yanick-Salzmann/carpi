@@ -11,7 +11,7 @@ namespace carpi::data {
 
     HttpConnection::HttpConnection(int32_t socket) : _socket{socket} {
         linger l {
-            .l_onoff = 0,
+            .l_onoff = 1,
             .l_linger = 0
         };
         setsockopt(socket, SOL_SOCKET, SO_LINGER, &l, sizeof l);
