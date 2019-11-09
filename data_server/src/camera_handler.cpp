@@ -155,6 +155,7 @@ namespace carpi::data {
             }
 
             context->pending_requests.emplace_back(start, end, callback);
+            handle_context_data(context);
         }
 
         return true;
