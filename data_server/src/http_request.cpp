@@ -168,7 +168,7 @@ namespace carpi::data {
 
         if (!sCameraHandler->request_range(stream_id, start, end, [&final_var, &completed, socket, &response, start, stream_id](const std::vector<uint8_t> &data, std::size_t bytes) {
             response.status(HttpStatusCode::PARTIAL_CONTENT, "OK")
-                    .add_header("Content-Range", fmt::format("bytes {}-{}/*", start, start + bytes - 1))
+                    .add_header("Content-Range", fmt::format("bytes {}-{}/1000000000000", start, start + bytes - 1))
                     .add_header("Content-Length", fmt::format("{}", bytes))
                     .add_header("Set-Cookie", fmt::format("camera_stream={}", stream_id))
                     .write_to_socket(socket);
