@@ -3,6 +3,17 @@
 #include <include/cef_app.h>
 #include <include/wrapper/cef_message_router.h>
 
+class CameraFrameCallback : public CefV8Handler {
+    IMPLEMENT_REFCOUNTING(CameraFrameCallback);
+
+public:
+    bool Execute(const CefString &name, CefRefPtr<CefV8Value> object, const CefV8ValueList &arguments, CefRefPtr<CefV8Value> &retval, CefString &exception) override {
+        return false;
+    }
+};
+
+static CefRefPtr<CameraFrameCallback> camera_frame_callback{};
+
 class MainApp : public CefApp, CefRenderProcessHandler {
     IMPLEMENT_REFCOUNTING(MainApp);
 
@@ -29,6 +40,8 @@ public:
 
     void OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefV8Context> context) override {
         _router->OnContextCreated (browser, frame, context);
+
+        context->GetGlobal()->SetValue("fetch_raw_frame", CefV8Value::CreateFunction("fetch_raw_frame", camera_frame_callback),CefV8Value::PropertyAttribute::V8_PROPERTY_ATTRIBUTE_READONLY);
     }
 
     void OnContextReleased(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefV8Context> context) override {
@@ -47,6 +60,8 @@ public:
 int main(int argc, char* argv[]) {
     CefMainArgs main_args{argc, argv};
     CefRefPtr<MainApp> app{new MainApp{}};
+
+    camera_frame_callback = new CameraFrameCallback();
 
     return CefExecuteProcess(main_args, app, nullptr);
 }

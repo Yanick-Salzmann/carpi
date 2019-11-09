@@ -1,4 +1,6 @@
 $(() => {
+    console.log(window.fetch_raw_frame);
+
     const canvas = document.querySelector('#video-canvas');
     const gl = canvas.getContext('webgl');
     let texture = null;
