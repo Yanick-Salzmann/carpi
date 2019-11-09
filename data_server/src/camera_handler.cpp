@@ -18,7 +18,9 @@ namespace carpi::data {
                 [this](const std::vector<uint8_t> &data, std::size_t size) { handle_camera_frame(data, size); }
         );
 
+        log->info("Pre initialize_camera");
         _camera_stream->initialize_camera({480, 360, 1, 30});
+        log->info("Post initialize camera");
     }
 
     void CameraHandler::handle_camera_frame(const std::vector<uint8_t> &data, std::size_t size) {
@@ -49,7 +51,6 @@ namespace carpi::data {
         char buffer[4096]{};
         int32_t num_read = 0;
         while ((num_read = read(context->ffmpeg_process.stdout_pipe, buffer, sizeof buffer)) > 0) {
-            log->info("Read {} bytes", num_read);
             std::lock_guard<std::mutex> l{context->data_lock};
             context->data_buffer.insert(context->data_buffer.end(), buffer, buffer + num_read);
             handle_context_data(context);
