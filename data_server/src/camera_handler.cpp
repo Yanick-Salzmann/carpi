@@ -176,7 +176,7 @@ namespace carpi::data {
             }
 
             const auto offset = itr->start - context->last_sent_position;
-            auto num_bytes = std::min<std::size_t>(context->data_buffer.size() - offset, itr->end - itr->start + 1);
+            auto num_bytes = std::min<std::size_t>(context->data_buffer.size() - offset, itr->end - itr->start);
             num_bytes = std::min<std::size_t>(num_bytes, 16384);
             std::vector<uint8_t> range_data{context->data_buffer.begin() + offset, context->data_buffer.begin() + offset + num_bytes};
             num_bytes = itr->callback(range_data, num_bytes);
