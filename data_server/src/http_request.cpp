@@ -119,6 +119,7 @@ namespace carpi::data {
                 const auto sent = send(socket, data, to_send, 0);
                 if(sent < 0) {
                     log->error("Error sending response");
+                    final_var.notify_all();
                     break;
                 }
 
