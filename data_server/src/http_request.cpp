@@ -185,6 +185,8 @@ namespace carpi::data {
                 num_sent += sent;
             }
 
+            log->info("Sent {} bytes", num_sent);
+
             completed = true;
             final_var.notify_all();
             return num_sent;
