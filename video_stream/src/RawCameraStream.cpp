@@ -37,12 +37,12 @@ namespace carpi::video {
         MMAL_PARAMETER_CAMERA_CONFIG_T cam_config{};
         cam_config.hdr.id = MMAL_PARAMETER_CAMERA_CONFIG;
         cam_config.hdr.size = sizeof cam_config;
-        cam_config.max_stills_h = configuration.height();
-        cam_config.max_stills_w = configuration.width();
+        cam_config.max_stills_h = VCOS_ALIGN_UP(configuration.height(), 16u);
+        cam_config.max_stills_w = VCOS_ALIGN_UP(configuration.width(), 32u);
         cam_config.stills_yuv422 = MMAL_FALSE;
         cam_config.one_shot_stills = MMAL_FALSE;
-        cam_config.max_preview_video_w = configuration.width();
-        cam_config.max_preview_video_h = configuration.height();
+        cam_config.max_preview_video_w = VCOS_ALIGN_UP(configuration.width(), 32u);
+        cam_config.max_preview_video_h = VCOS_ALIGN_UP(configuration.height(), 16u);
         cam_config.num_preview_video_frames = configuration.preview_fps();
         cam_config.stills_capture_circular_buffer_height = 0;
         cam_config.fast_preview_resume = MMAL_FALSE;
