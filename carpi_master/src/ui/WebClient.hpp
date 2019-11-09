@@ -5,10 +5,13 @@
 #include <X11/Xlib.h>
 #undef Success
 #include <include/wrapper/cef_message_router.h>
+#include <common_utils/log.hpp>
 
 namespace carpi::ui {
     class WebClient : public CefClient, public CefLifeSpanHandler, public CefMessageRouterBrowserSide::Handler {
         IMPLEMENT_REFCOUNTING(WebClient);
+
+        LOGGER;
 
         CefRefPtr<CefMessageRouterBrowserSide> _message_router;
         CefRefPtr<CefBrowser> _browser;
