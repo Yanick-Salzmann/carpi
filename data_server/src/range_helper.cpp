@@ -43,7 +43,7 @@ namespace carpi::data {
         if(range[0] == '-') {
             return {
                 .type = RangeType::SUFFIX,
-                .start = std::stoull(range.substr(1))
+                .start = static_cast<std::size_t>(std::stoull(range.substr(1)))
             };
         } else {
             const auto dash = range.find('-');
@@ -51,7 +51,7 @@ namespace carpi::data {
             const auto end = range.substr(dash + 1);
             return {
                 .type = end.empty() ? RangeType::OPEN_END : RangeType::BOUNDED,
-                .start = (std::size_t) std::stoull(start),
+                .start = static_cast<std::size_t>(std::stoull(start)),
                 .end = end.empty() ? 0 : std::stoull(end)
             };
         }
