@@ -108,7 +108,6 @@ namespace carpi::data {
         response.add_header("Content-Type", "video/mp4");
 
         CookieHelper cookie_helper{headers};
-        cookie_helper.print(log);
 
         Range range{headers.lower_bound("range")->second};
         const auto &ranges = range.ranges();
@@ -159,7 +158,6 @@ namespace carpi::data {
 
         if (is_first_request) {
             sCameraHandler->start_stream(stream_id);
-            log->info("Started new stream");
         }
 
 
