@@ -31,6 +31,16 @@ namespace carpi::ui {
 
             callback->Success(val.dump());
             return true;
+        } else if(type == "camera_frame") {
+            json val{
+                    {"type", type},
+                    {"body", {
+                                     {"image", sCameraStream->buffer_to_base64()}
+                    }}
+            };
+
+            callback->Success(val.dump());
+            return true;
         }
 
         return false;

@@ -1,5 +1,6 @@
 #include "camera_stream.hpp"
 #include <libyuv.h>
+#include <libbase64.h>
 
 namespace carpi::io::camera {
     LOGGER_IMPL(CameraStream);
@@ -33,7 +34,20 @@ namespace carpi::io::camera {
 
         {
             std::lock_guard<std::mutex> l{_data_lock};
-            libyuv::I420ToARGB(y, stride_y, u, stride_u, v, stride_v,(uint8_t *) _data_buffer.data(), CAMERA_WIDTH * 4, CAMERA_WIDTH, CAMERA_HEIGHT);
+            libyuv::I420ToARGB(y, stride_y, u, stride_u, v, stride_v, (uint8_t *) _data_buffer.data(), CAMERA_WIDTH * 4, CAMERA_WIDTH, CAMERA_HEIGHT);
         }
+    }
+
+    std::string CameraStream::buffer_to_base64() {
+        std::vector<uint32_t> full_data{};
+        {
+            std::lock_guard<std::mutex> l{_data_lock};
+            full_data = _data_buffer;
+        }
+
+        std::vector<char> out_data(full_data.size() * 2);
+        std::size_t out_size = 0;
+        base64_encode((const char*) full_data.data(), full_data.size() * 4, out_data.data(), &out_size, 0);
+        return std::string{out_data.begin(), out_data.begin() + out_size};
     }
 }

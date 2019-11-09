@@ -43,6 +43,8 @@ namespace carpi::io::camera {
             height = CAMERA_HEIGHT;
             fps = CAMERA_FPS;
         }
+
+        std::string buffer_to_base64();
     };
 }
 
