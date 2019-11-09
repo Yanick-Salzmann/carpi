@@ -3,6 +3,7 @@
 
 #include <include/cef_client.h>
 #include <X11/Xlib.h>
+#undef Success
 #include <include/wrapper/cef_message_router.h>
 
 namespace carpi::ui {
