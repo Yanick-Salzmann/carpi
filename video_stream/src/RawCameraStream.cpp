@@ -123,6 +123,12 @@ namespace carpi::video {
             throw std::runtime_error{"Error setting up camera"};
         }
 
+        mmal_port_parameter_set_rational(video_port, MMAL_PARAMETER_BRIGHTNESS, MMAL_RATIONAL_T{50, 100});
+        mmal_port_parameter_set_uint32(video_port, MMAL_PARAMETER_ISO, 400);
+        mmal_port_parameter_set_rational(video_port, MMAL_PARAMETER_SHARPNESS, MMAL_RATIONAL_T{0, 100});
+        mmal_port_parameter_set_uint32(video_port, MMAL_PARAMETER_SHUTTER_SPEED, 0);
+        mmal_port_parameter_set_rational(video_port, MMAL_PARAMETER_CONTRAST, MMAL_RATIONAL_T{0, 100});
+
         _camera = camera_component;
         _video_port = video_port;
     }
