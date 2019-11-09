@@ -38,12 +38,15 @@ namespace carpi::io::camera {
         }
     }
 
-    std::string CameraStream::buffer_to_base64() {
+    std::string CameraStream::buffer_to_base64(uint32_t& width, uint32_t& height) {
         std::vector<uint32_t> full_data{};
         {
             std::lock_guard<std::mutex> l{_data_lock};
             full_data = _data_buffer;
         }
+
+        width = CAMERA_WIDTH;
+        height = CAMERA_HEIGHT;
 
         std::vector<char> out_data(full_data.size() * 2);
         std::size_t out_size = 0;

@@ -44,7 +44,7 @@ namespace carpi::io::camera {
             fps = CAMERA_FPS;
         }
 
-        std::string buffer_to_base64();
+        std::string buffer_to_base64(uint32_t& width, uint32_t& height);
 
         void begin_capture();
     };

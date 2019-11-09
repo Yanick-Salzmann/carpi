@@ -16,7 +16,6 @@ namespace carpi::ui {
         json req_obj = json::parse(request.ToString());
         const std::string type = req_obj["type"];
 
-        log->info("Received query named {} (persistent={})", request.ToString(), persistent);
         if (type == "camera_parameters") {
             uint32_t width, height, fps;
             sCameraStream->camera_parameters(width, height, fps);
@@ -32,10 +31,14 @@ namespace carpi::ui {
             callback->Success(val.dump());
             return true;
         } else if(type == "camera_frame") {
+            uint32_t w, h;
+            const auto b64 = sCameraStream->buffer_to_base64(w, h);
             json val{
                     {"type", type},
                     {"body", {
-                                     {"image", sCameraStream->buffer_to_base64()}
+                                     {"image", b64},
+                                     {"width", w},
+                                     {"height", h}
                     }}
             };
 
