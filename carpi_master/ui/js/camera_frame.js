@@ -101,6 +101,10 @@ $(() => {
 
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, index_buffer);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, Uint8Array.of(0, 1, 2, 0, 2, 3), gl.STATIC_DRAW);
+
+        gl.activeTexture(gl.TEXTURE0);
+        gl.bindTexture(gl.TEXTURE_2D, texture);
+        gl.uniform1i(uniform_texture, 0);
     }
 
     function setup_bindings() {
