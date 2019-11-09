@@ -80,6 +80,8 @@ $(() => {
         }
 
         uniform_texture = gl.getUniformLocation(program, "video_texture");
+
+        gl.useProgram(program);
     }
 
     function setup_data() {
@@ -98,12 +100,16 @@ $(() => {
         );
 
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, index_buffer);
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, Int8Array.of(0, 1, 2, 0, 2, 3), gl.STATIC_DRAW);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, Uint8Array.of(0, 1, 2, 0, 2, 3), gl.STATIC_DRAW);
+    }
+
+    function setup_bindings() {
+
     }
 
     function on_frame() {
         gl.clear(gl.COLOR_BUFFER_BIT);
-
+        gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_BYTE, 0);
 
         requestAnimationFrame(on_frame);
     }
@@ -113,6 +119,7 @@ $(() => {
     setup_texture();
     setup_program();
     setup_data();
+    setup_bindings();
 
     let width = 480;
     let height = 360;
