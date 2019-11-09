@@ -36,6 +36,7 @@ target_link_libraries(carpi_master
         ${OPENGLES2_LIBRARIES}
         ${EGL_LIBRARIES}
         ${FFMPEG_LIBRARIES}
+        libswscale
         avfilter
         stdc++fs
         /usr/local/lib/libcef_dll_wrapper.a
