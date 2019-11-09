@@ -132,7 +132,7 @@ namespace carpi::data {
         initialize_camera();
     }
 
-    bool CameraHandler::request_range(const std::string &token, std::size_t start, std::size_t end, const std::function<bool(const std::vector<uint8_t> &, std::size_t)> &callback) {
+    bool CameraHandler::request_range(const std::string &token, std::size_t start, std::size_t end, const std::function<std::size_t(const std::vector<uint8_t> &, std::size_t)> &callback) {
         if (start >= end) {
             return false;
         }
@@ -176,10 +176,10 @@ namespace carpi::data {
             }
 
             const auto offset = itr->start - context->last_sent_position;
-            const auto num_bytes = std::min<std::size_t>(context->data_buffer.size() - offset, itr->end - itr->start);
+            auto num_bytes = std::min<std::size_t>(context->data_buffer.size() - offset, itr->end - itr->start);
             log->info("Sending {} bytes from {} (buffer size: {}, last sent position: {})", num_bytes, offset, context->data_buffer.size(), context->last_sent_position);
             std::vector<uint8_t> range_data{context->data_buffer.begin() + offset, context->data_buffer.begin() + offset + num_bytes};
-            itr->callback(range_data, num_bytes);
+            num_bytes = itr->callback(range_data, num_bytes);
             last_position = std::max<std::size_t>(last_position, context->last_sent_position + offset + num_bytes);
             has_sent = true;
         }

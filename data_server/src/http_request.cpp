@@ -187,7 +187,7 @@ namespace carpi::data {
 
             completed = true;
             final_var.notify_all();
-            return true;
+            return num_sent;
         })) {
             response.status(HttpStatusCode::RANGE_NOT_SATISFIABLE, "Invalid request range")
                     .write_to_socket(socket);

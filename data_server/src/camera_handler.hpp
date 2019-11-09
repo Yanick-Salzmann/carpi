@@ -26,11 +26,11 @@ namespace carpi::data {
             std::size_t start;
             std::size_t end;
 
-            std::function<void(const std::vector<uint8_t> &, std::size_t)> callback;
+            std::function<std::size_t (const std::vector<uint8_t> &, std::size_t)> callback;
 
             RangeRequest() = default;
 
-            RangeRequest(std::size_t start, std::size_t end, std::function<void(const std::vector<uint8_t> &, std::size_t)> callback) :
+            RangeRequest(std::size_t start, std::size_t end, std::function<std::size_t (const std::vector<uint8_t> &, std::size_t)> callback) :
                     start(start), end(end), callback(std::move(callback)) {
 
             }
@@ -78,7 +78,7 @@ namespace carpi::data {
 
         void start_stream(const std::string &token);
 
-        bool request_range(const std::string &token, std::size_t start, std::size_t end, const std::function<bool(const std::vector<uint8_t> &, std::size_t)> &callback);
+        bool request_range(const std::string &token, std::size_t start, std::size_t end, const std::function<std::size_t (const std::vector<uint8_t> &, std::size_t)> &callback);
     };
 }
 
