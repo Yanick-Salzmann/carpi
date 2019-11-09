@@ -76,8 +76,8 @@ namespace carpi::video {
 
         format->encoding_variant = map_format(VideoFormat::H264);
         format->encoding = map_format(VideoFormat::H264);
-        format->es->video.width = 1920;
-        format->es->video.height = 1080;
+        format->es->video.width = configuration.width();
+        format->es->video.height = configuration.height();
         format->es->video.crop.x = 0;
         format->es->video.crop.y = 0;
         format->es->video.crop.width = format->es->video.width;
@@ -190,6 +190,10 @@ namespace carpi::video {
             std::shared_ptr<MMAL_BUFFER_HEADER_T> bp{buffer, [this](auto *buff) { mmal_buffer_header_mem_unlock(buff); }};
             if (_buffer_data.size() < buffer->length) {
                 _buffer_data.resize(buffer->length);
+            }
+
+            if(buffer->offset > 0) {
+                log->info("There is an offset");
             }
 
             memcpy(_buffer_data.data(), buffer->data, buffer->length);
