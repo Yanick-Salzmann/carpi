@@ -104,65 +104,90 @@ namespace carpi::data {
 
     void HttpRequest::process_camera_stream(const std::string &path, const std::multimap<std::string, std::string> &headers, int socket) {
         HttpResponse response{HttpStatusCode::OK, "OK"};
-        response.add_header("Content-Type", "video/mp4")
-                .add_header("Transfer-Encoding", "chunked");
+        response.add_header("Content-Type", "video/mp4");
 
         CookieHelper cookie_helper{headers};
         cookie_helper.print(log);
 
         Range range{headers.lower_bound("range")->second};
-        range.print(log);
+        const auto &ranges = range.ranges();
+        if (ranges.empty()) {
+            response.status(HttpStatusCode::BAD_REQUEST, "Missing Range")
+                    .write_to_socket(socket);
+            return;
+        }
 
-        const auto is_first_request = !cookie_helper.has_cookie("camera_stream");
+        if (ranges.size() > 1) {
+            response.status(HttpStatusCode::BAD_REQUEST, "Only one Range supported")
+                    .write_to_socket(socket);
+            return;
+        }
+
+        const auto req_range = ranges[0];
+        if (req_range.type == RangeType::SUFFIX) {
+            response.status(HttpStatusCode::BAD_REQUEST, "Ranges from end are not supported")
+                    .write_to_socket(socket);
+            return;
+        }
+
+        std::size_t start, end;
+        if (req_range.type == RangeType::OPEN_END) {
+            start = req_range.start;
+            end = std::numeric_limits<std::size_t>::max();
+        } else if (req_range.type == RangeType::BOUNDED) {
+            start = req_range.start;
+            end = req_range.end;
+        } else {
+            response.status(HttpStatusCode::BAD_REQUEST, "Ranges from end are not supported")
+                    .write_to_socket(socket);
+            return;
+        }
+
+        auto is_first_request = !cookie_helper.has_cookie("camera_stream");
+        std::string stream_id = cookie_helper.cookie("camera_stream");
         if (!is_first_request) {
-            const auto stream_id = cookie_helper.cookie("camera_stream");
+            if (!sCameraHandler->is_current_stream(stream_id, range)) {
+                sCameraHandler->cancel_stream(stream_id);
+                is_first_request = true;
+            }
         }
 
-        if (!cookie_helper.has_cookie("camera_stream")) {
-
+        if (is_first_request && stream_id.empty()) {
+            stream_id = create_uuid();
         }
 
-        response.write_to_socket(socket);
+        if (is_first_request) {
+            sCameraHandler->start_stream(stream_id);
+        }
 
         std::mutex final_lock{};
         std::condition_variable final_var{};
-        auto completed = false;
+        bool completed = false;
 
-        FILE *f = fopen("camera_out.mp4", "wb");
-
-        sCameraHandler->begin_streaming([socket, &final_lock, &final_var, &completed, f](void *data, std::size_t size) {
-            std::stringstream hdr_stream{};
-            hdr_stream << std::hex << size << "\r\n";
-            const auto hdr_line = hdr_stream.str();
-            if (::send(socket, hdr_line.c_str(), hdr_line.size(), 0) <= 0) {
-                completed = true;
-                final_var.notify_all();
-                return false;
-            }
-
-            fwrite(data, 1, size, f);
-
-            if (::send(socket, data, size, 0) <= 0) {
-                completed = true;
-                final_var.notify_all();
-                return false;
-            }
-
-            if (::send(socket, "\r\n", 2, 0) <= 0) {
-                completed = true;
-                final_var.notify_all();
-                return false;
-            }
-
-            return true;
-        }, [&completed, &final_var, socket, f]() {
-            fclose(f);
-            ::send(socket, "0\r\n\r\n", 5, 0);
+        if (!sCameraHandler->request_range(stream_id, start, end, [&final_var, &completed, socket, &response, start, stream_id](const std::vector<uint8_t> &data, std::size_t bytes) {
+            response.status(HttpStatusCode::PARTIAL_CONTENT, "OK")
+                    .add_header("Content-Range", fmt::format("bytes {}-{}/*", start, start + bytes))
+                    .add_header("Set-Cookie", fmt::format("camera_stream={}", stream_id))
+                    .write_to_socket(socket);
+            send(socket, data.data(), bytes, 0);
             completed = true;
             final_var.notify_all();
-        });
+            return true;
+        })) {
+            response.status(HttpStatusCode::RANGE_NOT_SATISFIABLE, "Invalid request range")
+                    .write_to_socket(socket);
+            return;
+        }
 
         std::unique_lock<std::mutex> l{final_lock};
         final_var.wait(l, [&completed]() { return completed; });
+    }
+
+    std::string HttpRequest::create_uuid() {
+        char uuid_str[37]{};
+        uuid_t uuid{};
+        uuid_generate_random(uuid);
+        uuid_unparse_lower(uuid, uuid_str);
+        return std::string{uuid_str, uuid_str + 36};
     }
 }

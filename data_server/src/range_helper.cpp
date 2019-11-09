@@ -6,6 +6,10 @@
 namespace carpi::data {
 
     Range::Range(const std::string &range_header) {
+        if(range_header.empty()) {
+            return;
+        }
+
         const auto unit_end = range_header.find('=');
         if(unit_end == std::string::npos) {
             throw std::runtime_error{"Invalid range header. No unit defined (no '=' found)."};

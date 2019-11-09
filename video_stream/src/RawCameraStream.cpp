@@ -230,4 +230,10 @@ namespace carpi::video {
 
         return true;
     }
+
+    void RawCameraStream::stop_capture() {
+        if (mmal_port_parameter_set_boolean(_video_port, MMAL_PARAMETER_CAPTURE, 0) != MMAL_SUCCESS) {
+            log->warn("Error setting MMAL_PARAMETER_CAPTURE to false");
+        }
+    }
 }

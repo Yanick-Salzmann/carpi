@@ -1,66 +1,12 @@
 #include <future>
 #include "camera_handler.hpp"
+#include "range_helper.hpp"
 
 #include <sys/wait.h>
 #include <common_utils/error.hpp>
 
 namespace carpi::data {
     LOGGER_IMPL(CameraHandler);
-
-    void CameraHandler::begin_streaming(const std::function<bool(void *, std::size_t)> &data_callback, const std::function<void()> &complete_callback) {
-        std::shared_ptr<ReaderContext> context = std::make_shared<ReaderContext>();
-
-        context->callback = data_callback;
-        context->ffmpeg_process = utils::launch_subprocess(
-                "ffmpeg",
-                {
-                    "ffmpeg",
-                    "-f", "rawvideo",
-                    "-pix_fmt", "yuv420p",
-                    "-s", "1920x1088",
-                    "-r", "30",
-                    "-i", "-",
-                    "-c", "libx264",
-                    "-preset", "ultrafast",
-                    "-crf", "0",
-                    "-qp", "0",
-                    "-f", "mp4",
-                    "-movflags", "frag_keyframe+empty_moov",
-                    "-",
-                    "-loglevel", "error",
-                    "-hide_banner"
-                }
-        );
-        log->info("Launched ffmpeg process. PID: {}, error: {}", context->ffmpeg_process.process_id, context->ffmpeg_process.error_code);
-
-        {
-            std::lock_guard<std::mutex> l{_listener_lock};
-            _data_listeners.emplace(context);
-        }
-
-        std::thread stdout_thread{[this, context]() { handle_stdout_reader(context); }};
-        std::thread stderr_thread{[this, context]() { handle_stderr_reader(context); }};
-
-        initialize_camera();
-
-        stdout_thread.join();
-        stderr_thread.join();
-
-        int32_t status_loc = 0;
-        const auto child_proc = wait(&status_loc);
-        if (WIFEXITED(status_loc)) {
-            log->info("FFmpeg child process {} terminated (exit code = {}, error = {})", child_proc, WEXITSTATUS(status_loc), utils::error_to_string(WEXITSTATUS(status_loc)));
-        } else {
-            log->info("FFmpeg child process {} terminated abnormally", child_proc);
-        }
-
-        {
-            std::lock_guard<std::mutex> l{_listener_lock};
-            _data_listeners.erase(context);
-        }
-
-        complete_callback();
-    }
 
     void CameraHandler::initialize_camera() {
         std::lock_guard<std::mutex> l{_load_lock};
@@ -118,11 +64,30 @@ namespace carpi::data {
         char buffer[4096]{};
         int32_t num_read = 0;
         while ((num_read = read(context->ffmpeg_process.stdout_pipe, buffer, sizeof buffer)) > 0) {
-            context->callback(buffer, num_read);
+                std::lock_guard<std::mutex> l{context->data_lock};
+                context->data_buffer.insert(context->data_buffer.end(), buffer, buffer + num_read);
+                handle_context_data(context);
         }
     }
 
-    bool CameraHandler::is_current_stream(const std::string &session_cookie, const std::string &range) {
+    void CameraHandler::cancel_stream(const std::string &session_cookie) {
+        std::lock_guard<std::mutex> l{_listener_lock};
+        const auto listeners = _listener_map.equal_range(session_cookie);
+        if(listeners.first == listeners.second) {
+            return;
+        }
+
+        for(auto itr = listeners.first; itr != listeners.second; ++itr) {
+            close(itr->second->ffmpeg_process.stdin_pipe);
+            _data_listeners.erase(itr->second);
+        }
+
+        _listener_map.erase(session_cookie);
+
+        _camera_stream->stop_capture();
+    }
+
+    bool CameraHandler::is_current_stream(const std::string &session_cookie, const Range &range) {
         std::shared_ptr<ReaderContext> ctx{};
         {
             std::lock_guard<std::mutex> l{_listener_lock};
@@ -136,5 +101,99 @@ namespace carpi::data {
 
 
         return false;
+    }
+
+    void CameraHandler::start_stream(const std::string &token) {
+        std::shared_ptr<ReaderContext> context = std::make_shared<ReaderContext>();
+
+        context->ffmpeg_process = utils::launch_subprocess(
+                "ffmpeg",
+                {
+                        "ffmpeg",
+                        "-f", "rawvideo",
+                        "-pix_fmt", "yuv420p",
+                        "-s", "1920x1088",
+                        "-r", "30",
+                        "-i", "-",
+                        "-c", "libx264",
+                        "-preset", "ultrafast",
+                        "-crf", "0",
+                        "-qp", "0",
+                        "-f", "mp4",
+                        "-movflags", "frag_keyframe+empty_moov",
+                        "-",
+                        "-loglevel", "error",
+                        "-hide_banner"
+                }
+        );
+        log->info("Launched ffmpeg process. PID: {}, error: {}", context->ffmpeg_process.process_id, context->ffmpeg_process.error_code);
+
+        {
+            std::lock_guard<std::mutex> l{_listener_lock};
+            _data_listeners.emplace(context);
+            _listener_map.emplace(token, context);
+        }
+
+        std::thread stdout_thread{[this, context]() { handle_stdout_reader(context); }};
+        std::thread stderr_thread{[this, context]() { handle_stderr_reader(context); }};
+
+        initialize_camera();
+    }
+
+    bool CameraHandler::request_range(const std::string& token, std::size_t start, std::size_t end, const std::function<bool(const std::vector<uint8_t> &, std::size_t)> &callback) {
+        if(start >= end) {
+            return false;
+        }
+
+        std::shared_ptr<ReaderContext> context{};
+        {
+            std::lock_guard<std::mutex> l{_listener_lock};
+            const auto itr = _listener_map.find(token);
+            if(itr == _listener_map.end()) {
+                return false;
+            }
+
+            context = itr->second;
+        }
+
+        {
+            std::lock_guard<std::mutex> l{context->data_lock};
+            if(start < context->last_sent_position) {
+                return false;
+            }
+
+            context->pending_requests.emplace_back(start, end, callback);
+        }
+
+        return true;
+    }
+
+    void CameraHandler::handle_context_data(const std::shared_ptr<ReaderContext>& context) {
+        const auto data_end = context->last_sent_position + context->data_buffer.size();
+        auto& ranges = context->pending_requests;
+        const auto split = std::partition(ranges.begin(), ranges.end(), [data_end](const auto& range) { return range.start < data_end; });
+        std::size_t last_position = 0;
+        auto has_sent = false;
+
+        for(auto itr = ranges.begin(); itr != split; ++itr) {
+            const auto offset = itr->start - context->last_sent_position;
+            const auto num_bytes = std::min<std::size_t>(data_end - context->last_sent_position, itr->end - itr->start);
+            std::vector<uint8_t> range_data{context->data_buffer.begin() + offset, context->data_buffer.begin() + offset + num_bytes};
+            itr->callback(range_data, num_bytes);
+            last_position = std::max<std::size_t>(last_position, context->last_sent_position + num_bytes);
+            has_sent = true;
+        }
+
+        if(!has_sent) {
+            return;
+        }
+
+        std::list<RangeRequest> new_ranges{split, ranges.end()};
+        std::sort(new_ranges.begin(), new_ranges.end(), [](const auto& r1, const auto& r2) { return r1.start < r2.start; });
+        context->pending_requests = new_ranges;
+
+        const auto to_remove = last_position - context->last_sent_position;
+        context->data_buffer.erase(context->data_buffer.begin(), context->data_buffer.begin() + to_remove);
+        context->last_sent_position = last_position;
     }
 }
