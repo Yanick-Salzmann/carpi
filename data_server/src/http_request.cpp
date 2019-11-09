@@ -112,7 +112,7 @@ namespace carpi::data {
         std::condition_variable final_var{};
         bool completed = false;
 
-        sCameraHandler->stream_video([socket](const void* data, std::size_t num_bytes) {
+        sCameraHandler->stream_video([socket, &final_var](const void* data, std::size_t num_bytes) {
             std::size_t num_sent = 0;
             while(num_sent < num_bytes) {
                 const auto to_send = std::min<std::size_t>(num_bytes - num_sent, 4096);
