@@ -17,7 +17,7 @@ namespace carpi::utils {
 
     void Logger::init_logger (const std::string& name) {
         _logger = spdlog::stdout_color_mt (name);
-        _logger->set_pattern ("[%Y-%m-%d %H:%I:%S.%e] [%P:%t] [%n] %^[%l]%$ %v");
+        _logger->set_pattern ("[%Y-%m-%d %H:%M:%S.%e] [%P:%t] [%n] %^[%l]%$ %v");
 #ifndef NDEBUG
         _logger->set_level (spdlog::level::info);
 #else
