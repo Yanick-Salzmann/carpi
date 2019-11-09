@@ -49,6 +49,7 @@ namespace carpi::data {
         char buffer[4096]{};
         int32_t num_read = 0;
         while ((num_read = read(context->ffmpeg_process.stdout_pipe, buffer, sizeof buffer)) > 0) {
+            log->info("stdout: {}", num_read);
             std::lock_guard<std::mutex> l{context->data_lock};
             context->data_buffer.insert(context->data_buffer.end(), buffer, buffer + num_read);
             handle_context_data(context);
