@@ -240,11 +240,11 @@ namespace carpi::video {
         }
     }
 
-    constexpr uint32_t RawCameraStream::calculate_width(uint32_t width) {
+    uint32_t RawCameraStream::calculate_width(uint32_t width) {
         return VCOS_ALIGN_UP(width, 32u);
     }
 
-    constexpr uint32_t RawCameraStream::calculate_height(uint32_t height) {
+    uint32_t RawCameraStream::calculate_height(uint32_t height) {
         return VCOS_ALIGN_UP(height, 16u);
     }
 }

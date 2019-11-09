@@ -102,8 +102,8 @@ namespace carpi::video {
             return _actual_height;
         }
 
-        static constexpr uint32_t calculate_width(uint32_t width);
-        static constexpr uint32_t calculate_height(uint32_t height);
+        static uint32_t calculate_width(uint32_t width);
+        static uint32_t calculate_height(uint32_t height);
     };
 };
 
