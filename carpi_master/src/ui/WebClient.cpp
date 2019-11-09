@@ -6,7 +6,7 @@ namespace carpi::ui {
     LOGGER_IMPL(WebClient);
 
     bool WebClient::OnQuery(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, int64 query_id, const CefString &request, bool persistent, CefRefPtr<CefMessageRouterBrowserSide::Callback> callback) {
-        if(request == "EventHandlerInit") {
+        if (request == "EventHandlerInit") {
             // TODO: Register handler
             return true;
         }
@@ -17,12 +17,15 @@ namespace carpi::ui {
         const std::string type = req_obj["type"];
 
         log->info("Received query named {} (persistent={})", request.ToString(), persistent);
-        if(type == "camera_parameters") {
+        if (type == "camera_parameters") {
             uint32_t width, height, fps;
             sCameraStream->camera_parameters(width, height, fps);
             json val{
-                    {"width", width},
-                    {"height", height}
+                    {"type", type},
+                    {"data",
+                             {"width", width},
+                            {"height", height}
+                    }
             };
 
             callback->Success(val.dump());
