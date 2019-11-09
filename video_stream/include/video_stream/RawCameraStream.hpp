@@ -64,7 +64,6 @@ namespace carpi::video {
         LOGGER;
 
         std::mutex _data_read_lock{};
-        std::condition_variable _data_variable;
 
         std::shared_ptr<MMAL_POOL_T> _video_pool{};
 

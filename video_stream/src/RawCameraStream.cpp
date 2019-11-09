@@ -193,7 +193,7 @@ namespace carpi::video {
         std::size_t length = buffer->length;
         {
             std::shared_ptr<MMAL_BUFFER_HEADER_T> bp{buffer, [this](auto *buff) { mmal_buffer_header_mem_unlock(buff); }};
-            if (_buffer_data.size() < buffer->length) {
+            if (_buffer_data.size() != buffer->length) {
                 _buffer_data.resize(buffer->length);
             }
 
@@ -211,8 +211,6 @@ namespace carpi::video {
         if (!new_buffer || status != MMAL_SUCCESS) {
             log->warn("Error sending new buffer to camera");
         }
-
-        _data_variable.notify_all();
 
         _data_callback(_buffer_data, length);
     }
