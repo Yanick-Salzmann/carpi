@@ -69,7 +69,7 @@ namespace carpi::data {
 
         void handle_context_data(const std::shared_ptr<ReaderContext>& context);
     public:
-        bool is_current_stream(const std::string &session_cookie, const Range &range);
+        bool is_current_stream(const std::string &session_cookie, std::size_t start);
 
         void cancel_stream(const std::string &session_cookie);
 

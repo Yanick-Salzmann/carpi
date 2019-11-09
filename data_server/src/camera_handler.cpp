@@ -95,7 +95,7 @@ namespace carpi::data {
         _camera_stream->stop_capture();
     }
 
-    bool CameraHandler::is_current_stream(const std::string &session_cookie, const Range &range) {
+    bool CameraHandler::is_current_stream(const std::string &session_cookie, std::size_t start) {
         std::shared_ptr<ReaderContext> ctx{};
         {
             std::lock_guard<std::mutex> l{_listener_lock};
@@ -107,8 +107,7 @@ namespace carpi::data {
             ctx = itr->second;
         }
 
-
-        return false;
+        return start >= ctx->last_sent_position;
     }
 
     void CameraHandler::start_stream(const std::string &token) {

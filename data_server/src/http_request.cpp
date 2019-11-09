@@ -146,7 +146,7 @@ namespace carpi::data {
         auto is_first_request = !cookie_helper.has_cookie("camera_stream");
         std::string stream_id = cookie_helper.cookie("camera_stream");
         if (!is_first_request) {
-            if (!sCameraHandler->is_current_stream(stream_id, range)) {
+            if (!sCameraHandler->is_current_stream(stream_id, start)) {
                 sCameraHandler->cancel_stream(stream_id);
                 is_first_request = true;
             }
