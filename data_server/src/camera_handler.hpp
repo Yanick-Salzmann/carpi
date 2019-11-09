@@ -38,6 +38,8 @@ namespace carpi::data {
 
         struct ReaderContext {
             utils::SubProcess ffmpeg_process;
+            std::thread stdout_thread;
+            std::thread stderr_thread;
 
             std::size_t last_sent_position{};
 

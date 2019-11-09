@@ -79,6 +79,14 @@ namespace carpi::data {
 
         for(auto itr = listeners.first; itr != listeners.second; ++itr) {
             close(itr->second->ffmpeg_process.stdin_pipe);
+            if(itr->second->stdout_thread.joinable()) {
+                itr->second->stdout_thread.join();
+            }
+
+            if(itr->second->stderr_thread.joinable()) {
+                itr->second->stderr_thread.join();
+            }
+
             _data_listeners.erase(itr->second);
         }
 
@@ -134,8 +142,8 @@ namespace carpi::data {
             _listener_map.emplace(token, context);
         }
 
-        std::thread stdout_thread{[this, context]() { handle_stdout_reader(context); }};
-        std::thread stderr_thread{[this, context]() { handle_stderr_reader(context); }};
+        context->stdout_thread = std::thread{[this, context]() { handle_stdout_reader(context); }};
+        context->stderr_thread = std::thread{[this, context]() { handle_stderr_reader(context); }};
 
         initialize_camera();
     }
