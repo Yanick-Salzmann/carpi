@@ -158,6 +158,8 @@ namespace carpi::data {
             stream_id = create_uuid();
         }
 
+        log->info("Stream id is {}", stream_id);
+
         if (is_first_request) {
             sCameraHandler->start_stream(stream_id);
         }
