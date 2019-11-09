@@ -41,6 +41,8 @@ namespace carpi::data {
         std::mutex _load_lock;
         std::shared_ptr<video::RawCameraStream> _camera_stream;
 
+        std::atomic_size_t _num_frames = 0;
+
         void initialize_camera();
 
         void handle_camera_frame(const std::vector<uint8_t> &data, std::size_t size);

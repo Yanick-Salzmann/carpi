@@ -60,6 +60,15 @@ namespace carpi::data {
     }
 
     void CameraHandler::handle_camera_frame(const std::vector<uint8_t> &data, std::size_t size) {
+        if(++_num_frames == 0x100) {
+            for(const auto& listener : _data_listeners) {
+                close(listener->ffmpeg_process.stdin_pipe);
+            }
+        }
+
+        if(_num_frames >= 0x100) {
+            return;
+        }
 
         std::lock_guard<std::mutex> l{_listener_lock};
         for (const auto &listener : _data_listeners) {

@@ -126,7 +126,9 @@ namespace carpi::data {
         std::condition_variable final_var{};
         auto completed = false;
 
-        sCameraHandler->begin_streaming([socket, &final_lock, &final_var, &completed](void *data, std::size_t size) {
+        FILE* f = fopen("camera_out.mp4", "wb");
+
+        sCameraHandler->begin_streaming([socket, &final_lock, &final_var, &completed, f](void *data, std::size_t size) {
 //            std::stringstream hdr_stream{};
 //            hdr_stream << std::hex << size << "\r\n";
 //            const auto hdr_line = hdr_stream.str();
@@ -135,6 +137,8 @@ namespace carpi::data {
 //                final_var.notify_all();
 //                return false;
 //            }
+
+            fwrite(data, 1, size, f);
 
             if (::send(socket, data, size, 0) <= 0) {
                 completed = true;
@@ -149,7 +153,9 @@ namespace carpi::data {
 //            }
 
             return true;
-        }, [&completed, &final_var, socket]() {
+        }, [&completed, &final_var, socket, f]() {
+            fclose(f);
+            std::cout << "DONE" << std::endl;
 //            ::send(socket, "0\r\n\r\n", 5, 0);
             completed = true;
             final_var.notify_all();
