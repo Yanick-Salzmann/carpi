@@ -42,6 +42,13 @@ namespace carpi::data {
             log->error("Error starting listening on socket: {} (errno={})", utils::error_to_string(errno), errno);
             throw std::runtime_error{"Error listening on HTTP server port"};
         }
+
+        linger linger{
+            .l_onoff = 0,
+            .l_linger = 0
+        };
+
+        setsockopt(_server_socket, SOL_SOCKET, SO_LINGER, (const void*) &linger, sizeof linger);
     }
 
     void HttpServer::shutdown() {
