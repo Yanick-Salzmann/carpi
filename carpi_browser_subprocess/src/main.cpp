@@ -51,7 +51,6 @@ public:
         pthread_mutex_lock(_video_shmem_mutex);
         memcpy(_frame_data, _camera_frame_buffer, CAMERA_WIDTH * CAMERA_HEIGHT * 4);
         pthread_mutex_unlock(_video_shmem_mutex);
-
         retval = CefV8Value::CreateArrayBuffer(_camera_frame_buffer, CAMERA_WIDTH * CAMERA_HEIGHT * 4, this);
         return true;
     }
