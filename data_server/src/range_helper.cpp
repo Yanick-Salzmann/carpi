@@ -52,7 +52,7 @@ namespace carpi::data {
             return {
                 .type = end.empty() ? RangeType::OPEN_END : RangeType::BOUNDED,
                 .start = static_cast<std::size_t>(std::stoull(start)),
-                .end = end.empty() ? 0 : std::stoull(end)
+                .end = static_cast<std::size_t>(end.empty() ? 0 : std::stoull(end))
             };
         }
     }
