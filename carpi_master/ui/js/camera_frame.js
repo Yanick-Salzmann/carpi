@@ -132,7 +132,7 @@ $(() => {
             const slice = arr.slice(0, arr.length);
             gl.bindTexture(gl.TEXTURE_2D, texture);
             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 480, 368, 0, gl.RGBA, gl.UNSIGNED_BYTE, slice);
-        }, 30);
+        }, 0);
     }
 
     gl.clearColor(1.0, 0.5, 0.25, 1.0);
