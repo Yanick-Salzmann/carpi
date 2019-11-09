@@ -9,7 +9,6 @@
 #include <include/cef_parser.h>
 #include <sys/socket.h>
 #include <uuid/uuid.h>
-#include <iostream>
 #include <common_utils/error.hpp>
 
 namespace carpi::data {
