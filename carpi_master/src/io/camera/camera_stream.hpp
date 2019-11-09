@@ -14,7 +14,7 @@ namespace carpi::io::camera {
 
         const uint32_t CAMERA_WIDTH = video::RawCameraStream::calculate_width(480);
         const uint32_t CAMERA_HEIGHT = video::RawCameraStream::calculate_height(360);
-        static const uint32_t CAMERA_FPS = 30;
+        static const uint32_t CAMERA_FPS = 60;
 
         static const uint32_t SHMEM_KEY_MUTEX = 0x42434455;
         static const uint32_t SHMEM_KEY_DATA = 0x42434456;
