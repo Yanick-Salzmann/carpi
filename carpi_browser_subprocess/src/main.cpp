@@ -4,7 +4,7 @@
 #include <include/wrapper/cef_message_router.h>
 #include <sys/shm.h>
 
-class CameraFrameCallback : public CefV8Handler {
+class CameraFrameCallback : public CefV8Handler, public CefV8ArrayBufferReleaseCallback {
     IMPLEMENT_REFCOUNTING(CameraFrameCallback);
 
     static const uint32_t CAMERA_WIDTH = 480;
@@ -48,11 +48,15 @@ public:
     bool Execute(const CefString &name, CefRefPtr<CefV8Value> object, const CefV8ValueList &arguments, CefRefPtr<CefV8Value> &retval, CefString &exception) override {
         CefRefPtr<CefV8Value> ptr_value;
         pthread_mutex_lock(_video_shmem_mutex);
-        ptr_value = CefV8Value::CreateArrayBuffer(_camera_frame_buffer, CAMERA_WIDTH * CAMERA_HEIGHT * 4, nullptr);
+        ptr_value = CefV8Value::CreateArrayBuffer(_camera_frame_buffer, CAMERA_WIDTH * CAMERA_HEIGHT * 4, this);
         pthread_mutex_unlock(_video_shmem_mutex);
 
         retval = ptr_value;
         return true;
+    }
+
+    void ReleaseBuffer(void *buffer) override {
+
     }
 };
 
