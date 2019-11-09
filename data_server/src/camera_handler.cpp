@@ -195,4 +195,47 @@ namespace carpi::data {
         context->data_buffer.erase(context->data_buffer.begin(), context->data_buffer.begin() + to_remove);
         context->last_sent_position = last_position;
     }
+
+    void CameraHandler::stream_video(std::function<void(const void *, std::size_t)> callback) {
+        std::shared_ptr<ReaderContext> context = std::make_shared<ReaderContext>();
+
+        context->ffmpeg_process = utils::launch_subprocess(
+                "ffmpeg",
+                {
+                        "ffmpeg",
+                        "-f", "rawvideo",
+                        "-pix_fmt", "yuv420p",
+                        "-s", fmt::format("{}x{}", video::RawCameraStream::calculate_width(CAMERA_WIDTH), video::RawCameraStream::calculate_height(CAMERA_HEIGHT)),
+                        "-r", "30",
+                        "-i", "-",
+                        "-c", "libx264",
+                        "-preset", "ultrafast",
+                        "-crf", "0",
+                        "-qp", "0",
+                        "-f", "mp4",
+                        "-movflags", "frag_keyframe+empty_moov",
+                        "-",
+                        "-loglevel", "error",
+                        "-hide_banner"
+                }
+        );
+        log->info("Launched ffmpeg process. PID: {}, error: {}", context->ffmpeg_process.process_id, context->ffmpeg_process.error_code);
+
+        context->callback = std::move(callback);
+        context->stdout_thread = std::thread{[this, context]() {
+            char buffer[4096]{};
+            int32_t num_read = 0;
+            while ((num_read = read(context->ffmpeg_process.stdout_pipe, buffer, sizeof buffer)) > 0) {
+                context->callback(buffer, num_read);
+            }
+        }};
+
+        context->stderr_thread = std::thread{[this, context]() { handle_stderr_reader(context); }};
+        {
+            std::lock_guard<std::mutex> l{_listener_lock};
+            _data_listeners.emplace(context);
+        }
+
+        initialize_camera();
+    }
 }

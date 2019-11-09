@@ -47,6 +47,8 @@ namespace carpi::data {
             std::mutex data_lock;
 
             std::list<RangeRequest> pending_requests;
+
+            std::function<void(const void*, std::size_t)> callback;
         };
 
         static const uint32_t CAMERA_WIDTH = 480;
@@ -79,6 +81,8 @@ namespace carpi::data {
         void start_stream(const std::string &token);
 
         bool request_range(const std::string &token, std::size_t start, std::size_t end, const std::function<std::size_t (const std::vector<uint8_t> &, std::size_t)> &callback);
+
+        void stream_video(std::function<void(const void*, std::size_t)> callback);
     };
 }
 
