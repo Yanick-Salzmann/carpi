@@ -23,7 +23,7 @@ namespace carpi::io::camera {
         const uint8_t *src_data[] = {data.data()};
         auto *dst_data = (uint8_t *) _data_buffer.data();
 
-        const int src_strides[] = {(int) (CAMERA_WIDTH * 12) / 8};
+        const int src_strides[] = {(int) std::ceil((CAMERA_WIDTH * 12) / 8)};
         const int dst_stride = CAMERA_WIDTH * 4;
 
         {
