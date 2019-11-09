@@ -49,4 +49,4 @@ target_link_libraries(carpi_master
         /usr/local/lib/libcef_dll_wrapper.a
         /usr/local/bin/libcef.so
         X11
-        base64)
+        /usr/local/lib/libbase64.a)
