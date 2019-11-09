@@ -176,6 +176,7 @@ namespace carpi::data {
     }
 
     void CameraHandler::handle_context_data(const std::shared_ptr<ReaderContext>& context) {
+        log->info("Handling context data");
         const auto data_end = context->last_sent_position + context->data_buffer.size();
         auto& ranges = context->pending_requests;
         const auto split = std::partition(ranges.begin(), ranges.end(), [data_end](const auto& range) { return range.start < data_end; });
