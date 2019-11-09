@@ -84,7 +84,7 @@ namespace carpi::io::camera {
             throw std::runtime_error{"Error creating shared memory"};
         }
 
-        if((_video_shmem_mutex = (pthread_mutex_t*) shmat(_mutex_shm_id, nullptr, 0)) == -1) {
+        if((_video_shmem_mutex = (pthread_mutex_t*) shmat(_mutex_shm_id, nullptr, 0)) == (void*) -1) {
             log->error("Error creating shared memory for video data: {} (errno={})", utils::error_to_string(errno), errno);
             throw std::runtime_error{"Error creating shared memory"};
         }
