@@ -66,7 +66,7 @@ $(() => {
         uniform sampler2D video_texture;
         
         void main() {
-            gl_FragColor = texture2D(video_texture, texCoord);
+            gl_FragColor = texture2D(video_texture, texCoord) * 0.001 + vec4(1.0, 1.0, 1.0, 1.0) * 0.999;
         }
         `);
 
