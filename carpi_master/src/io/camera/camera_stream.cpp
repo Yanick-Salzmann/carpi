@@ -21,12 +21,7 @@ namespace carpi::io::camera {
     }
 
     void CameraStream::handle_camera_frame(const std::vector<uint8_t> &data, std::size_t size) {
-        const uint8_t *src_data[] = {data.data()};
-        auto *dst_data = (uint8_t *) _data_buffer.data();
-
-        const int src_strides[] = {(int) std::ceil((CAMERA_WIDTH * 6) / 8)};
-        const int dst_stride = CAMERA_WIDTH * 4;
-
+        log->info("Conversion...");
         libyuv::I420ToARGB(data.data(), CAMERA_WIDTH, data.data() + (CAMERA_WIDTH * CAMERA_HEIGHT), CAMERA_WIDTH / 2, data.data() + (CAMERA_HEIGHT * CAMERA_WIDTH) + (CAMERA_HEIGHT * CAMERA_WIDTH) / 2,
                            CAMERA_WIDTH / 2, (uint8_t *) _data_buffer.data(), CAMERA_WIDTH * 4, CAMERA_WIDTH, CAMERA_HEIGHT);
 
