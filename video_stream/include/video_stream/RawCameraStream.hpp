@@ -71,6 +71,9 @@ namespace carpi::video {
         std::shared_ptr<MMAL_COMPONENT_T> _camera{};
         MMAL_PORT_T* _video_port = nullptr;
 
+        std::size_t _actual_width = 0;
+        std::size_t _actual_height = 0;
+
         std::vector<uint8_t> _buffer_data{};
 
         std::function<void(const std::vector<uint8_t>&, std::size_t)> _data_callback;
@@ -90,6 +93,14 @@ namespace carpi::video {
 
         bool start_capture();
         void stop_capture();
+
+        [[nodiscard]] std::size_t actual_width() const {
+            return _actual_width;
+        }
+
+        [[nodiscard]] std::size_t actual_height() const {
+            return _actual_height;
+        }
     };
 };
 
