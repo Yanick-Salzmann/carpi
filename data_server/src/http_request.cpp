@@ -172,7 +172,13 @@ namespace carpi::data {
                     .add_header("Content-Length", fmt::format("{}", bytes))
                     .add_header("Set-Cookie", fmt::format("camera_stream={}", stream_id))
                     .write_to_socket(socket);
-            send(socket, data.data(), bytes, 0);
+            std::size_t num_sent = 0;
+            while(num_sent < bytes) {
+                const auto to_send = std::min<std::size_t>(16384, bytes - num_sent);
+                send(socket, data.data() + num_sent, to_send, 0);
+                num_sent += to_send;
+            }
+
             completed = true;
             final_var.notify_all();
             return true;
