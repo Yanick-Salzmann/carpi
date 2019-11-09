@@ -184,7 +184,7 @@ namespace carpi::data {
 
         for(auto itr = ranges.begin(); itr != split; ++itr) {
             const auto offset = itr->start - context->last_sent_position;
-            const auto num_bytes = std::min<std::size_t>(data_end - context->last_sent_position, itr->end - itr->start);
+            const auto num_bytes = std::min<std::size_t>(context->data_buffer.size() - offset, itr->end - itr->start);
             std::vector<uint8_t> range_data{context->data_buffer.begin() + offset, context->data_buffer.begin() + offset + num_bytes};
             itr->callback(range_data, num_bytes);
             last_position = std::max<std::size_t>(last_position, context->last_sent_position + num_bytes);
