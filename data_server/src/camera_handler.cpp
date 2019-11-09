@@ -183,6 +183,12 @@ namespace carpi::data {
         auto has_sent = false;
 
         for(auto itr = ranges.begin(); itr != split; ++itr) {
+            if(itr->start < context->last_sent_position) {
+                has_sent = true;
+                last_position = context->last_sent_position;
+                continue;
+            }
+
             const auto offset = itr->start - context->last_sent_position;
             const auto num_bytes = std::min<std::size_t>(context->data_buffer.size() - offset, itr->end - itr->start);
             std::vector<uint8_t> range_data{context->data_buffer.begin() + offset, context->data_buffer.begin() + offset + num_bytes};
