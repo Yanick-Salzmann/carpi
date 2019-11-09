@@ -22,9 +22,10 @@ namespace carpi::ui {
             sCameraStream->camera_parameters(width, height, fps);
             json val{
                     {"type", type},
-                    {"body",
-                             {"width", width},
-                            {"height", height}
+                    {"body", {
+                                     {"width", width},
+                                     {"height", height}
+                             }
                     }
             };
 
