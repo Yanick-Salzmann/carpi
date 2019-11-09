@@ -41,6 +41,7 @@ target_link_libraries(carpi_master
         ${FFMPEG_LIBRARIES}
         ${LIBYUV_LIBRARY_DIRS}
         ${LIBYUV_LIBRARIES}
+        jpeg
         swscale
         avfilter
         stdc++fs
