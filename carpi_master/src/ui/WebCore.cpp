@@ -72,10 +72,12 @@ namespace carpi::ui {
 
         browser_settings.universal_access_from_file_urls = STATE_ENABLED;
         browser_settings.file_access_from_file_urls = STATE_ENABLED;
+        browser_settings.windowless_frame_rate = 60; // just in case
 
         window_info.x = window_info.y = 0;
         window_info.width = screen->width;
         window_info.height = screen->height;
+        window_info.windowless_rendering_enabled = 0;
 
         CefBrowserHost::CreateBrowser(window_info, CefRefPtr<WebClient>(new WebClient()), "", browser_settings, nullptr, nullptr);
 
