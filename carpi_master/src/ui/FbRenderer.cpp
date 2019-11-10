@@ -29,7 +29,7 @@ namespace carpi::ui {
             throw std::runtime_error{"Error opening tty"};
         }
 
-        if(ioctl(ttyfd, KDSETMODE, KD_TEXT)) {
+        if(ioctl(ttyfd, KDSETMODE, KD_GRAPHICS)) {
             log->error("Error setting /dev/tty into graphics mode: {} (errno={})", utils::error_to_string(errno), errno);
             throw std::runtime_error{"Error setting tty to graphics mode"};
         }
