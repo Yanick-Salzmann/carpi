@@ -3,6 +3,7 @@
 #include <sys/fcntl.h>
 #include <sys/ioctl.h>
 #include <linux/fb.h>
+#include <linux/kd.h>
 #include <sys/mman.h>
 
 #include <common_utils/error.hpp>
@@ -22,6 +23,17 @@ namespace carpi::ui {
 #pragma pack(pop)
 
     FbRenderer::FbRenderer(const std::string &device) {
+        const auto ttyfd = open("/dev/tty", O_RDWR);
+        if(ttyfd < 0) {
+            log->error("Error opening /dev/tty: {} (errno={})", utils::error_to_string(errno), errno);
+            throw std::runtime_error{"Error opening tty"};
+        }
+
+        if(ioctl(ttyfd, KDSETMODE, KD_TEXT)) {
+            log->error("Error setting /dev/tty into graphics mode: {} (errno={})", utils::error_to_string(errno), errno);
+            throw std::runtime_error{"Error setting tty to graphics mode"};
+        }
+
         _device = open(device.c_str(), O_RDWR);
         if (_device < 0) {
             log->error("Error opening frame buffer device '{}': {} (errno={})", device, utils::error_to_string(errno), errno);
@@ -52,7 +64,7 @@ namespace carpi::ui {
         for (auto i = 0; i < 480; ++i) {
             for (auto j = 0; j < 320; ++j) {
                 fbuffer[j * 480 + i].r = (uint16_t) ((i / 480.0f) * 32.0f);
-                fbuffer[j * 480 + i].b = (uint16_t) ((i / 320.0f) * 32.0f);
+                fbuffer[j * 480 + i].b = (uint16_t) ((j / 320.0f) * 32.0f);
             }
         }
 
