@@ -23,7 +23,7 @@ namespace carpi::ui {
 #pragma pack(pop)
 
     FbRenderer::FbRenderer(const std::string &device) {
-        const auto ttyfd = open("/dev/tty1", O_RDWR);
+        const auto ttyfd = open("/dev/tty0", O_RDWR);
         if(ttyfd < 0) {
             log->error("Error opening /dev/tty: {} (errno={})", utils::error_to_string(errno), errno);
             throw std::runtime_error{"Error opening tty"};
