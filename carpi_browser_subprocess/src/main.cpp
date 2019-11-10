@@ -93,6 +93,7 @@ public:
         BitmapInfo info{
                 .width = CAMERA_WIDTH,
                 .height = -(int32_t) CAMERA_HEIGHT,
+                .size_image = 0
         };
 
         std::stringstream strm;
