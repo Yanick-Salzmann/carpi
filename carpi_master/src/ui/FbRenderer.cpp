@@ -22,6 +22,27 @@ namespace carpi::ui {
     };
 #pragma pack(pop)
 
+    int msleep(long msec)
+    {
+        struct timespec ts;
+        int res;
+
+        if (msec < 0)
+        {
+            errno = EINVAL;
+            return -1;
+        }
+
+        ts.tv_sec = msec / 1000;
+        ts.tv_nsec = (msec % 1000) * 1000000;
+
+        do {
+            res = nanosleep(&ts, &ts);
+        } while (res && errno == EINTR);
+
+        return res;
+    }
+
     FbRenderer::FbRenderer(const std::string &device) {
         const auto ttyfd = open("/dev/tty0", O_RDWR);
         if(ttyfd < 0) {
@@ -71,7 +92,7 @@ namespace carpi::ui {
             }
 
             memcpy(fb_addr, fbuffer, sizeof fbuffer);
-            usleep(16 * 1000);
+            msleep(16);
             offsetx = (offsetx + 1) % 480;
             offsety = (offsety + 1) % 320;
         }
