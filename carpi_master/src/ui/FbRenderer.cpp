@@ -79,7 +79,7 @@ namespace carpi::ui {
         log->info("Frame buffer size: {}x{}, BPP: {}, Line Size: {}", vinfo.xres, vinfo.yres, vinfo.bits_per_pixel, finfo.line_length);
 
         RGB565 *fb_addr = (RGB565*) mmap(nullptr, finfo.smem_len, PROT_READ | PROT_WRITE, MAP_SHARED, _device, 0);
-        log->info("Mapped frame buffer to {}", fb_addr);
+        log->info("Mapped frame buffer to {}", (void*) fb_addr);
 
         uint32_t offsetx = 0, offsety = 0;
         log->info("{}", sizeof(RGB565));
