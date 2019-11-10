@@ -10,13 +10,13 @@ class CameraFrameCallback : public CefV8Handler, public CefV8ArrayBufferReleaseC
     static const uint32_t SHMEM_KEY_MUTEX = 0x42434455;
     static const uint32_t SHMEM_KEY_DATA = 0x42434456;
 
-    static const uint32_t SMHEM_SIZE = 1920 * 1080 * 4 + 4;
+    static const uint32_t SHMEM_SIZE = 1920 * 1080 * 4 + 4;
 
     pthread_mutex_t* _video_shmem_mutex = nullptr;
     int32_t _mutex_shm_id = 0;
     int32_t _camera_shm_id = 0;
 
-    uint8_t* _frame_data = new uint8_t[SMHEM_SIZE];
+    uint8_t* _frame_data = new uint8_t[SHMEM_SIZE];
 
     void* _camera_frame_buffer;
 
@@ -42,16 +42,16 @@ public:
         pthread_mutex_init(_video_shmem_mutex, &attr);
         pthread_mutexattr_destroy(&attr);
 
-        _camera_shm_id = shmget(SHMEM_KEY_DATA, SMHEM_SIZE, IPC_CREAT | 0777);
+        _camera_shm_id = shmget(SHMEM_KEY_DATA, SHMEM_SIZE, IPC_CREAT | 0777);
         _camera_frame_buffer = shmat(_camera_shm_id, nullptr, SHM_RDONLY);
     }
 
     bool Execute(const CefString &name, CefRefPtr<CefV8Value> object, const CefV8ValueList &arguments, CefRefPtr<CefV8Value> &retval, CefString &exception) override {
         pthread_mutex_lock(_video_shmem_mutex);
-        memcpy(_frame_data, _camera_frame_buffer, SMHEM_SIZE);
+        memcpy(_frame_data, _camera_frame_buffer, SHMEM_SIZE);
         pthread_mutex_unlock(_video_shmem_mutex);
 
-        retval = CefV8Value::CreateArrayBuffer(_frame_data, SMHEM_SIZE, this);
+        retval = CefV8Value::CreateArrayBuffer(_frame_data, SHMEM_SIZE, this);
 
         return true;
     }

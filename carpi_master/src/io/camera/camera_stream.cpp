@@ -86,7 +86,7 @@ namespace carpi::io::camera {
         pthread_mutex_init(_video_shmem_mutex, &attr);
         pthread_mutexattr_destroy(&attr);
 
-        _camera_shm_id = shmget(SHMEM_KEY_DATA, CAMERA_WIDTH * CAMERA_HEIGHT * 4, IPC_CREAT | 0777);
+        _camera_shm_id = shmget(SHMEM_KEY_DATA, SHMEM_SIZE, IPC_CREAT | 0777);
         _camera_frame_buffer = shmat(_camera_shm_id, nullptr, 0);
     }
 }
