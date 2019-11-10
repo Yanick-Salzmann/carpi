@@ -65,7 +65,7 @@ public:
         static std::size_t FRAME_COUNT = 0;
 
         struct BitmapHeader {
-            uint16_t header = 'BM';
+            uint16_t header = 0x4D42;
             uint32_t size;
             uint16_t r0 = 0;
             uint16_t r1 = 0;
