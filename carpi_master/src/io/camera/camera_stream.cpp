@@ -93,7 +93,7 @@ namespace carpi::io::camera {
         };
 
         std::stringstream strm;
-        strm << "./images/image_" << (FRAME_COUNT++) << ".bmp";
+        strm << "./images/imagep_" << (FRAME_COUNT++) << ".bmp";
         FILE* f = fopen(strm.str().c_str(), "wb");
         fwrite(&header, sizeof header, 1, f);
         fwrite(&info, sizeof info, 1, f);
