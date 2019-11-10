@@ -131,7 +131,7 @@ $(() => {
             const arr = new Uint8Array(frame_data);
             const slice = arr.slice(0, frame_data.byteLength);
             gl.bindTexture(gl.TEXTURE_2D, texture);
-            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 480, 368, 0, gl.RGBA, gl.UNSIGNED_BYTE, slice);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 352, 208, 0, gl.RGBA, gl.UNSIGNED_BYTE, slice);
         }, 0);
     }
 
