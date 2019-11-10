@@ -131,6 +131,7 @@ $(() => {
             const size_array = new Uint16Array(frame_data);
             const w = size_array[0];
             const h = size_array[1];
+            console.log("W/H: ", w, h);
 
             const arr = new Uint8Array(frame_data);
             const slice = arr.slice(4, frame_data.byteLength);
