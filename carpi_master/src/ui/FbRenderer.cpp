@@ -78,7 +78,7 @@ namespace carpi::ui {
 
         log->info("Frame buffer size: {}x{}, BPP: {}, Line Size: {}", vinfo.xres, vinfo.yres, vinfo.bits_per_pixel, finfo.line_length);
 
-        void *fb_addr = mmap(nullptr, finfo.smem_len, PROT_READ | PROT_WRITE, MAP_SHARED, _device, 0);
+        RGB565 *fb_addr = (RGB565*) mmap(nullptr, finfo.smem_len, PROT_READ | PROT_WRITE, MAP_SHARED, _device, 0);
         log->info("Mapped frame buffer to {}", fb_addr);
 
         uint32_t offsetx = 0, offsety = 0;
@@ -91,8 +91,8 @@ namespace carpi::ui {
             //RGB565 fbuffer[480 * 320]{};
             for (auto i = 0; i < vinfo.xres; ++i) {
                 for (auto j = 0; j < vinfo.yres; ++j) {
-                    fbuffer[j * vinfo.xres + i].r = (uint16_t) ((((i + offsetx) % vinfo.xres) / (float) vinfo.xres) * 32.0f);
-                    fbuffer[j * vinfo.xres + i].b = (uint16_t) ((((j + offsety) % vinfo.yres) / (float) vinfo.yres) * 32.0f);
+                    fb_addr[j * vinfo.xres + i].r = (uint16_t) ((((i + offsetx) % vinfo.xres) / (float) vinfo.xres) * 32.0f);
+                    fb_addr[j * vinfo.xres + i].b = (uint16_t) ((((j + offsety) % vinfo.yres) / (float) vinfo.yres) * 32.0f);
                 }
             }
 
