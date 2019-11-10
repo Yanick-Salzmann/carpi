@@ -105,10 +105,6 @@ namespace carpi::video {
         video_port->buffer_size = video_port->buffer_size_recommended;
         video_port->buffer_num = video_port->buffer_num_recommended;
 
-        if (video_port->buffer_num < VIDEO_OUTPUT_BUFFERS_NUM) {
-            video_port->buffer_num = VIDEO_OUTPUT_BUFFERS_NUM;
-        }
-
         const auto pool = mmal_port_pool_create(video_port, video_port->buffer_num, video_port->buffer_size);
         if (pool == nullptr) {
             log->error("Error creating mmal buffer queue");
