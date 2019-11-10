@@ -52,60 +52,12 @@ public:
         pthread_mutex_lock(_video_shmem_mutex);
         memcpy(data, _camera_frame_buffer, CAMERA_WIDTH * CAMERA_HEIGHT * 4);
         pthread_mutex_unlock(_video_shmem_mutex);
-        save_to_bmp(data);
         retval = CefV8Value::CreateArrayBuffer(data, CAMERA_WIDTH * CAMERA_HEIGHT * 4, this);
         return true;
     }
 
     void ReleaseBuffer(void *buffer) override {
         delete (uint8_t*) buffer;
-    }
-
-    void save_to_bmp(void* data) {
-        static std::size_t FRAME_COUNT = 0;
-
-#pragma pack(push, 1)
-        struct BitmapHeader {
-            uint16_t header = 0x4D42;
-            uint32_t size;
-            uint16_t r0 = 0;
-            uint16_t r1 = 0;
-            uint32_t ofs_data = 54;
-        };
-
-        struct BitmapInfo {
-            uint32_t size = 40;
-            uint32_t width;
-            int32_t height;
-            uint16_t planes = 1;
-            uint16_t bitCount = 32;
-            uint32_t compression = 0;
-            uint32_t size_image;
-            uint32_t xpels = 0;
-            uint32_t ypels = 0;
-            uint32_t clr = 0;
-            uint32_t clr_imp = 0;
-        };
-#pragma pack(pop)
-
-        BitmapHeader header{
-                .size = 54 + CAMERA_WIDTH * CAMERA_HEIGHT * 4
-        };
-
-        BitmapInfo info{
-                .width = CAMERA_WIDTH,
-                .height = -(int32_t) CAMERA_HEIGHT,
-                .size_image = 0
-        };
-
-        std::stringstream strm;
-        strm << "./images/image_" << (FRAME_COUNT++) << ".bmp";
-        FILE* f = fopen(strm.str().c_str(), "wb");
-        fwrite(&header, sizeof header, 1, f);
-        fwrite(&info, sizeof info, 1, f);
-        fwrite(data, 1, CAMERA_WIDTH * CAMERA_HEIGHT * 4, f);
-        fflush(f);
-        fclose(f);
     }
 };
 

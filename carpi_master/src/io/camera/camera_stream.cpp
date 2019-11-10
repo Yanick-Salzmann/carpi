@@ -3,6 +3,7 @@
 #include <libbase64.h>
 #include <sys/shm.h>
 #include <common_utils/error.hpp>
+#include <sstream>
 
 namespace carpi::io::camera {
     LOGGER_IMPL(CameraStream);
@@ -49,19 +50,56 @@ namespace carpi::io::camera {
     }
 
     void CameraStream::handle_camera_frame(const std::vector<uint8_t> &data, std::size_t size) {
-        const auto y = data.data();
-        const auto u = y + CAMERA_WIDTH * CAMERA_HEIGHT;
-        const auto v = u + (CAMERA_WIDTH * CAMERA_HEIGHT) / 4;
-
-        const auto stride_y = CAMERA_WIDTH;
-        const auto stride_u = CAMERA_WIDTH / 2;
-        const auto stride_v = CAMERA_WIDTH / 2;
-
         {
             MutexLocker l{_video_shmem_mutex};
             //libyuv::I420ToARGB(y, stride_y, u, stride_u, v, stride_v, (uint8_t *) _camera_frame_buffer, CAMERA_WIDTH * 4, CAMERA_WIDTH, CAMERA_HEIGHT);
             memcpy(_camera_frame_buffer, data.data(), CAMERA_WIDTH * CAMERA_HEIGHT * 4);
         }
+
+        static std::size_t FRAME_COUNT = 0;
+
+#pragma pack(push, 1)
+        struct BitmapHeader {
+            uint16_t header = 0x4D42;
+            uint32_t size;
+            uint16_t r0 = 0;
+            uint16_t r1 = 0;
+            uint32_t ofs_data = 54;
+        };
+
+        struct BitmapInfo {
+            uint32_t size = 40;
+            uint32_t width;
+            int32_t height;
+            uint16_t planes = 1;
+            uint16_t bitCount = 32;
+            uint32_t compression = 0;
+            uint32_t size_image;
+            uint32_t xpels = 0;
+            uint32_t ypels = 0;
+            uint32_t clr = 0;
+            uint32_t clr_imp = 0;
+        };
+#pragma pack(pop)
+
+        BitmapHeader header{
+                .size = 54 + CAMERA_WIDTH * CAMERA_HEIGHT * 4
+        };
+
+        BitmapInfo info{
+                .width = CAMERA_WIDTH,
+                .height = -(int32_t) CAMERA_HEIGHT,
+                .size_image = 0
+        };
+
+        std::stringstream strm;
+        strm << "./images/image_" << (FRAME_COUNT++) << ".bmp";
+        FILE* f = fopen(strm.str().c_str(), "wb");
+        fwrite(&header, sizeof header, 1, f);
+        fwrite(&info, sizeof info, 1, f);
+        fwrite(data.data(), 1, CAMERA_WIDTH * CAMERA_HEIGHT * 4, f);
+        fflush(f);
+        fclose(f);
     }
 
     void CameraStream::begin_capture() {
