@@ -131,7 +131,6 @@ $(() => {
             const size_array = new Uint16Array(frame_data);
             const w = size_array[0];
             const h = size_array[1];
-            console.log("W/H: ", w, h);
 
             const arr = new Uint8Array(frame_data);
             const slice = arr.slice(4, frame_data.byteLength);
@@ -148,7 +147,6 @@ $(() => {
     setup_bindings();
 
     event_manager.submitTask('camera_parameters').then((data) => {
-        console.log("Resize", data.width, 'x', data.height);
         event_manager.submitTask('camera_capture').then(() => {});
         on_resize(data.width, data.height);
         on_frame();
