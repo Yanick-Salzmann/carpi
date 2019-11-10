@@ -31,6 +31,6 @@ namespace carpi::ui {
             throw std::runtime_error{"Error getting display information"};
         }
 
-        log->info("Frame buffer info: {}x{}@{}", vinfo.xres, vinfo.yres, vinfo.vsync_len);
+        log->info("Frame buffer info: {}x{}@{}", vinfo.xres, vinfo.yres, vinfo.sync);
     }
 }
