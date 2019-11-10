@@ -52,8 +52,8 @@ public:
         pthread_mutex_lock(_video_shmem_mutex);
         memcpy(data, _camera_frame_buffer, CAMERA_WIDTH * CAMERA_HEIGHT * 4);
         pthread_mutex_unlock(_video_shmem_mutex);
-        retval = CefV8Value::CreateArrayBuffer(data, CAMERA_WIDTH * CAMERA_HEIGHT * 4, this);
         save_to_bmp(data);
+        retval = CefV8Value::CreateArrayBuffer(data, CAMERA_WIDTH * CAMERA_HEIGHT * 4, this);
         return true;
     }
 
@@ -93,11 +93,10 @@ public:
         BitmapInfo info{
                 .width = CAMERA_WIDTH,
                 .height = -(int32_t) CAMERA_HEIGHT,
-                .size_image = CAMERA_WIDTH * CAMERA_HEIGHT * 4
         };
 
         std::stringstream strm;
-        strm << "images/image_" << (FRAME_COUNT++) << ".bmp";
+        strm << "./images/image_" << (FRAME_COUNT++) << ".bmp";
         FILE* f = fopen(strm.str().c_str(), "wb");
         fwrite(&header, sizeof header, 1, f);
         fwrite(&info, sizeof info, 1, f);
