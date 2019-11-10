@@ -32,6 +32,7 @@ namespace carpi {
         CommServer server{};
 
         log->info("Press ENTER to shut down application");
+        std::string line{};
         std::cin.sync();
         std::getline(std::cin, line);
 
