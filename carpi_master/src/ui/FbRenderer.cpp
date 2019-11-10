@@ -83,14 +83,14 @@ namespace carpi::ui {
 
         uint32_t offsetx = 0, offsety = 0;
         log->info("{}", sizeof(RGB565));
-        std::vector<RGB565> fbuffer(vinfo.yres * finfo.line_length);
+        std::vector<RGB565> fbuffer(vinfo.yres * vinfo.xres);
 
         while(true) {
             //RGB565 fbuffer[480 * 320]{};
             for (auto i = 0; i < vinfo.xres; ++i) {
                 for (auto j = 0; j < vinfo.yres; ++j) {
-                    fbuffer[j * finfo.line_length + i].r = (uint16_t) ((((i + offsetx) % vinfo.xres) / (float) vinfo.xres) * 32.0f);
-                    fbuffer[j * finfo.line_length + i].b = (uint16_t) ((((j + offsety) % vinfo.yres) / (float) vinfo.yres) * 32.0f);
+                    fbuffer[j * vinfo.xres + i].r = (uint16_t) ((((i + offsetx) % vinfo.xres) / (float) vinfo.xres) * 32.0f);
+                    fbuffer[j * vinfo.xres + i].b = (uint16_t) ((((j + offsety) % vinfo.yres) / (float) vinfo.yres) * 32.0f);
                 }
             }
 
