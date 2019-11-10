@@ -18,6 +18,7 @@ namespace carpi::io::camera {
 
         static const uint32_t SHMEM_KEY_MUTEX = 0x42434455;
         static const uint32_t SHMEM_KEY_DATA = 0x42434456;
+        static const uint32_t SHMEM_SIZE = 1920 * 1080 * 4 + 4;
 
         pthread_mutex_t* _video_shmem_mutex = nullptr;
         int32_t _mutex_shm_id = 0;

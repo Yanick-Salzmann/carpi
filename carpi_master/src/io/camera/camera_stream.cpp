@@ -49,7 +49,11 @@ namespace carpi::io::camera {
     void CameraStream::handle_camera_frame(const std::vector<uint8_t> &data, std::size_t size) {
         {
             MutexLocker l{_video_shmem_mutex};
-            memcpy(_camera_frame_buffer, data.data(), CAMERA_WIDTH * CAMERA_HEIGHT * 4);
+            memcpy(((uint8_t*) _camera_frame_buffer) + 4, data.data(), CAMERA_WIDTH * CAMERA_HEIGHT * 4);
+            uint16_t w = CAMERA_WIDTH;
+            uint16_t h = CAMERA_HEIGHT;
+            memcpy(_camera_frame_buffer, &w, 2);
+            memcpy(((uint8_t*) _camera_frame_buffer) + 2, &h, 2);
         }
     }
 
