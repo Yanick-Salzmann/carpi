@@ -48,15 +48,16 @@ public:
     }
 
     bool Execute(const CefString &name, CefRefPtr<CefV8Value> object, const CefV8ValueList &arguments, CefRefPtr<CefV8Value> &retval, CefString &exception) override {
+        const auto data = new uint8_t[CAMERA_WIDTH * CAMERA_HEIGHT];
         pthread_mutex_lock(_video_shmem_mutex);
-        memcpy(_frame_data, _camera_frame_buffer, CAMERA_WIDTH * CAMERA_HEIGHT * 4);
+        memcpy(data, _camera_frame_buffer, CAMERA_WIDTH * CAMERA_HEIGHT * 4);
         pthread_mutex_unlock(_video_shmem_mutex);
-        retval = CefV8Value::CreateArrayBuffer(_frame_data, CAMERA_WIDTH * CAMERA_HEIGHT * 4, this);
+        retval = CefV8Value::CreateArrayBuffer(data, CAMERA_WIDTH * CAMERA_HEIGHT * 4, this);
         return true;
     }
 
     void ReleaseBuffer(void *buffer) override {
-
+        delete (uint8_t*) buffer;
     }
 };
 
