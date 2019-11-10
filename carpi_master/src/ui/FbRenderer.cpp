@@ -82,19 +82,22 @@ namespace carpi::ui {
         log->info("Mapped frame buffer to {}", fb_addr);
 
         uint32_t offsetx = 0, offsety = 0;
+        log->info("{}", sizeof(RGB565));
+        std::vector<RGB565> fbuffer(vinfo.yres * finfo.line_length);
+
         while(true) {
-            RGB565 fbuffer[480 * 320]{};
-            for (auto i = 0; i < 480; ++i) {
-                for (auto j = 0; j < 320; ++j) {
-                    fbuffer[j * 480 + i].r = (uint16_t) ((((i + offsetx) % 480) / 480.0f) * 32.0f);
-                    fbuffer[j * 480 + i].b = (uint16_t) ((((j + offsety) % 320) / 320.0f) * 32.0f);
+            //RGB565 fbuffer[480 * 320]{};
+            for (auto i = 0; i < vinfo.xres; ++i) {
+                for (auto j = 0; j < vinfo.yres; ++j) {
+                    fbuffer[j * finfo.line_length + i].r = (uint16_t) ((((i + offsetx) % vinfo.xres) / (float) vinfo.xres) * 32.0f);
+                    fbuffer[j * finfo.line_length + i].b = (uint16_t) ((((j + offsety) % vinfo.yres) / (float) vinfo.yres) * 32.0f);
                 }
             }
 
-            memcpy(fb_addr, fbuffer, sizeof fbuffer);
+            memcpy(fb_addr, fbuffer.data(), fbuffer.size() * sizeof(RGB565));
             msleep(16);
-            offsetx = (offsetx + 1) % 480;
-            offsety = (offsety + 1) % 320;
+            offsetx = (offsetx + 1) % vinfo.xres;
+            offsety = (offsety + 1) % vinfo.yres;
         }
     }
 }
