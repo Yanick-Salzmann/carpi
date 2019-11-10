@@ -76,7 +76,7 @@ namespace carpi::ui {
             throw std::runtime_error{"Error getting display information"};
         }
 
-        log->info("Frame buffer size: {}x{}, BPP: {}", vinfo.xres, vinfo.yres, vinfo.bits_per_pixel);
+        log->info("Frame buffer size: {}x{}, BPP: {}, Line Size: {}", vinfo.xres, vinfo.yres, vinfo.bits_per_pixel, finfo.line_length);
 
         void *fb_addr = mmap(nullptr, finfo.smem_len, PROT_READ | PROT_WRITE, MAP_SHARED, _device, 0);
         log->info("Mapped frame buffer to {}", fb_addr);
