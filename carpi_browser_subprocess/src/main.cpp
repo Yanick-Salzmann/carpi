@@ -7,8 +7,8 @@
 class CameraFrameCallback : public CefV8Handler, public CefV8ArrayBufferReleaseCallback {
     IMPLEMENT_REFCOUNTING(CameraFrameCallback);
 
-    static const uint32_t CAMERA_WIDTH = 480;
-    static const uint32_t CAMERA_HEIGHT = 368;
+    static const uint32_t CAMERA_WIDTH = 352;
+    static const uint32_t CAMERA_HEIGHT = 208;
 
     static const uint32_t SHMEM_KEY_MUTEX = 0x42434455;
     static const uint32_t SHMEM_KEY_DATA = 0x42434456;

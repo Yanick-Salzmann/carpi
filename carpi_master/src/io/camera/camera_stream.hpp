@@ -12,8 +12,8 @@ namespace carpi::io::camera {
     class CameraStream : public utils::Singleton<CameraStream> {
         LOGGER;
 
-        const uint32_t CAMERA_WIDTH = video::RawCameraStream::calculate_width(480);
-        const uint32_t CAMERA_HEIGHT = video::RawCameraStream::calculate_height(360);
+        const uint32_t CAMERA_WIDTH = video::RawCameraStream::calculate_width(352);
+        const uint32_t CAMERA_HEIGHT = video::RawCameraStream::calculate_height(208);
         static const uint32_t CAMERA_FPS = 60;
 
         static const uint32_t SHMEM_KEY_MUTEX = 0x42434455;
