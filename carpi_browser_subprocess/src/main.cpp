@@ -64,6 +64,7 @@ public:
     void save_to_bmp(void* data) {
         static std::size_t FRAME_COUNT = 0;
 
+#pragma pack(push, 1)
         struct BitmapHeader {
             uint16_t header = 0x4D42;
             uint32_t size;
@@ -85,6 +86,7 @@ public:
             uint32_t clr = 0;
             uint32_t clr_imp = 0;
         };
+#pragma pack(pop)
 
         BitmapHeader header{
                 .size = 54 + CAMERA_WIDTH * CAMERA_HEIGHT * 4
@@ -102,6 +104,7 @@ public:
         fwrite(&header, sizeof header, 1, f);
         fwrite(&info, sizeof info, 1, f);
         fwrite(data, 1, CAMERA_WIDTH * CAMERA_HEIGHT * 4, f);
+        fflush(f);
         fclose(f);
     }
 };
