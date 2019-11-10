@@ -60,14 +60,20 @@ namespace carpi::ui {
         void *fb_addr = mmap(nullptr, finfo.smem_len, PROT_READ | PROT_WRITE, MAP_SHARED, _device, 0);
         log->info("Mapped frame buffer to {}", fb_addr);
 
-        RGB565 fbuffer[480 * 320]{};
-        for (auto i = 0; i < 480; ++i) {
-            for (auto j = 0; j < 320; ++j) {
-                fbuffer[j * 480 + i].r = (uint16_t) ((i / 480.0f) * 32.0f);
-                fbuffer[j * 480 + i].b = (uint16_t) ((j / 320.0f) * 32.0f);
+        uint32_t offsetx = 0, offsety = 0;
+        while(true) {
+            RGB565 fbuffer[480 * 320]{};
+            for (auto i = 0; i < 480; ++i) {
+                for (auto j = 0; j < 320; ++j) {
+                    fbuffer[j * 480 + i].r = (uint16_t) ((((i + offsetx) % 480) / 480.0f) * 32.0f);
+                    fbuffer[j * 480 + i].b = (uint16_t) ((((j + offsety) % 320) / 320.0f) * 32.0f);
+                }
             }
-        }
 
-        memcpy(fb_addr, fbuffer, sizeof fbuffer);
+            memcpy(fb_addr, fbuffer, sizeof fbuffer);
+            usleep(16 * 1000);
+            offsetx = (offsetx + 1) % 480;
+            offsety = (offsety + 1) % 320;
+        }
     }
 }
