@@ -1,6 +1,4 @@
 #include "camera_stream.hpp"
-#include <libyuv.h>
-#include <libbase64.h>
 #include <sys/shm.h>
 #include <common_utils/error.hpp>
 #include <sstream>
@@ -27,7 +25,6 @@ namespace carpi::io::camera {
     };
 
     CameraStream::CameraStream() {
-        log->info("LibYUV version: {}", LIBYUV_VERSION);
         start_camera_streaming();
     }
 
@@ -52,7 +49,6 @@ namespace carpi::io::camera {
     void CameraStream::handle_camera_frame(const std::vector<uint8_t> &data, std::size_t size) {
         {
             MutexLocker l{_video_shmem_mutex};
-            //libyuv::I420ToARGB(y, stride_y, u, stride_u, v, stride_v, (uint8_t *) _camera_frame_buffer, CAMERA_WIDTH * 4, CAMERA_WIDTH, CAMERA_HEIGHT);
             memcpy(_camera_frame_buffer, data.data(), CAMERA_WIDTH * CAMERA_HEIGHT * 4);
         }
     }
