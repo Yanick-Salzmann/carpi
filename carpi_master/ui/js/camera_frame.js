@@ -129,9 +129,9 @@ $(() => {
         setInterval(() => {
             const frame_data = fetch_raw_frame();
             const arr = new Uint8Array(frame_data);
-            const slice = arr.slice(0, arr.length);
+            const slice = arr.slice(0, frame_data.byteLength);
             gl.bindTexture(gl.TEXTURE_2D, texture);
-            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 480, 368, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array(frame_data));
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 480, 368, 0, gl.RGBA, gl.UNSIGNED_BYTE, slice);
         }, 0);
     }
 
