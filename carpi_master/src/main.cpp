@@ -33,7 +33,6 @@ namespace carpi {
 
         log->info("Press ENTER to shut down application");
         std::cin.sync();
-        std::string line{};
         std::getline(std::cin, line);
 
         core.manual_shutdown();
