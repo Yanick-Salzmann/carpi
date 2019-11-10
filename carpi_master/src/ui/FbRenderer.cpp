@@ -86,6 +86,8 @@ namespace carpi::ui {
         std::vector<RGB565> fbuffer(vinfo.yres * vinfo.xres);
 
         while(true) {
+            auto start = std::chrono::high_resolution_clock::now();
+
             //RGB565 fbuffer[480 * 320]{};
             for (auto i = 0; i < vinfo.xres; ++i) {
                 for (auto j = 0; j < vinfo.yres; ++j) {
@@ -94,7 +96,12 @@ namespace carpi::ui {
                 }
             }
 
+            auto end = std::chrono::high_resolution_clock::now();
+            log->info("Calc: {}", std::chrono::duration_cast<std::chrono::microseconds>(end - start).count());
+            start = std::chrono::high_resolution_clock::now();
             memcpy(fb_addr, fbuffer.data(), fbuffer.size() * sizeof(RGB565));
+            end = std::chrono::high_resolution_clock::now();
+            log->info("Cpy: {}", std::chrono::duration_cast<std::chrono::microseconds>(end - start).count());
             //msleep(16);
             offsetx = (offsetx + 1) % vinfo.xres;
             offsety = (offsety + 1) % vinfo.yres;
