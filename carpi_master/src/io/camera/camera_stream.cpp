@@ -59,7 +59,8 @@ namespace carpi::io::camera {
 
         {
             MutexLocker l{_video_shmem_mutex};
-            libyuv::I420ToARGB(y, stride_y, u, stride_u, v, stride_v, (uint8_t *) _camera_frame_buffer, CAMERA_WIDTH * 4, CAMERA_WIDTH, CAMERA_HEIGHT);
+            //libyuv::I420ToARGB(y, stride_y, u, stride_u, v, stride_v, (uint8_t *) _camera_frame_buffer, CAMERA_WIDTH * 4, CAMERA_WIDTH, CAMERA_HEIGHT);
+            memcpy(_camera_frame_buffer, data.data(), CAMERA_WIDTH * CAMERA_HEIGHT * 4);
         }
     }
 
