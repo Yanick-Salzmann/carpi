@@ -48,7 +48,7 @@ public:
     }
 
     bool Execute(const CefString &name, CefRefPtr<CefV8Value> object, const CefV8ValueList &arguments, CefRefPtr<CefV8Value> &retval, CefString &exception) override {
-        const auto data = new uint8_t[CAMERA_WIDTH * CAMERA_HEIGHT];
+        const auto data = new uint8_t[CAMERA_WIDTH * CAMERA_HEIGHT * 4];
         pthread_mutex_lock(_video_shmem_mutex);
         memcpy(data, _camera_frame_buffer, CAMERA_WIDTH * CAMERA_HEIGHT * 4);
         pthread_mutex_unlock(_video_shmem_mutex);
