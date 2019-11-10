@@ -3,6 +3,7 @@
 #include <sys/fcntl.h>
 #include <sys/ioctl.h>
 #include <linux/fb.h>
+#include <sys/mman.h>
 
 #include <common_utils/error.hpp>
 
@@ -31,6 +32,9 @@ namespace carpi::ui {
             throw std::runtime_error{"Error getting display information"};
         }
 
-        log->info("Frame buffer info: {}x{}@{}", vinfo.xres, vinfo.yres, vinfo.sync);
+        log->info("Frame buffer size: {}x{}, BPP: {}", vinfo.xres, vinfo.yres, vinfo.bits_per_pixel);
+
+        void* fb_addr = mmap(nullptr, finfo.smem_len, PROT_READ | PROT_WRITE, MAP_SHARED, _device, 0);
+        log->info("Mapped frame buffer to {}", fb_addr);
     }
 }
