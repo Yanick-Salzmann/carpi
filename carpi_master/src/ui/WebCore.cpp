@@ -49,7 +49,7 @@ namespace carpi::ui {
         CefString(&settings.browser_subprocess_path) = subprocess_path.string();
         CefString(&settings.cache_path) = cache_path.string();
         settings.ignore_certificate_errors = 1;
-        settings.windowless_rendering_enabled = 0;
+        settings.windowless_rendering_enabled = 1;
         settings.log_severity = LOGSEVERITY_DEFAULT;
         settings.no_sandbox = 1;
         settings.remote_debugging_port = 52100;

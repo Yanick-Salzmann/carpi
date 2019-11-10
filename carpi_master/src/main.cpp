@@ -4,6 +4,7 @@
 #include <ui/WebCore.hpp>
 #include <data_server/http_server.hpp>
 #include <io/camera/camera_stream.hpp>
+#include <ui/FbRenderer.hpp>
 
 namespace carpi {
     int _argc;
@@ -13,6 +14,8 @@ namespace carpi {
         utils::Logger log{"main"};
         _argc = argc;
         _argv = argv;
+
+        ui::FbRenderer renderer{};
 
         sCameraStream->init_shared_memory();
 
