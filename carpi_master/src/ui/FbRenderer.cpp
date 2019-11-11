@@ -5,43 +5,14 @@
 #include <linux/fb.h>
 #include <linux/kd.h>
 #include <sys/mman.h>
+#include <xf86drm.h>
+#include <xf86drmMode.h>
+#include <drm/drm.h>
 
 #include <common_utils/error.hpp>
 
 namespace carpi::ui {
     LOGGER_IMPL(FbRenderer);
-
-#pragma pack(push, 1)
-    union RGB565 {
-        uint16_t value;
-        struct {
-            uint16_t r : 5;
-            uint16_t g : 6;
-            uint16_t b : 5;
-        };
-    };
-#pragma pack(pop)
-
-    int msleep(long msec)
-    {
-        struct timespec ts;
-        int res;
-
-        if (msec < 0)
-        {
-            errno = EINVAL;
-            return -1;
-        }
-
-        ts.tv_sec = msec / 1000;
-        ts.tv_nsec = (msec % 1000) * 1000000;
-
-        do {
-            res = nanosleep(&ts, &ts);
-        } while (res && errno == EINTR);
-
-        return res;
-    }
 
     FbRenderer::FbRenderer(const std::string &device) {
         const auto ttyfd = open("/dev/tty0", O_RDWR);
@@ -57,46 +28,27 @@ namespace carpi::ui {
 
         _device = open(device.c_str(), O_RDWR);
         if (_device < 0) {
-            log->error("Error opening frame buffer device '{}': {} (errno={})", device, utils::error_to_string(errno), errno);
-            throw std::runtime_error{"Error opening frame buffer"};
+            log->error("Error opening DRM device '{}': {} (errno={})", device, utils::error_to_string(errno), errno);
+            throw std::runtime_error{"Error opening DRM device"};
         }
 
         log->info("Opened frame buffer device: {}", device);
 
-        fb_var_screeninfo vinfo{};
-        fb_fix_screeninfo finfo{};
-
-        if (ioctl(_device, FBIOGET_FSCREENINFO, &finfo)) {
-            log->error("Error getting fixed display information: {} (errno={})", utils::error_to_string(errno), errno);
-            throw std::runtime_error{"Error getting display information"};
+        int flags = fcntl(_device, F_GETFD);
+        if(flags < 0) {
+            log->error("Error getting flags of DRM device: {} (errno={})", utils::error_to_string(errno), errno);
+            throw std::runtime_error{"Error opening DRM device"};
         }
 
-        if (ioctl(_device, FBIOGET_VSCREENINFO, &vinfo)) {
-            log->error("Error getting variable display information: {} (errno={})", utils::error_to_string(errno), errno);
-            throw std::runtime_error{"Error getting display information"};
+        if(fcntl(_device, F_SETFD, flags | FD_CLOEXEC) < 0) {
+            log->error("Error setting FD_CLOEXEC flag on DRM device: {} (errno={})", utils::error_to_string(errno), errno);
+            throw std::runtime_error{"Error opening DRM device"};
         }
 
-        log->info("Frame buffer size: {}x{}, BPP: {}, Line Size: {}", vinfo.xres, vinfo.yres, vinfo.bits_per_pixel, finfo.line_length);
-
-        RGB565 *fb_addr = (RGB565*) mmap(nullptr, finfo.smem_len, PROT_READ | PROT_WRITE, MAP_SHARED, _device, 0);
-        log->info("Mapped frame buffer to {}", (void*) fb_addr);
-
-        uint32_t offsetx = 0, offsety = 0;
-        log->info("{}", sizeof(RGB565));
-        std::vector<RGB565> fbuffer(vinfo.yres * vinfo.xres);
-
-        while(true) {
-            for (auto i = 0; i < vinfo.xres; ++i) {
-                for (auto j = 0; j < vinfo.yres; ++j) {
-                    fbuffer[j * vinfo.xres + i].r = (uint16_t) ((((i + offsetx) % 32) / (float) 32) * 32.0f);
-                    fbuffer[j * vinfo.xres + i].b = (uint16_t) ((((j + offsety) % 32) / (float) 32) * 32.0f);
-                }
-            }
-
-            memcpy(fb_addr, fbuffer.data(), fbuffer.size() * sizeof(RGB565));
-            msleep(16);
-            offsetx = (offsetx + 1) % 32;
-            offsety = (offsety + 1) % 32;
+        uint64_t has_dumb_buffer = 0;
+        if(drmGetCap(_device, DRM_CAP_DUMB_BUFFER, &has_dumb_buffer) < 0 || has_dumb_buffer == 0) {
+            log->error("Error querying DRM_CAP_DUMB_BUFFER flag or dumb buffer not supported: {} (errno={})", utils::error_to_string(errno), errno);
+            throw std::runtime_error{"Error opening DRM device"};
         }
     }
 }
