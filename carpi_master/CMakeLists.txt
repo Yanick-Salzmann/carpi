@@ -24,6 +24,7 @@ target_include_directories(carpi_master PUBLIC
         ${FFMPEG_INCLUDE_DIRS}
         /usr/local/include/cef
         /usr/include/drm
+        /usr/include/libdrm
 )
 
 target_link_libraries(carpi_master
