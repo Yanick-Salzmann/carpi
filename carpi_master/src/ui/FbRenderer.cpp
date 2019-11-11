@@ -50,6 +50,8 @@ namespace carpi::ui {
             throw std::runtime_error{"Error opening DRM device"};
         }
 
+        log->info("Trying to find DRM modes");
+
         auto mode_res = drmModeGetResources(_device);
         if(mode_res == nullptr) {
             log->error("Error fetching drm mode resources: {} (errno={})", utils::error_to_string(errno), errno);
