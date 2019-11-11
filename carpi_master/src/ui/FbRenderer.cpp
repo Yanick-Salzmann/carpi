@@ -58,8 +58,6 @@ namespace carpi::ui {
             throw std::runtime_error{"Error setting up DRM device"};
         }
 
-        std::shared_ptr<drmModeRes> mode_ptr{mode_res, [](drmModeRes* mres) { drmModeFreeResources(mres); }};
-
         log->info("Found {} connectors on {} - from {}x{} to {}x{}", mode_res->count_connectors, mode_res->min_width, mode_res->min_height, mode_res->max_width, mode_res->max_height);
 
         for(auto i = 0u; i < mode_res->count_connectors; ++i) {
