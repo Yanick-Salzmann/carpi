@@ -13,7 +13,7 @@ namespace carpi::bluetooth {
         const auto route = hci_get_route(&address);
         const auto remote_socket = hci_open_dev(route);
 
-        if(hci_read_remote_name(remote_socket, &address, sizeof device_name, device_name, 0)) {
+        if(hci_read_remote_name(remote_socket, &address, sizeof device_name, device_name, 0) == 0) {
             device_name[247] = '\0';
             _device_name.assign(device_name);
         } else {
