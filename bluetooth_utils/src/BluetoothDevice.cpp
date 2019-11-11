@@ -10,7 +10,10 @@ namespace carpi::bluetooth {
     BluetoothDevice::BluetoothDevice(int32_t socket, bdaddr_t address) : _socket(socket), _device_address(address) {
         char device_name[248]{};
 
-        if(hci_read_remote_name(socket, &address, sizeof device_name, device_name, 0)) {
+        const auto route = hci_get_route(&address);
+        const auto remote_socket = hci_open_dev(route);
+
+        if(hci_read_remote_name(remote_socket, &address, sizeof device_name, device_name, 0)) {
             device_name[247] = '\0';
             _device_name.assign(device_name);
         } else {
@@ -21,6 +24,8 @@ namespace carpi::bluetooth {
         ba2str(&address, device_address);
         device_address[17] = '\0';
         _address_string.assign(device_address);
+
+        hci_close_dev(remote_socket);
     }
 
     bool BluetoothDevice::operator<(const BluetoothDevice &other) const {
