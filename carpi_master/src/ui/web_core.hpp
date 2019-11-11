@@ -1,7 +1,7 @@
 #ifndef CARPI_CARPI_WEBCORE_HPP
 #define CARPI_CARPI_WEBCORE_HPP
 
-#include "WebApplication.hpp"
+#include "web_application.hpp"
 
 #include <common_utils/log.hpp>
 #include <X11/Xlib.h>

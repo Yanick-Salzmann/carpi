@@ -1,4 +1,4 @@
-#include "GraphicsDevice.hpp"
+#include "graphics_device.hpp"
 
 #include <cstring>
 #include <bcm_host.h>

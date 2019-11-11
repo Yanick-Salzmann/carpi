@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION ${CMAKE_VERSION})
 project(carpi_master)
 
-add_executable(carpi_master src/main.cpp src/comm/CommServer.hpp src/comm/CommServer.cpp
-        src/gl/Buffers.cpp src/gl/Buffers.hpp src/gl/GraphicsDevice.hpp src/gl/GraphicsDevice.cpp src/gl/Program.hpp src/gl/VertexElement.cpp src/gl/VertexElement.hpp
-        src/ui/WebCore.hpp src/ui/WebCore.cpp src/ui/WebApplication.hpp src/ui/WebApplication.cpp src/main.hpp src/ui/WebClient.hpp src/ui/WebClient.cpp src/io/LocalSchemeHandler.hpp src/io/LocalSchemeHandler.cpp src/comm/IpcServer.hpp src/comm/IpcServer.cpp src/comm/IpcClientManager.hpp src/comm/IpcClientManager.cpp src/comm/IpcConnection.hpp src/comm/IpcConnection.cpp src/io/camera/camera_stream.hpp src/io/camera/camera_stream.cpp)
+add_executable(carpi_master src/main.cpp src/comm/comm_server.hpp src/comm/comm_server.cpp
+        src/gl/Buffers.cpp src/gl/Buffers.hpp src/gl/graphics_device.hpp src/gl/graphics_device.cpp src/gl/Program.hpp src/gl/vertex_element.cpp src/gl/vertex_element.hpp
+        src/ui/web_core.hpp src/ui/web_core.cpp src/ui/web_application.hpp src/ui/web_application.cpp src/main.hpp src/ui/web_client.hpp src/ui/web_client.cpp src/io/local_scheme_handler.hpp src/io/local_scheme_handler.cpp src/comm/ipc_server.hpp src/comm/ipc_server.cpp src/comm/ipc_client_manager.hpp src/comm/ipc_client_manager.cpp src/comm/ipc_connection.hpp src/comm/ipc_connection.cpp src/io/camera/camera_stream.hpp src/io/camera/camera_stream.cpp src/ui/event_manager.hpp src/ui/event_manager.cpp)
 
 add_dependencies(carpi_master bluetooth_utils video_stream obd carpi_browser_subprocess ipc_common wiring_utils data_server json)
 

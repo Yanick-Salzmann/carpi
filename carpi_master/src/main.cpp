@@ -1,7 +1,7 @@
 #include <iostream>
 #include <video_stream/H264Conversion.hpp>
-#include "comm/CommServer.hpp"
-#include <ui/WebCore.hpp>
+#include "comm/comm_server.hpp"
+#include <ui/web_core.hpp>
 #include <data_server/http_server.hpp>
 #include <io/camera/camera_stream.hpp>
 #include <bluetooth_utils/BluetoothManager.hpp>

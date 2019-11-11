@@ -1,7 +1,7 @@
-#include "IpcClientManager.hpp"
+#include "ipc_client_manager.hpp"
 #include "ipc_common/IpcPackage.hpp"
 #include "ipc_common/IpcType.hpp"
-#include "IpcConnection.hpp"
+#include "ipc_connection.hpp"
 
 namespace carpi::comm {
     LOGGER_IMPL(IpcClientManager);

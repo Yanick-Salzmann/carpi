@@ -1,5 +1,6 @@
 #include <io/camera/camera_stream.hpp>
-#include "WebClient.hpp"
+#include "web_client.hpp"
+#include "event_manager.hpp"
 #include <nlohmann/json.hpp>
 
 namespace carpi::ui {
@@ -7,7 +8,9 @@ namespace carpi::ui {
 
     bool WebClient::OnQuery(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, int64 query_id, const CefString &request, bool persistent, CefRefPtr<CefMessageRouterBrowserSide::Callback> callback) {
         if (request == "EventHandlerInit") {
-            // TODO: Register handler
+            sUiEventMgr->apply_event_callback([callback](const std::string& payload) {
+               callback->Success(payload);
+            });
             return true;
         }
 

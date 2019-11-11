@@ -1,14 +1,14 @@
-#include "WebCore.hpp"
+#include "web_core.hpp"
 
 #include "main.hpp"
-#include "WebClient.hpp"
+#include "web_client.hpp"
 
 #include <include/cef_version.h>
 #include <include/base/cef_bind.h>
 #include <include/wrapper/cef_closure_task.h>
 
 #include <filesystem>
-#include <io/LocalSchemeHandler.hpp>
+#include <io/local_scheme_handler.hpp>
 
 namespace carpi::ui {
     LOGGER_IMPL(WebCore);
