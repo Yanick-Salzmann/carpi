@@ -44,7 +44,7 @@ namespace carpi::io::camera {
             uint32_t width;
             uint32_t height;
 
-            nlohmann::json to_json() {
+            [[nodiscard]] nlohmann::json to_json() const {
                 return nlohmann::json{
                         {"width",  width},
                         {"height", height}
@@ -55,7 +55,7 @@ namespace carpi::io::camera {
         struct CamCaptureResponse {
             bool success;
 
-            nlohmann::json to_json() {
+            [[nodiscard]] nlohmann::json to_json() const {
                 return nlohmann::json{
                     {"success", success}
                 };
