@@ -4,6 +4,7 @@
 #include <ui/WebCore.hpp>
 #include <data_server/http_server.hpp>
 #include <io/camera/camera_stream.hpp>
+#include <bluetooth_utils/BluetoothManager.hpp>
 
 namespace carpi {
     int _argc;
@@ -14,6 +15,12 @@ namespace carpi {
         utils::Logger log{"main"};
         _argc = argc;
         _argv = argv;
+
+        bluetooth::BluetoothManager mgr{};
+        const auto devices = mgr.scan_devices(4);
+        for(const auto& dev : devices) {
+            log->info("Device: {} / {}", dev.address_string(), dev.device_name());
+        }
 
         sCameraStream->init_shared_memory();
 
