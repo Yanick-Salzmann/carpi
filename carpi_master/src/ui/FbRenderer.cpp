@@ -94,7 +94,7 @@ namespace carpi::ui {
             }
 
             memcpy(fb_addr, fbuffer.data(), fbuffer.size() * sizeof(RGB565));
-            //msleep(16);
+            msleep(16);
             offsetx = (offsetx + 1) % 32;
             offsety = (offsety + 1) % 32;
         }
