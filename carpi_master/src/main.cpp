@@ -16,11 +16,6 @@ namespace carpi {
         _argc = argc;
         _argv = argv;
 
-        ui::FbRenderer renderer{};
-
-        std::cin.sync();
-        std::getline(std::cin, line);
-
         sCameraStream->init_shared_memory();
 
         video::H264Conversion::initialize_ffmpeg();

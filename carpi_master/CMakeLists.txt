@@ -23,8 +23,6 @@ target_include_directories(carpi_master PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src
         ${FFMPEG_INCLUDE_DIRS}
         /usr/local/include/cef
-        /usr/include/drm
-        /usr/include/libdrm
 )
 
 target_link_libraries(carpi_master
@@ -45,5 +43,4 @@ target_link_libraries(carpi_master
         /usr/local/lib/libcef_dll_wrapper.a
         /usr/local/bin/libcef.so
         X11
-        drm
         )
