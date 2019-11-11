@@ -44,4 +44,6 @@ target_link_libraries(carpi_master
         stdc++fs
         /usr/local/lib/libcef_dll_wrapper.a
         /usr/local/bin/libcef.so
-        X11)
+        X11
+        drm
+        )
