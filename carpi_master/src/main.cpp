@@ -4,7 +4,6 @@
 #include <ui/WebCore.hpp>
 #include <data_server/http_server.hpp>
 #include <io/camera/camera_stream.hpp>
-#include <ui/FbRenderer.hpp>
 
 namespace carpi {
     int _argc;

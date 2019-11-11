@@ -3,7 +3,7 @@ project(carpi_master)
 
 add_executable(carpi_master src/main.cpp src/comm/CommServer.hpp src/comm/CommServer.cpp
         src/gl/Buffers.cpp src/gl/Buffers.hpp src/gl/GraphicsDevice.hpp src/gl/GraphicsDevice.cpp src/gl/Program.hpp src/gl/VertexElement.cpp src/gl/VertexElement.hpp
-        src/ui/WebCore.hpp src/ui/WebCore.cpp src/ui/WebApplication.hpp src/ui/WebApplication.cpp src/main.hpp src/ui/WebClient.hpp src/ui/WebClient.cpp src/io/LocalSchemeHandler.hpp src/io/LocalSchemeHandler.cpp src/comm/IpcServer.hpp src/comm/IpcServer.cpp src/comm/IpcClientManager.hpp src/comm/IpcClientManager.cpp src/comm/IpcConnection.hpp src/comm/IpcConnection.cpp src/io/camera/camera_stream.hpp src/io/camera/camera_stream.cpp src/ui/FbRenderer.hpp src/ui/FbRenderer.cpp)
+        src/ui/WebCore.hpp src/ui/WebCore.cpp src/ui/WebApplication.hpp src/ui/WebApplication.cpp src/main.hpp src/ui/WebClient.hpp src/ui/WebClient.cpp src/io/LocalSchemeHandler.hpp src/io/LocalSchemeHandler.cpp src/comm/IpcServer.hpp src/comm/IpcServer.cpp src/comm/IpcClientManager.hpp src/comm/IpcClientManager.cpp src/comm/IpcConnection.hpp src/comm/IpcConnection.cpp src/io/camera/camera_stream.hpp src/io/camera/camera_stream.cpp)
 
 add_dependencies(carpi_master bluetooth_utils video_stream obd carpi_browser_subprocess ipc_common wiring_utils data_server json)
 
