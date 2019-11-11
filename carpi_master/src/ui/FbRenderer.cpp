@@ -88,10 +88,12 @@ namespace carpi::ui {
         while(true) {
             for (auto i = 0; i < vinfo.xres; ++i) {
                 for (auto j = 0; j < vinfo.yres; ++j) {
-                    fb_addr[j * vinfo.xres + i].r = (uint16_t) ((((i + offsetx) % 32) / (float) 32) * 32.0f);
-                    fb_addr[j * vinfo.xres + i].b = (uint16_t) ((((j + offsety) % 32) / (float) 32) * 32.0f);
+                    fbuffer[j * vinfo.xres + i].r = (uint16_t) ((((i + offsetx) % 32) / (float) 32) * 32.0f);
+                    fbuffer[j * vinfo.xres + i].b = (uint16_t) ((((j + offsety) % 32) / (float) 32) * 32.0f);
                 }
             }
+
+            memcpy(fb_addr, fbuffer.data(), fbuffer.size() * sizeof(RGB565));
             //msleep(16);
             offsetx = (offsetx + 1) % 32;
             offsety = (offsety + 1) % 32;

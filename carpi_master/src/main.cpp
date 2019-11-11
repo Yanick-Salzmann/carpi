@@ -15,11 +15,11 @@ namespace carpi {
         _argc = argc;
         _argv = argv;
 
-        //ui::FbRenderer renderer{};
+        ui::FbRenderer renderer{};
 
-        //std::cin.sync();
-        //std::string line{};
-        //std::getline(std::cin, line);
+        std::cin.sync();
+        std::string line{};
+        std::getline(std::cin, line);
 
         sCameraStream->init_shared_memory();
 
@@ -32,7 +32,6 @@ namespace carpi {
         CommServer server{};
 
         log->info("Press ENTER to shut down application");
-        std::string line{};
         std::cin.sync();
         std::getline(std::cin, line);
 
