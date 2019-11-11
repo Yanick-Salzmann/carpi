@@ -7,7 +7,6 @@
 #include <sys/mman.h>
 #include <xf86drm.h>
 #include <xf86drmMode.h>
-#include <drm/drm.h>
 
 #include <common_utils/error.hpp>
 

@@ -23,6 +23,7 @@ target_include_directories(carpi_master PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src
         ${FFMPEG_INCLUDE_DIRS}
         /usr/local/include/cef
+        /usr/include/drm
 )
 
 target_link_libraries(carpi_master
