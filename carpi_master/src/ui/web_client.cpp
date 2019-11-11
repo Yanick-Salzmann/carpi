@@ -18,32 +18,15 @@ namespace carpi::ui {
 
         json req_obj = json::parse(request.ToString());
         const std::string type = req_obj["type"];
+        const std::string payload = req_obj["request"];
 
-        if (type == "camera_parameters") {
-            uint32_t width, height, fps;
-            sCameraStream->camera_parameters(width, height, fps);
-            json val{
-                    {"type", type},
-                    {"body", {
-                                     {"width", width},
-                                     {"height", height}
-                             }
-                    }
-            };
-
-            callback->Success(val.dump());
-            return true;
-        }  else if(type == "camera_capture") {
-            sCameraStream->begin_capture();
-            json val{
-                    {"type", type},
-                    {"body", {{"success", true}}}
-            };
-
-            callback->Success(val.dump());
-            return true;
+        const auto response = sUiEventMgr->handle_event(type, payload);
+        if(response.empty()) {
+            callback->Success(json{{"type", type}, {"body", {}}}.dump());
+        } else {
+            callback->Success(json{{"type", type}, {"body", response}}.dump());
         }
 
-        return false;
+        return true;
     }
 }

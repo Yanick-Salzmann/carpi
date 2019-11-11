@@ -16,12 +16,6 @@ namespace carpi {
         _argc = argc;
         _argv = argv;
 
-        bluetooth::BluetoothManager mgr{};
-        const auto devices = mgr.scan_devices(4);
-        for(const auto& dev : devices) {
-            log->info("Device: {} / {}", dev.address_string(), dev.device_name());
-        }
-
         sCameraStream->init_shared_memory();
 
         video::H264Conversion::initialize_ffmpeg();
