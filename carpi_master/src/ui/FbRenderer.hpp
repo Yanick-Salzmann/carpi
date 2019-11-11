@@ -12,7 +12,7 @@ namespace carpi::ui {
         int32_t _device = -1;
 
     public:
-        explicit FbRenderer(const std::string& device = "/dev/dri/card0");
+        explicit FbRenderer(const std::string& device = "/dev/dri/card1");
     };
 }
 
