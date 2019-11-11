@@ -54,6 +54,12 @@ namespace carpi::io::camera {
 
         struct CamCaptureResponse {
             bool success;
+
+            nlohmann::json to_json() {
+                return nlohmann::json{
+                    {"success", success}
+                };
+            }
         };
 
         sUiEventMgr->register_event_handler<ui::NoOp, CamParamsResponse>("camera_parameters", [this](const auto &) {
