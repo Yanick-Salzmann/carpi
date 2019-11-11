@@ -26,6 +26,10 @@ footer .footer-menu-item {
     padding-right: 15px;
 }
 
+footer .footer-menu-item:active {
+    background-color: #888;
+}
+
 footer .footer-menu-item:not(:first-child) {
     margin-left: 5px;
 }
