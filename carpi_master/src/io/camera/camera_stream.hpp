@@ -54,6 +54,8 @@ namespace carpi::io::camera {
         void begin_capture();
 
         void init_shared_memory();
+
+        void init_events();
     };
 }
 

@@ -19,6 +19,8 @@ namespace carpi::ui {
 
         void cef_run_callback();
 
+        void post_initialize();
+
     public:
         WebCore();
 

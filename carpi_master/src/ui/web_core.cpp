@@ -9,6 +9,7 @@
 
 #include <filesystem>
 #include <io/local_scheme_handler.hpp>
+#include <io/camera/camera_stream.hpp>
 
 namespace carpi::ui {
     LOGGER_IMPL(WebCore);
@@ -65,7 +66,7 @@ namespace carpi::ui {
         log->info("CEF version:               {}.{}.{}", CEF_VERSION_MAJOR, CEF_VERSION_MINOR, CEF_COMMIT_NUMBER);
         log->info("Chromium version:          {}.{}.{}", CHROME_VERSION_MAJOR, CHROME_VERSION_MINOR, CHROME_VERSION_BUILD);
 
-        CefRegisterSchemeHandlerFactory("carpi", "", CefRefPtr<CefSchemeHandlerFactory>{new io::LocalSchemeHandler::Factory{}});
+        post_initialize();
 
         CefWindowInfo window_info{};
         CefBrowserSettings browser_settings{};
@@ -96,5 +97,10 @@ namespace carpi::ui {
         if (_cef_runner_thread.joinable()) {
             _cef_runner_thread.join();
         }
+    }
+
+    void WebCore::post_initialize() {
+        CefRegisterSchemeHandlerFactory("carpi", "", CefRefPtr<CefSchemeHandlerFactory>{new io::LocalSchemeHandler::Factory{}});
+        sCameraStream->init_events();
     }
 }

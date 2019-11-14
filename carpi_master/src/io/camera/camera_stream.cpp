@@ -39,42 +39,6 @@ namespace carpi::io::camera {
 
         shmctl(_mutex_shm_id, IPC_RMID, nullptr);
         shmctl(_camera_shm_id, IPC_RMID, nullptr);
-
-        struct CamParamsResponse {
-            uint32_t width;
-            uint32_t height;
-
-            [[nodiscard]] nlohmann::json to_json() const {
-                return nlohmann::json{
-                        {"width",  width},
-                        {"height", height}
-                };
-            }
-        };
-
-        struct CamCaptureResponse {
-            bool success;
-
-            [[nodiscard]] nlohmann::json to_json() const {
-                return nlohmann::json{
-                    {"success", success}
-                };
-            }
-        };
-
-        sUiEventMgr->register_event_handler<ui::NoOp, CamParamsResponse>("camera_parameters", [this](const auto &) {
-            uint32_t fps;
-            CamParamsResponse response{};
-            camera_parameters(response.width, response.height, fps);
-            return response;
-        });
-
-        sUiEventMgr->register_event_handler<ui::NoOp, CamCaptureResponse>("camera_capture", [this](const auto &) {
-            this->begin_capture();
-            return CamCaptureResponse{
-                    .success =true
-            };
-        });
     }
 
     void CameraStream::start_camera_streaming() {
@@ -127,5 +91,43 @@ namespace carpi::io::camera {
 
         _camera_shm_id = shmget(SHMEM_KEY_DATA, SHMEM_SIZE, IPC_CREAT | 0777);
         _camera_frame_buffer = shmat(_camera_shm_id, nullptr, 0);
+    }
+
+    void CameraStream::init_events() {
+        struct CamParamsResponse {
+            uint32_t width;
+            uint32_t height;
+
+            [[nodiscard]] nlohmann::json to_json() const {
+                return nlohmann::json{
+                        {"width",  width},
+                        {"height", height}
+                };
+            }
+        };
+
+        struct CamCaptureResponse {
+            bool success;
+
+            [[nodiscard]] nlohmann::json to_json() const {
+                return nlohmann::json{
+                        {"success", success}
+                };
+            }
+        };
+
+        sUiEventMgr->register_event_handler<ui::NoOp, CamParamsResponse>("camera_parameters", [this](const auto &) {
+            uint32_t fps;
+            CamParamsResponse response{};
+            camera_parameters(response.width, response.height, fps);
+            return response;
+        });
+
+        sUiEventMgr->register_event_handler<ui::NoOp, CamCaptureResponse>("camera_capture", [this](const auto &) {
+            this->begin_capture();
+            return CamCaptureResponse{
+                    .success =true
+            };
+        });
     }
 }
