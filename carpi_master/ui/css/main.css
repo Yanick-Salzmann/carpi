@@ -90,3 +90,7 @@ section.splash-section .splash-icon {
 section.splash-section .splash-wrapper .card .card-body {
     text-align: center;
 }
+
+section.splash-section .splash-text {
+    font-size: 30px;
+}
