@@ -83,5 +83,9 @@ section.splash-section {
 }
 
 section.splash-section .splash-icon {
-    font-size: 50px;
+    font-size: 150px;
+}
+
+section.splash-section .splash-wrapper .card .card-body {
+    text-align: center;
 }
