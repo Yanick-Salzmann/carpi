@@ -27,6 +27,7 @@ $(() => {
         event_manager.submitTask('bluetooth_search').then((resp) => {
             const deck = $('#bluetooth-device-deck');
             deck.empty();
+
             if(!resp) {
                 progress.css({
                     display: 'none'
@@ -76,11 +77,11 @@ $(() => {
     }
 
     function show_settings_sections() {
+        scan_devices();
+
         $('body > section.settings-section').css({
             display: 'block'
         });
-
-        scan_devices();
     }
 
     function show_splash_sections() {
