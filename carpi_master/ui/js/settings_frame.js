@@ -19,7 +19,7 @@ $(() => {
             display: 'none'
         });
 
-        const progress = $('section.settings-section span.bluetooth-loader');
+        const progress = $('section.settings-section #obd-bluetooth-settings > h4 > span.bluetooth-loader');
         progress.css({
             display: 'inline'
         });
