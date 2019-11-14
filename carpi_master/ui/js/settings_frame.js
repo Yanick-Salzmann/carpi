@@ -28,6 +28,14 @@ $(() => {
             const deck = $('#bluetooth-device-deck');
             deck.empty();
             if(!resp) {
+                progress.css({
+                    display: 'none'
+                });
+
+                reload_button.css({
+                    display: 'initial'
+                });
+
                 return;
             }
 
