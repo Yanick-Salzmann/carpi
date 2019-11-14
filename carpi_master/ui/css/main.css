@@ -31,6 +31,7 @@ footer .footer-menu-item {
     padding-left: 15px;
     padding-right: 15px;
     user-select: none;
+    font-size: 30px;
 }
 
 footer .footer-menu-item:active {
