@@ -20,9 +20,12 @@ namespace carpi::ui {
         const std::string type = req_obj["type"];
         const std::string payload = (req_obj.find("request") != req_obj.end()) ? std::string{req_obj["request"]} : "{}";
 
+        log->info("Processing event of type {} (payload: {})", type, payload);
+
         std::thread{[=]() {
             try {
                 const auto response = sUiEventMgr->handle_event(type, payload);
+                log->info("Event complete");
                 if (response.empty()) {
                     callback->Success(json{{"type", type},
                                            {"body", {}}}.dump());
