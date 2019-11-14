@@ -24,15 +24,21 @@ $(() => {
 
             resp.forEach(dev => {
                 const card = $('<div class="card"></div>');
-                const header = $('<div class="card-header"></div>');
-                header.text(dev.name);
+                const header = $('<div class="card-header"><span class="device-text"></span><span class="bluetooth-loader float-right"><i class="fas fa-spinner"></i></span></div>');
+                header.find('.device-text').text(dev.name);
                 const body = $('<div class="card-body"><p class="card-text"></p></div>');
                 body.find('p').text(dev.address);
                 card.append(header);
                 card.append(body);
                 const new_card = card.appendTo(deck);
                 new_card.click(() => {
-                    console.log("Connecting to", dev);
+                    deck.select('div.card .card-header .bluetooth-loader').css({
+                        display: 'none'
+                    });
+
+                    new_card.select('.card-header .bluetooth-loader').css({
+                        display: 'inline'
+                    })
                 })
             });
 
