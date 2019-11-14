@@ -73,4 +73,6 @@ section.settings-section span.bluetooth-refresh {
 
 section.splash-section {
     height: calc(100% - 40px);
+    display: flex;
+    align-items: center;
 }
