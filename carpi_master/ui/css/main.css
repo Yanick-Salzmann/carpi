@@ -70,3 +70,7 @@ section.settings-section span.bluetooth-loader {
 section.settings-section span.bluetooth-refresh {
 
 }
+
+section.splash-section {
+    height: calc(100% - 40px);
+}
