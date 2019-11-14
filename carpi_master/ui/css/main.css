@@ -99,3 +99,7 @@ section.splash-section .splash-wrapper .card .card-body {
 section.splash-section .splash-text {
     font-size: 30px;
 }
+
+.connected-device {
+    color: lightgreen;
+}

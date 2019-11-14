@@ -43,7 +43,13 @@ $(() => {
 
             resp.forEach(dev => {
                 const card = $('<div class="card"></div>');
-                const header = $('<div class="card-header"><span class="device-text"></span><span class="bluetooth-loader float-right"><i class="fas fa-spinner"></i></span><span class="connected-device"><i class="fa fa-check"></i></span></div>');
+                const header = $('' +
+                    '<div class="card-header">' +
+                    '   <span class="device-text"></span>' +
+                    '   <span class="bluetooth-loader float-right"><i class="fas fa-spinner"></i></span>' +
+                    '   <span class="connected-device float-right"><i class="fa fa-check"></i></span>' +
+                    '</div>'
+                );
                 header.find('.device-text').text(dev.name);
                 const body = $('<div class="card-body"><p class="card-text"></p></div>');
                 body.find('p').text(dev.address);
