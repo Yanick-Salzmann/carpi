@@ -27,6 +27,9 @@ $(() => {
         event_manager.submitTask('bluetooth_search').then((resp) => {
             const deck = $('#bluetooth-device-deck');
             deck.empty();
+            if(!resp) {
+                return;
+            }
 
             resp.forEach(dev => {
                 const card = $('<div class="card"></div>');
