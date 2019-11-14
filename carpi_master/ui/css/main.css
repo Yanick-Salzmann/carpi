@@ -16,7 +16,7 @@ footer {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 40px;
+    height: 60px;
     border-top: 1px solid white;
     box-sizing: border-box;
 
@@ -27,7 +27,7 @@ footer {
 }
 
 footer .footer-menu-item {
-    line-height: 40px;
+    line-height: 60px;
     padding-left: 15px;
     padding-right: 15px;
     user-select: none;
@@ -44,7 +44,7 @@ footer .footer-menu-item:not(:first-child) {
 section.settings-section {
     display: none;
     width: 100%;
-    height: calc(100% - 40px);
+    height: calc(100% - 60px);
 }
 
 section.settings-section h1 {
@@ -76,7 +76,7 @@ section.splash-section .splash-wrapper {
 }
 
 section.splash-section {
-    height: calc(100% - 40px);
+    height: calc(100% - 60px);
     display: flex;
     align-items: center;
     padding: 30px;
