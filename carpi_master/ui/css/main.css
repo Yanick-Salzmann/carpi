@@ -53,6 +53,10 @@ section.settings-section h1 {
     padding-top: 5px;
 }
 
+section.settings-section h1 span {
+    margin-right: 15px;
+}
+
 @keyframes rotating {
     from {
         transform: rotate(0deg);
