@@ -15,6 +15,9 @@ $(() => {
     const reload_button = $('section.settings-section span.bluetooth-refresh');
 
     function scan_devices() {
+        const deck = $('#bluetooth-device-deck');
+        deck.empty();
+
         reload_button.css({
             display: 'none'
         });
@@ -25,8 +28,6 @@ $(() => {
         });
 
         event_manager.submitTask('bluetooth_search').then((resp) => {
-            const deck = $('#bluetooth-device-deck');
-            deck.empty();
 
             if(!resp) {
                 progress.css({
