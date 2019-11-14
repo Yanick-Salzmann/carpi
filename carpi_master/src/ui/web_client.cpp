@@ -19,7 +19,7 @@ namespace carpi::ui {
         log->info("Request: {}", request.ToString());
         json req_obj = json::parse(request.ToString());
         const std::string type = req_obj["type"];
-        const std::string payload = req_obj.find("request") != req_obj.end() ? req_obj["request"] : "";
+        const std::string payload = req_obj.find("request") != req_obj.end() ? req_obj["request"] : "{}";
 
         const auto response = sUiEventMgr->handle_event(type, payload);
         if(response.empty()) {
