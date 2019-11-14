@@ -12,7 +12,13 @@ $(() => {
         $('#tomtom-api-key').val(env_config['TOMTOM_API_KEY']);
     }
 
+    const reload_button = $('section.settings-section span.bluetooth-refresh');
+
     function scan_devices() {
+        reload_button.css({
+            display: 'none'
+        });
+
         const progress = $('section.settings-section span.bluetooth-loader');
         progress.css({
             display: 'inline'
@@ -45,8 +51,16 @@ $(() => {
             progress.css({
                 display: 'none'
             });
+
+            reload_button.css({
+                display: 'initial'
+            })
         })
     }
 
     scan_devices();
+
+   reload_button.click(() => {
+        scan_devices();
+    })
 });
