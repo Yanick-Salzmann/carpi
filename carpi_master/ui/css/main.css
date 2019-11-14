@@ -84,6 +84,7 @@ section.splash-section {
 
 section.splash-section .splash-icon {
     font-size: 150px;
+    display: block;
 }
 
 section.splash-section .splash-wrapper .card .card-body {
