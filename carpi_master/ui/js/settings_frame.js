@@ -30,7 +30,10 @@ $(() => {
                 body.find('p').text(dev.address);
                 card.append(header);
                 card.append(body);
-                card.appendTo(deck);
+                const new_card = card.appendTo(deck);
+                new_card.click(() => {
+                    console.log("Connecting to", dev);
+                })
             });
 
             progress.css({
