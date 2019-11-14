@@ -70,6 +70,12 @@ $(() => {
         });
     }
 
+    function show_splash_sections() {
+        $('body > section.splash-section').css({
+            display: 'block'
+        });
+    }
+
     scan_devices();
 
     reload_button.click(() => {
@@ -79,5 +85,10 @@ $(() => {
     $('#settings-splash-card').click(() => {
         hide_all_sections();
         show_settings_sections();
+    });
+
+    $('#settings-back-button').click(() => {
+        hide_all_sections();
+        show_splash_sections();
     })
 });
