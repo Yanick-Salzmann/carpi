@@ -52,4 +52,5 @@ section.settings-section h1 {
 
 section.settings-section span.bluetooth-loader {
     animation: rotating 750ms linear infinite;
+    display: none;
 }

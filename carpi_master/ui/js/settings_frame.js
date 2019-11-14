@@ -13,6 +13,11 @@ $(() => {
     }
 
     function scan_devices() {
+        const progress = $('section.settings-section span.bluetooth-loader');
+        progress.css({
+            display: 'inline'
+        });
+
         event_manager.submitTask('bluetooth_search').then((resp) => {
             const deck = $('#bluetooth-device-deck');
             deck.empty();
@@ -26,7 +31,11 @@ $(() => {
                 card.append(header);
                 card.append(body);
                 card.appendTo(deck);
-            })
+            });
+
+            progress.css({
+                display: 'none'
+            });
         })
     }
 
