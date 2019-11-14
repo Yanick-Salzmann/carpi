@@ -32,11 +32,11 @@ $(() => {
                 card.append(body);
                 const new_card = card.appendTo(deck);
                 new_card.click(() => {
-                    deck.select('div.card .card-header .bluetooth-loader').css({
+                    deck.find('div.card .card-header .bluetooth-loader').css({
                         display: 'none'
                     });
 
-                    new_card.select('.card-header .bluetooth-loader').css({
+                    new_card.find('.card-header .bluetooth-loader').css({
                         display: 'inline'
                     })
                 })
