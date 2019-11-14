@@ -58,9 +58,26 @@ $(() => {
         })
     }
 
+    function hide_all_sections() {
+        $('body > section').css({
+            display: 'none'
+        });
+    }
+
+    function show_settings_sections() {
+        $('body > section.settings-section').css({
+            display: 'block'
+        });
+    }
+
     scan_devices();
 
-   reload_button.click(() => {
+    reload_button.click(() => {
         scan_devices();
+    });
+
+    $('#settings-splash-card').click(() => {
+        hide_all_sections();
+        show_settings_sections();
     })
 });
