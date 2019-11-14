@@ -48,5 +48,5 @@ $(() => {
         }
     }
 
-    window.event_manager = new EventManager();
+    //window.event_manager = new EventManager();
 });
