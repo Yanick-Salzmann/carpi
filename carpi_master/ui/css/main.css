@@ -81,3 +81,7 @@ section.splash-section {
     align-items: center;
     padding: 30px;
 }
+
+section.splash-section .splash-icon {
+    width: 50px;
+}
