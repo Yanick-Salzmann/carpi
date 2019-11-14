@@ -10,7 +10,7 @@
 namespace carpi::ui {
     class NoOp {
     public:
-        static NoOp from_json(const std::string&) {
+        static NoOp from_json(const nlohmann::json&) {
             return {};
         }
     };
