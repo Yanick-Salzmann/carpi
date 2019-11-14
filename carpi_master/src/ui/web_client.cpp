@@ -8,8 +8,8 @@ namespace carpi::ui {
 
     bool WebClient::OnQuery(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, int64 query_id, const CefString &request, bool persistent, CefRefPtr<CefMessageRouterBrowserSide::Callback> callback) {
         if (request == "EventHandlerInit") {
-            sUiEventMgr->apply_event_callback([callback](const std::string& payload) {
-               callback->Success(payload);
+            sUiEventMgr->apply_event_callback([callback](const std::string &payload) {
+                callback->Success(payload);
             });
             return true;
         }
@@ -20,12 +20,20 @@ namespace carpi::ui {
         const std::string type = req_obj["type"];
         const std::string payload = (req_obj.find("request") != req_obj.end()) ? std::string{req_obj["request"]} : "{}";
 
-        const auto response = sUiEventMgr->handle_event(type, payload);
-        if(response.empty()) {
-            callback->Success(json{{"type", type}, {"body", {}}}.dump());
-        } else {
-            callback->Success(json{{"type", type}, {"body", response}}.dump());
-        }
+        std::thread{[=]() {
+            try {
+                const auto response = sUiEventMgr->handle_event(type, payload);
+                if (response.empty()) {
+                    callback->Success(json{{"type", type},
+                                           {"body", {}}}.dump());
+                } else {
+                    callback->Success(json{{"type", type},
+                                           {"body", response}}.dump());
+                }
+            } catch (std::exception& ex) {
+                callback->Failure(0xFF000000u | EBADMSG, ex.what());
+            }
+        }}.detach();
 
         return true;
     }

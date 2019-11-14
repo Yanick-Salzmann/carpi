@@ -10,6 +10,7 @@
 #include <filesystem>
 #include <io/local_scheme_handler.hpp>
 #include <io/camera/camera_stream.hpp>
+#include <ui/events/bluetooth_events.hpp>
 
 namespace carpi::ui {
     LOGGER_IMPL(WebCore);
@@ -102,5 +103,6 @@ namespace carpi::ui {
     void WebCore::post_initialize() {
         CefRegisterSchemeHandlerFactory("carpi", "", CefRefPtr<CefSchemeHandlerFactory>{new io::LocalSchemeHandler::Factory{}});
         sCameraStream->init_events();
+        sBluetoothEvents->init_events();
     }
 }
