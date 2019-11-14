@@ -15,11 +15,56 @@
     <script src="lib/bootstrap.min.js"></script>
 
     <script src="js/event_manager.js"></script>
-    <script src="js/camera_frame.js"></script>
+    <script src="js/settings_frame.js"></script>
+    <!--    <script src="js/camera_frame.js"></script>-->
 </head>
 <body>
+<!--    <canvas id="video-canvas"></canvas>-->
 <section class="settings-section">
-    <canvas id="video-canvas"></canvas>
+    <h1>Carpi Settings</h1>
+    <div class="accordion" id="settings-accordion">
+        <div class="card">
+            <div class="card-header" id="obd-bluetooth-settings-header">
+                <h2 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#obd-bluetooth-settings" aria-expanded="true" aria-controls="obd-bluetooth-settings">
+                        Car On-Board Connection
+                    </button>
+                </h2>
+            </div>
+
+            <div id="obd-bluetooth-settings" class="collapse show" aria-labelledby="obd-bluetooth-settings-header" data-parent="#settings-accordion">
+                <div class="card-body">
+                    <span>Bluetooth Devices</span>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="web-api-settings-header">
+                <h2 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#web-api-settings" aria-expanded="false" aria-controls="web-api-settings">
+                        Web API Keys
+                    </button>
+                </h2>
+            </div>
+
+            <div id="web-api-settings" class="collapse" aria-labelledby="web-api-settings-header" data-parent="#settings-accordion">
+                <div class="card-body">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="web-api-here-addon">Here</span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Web API key for here.com" aria-label="Here API key" aria-describedby="web-api-here-addon">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="web-api-tomtom-addon">TomTom</span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Web API key for TomTom" aria-label="TomTom API key" aria-describedby="web-api-tomtom-addon">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 <footer>
     <div class="footer-menu-item">
