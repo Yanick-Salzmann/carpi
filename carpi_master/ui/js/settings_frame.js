@@ -68,6 +68,8 @@ $(() => {
         $('body > section.settings-section').css({
             display: 'block'
         });
+
+        scan_devices();
     }
 
     function show_splash_sections() {
