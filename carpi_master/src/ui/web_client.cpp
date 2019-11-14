@@ -20,8 +20,10 @@ namespace carpi::ui {
         json req_obj = json::parse(request.ToString());
         const std::string type = req_obj["type"];
         const std::string payload = (req_obj.find("request") != req_obj.end()) ? std::string{req_obj["request"]} : "{}";
+        log->info("Type: {}, Payload: {}", type, payload);
 
         const auto response = sUiEventMgr->handle_event(type, payload);
+        log->info("Response: {}", response.dump());
         if(response.empty()) {
             callback->Success(json{{"type", type}, {"body", {}}}.dump());
         } else {
