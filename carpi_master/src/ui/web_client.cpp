@@ -16,6 +16,7 @@ namespace carpi::ui {
 
         using nlohmann::json;
 
+        log->info("Request: {}", request.ToString());
         json req_obj = json::parse(request.ToString());
         const std::string type = req_obj["type"];
         const std::string payload = req_obj["request"];
