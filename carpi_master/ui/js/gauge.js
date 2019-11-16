@@ -16,5 +16,5 @@ $(() => {
         ctx.stroke();
     }
 
-    $('canvas.gauge').each(cvs => draw_gauge(cvs));
+    $('canvas.gauge').each((_, value) => draw_gauge(value));
 });
