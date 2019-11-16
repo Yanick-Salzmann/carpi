@@ -83,3 +83,7 @@ section.splash-section .splash-text {
 .connected-device {
     color: lightgreen;
 }
+
+section.engine-section .gauge-wrapper {
+    display: flex;
+}

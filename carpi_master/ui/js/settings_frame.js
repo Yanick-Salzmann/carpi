@@ -77,39 +77,13 @@ $(() => {
         })
     }
 
-    function hide_all_sections() {
-        $('body > section').css({
-            display: 'none'
-        });
-    }
-
-    function show_settings_sections() {
+    window.on_show_settings_sections = () => {
         scan_devices();
-
-        $('body > section.settings-section').css({
-            display: 'block'
-        });
-    }
-
-    function show_splash_sections() {
-        $('body > section.splash-section').css({
-            display: 'block'
-        });
-    }
+    };
 
     scan_devices();
 
     reload_button.click(() => {
         scan_devices();
     });
-
-    $('#settings-splash-card').click(() => {
-        hide_all_sections();
-        show_settings_sections();
-    });
-
-    $('#settings-back-button').click(() => {
-        hide_all_sections();
-        show_splash_sections();
-    })
 });
