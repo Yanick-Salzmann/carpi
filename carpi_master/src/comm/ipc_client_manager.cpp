@@ -1,6 +1,6 @@
 #include "ipc_client_manager.hpp"
-#include "ipc_common/IpcPackage.hpp"
-#include "ipc_common/IpcType.hpp"
+#include "ipc_common/ipc_package.hpp"
+#include "ipc_common/ipc_type.hpp"
 #include "ipc_connection.hpp"
 
 namespace carpi::comm {

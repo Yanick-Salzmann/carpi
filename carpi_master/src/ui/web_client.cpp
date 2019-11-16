@@ -16,9 +16,17 @@ namespace carpi::ui {
 
         using nlohmann::json;
 
-        json req_obj = json::parse(request.ToString());
-        const std::string type = req_obj["type"];
-        const std::string payload = (req_obj.find("request") != req_obj.end()) ? std::string{req_obj["request"]} : "{}";
+        std::string type{};
+        std::string payload{};
+
+        try {
+            json req_obj = json::parse(request.ToString());
+            type = req_obj["type"];
+            payload = (req_obj.find("request") != req_obj.end()) ? std::string{req_obj["request"]} : "{}";
+        } catch (std::exception& ex) {
+            callback->Failure(0xFF000000u | EBADMSG, ex.what());
+            return true;
+        }
 
         log->info("Processing event of type {} (payload: {})", type, payload);
 

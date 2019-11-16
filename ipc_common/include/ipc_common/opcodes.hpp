@@ -6,6 +6,10 @@
 namespace carpi::ipc {
     enum class Opcodes : uint32_t {
         MSG_IPC_TYPE = 0,
+        MSG_OBD_BLUETOOTH_CONNECT = 1,
+        MSG_OBD_FETCH_RPM = 2,
+        MSG_OBD_FETCH_SPEED = 3,
+        MSG_GPS_FETCH = 4,
         FIRST_UNKNOWN_OPCODE
     };
 }

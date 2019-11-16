@@ -8,7 +8,7 @@
 #include <map>
 #include <sys/socket.h>
 #include <sys/un.h>
-#include <ipc_common/IpcType.hpp>
+#include <ipc_common/ipc_type.hpp>
 #include <bluetooth_utils/BluetoothConnection.hpp>
 
 namespace carpi::comm {

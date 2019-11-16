@@ -175,7 +175,7 @@ $(() => {
 
         let start_time = (new Date()).getTime();
 
-        setInterval(() => {
+        last_interval = setInterval(() => {
             const diff = ((new Date()).getTime() - start_time) % 4000;
             let index = times.length - 2;
 
