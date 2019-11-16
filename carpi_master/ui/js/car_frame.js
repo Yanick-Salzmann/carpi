@@ -2,7 +2,7 @@ $(() => {
     function draw_indicators(ctx, origin, xofs, yofs, texts) {
         const count = xofs.length;
 
-        for(let i = 0; i <= count; ++i) {
+        for(let i = 0; i < count; ++i) {
             const grad = ((3 * Math.PI) / (count * 2)) * i + (3 * Math.PI / 4);
             ctx.beginPath();
             const sx = origin + 120 * Math.cos(grad);
