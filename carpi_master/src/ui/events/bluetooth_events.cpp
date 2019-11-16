@@ -1,6 +1,7 @@
 #include "bluetooth_events.hpp"
 #include "ui/event_manager.hpp"
 #include <bluetooth_utils/BluetoothManager.hpp>
+#include <io/obd/ObdConnectionManager.hpp>
 
 namespace carpi::ui::events {
     LOGGER_IMPL(BluetoothEvents);
@@ -40,14 +41,14 @@ namespace carpi::ui::events {
             return fetch_devices();
         });
 
-        sUiEventMgr->register_event_handler<BluetoothDeviceInfo, ObdConnectResponse>("obd_connect", [this](const BluetoothDeviceInfo& arg) {
+        sUiEventMgr->register_event_handler<BluetoothDeviceInfo, ObdConnectResponse>("obd_connect", [this](const BluetoothDeviceInfo &arg) {
             return create_obd_connection(arg);
         });
     }
 
     ObdConnectResponse BluetoothEvents::create_obd_connection(const BluetoothDeviceInfo &device) {
         return {
-            .is_success = false
+                .is_success = sObdConnMgr->connect_to_device(device.address)
         };
     }
 

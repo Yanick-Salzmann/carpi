@@ -35,8 +35,7 @@ namespace carpi::ui::events {
         LOGGER;
 
         static BluetoothResponse fetch_devices();
-
-        ObdConnectResponse create_obd_connection(const BluetoothDeviceInfo& device);
+        static ObdConnectResponse create_obd_connection(const BluetoothDeviceInfo& device);
 
     public:
         void init_events();
