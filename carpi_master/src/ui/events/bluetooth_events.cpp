@@ -39,6 +39,10 @@ namespace carpi::ui::events {
         sUiEventMgr->register_event_handler<NoOp, BluetoothResponse>("bluetooth_search", [this](const NoOp &arg) {
             return fetch_devices();
         });
+
+        sUiEventMgr->register_event_handler<BluetoothDeviceInfo, ObdConnectResponse>("obd_connect", [this](const BluetoothDeviceInfo& arg) {
+            return create_obd_connection(arg);
+        });
     }
 
     ObdConnectResponse BluetoothEvents::create_obd_connection(const BluetoothDeviceInfo &device) {
