@@ -1,4 +1,4 @@
-(() => {
+$(() => {
     function draw_gauge(elem) {
         const ctx = elem.getContext('2d');
         ctx.shadowBlur = 5;
