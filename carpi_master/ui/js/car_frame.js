@@ -162,7 +162,8 @@ $(() => {
     let last_interval = null;
 
     const times  = [0, 1000, 1500, 1800, 2000, 2400, 2700, 2800, 3200, 3500, 4000];
-    const values = [0, 1800, 2400, 2300, 2100, 1500, 1400,  1300,  1500, 750, 0];
+    const rpm_values = [0, 1800, 2400, 2300, 2100, 1500, 1400,  1300,  1500, 750, 0];
+    const speed_values = [0, 80, 120, 100, 90, 130, 170, 200, 180, 140, 90, 0];
 
     window.on_show_car_section = () => {
         if(last_interval) {
@@ -188,12 +189,15 @@ $(() => {
             const start = times[index];
             const end = times[index + 1];
 
-            const v0 = values[index];
-            const v1 = values[index + 1];
+            const rv0 = rpm_values[index];
+            const rv1 = rpm_values[index + 1];
+            const sv0 = speed_values[index];
+            const sv1 = speed_values[index + 1];
 
             const fac = (diff - start) / (end - start);
 
-            update_rpm(v0 + fac * (v1 - v0));
+            update_rpm(rv0 + fac * (rv1 - rv0));
+            update_speed(sv0 + fac * (sv1 - sv0));
         }, 10);
     }
 });
