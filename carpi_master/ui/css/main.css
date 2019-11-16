@@ -11,37 +11,6 @@ body {
     height: 100%;
 }
 
-footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 60px;
-    border-top: 1px solid white;
-    box-sizing: border-box;
-
-    display: flex;
-    flex-direction: row;
-    padding-left: 15px;
-    padding-right: 15px;
-}
-
-footer .footer-menu-item {
-    line-height: 60px;
-    padding-left: 15px;
-    padding-right: 15px;
-    user-select: none;
-    font-size: 30px;
-}
-
-footer .footer-menu-item:active {
-    background-color: #888;
-}
-
-footer .footer-menu-item:not(:first-child) {
-    margin-left: 5px;
-}
-
 body > section {
     width: 100%;
     height: calc(100% - 60px);
@@ -88,7 +57,7 @@ section.splash-section .splash-wrapper {
 }
 
 section.splash-section {
-    height: calc(100% - 60px);
+    height: 100%;
     display: flex;
     align-items: center;
     padding: 30px;
