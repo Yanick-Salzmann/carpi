@@ -1,5 +1,5 @@
 $(() => {
-    function draw_gauge(elem) {
+    function draw_rpm_gauge(elem) {
         const ctx = elem.getContext('2d');
         const origin = 150;
 
@@ -47,6 +47,4 @@ $(() => {
             ctx.fillText(text, tx, ty);
         }
     }
-
-    $('canvas.gauge').each((_, value) => draw_gauge(value));
 });

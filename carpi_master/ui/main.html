@@ -22,10 +22,12 @@
 </head>
 <body>
 <!--    <canvas id="video-canvas"></canvas>-->
-<section class="splash-section">
+<section class="engine-section">
     <div class="gauge">
-        <canvas class="gauge" width="300" height="300"></canvas>
+        <canvas id="rpm-gauge" class="gauge" width="300" height="300"></canvas>
     </div>
+</section>
+<section class="splash-section">
     <div class="splash-wrapper">
         <div class="card-deck">
             <div class="card" id="map-splash-card">
@@ -38,6 +40,14 @@
                 <div class="card-body">
                     <span class="splash-icon"><i class="fa fa-cogs"></i></span>
                     <span class="splash-text">Settings</span>
+                </div>
+            </div>
+        </div>
+        <div class="card-deck">
+            <div class="card" id="engine-splash-card">
+                <div class="card-body">
+                    <span class="splash-icon"><i class="fa fa-car"></i></span>
+                    <span class="splash-text">Car Statistics</span>
                 </div>
             </div>
         </div>
