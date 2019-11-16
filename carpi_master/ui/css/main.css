@@ -95,7 +95,7 @@ section.splash-section {
 }
 
 section.splash-section .splash-icon {
-    font-size: 100px;
+    font-size: 70px;
     display: block;
 }
 
@@ -103,8 +103,12 @@ section.splash-section .splash-wrapper .card .card-body {
     text-align: center;
 }
 
+section.splash-section .splash-wrapper .card-deck:not(:first-child) {
+    margin-top: 20px;
+}
+
 section.splash-section .splash-text {
-    font-size: 30px;
+    font-size: 20px;
 }
 
 .connected-device {
