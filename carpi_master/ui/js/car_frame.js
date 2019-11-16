@@ -18,15 +18,17 @@ $(() => {
         }
     }
 
-    function draw_sub_segments(ctx, origin, count) {
+    function draw_sub_segments(ctx, origin, count, size_func) {
         for(let i = 0; i < count; ++i) {
             const grad = ((3 * Math.PI) / ((count - 1) * 2)) * i + (3 * Math.PI / 4);
             ctx.beginPath();
             const sx = origin + 120 * Math.cos(grad);
             const sy = origin + 120 * Math.sin(grad);
 
-            const dx = origin + 135 * Math.cos(grad);
-            const dy = origin + 135 * Math.sin(grad);
+            const width = size_func(i);
+
+            const dx = origin + (120 + width * 15) * Math.cos(grad);
+            const dy = origin + (120 + width * 15) * Math.sin(grad);
 
             ctx.moveTo(sx, sy);
             ctx.lineTo(dx, dy);
@@ -57,7 +59,15 @@ $(() => {
         const texts = [ '0', '1', '2', '3', '4', '5', '6', '7'];
 
         draw_gauge_shape(ctx, origin);
-        draw_sub_segments(ctx, origin, 70);
+        draw_sub_segments(ctx, origin, 70, index => {
+            if((index % 10) === 0) {
+                return 1;
+            } else if((index % 5) === 0) {
+                return 0.5;
+            } else {
+                return 0.2;
+            }
+        });
         draw_indicators(ctx, origin, xofs, yofs, texts);
     }
 
@@ -68,7 +78,15 @@ $(() => {
         const texts = [ '0', '20', '40', '60', '80', '100', '120', '140', '160', '180', '200', '220'];
 
         draw_gauge_shape(ctx, origin);
-        draw_sub_segments(ctx, origin, 22);
+        draw_sub_segments(ctx, origin, 110, index => {
+            if((index % 20) === 0) {
+                return 1;
+            } else if((index % 10) === 0) {
+                return 0.5;
+            } else {
+                return 0.2;
+            }
+        });
         draw_indicators(ctx, origin, xofs, yofs, texts);
     }
 
