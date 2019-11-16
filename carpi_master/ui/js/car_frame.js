@@ -79,9 +79,9 @@ $(() => {
 
         draw_gauge_shape(ctx, origin);
         draw_sub_segments(ctx, origin, 110, index => {
-            if((index % 20) === 0) {
+            if((index % 10) === 0) {
                 return 1;
-            } else if((index % 10) === 0) {
+            } else if((index % 5) === 0) {
                 return 0.5;
             } else {
                 return 0.2;
