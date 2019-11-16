@@ -47,6 +47,10 @@ body > section {
     height: calc(100% - 60px);
 }
 
+section.engine-section {
+    display: none;
+}
+
 section.settings-section {
     display: none;
 }
