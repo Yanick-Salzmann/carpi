@@ -6,12 +6,12 @@ namespace carpi::io::obd {
     bool ObdConnectionManager::connect_to_device(const std::string &address) {
         try {
             const auto device = sBluetoothMgr->open_device(address);
-            _connection = std::make_shared<carpi::obd::ObdInterface>(device.connect(0));
+            _connection = std::make_shared<carpi::obd::ObdInterface>(device.connect(1));
         } catch (std::runtime_error &e) {
             return false;
         }
 
-        return false;
+        return true;
     }
 
     uint32_t ObdConnectionManager::fetch_speed() {

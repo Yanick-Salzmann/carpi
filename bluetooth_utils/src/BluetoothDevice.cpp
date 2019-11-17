@@ -15,7 +15,7 @@ namespace carpi::bluetooth {
 
         char device_name[248]{};
 
-        const auto route = hci_get_route(&address);
+        /*const auto route = hci_get_route(&address);
         if(route < 0) {
             log->warn("No route to {} found: {} (errno={})", _address_string, utils::error_to_string(errno), errno);
             throw std::runtime_error{"No route to device found"};
@@ -25,16 +25,14 @@ namespace carpi::bluetooth {
         if(remote_socket < 0) {
             log->warn("Cannot open connection to {}: {} (errno={})", _address_string, utils::error_to_string(errno), errno);
             throw std::runtime_error{"Cannot connect to device"};
-        }
+        }*/
 
-        if(hci_read_remote_name(remote_socket, &address, sizeof device_name, device_name, 0) == 0) {
+        if(hci_read_remote_name(_socket, &address, sizeof device_name, device_name, 0) == 0) {
             device_name[247] = '\0';
             _device_name.assign(device_name);
         } else {
             _device_name.assign("Unknown Device");
         }
-
-        hci_close_dev(remote_socket);
     }
 
     bool BluetoothDevice::operator<(const BluetoothDevice &other) const {
