@@ -1,15 +1,14 @@
 #include <iostream>
 #include <gps/gps_listener.hpp>
 #include "MqBroadcast.hpp"
+#include "net_broadcast.hpp"
 
 namespace carpi {
     int main(int argc, char* argv[]) {
         gps::GpsListener listener{};
         listener.start_gps_loop();
 
-        gps::MqBroadcast broadcast{};
-
-        listener.data_callback(std::bind(&gps::MqBroadcast::on_measurement, &broadcast, std::placeholders::_1));
+        gps::NetBroadcast bcast{};
 
         std::cin.sync();
         std::string line{};
