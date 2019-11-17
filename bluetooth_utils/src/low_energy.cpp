@@ -5,6 +5,7 @@
 #include <bluetooth/hci_lib.h>
 #include <stdexcept>
 #include <unistd.h>
+#include <iostream>
 
 namespace carpi::bluetooth {
 
@@ -35,6 +36,8 @@ namespace carpi::bluetooth {
             if(client < 0) {
                 throw std::runtime_error{"Error accepting"};
             }
+
+            std::cout << "GOT CLIENT" << std::endl;
 
             char buffer[4096]{0};
             int ret = read(client, buffer, sizeof(buffer));
