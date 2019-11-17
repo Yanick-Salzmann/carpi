@@ -11,7 +11,7 @@ namespace carpi::io::obd {
             return false;
         }
 
-        return false;
+        return true;
     }
 
     uint32_t ObdConnectionManager::fetch_speed() {
