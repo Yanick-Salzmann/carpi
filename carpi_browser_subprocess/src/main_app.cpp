@@ -41,10 +41,4 @@ namespace carpi {
     bool MainApp::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefProcessId source_process, CefRefPtr<CefProcessMessage> message) {
         return _router->OnProcessMessageReceived(browser, frame, source_process, message);
     }
-
-    void MainApp::OnBrowserCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefDictionaryValue> extra_info) {
-        CefRenderProcessHandler::OnBrowserCreated(browser, extra_info);
-
-        sGpsEvtLstnr->run();
-    }
 }
