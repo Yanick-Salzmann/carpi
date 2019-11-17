@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION ${CMAKE_VERSION})
 project(gps_broadcast)
 
-add_executable(gps_broadcast src/main.cpp)
+add_executable(gps_broadcast src/main.cpp src/MqBroadcast.cpp src/MqBroadcast.hpp)
 
 add_dependencies(gps_broadcast gps_utils)
 

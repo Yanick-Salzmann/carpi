@@ -61,6 +61,18 @@ namespace carpi::gps {
                 if (_gps_data.status == STATUS_FIX && (_gps_data.fix.mode == MODE_2D || _gps_data.fix.mode == MODE_3D) &&
                     !std::isnan(_gps_data.fix.latitude) && !std::isnan(_gps_data.fix.longitude)) {
                     log->info("GPS: lat={}, lon={}, alt={}", _gps_data.fix.latitude, _gps_data.fix.longitude, _gps_data.fix.altitude);
+                    GpsMeasurement ms{
+                            .lat = _gps_data.fix.latitude,
+                            .lon = _gps_data.fix.longitude,
+                            .alt = _gps_data.fix.altitude
+                    };
+
+                    {
+                        std::lock_guard<std::mutex> l{_callback_lock};
+                        if (_callback) {
+                            _callback(ms);
+                        }
+                    }
                 }
             }
 
