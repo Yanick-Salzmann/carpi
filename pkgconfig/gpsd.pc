@@ -1,0 +1,10 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib/arm-linux-gnueabihf
+includedir=${prefix}/include
+
+Name: libgps
+Description: GPS development libraries
+Version: 1
+Libs: -L${libdir} -lgps
+Cflags: -I${includedir}
