@@ -14,7 +14,7 @@ namespace carpi::gps {
     NetBroadcast::NetBroadcast() {
         _socket = socket(AF_INET, SOCK_DGRAM, 0);
 
-        char broadcast = 1;
+        uint32_t broadcast = 1;
 
         if (setsockopt(_socket, SOL_SOCKET, SO_BROADCAST, &broadcast, sizeof broadcast) < 0) {
             log->error("Error setting SO_BROADCAST on socket: {} (errno={})", utils::error_to_string(errno), errno);
