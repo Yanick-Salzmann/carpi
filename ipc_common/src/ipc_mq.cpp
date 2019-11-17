@@ -24,7 +24,7 @@ namespace carpi::ipc {
             throw std::runtime_error{"Error creating message queue"};
         }
 
-        log->info("Opened message queue named '{}' -> id={}", (std::size_t) _queue);
+        log->info("Opened message queue named '{}' -> id={}", name, (std::size_t) _queue);
     }
 
     MessageQueue::~MessageQueue() {
