@@ -40,6 +40,11 @@ namespace carpi::bluetooth {
             std::cout << "GOT CLIENT" << std::endl;
 
             uint8_t req[] {
+                0x02,
+                0x00, 0x00,
+                11, 0,
+                7, 0,
+                4, 0,
                 0x10,
                 0x01, 0x00,
                 0xFF, 0xFF,
