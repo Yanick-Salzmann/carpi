@@ -1,6 +1,7 @@
 #include "main_app.hpp"
 #include "camera_frame_callback.hpp"
 #include "env_var_callback.hpp"
+#include "gps_event_listener.hpp"
 
 namespace carpi {
 
@@ -39,5 +40,11 @@ namespace carpi {
 
     bool MainApp::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefProcessId source_process, CefRefPtr<CefProcessMessage> message) {
         return _router->OnProcessMessageReceived(browser, frame, source_process, message);
+    }
+
+    void MainApp::OnBrowserCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefDictionaryValue> extra_info) {
+        CefRenderProcessHandler::OnBrowserCreated(browser, extra_info);
+
+        sGpsEvtLstnr->run();
     }
 }

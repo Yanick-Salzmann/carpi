@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION ${CMAKE_VERSION})
 project(carpi_browser_subprocess)
 
-add_executable(carpi_browser_subprocess src/main.cpp src/camera_frame_callback.hpp src/camera_frame_callback.cpp src/main_app.hpp src/main_app.cpp src/env_var_callback.hpp src/env_var_callback.cpp)
+add_executable(carpi_browser_subprocess src/main.cpp src/camera_frame_callback.hpp src/camera_frame_callback.cpp src/main_app.hpp src/main_app.cpp src/env_var_callback.hpp src/env_var_callback.cpp src/gps_event_listener.hpp src/gps_event_listener.cpp)
 
 add_dependencies(carpi_browser_subprocess common_utils ipc_common)
 
