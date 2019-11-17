@@ -21,6 +21,8 @@ namespace carpi::gps {
             freeifaddrs(addrs);
         });
 
+        log->info("Address family: {}", if_addrs->ifa_addr->sa_family);
+
         char ipv6_addr[1024]{};
         if (inet_ntop(if_addrs->ifa_addr->sa_family,
                       if_addrs->ifa_addr->sa_family == AF_INET ? (void *) (&((sockaddr_in *) if_addrs->ifa_addr)->sin_addr) : (&((sockaddr_in6 *) if_addrs->ifa_addr)->sin6_addr),
