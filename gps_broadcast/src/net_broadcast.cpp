@@ -22,6 +22,6 @@ namespace carpi::gps {
         });
 
         std::string net_mask = inet_ntoa(((const sockaddr_in*) if_addrs->ifa_addr)->sin_addr);
-        log->info("Net Mask: {}" net_mask);
+        log->info("Net Mask: {}", net_mask);
     }
 }
