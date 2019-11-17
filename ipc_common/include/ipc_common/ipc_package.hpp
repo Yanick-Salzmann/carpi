@@ -20,6 +20,10 @@ namespace carpi::ipc {
 
         }
 
+        [[nodiscard]] std::size_t size() const {
+            return _data.size() + sizeof(uint32_t) + sizeof(uint32_t);
+        }
+
         explicit IpcPackage(Opcodes opcode) : _opcode(opcode) { }
 
         static IpcPackage read_from_socket(int socket);
@@ -27,6 +31,8 @@ namespace carpi::ipc {
 
         void read(void* buffer, std::size_t size);
         void write(const void* buffer, std::size_t size);
+
+        void to_buffer(std::vector<uint8_t>& buffer) const;
 
         void send_to_mq(int mq) const;
 

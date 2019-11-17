@@ -79,4 +79,11 @@ namespace carpi::ipc {
             throw std::runtime_error{"Error sending MQ message"};
         }
     }
+
+    void IpcPackage::to_buffer(std::vector<uint8_t> &buffer) const {
+        buffer.resize(size());
+        *(uint32_t*) buffer.data() = size() - 4;
+        *(uint32_t*)(buffer.data() + 4) = (uint32_t) _opcode;
+        memcpy(buffer.data() + 8, _data.data(), _data.size());
+    }
 }

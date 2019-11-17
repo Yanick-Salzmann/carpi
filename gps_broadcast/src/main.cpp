@@ -9,6 +9,7 @@ namespace carpi {
         listener.start_gps_loop();
 
         gps::NetBroadcast bcast{};
+        listener.data_callback([&](const auto& m) { bcast.on_measurement(m); });
 
         std::cin.sync();
         std::string line{};
