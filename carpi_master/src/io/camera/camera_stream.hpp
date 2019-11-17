@@ -26,6 +26,9 @@ namespace carpi::io::camera {
 
         void* _camera_frame_buffer;
 
+        bool _is_initialized = false;
+        std::mutex _load_lock{};
+
         std::shared_ptr<video::RawCameraStream> _stream;
 
         void handle_camera_frame(const std::vector<uint8_t> &data, std::size_t size);

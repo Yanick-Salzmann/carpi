@@ -28,7 +28,6 @@ namespace carpi::io::camera {
     };
 
     CameraStream::CameraStream() {
-        start_camera_streaming();
     }
 
     CameraStream::~CameraStream() {
@@ -61,6 +60,14 @@ namespace carpi::io::camera {
     }
 
     void CameraStream::begin_capture() {
+        {
+            std::lock_guard<std::mutex> l{_load_lock};
+            if(!_is_initialized) {
+                _is_initialized = true;
+                start_camera_streaming();
+            }
+        }
+
         _stream->start_capture();
     }
 
