@@ -22,8 +22,11 @@ namespace carpi::gps {
             freeifaddrs(addrs);
         });
 
-        while(if_addrs != nullptr) {
-            if((if_addrs->ifa_flags & IFF_BROADCAST) != 0 && if_addrs->ifa_ifu.ifu_broadaddr != nullptr && (if_addrs->ifa_ifu.ifu_broadaddr->sa_family == AF_INET || if_addrs->ifa_ifu.ifu_broadaddr->sa_family == AF_INET6)) {
+        while (if_addrs != nullptr) {
+            if ((if_addrs->ifa_flags & IFF_BROADCAST) != 0
+                && (if_addrs->ifa_flags & IFF_LOOPBACK) == 0
+                && (if_addrs->ifa_flags & IFF_RUNNING) != 0
+                && if_addrs->ifa_ifu.ifu_broadaddr != nullptr && (if_addrs->ifa_ifu.ifu_broadaddr->sa_family == AF_INET || if_addrs->ifa_ifu.ifu_broadaddr->sa_family == AF_INET6)) {
                 char ipv6_addr[1024]{};
                 if (inet_ntop(if_addrs->ifa_ifu.ifu_broadaddr->sa_family,
                               if_addrs->ifa_ifu.ifu_broadaddr->sa_family == AF_INET ? (void *) (&((sockaddr_in *) if_addrs->ifa_ifu.ifu_broadaddr)->sin_addr) : (&((sockaddr_in6 *) if_addrs->ifa_ifu.ifu_broadaddr)->sin6_addr),
