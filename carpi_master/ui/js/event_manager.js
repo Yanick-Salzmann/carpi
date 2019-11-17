@@ -31,7 +31,7 @@ $(() => {
         submitTask(type, payload) {
             return new Promise((resolve, reject) => {
                 sendCefRequest({
-                    request: JSON.stringify({type: type, request: payload}),
+                    request: JSON.stringify({type: type, request: JSON.stringify(payload) }),
                     onSuccess: (data) => {
                         const response = JSON.parse(data);
                         if (response.type !== type) {
