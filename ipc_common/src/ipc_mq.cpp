@@ -15,7 +15,7 @@ namespace carpi::ipc {
 
     MessageQueue::MessageQueue(const std::string &name) {
         mq_attr attributes{
-                .mq_maxmsg = 1000,
+                .mq_maxmsg = 5,
                 .mq_msgsize = MAX_MESSAGE_SIZE
         };
         _queue = mq_open(name.c_str(), O_RDWR | O_CREAT | O_CLOEXEC, 0777, &attributes);
