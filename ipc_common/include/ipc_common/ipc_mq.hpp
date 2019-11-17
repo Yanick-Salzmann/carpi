@@ -16,7 +16,7 @@ namespace carpi::ipc {
 
     class MessageQueue {
     public:
-        static const std::size_t MAX_MESSAGE_SIZE = 1024 * 1024;
+        static const std::size_t MAX_MESSAGE_SIZE = 512;
 
     private:
         LOGGER;
