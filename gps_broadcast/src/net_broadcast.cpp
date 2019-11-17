@@ -55,8 +55,10 @@ namespace carpi::gps {
         _address_family = if_addrs->ifa_addr->sa_family;
         if (_address_family == AF_INET) {
             memcpy(&_ip4_broadcast, if_addrs->ifa_ifu.ifu_broadaddr, sizeof _ip4_broadcast);
+            _ip4_broadcast.sin_port = htons(3377);
         } else {
             memcpy(&_ip6_broadcast, if_addrs->ifa_ifu.ifu_broadaddr, sizeof _ip6_broadcast);
+            _ip6_broadcast.sin6_port = htons(3377);
         }
     }
 
