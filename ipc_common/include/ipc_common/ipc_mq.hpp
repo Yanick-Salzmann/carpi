@@ -10,7 +10,8 @@
 
 namespace carpi::ipc {
     enum class IpcMessageQueue {
-        CHROMIUM_EVENTS
+        CHROMIUM_EVENTS,
+        GPS_BROADCAST
     };
 
     class MessageQueue {
