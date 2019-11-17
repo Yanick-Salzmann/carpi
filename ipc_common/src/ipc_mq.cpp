@@ -2,6 +2,7 @@
 #include <sys/stat.h>
 #include <common_utils/error.hpp>
 #include <map>
+#include <iostream>
 
 namespace carpi::ipc {
     LOGGER_IMPL(MessageQueue);
@@ -14,6 +15,8 @@ namespace carpi::ipc {
     }
 
     MessageQueue::MessageQueue(const std::string &name) {
+        std::cout << "Opening MQ: " << name << std::endl;
+
         mq_attr attributes{
                 .mq_maxmsg = 5,
                 .mq_msgsize = MAX_MESSAGE_SIZE
