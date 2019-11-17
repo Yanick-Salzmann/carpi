@@ -74,7 +74,7 @@ namespace carpi::ipc {
         std::vector<uint8_t> full_data(4 + _data.size());
         *(uint32_t *) full_data.data() = (uint32_t) _opcode;
         memcpy(full_data.data() + 4, _data.data(), _data.size());
-        if (mq_send(mq, (const char *) full_data.data(), full_data.size(), -1) < 0) {
+        if (mq_send(mq, (const char *) full_data.data(), full_data.size(), 0) < 0) {
             log->error("Error sending MQ message: {} (errno={})", utils::error_to_string(errno), errno);
             throw std::runtime_error{"Error sending MQ message"};
         }
