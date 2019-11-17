@@ -71,7 +71,7 @@ $(() => {
                             .addClass(status.success ? 'connected-device' : 'disconnected-device');
 
                         new_card.find('.card-header .bluetooth-loader').css({display: 'none'});
-                        window.obd_connected = true;
+                        window.obd_connected = status.success;
                         localStorage.setItem('obd.last_device', dev.address);
                     });
                 })
