@@ -29,7 +29,7 @@ $(() => {
 
         event_manager.submitTask('bluetooth_search').then((resp) => {
 
-            if(!resp) {
+            if (!resp) {
                 progress.css({
                     display: 'none'
                 });
@@ -63,7 +63,12 @@ $(() => {
 
                     new_card.find('.card-header .bluetooth-loader').css({
                         display: 'inline'
-                    })
+                    });
+
+                    sendCefRequest('obd_connect', {address: dev.address}).then((status) => {
+                        console.log(status);
+                        new_card.find('.card-header .bluetooth-loader').css({display: 'inline'});
+                    });
                 })
             });
 
