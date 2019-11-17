@@ -161,9 +161,16 @@ $(() => {
 
     let last_interval = null;
 
-    const times  = [0, 1000, 1500, 1800, 2000, 2400, 2700, 2800, 3200, 3500, 4000];
-    const rpm_values = [0, 1800, 2400, 2300, 2100, 1500, 1400,  1300,  1500, 750, 0];
-    const speed_values = [0, 80, 120, 100, 90, 130, 170, 200, 180, 140, 90, 0];
+    function fetch_status() {
+        if(!window.obd_connected) {
+            return setTimeout(fetch_status, 10);
+        }
+
+        event_manager.submitTask('obd_status', {}).then((resp) => {
+           console.log(resp);
+           setTimeout(fetch_status, 10);
+        });
+    }
 
     window.on_show_car_section = () => {
         if(last_interval) {
@@ -173,31 +180,6 @@ $(() => {
         update_rpm(0);
         update_speed(0);
 
-        let start_time = (new Date()).getTime();
-
-        last_interval = setInterval(() => {
-            const diff = ((new Date()).getTime() - start_time) % 4000;
-            let index = times.length - 2;
-
-            for(let i = 0; i < (times.length - 1); ++i) {
-                if(times[i] <= diff && times[i + 1] >= diff) {
-                    index = i;
-                    break;
-                }
-            }
-
-            const start = times[index];
-            const end = times[index + 1];
-
-            const rv0 = rpm_values[index];
-            const rv1 = rpm_values[index + 1];
-            const sv0 = speed_values[index];
-            const sv1 = speed_values[index + 1];
-
-            const fac = (diff - start) / (end - start);
-
-            update_rpm(rv0 + fac * (rv1 - rv0));
-            update_speed(sv0 + fac * (sv1 - sv0));
-        }, 10);
+        last_interval = setTimeout(fetch_status, 10);
     }
 });
