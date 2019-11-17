@@ -22,7 +22,7 @@ namespace carpi::gps {
         });
 
         char ipv6_addr[1024]{};
-        std::string net_mask = inet_ntop(if_addrs->ifa_addr->sa_family, if_addrs->ifa_addr, ipv6_addr, sizeof ipv6_addr);
-        log->info("Net Mask: {}", net_mask);
+        inet_ntop(if_addrs->ifa_addr->sa_family, if_addrs->ifa_addr, ipv6_addr, sizeof ipv6_addr);
+        log->info("Net Mask: {}", ipv6_addr);
     }
 }
