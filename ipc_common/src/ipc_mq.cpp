@@ -21,7 +21,7 @@ namespace carpi::ipc {
                 .mq_maxmsg = 5,
                 .mq_msgsize = MAX_MESSAGE_SIZE
         };
-        _queue = mq_open(name.c_str(), O_RDWR | O_CREAT | O_CLOEXEC, 0777, &attributes);
+        _queue = mq_open(name.c_str(), O_RDWR | O_CREAT, 0644, &attributes);
         if (_queue == -1) {
             log->warn("Error creating message queue named '{}': {} (errno={})", name, utils::error_to_string(errno), errno);
             throw std::runtime_error{"Error creating message queue"};
