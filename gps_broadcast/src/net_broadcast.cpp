@@ -22,7 +22,7 @@ namespace carpi::gps {
         });
 
         while(if_addrs != nullptr) {
-            if(if_addrs->ifa_netmask->sa_family == AF_INET || if_addrs->ifa_netmask->sa_family == AF_INET6) {
+            if(if_addrs->ifa_netmask != nullptr && (if_addrs->ifa_netmask->sa_family == AF_INET || if_addrs->ifa_netmask->sa_family == AF_INET6)) {
                 break;
             }
 
