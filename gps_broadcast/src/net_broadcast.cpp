@@ -5,6 +5,7 @@
 #include <ifaddrs.h>
 #include <common_utils/error.hpp>
 #include <arpa/inet.h>
+#include <net/if.h>
 
 namespace carpi::gps {
     LOGGER_IMPL(NetBroadcast);
@@ -22,10 +23,10 @@ namespace carpi::gps {
         });
 
         while(if_addrs != nullptr) {
-            if(if_addrs->ifa_netmask != nullptr && (if_addrs->ifa_netmask->sa_family == AF_INET || if_addrs->ifa_netmask->sa_family == AF_INET6)) {
+            if((if_addrs->ifa_flags & IFF_BROADCAST) != 0 && if_addrs->ifa_ifu.ifu_broadaddr != nullptr && (if_addrs->ifa_ifu.ifu_broadaddr->sa_family == AF_INET || if_addrs->ifa_ifu.ifu_broadaddr->sa_family == AF_INET6)) {
                 char ipv6_addr[1024]{};
-                if (inet_ntop(if_addrs->ifa_netmask->sa_family,
-                              if_addrs->ifa_netmask->sa_family == AF_INET ? (void *) (&((sockaddr_in *) if_addrs->ifa_netmask)->sin_addr) : (&((sockaddr_in6 *) if_addrs->ifa_netmask)->sin6_addr),
+                if (inet_ntop(if_addrs->ifa_ifu.ifu_broadaddr->sa_family,
+                              if_addrs->ifa_ifu.ifu_broadaddr->sa_family == AF_INET ? (void *) (&((sockaddr_in *) if_addrs->ifa_ifu.ifu_broadaddr)->sin_addr) : (&((sockaddr_in6 *) if_addrs->ifa_ifu.ifu_broadaddr)->sin6_addr),
                               ipv6_addr,
                               sizeof ipv6_addr) == nullptr) {
                     log->error("inet_ntop: {} (errno={})", utils::error_to_string(errno), errno);
