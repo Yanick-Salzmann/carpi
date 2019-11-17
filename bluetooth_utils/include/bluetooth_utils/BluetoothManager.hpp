@@ -32,6 +32,8 @@ namespace carpi::bluetooth {
             const auto ticks = static_cast<uint32_t>(std::chrono::duration_cast<std::chrono::milliseconds>(max_scan_duration).count() / 1280.0f);
             return scan_devices(std::max(ticks, 1u));
         }
+
+        BluetoothDevice open_device(const std::string& address);
     };
 }
 

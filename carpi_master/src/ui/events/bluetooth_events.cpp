@@ -44,11 +44,22 @@ namespace carpi::ui::events {
         sUiEventMgr->register_event_handler<BluetoothDeviceInfo, ObdConnectResponse>("obd_connect", [this](const BluetoothDeviceInfo &arg) {
             return create_obd_connection(arg);
         });
+
+        sUiEventMgr->register_event_handler<NoOp, ObdStatusResponse>("obd_status", [this](const NoOp& arg) {
+            return obd_status();
+        });
     }
 
     ObdConnectResponse BluetoothEvents::create_obd_connection(const BluetoothDeviceInfo &device) {
         return {
                 .is_success = sObdConnMgr->connect_to_device(device.address)
+        };
+    }
+
+    ObdStatusResponse BluetoothEvents::obd_status() {
+        return {
+            .rpm = sObdConnMgr->fetch_rpm(),
+            .speed = sObdConnMgr->fetch_speed()
         };
     }
 

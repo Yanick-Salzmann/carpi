@@ -8,10 +8,24 @@ namespace carpi::bluetooth {
     LOGGER_IMPL(BluetoothDevice);
 
     BluetoothDevice::BluetoothDevice(int32_t socket, bdaddr_t address) : _socket(socket), _device_address(address) {
+        char device_address[18]{};
+        ba2str(&address, device_address);
+        device_address[17] = '\0';
+        _address_string.assign(device_address);
+
         char device_name[248]{};
 
         const auto route = hci_get_route(&address);
+        if(route < 0) {
+            log->warn("No route to {} found: {} (errno={})", _address_string, utils::error_to_string(errno), errno);
+            throw std::runtime_error{"No route to device found"};
+        }
+
         const auto remote_socket = hci_open_dev(route);
+        if(remote_socket < 0) {
+            log->warn("Cannot open connection to {}: {} (errno={})", _address_string, utils::error_to_string(errno), errno);
+            throw std::runtime_error{"Cannot connect to device"};
+        }
 
         if(hci_read_remote_name(remote_socket, &address, sizeof device_name, device_name, 0) == 0) {
             device_name[247] = '\0';
@@ -19,11 +33,6 @@ namespace carpi::bluetooth {
         } else {
             _device_name.assign("Unknown Device");
         }
-
-        char device_address[18]{};
-        ba2str(&address, device_address);
-        device_address[17] = '\0';
-        _address_string.assign(device_address);
 
         hci_close_dev(remote_socket);
     }

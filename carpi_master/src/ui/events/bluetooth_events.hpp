@@ -31,11 +31,17 @@ namespace carpi::ui::events {
         [[nodiscard]] nlohmann::json to_json() const;
     };
 
+    struct ObdStatusResponse {
+        float rpm;
+        uint32_t speed;
+    };
+
     class BluetoothEvents : public utils::Singleton<BluetoothEvents> {
         LOGGER;
 
         static BluetoothResponse fetch_devices();
         static ObdConnectResponse create_obd_connection(const BluetoothDeviceInfo& device);
+        static ObdStatusResponse obd_status();
 
     public:
         void init_events();
