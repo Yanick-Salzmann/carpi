@@ -3,9 +3,12 @@
 
 #include <gps.h>
 #include <string>
+#include <common_utils/log.hpp>
 
 namespace carpi::gps {
     class GpsListener {
+        LOGGER;
+
     public:
         explicit GpsListener(const std::string& host = "localhost", uint16_t port = 2947);
     };
