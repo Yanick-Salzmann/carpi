@@ -22,22 +22,26 @@ namespace carpi::gps {
         });
 
         while(if_addrs != nullptr) {
-            if(if_addrs->ifa_addr->sa_family == AF_INET || if_addrs->ifa_addr->sa_family == AF_INET6) {
+            if(if_addrs->ifa_netmask->sa_family == AF_INET || if_addrs->ifa_netmask->sa_family == AF_INET6) {
                 break;
             }
 
             if_addrs = if_addrs->ifa_next;
         }
 
-        log->info("Address family: {}", if_addrs->ifa_addr->sa_family);
+        if(if_addrs == nullptr) {
+            log->error("No IPv4 or IPv6 gateway found");
+            throw std::runtime_error{"No IPv4 or IPv6 gateway"};
+        }
 
         char ipv6_addr[1024]{};
-        if (inet_ntop(if_addrs->ifa_addr->sa_family,
-                      if_addrs->ifa_addr->sa_family == AF_INET ? (void *) (&((sockaddr_in *) if_addrs->ifa_addr)->sin_addr) : (&((sockaddr_in6 *) if_addrs->ifa_addr)->sin6_addr),
+        if (inet_ntop(if_addrs->ifa_netmask->sa_family,
+                      if_addrs->ifa_netmask->sa_family == AF_INET ? (void *) (&((sockaddr_in *) if_addrs->ifa_netmask)->sin_addr) : (&((sockaddr_in6 *) if_addrs->ifa_netmask)->sin6_addr),
                       ipv6_addr,
                       sizeof ipv6_addr) == nullptr) {
             log->error("inet_ntop: {} (errno={})", utils::error_to_string(errno), errno);
         }
+
         log->info("Net Mask: {}", ipv6_addr);
     }
 }
