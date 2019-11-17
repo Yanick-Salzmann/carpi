@@ -33,8 +33,6 @@ namespace carpi::bluetooth {
         } else {
             _device_name.assign("Unknown Device");
         }
-
-        hci_close_dev(remote_socket);
     }
 
     bool BluetoothDevice::operator<(const BluetoothDevice &other) const {
