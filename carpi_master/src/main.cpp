@@ -4,15 +4,12 @@
 #include <ui/web_core.hpp>
 #include <data_server/http_server.hpp>
 #include <io/camera/camera_stream.hpp>
-#include <bluetooth_utils/low_energy.hpp>
 
 namespace carpi {
     int _argc;
     char **_argv;
 
     int main(int argc, char *argv[]) {
-        bluetooth::GattServer gatt{};
-
         std::string line{};
         utils::Logger log{"main"};
         _argc = argc;
