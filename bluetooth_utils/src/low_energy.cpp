@@ -39,6 +39,15 @@ namespace carpi::bluetooth {
 
             std::cout << "GOT CLIENT" << std::endl;
 
+            uint8_t req[] {
+                0x10,
+                0x01, 0x00,
+                0xFF, 0xFF,
+                0x00, 0x28
+            };
+
+            write(client, req, sizeof(req));
+
             char buffer[4096]{0};
             int ret = read(client, buffer, sizeof(buffer));
             printf("data len: %d\n", ret);
