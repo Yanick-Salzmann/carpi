@@ -167,10 +167,9 @@ $(() => {
         }
 
         event_manager.submitTask('obd_status', {}).then((resp) => {
-           console.log(resp.rpm, resp.speed);
            update_rpm(resp.rpm);
            update_speed(resp.speed);
-           setTimeout(fetch_status, 10);
+           fetch_status();
         });
     }
 
