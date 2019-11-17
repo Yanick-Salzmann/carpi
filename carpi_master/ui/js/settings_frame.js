@@ -47,7 +47,7 @@ $(() => {
                     '<div class="card-header">' +
                     '   <span class="device-text"></span>' +
                     '   <span class="bluetooth-loader float-right"><i class="fas fa-spinner"></i></span>' +
-                    '   <span class="connected-device float-right"><i class="fa fa-check"></i></span>' +
+                    '   <span class="device-status float-right"><i class="fa fa-check"></i><i class="fa fa-times"></i></span>' +
                     '</div>'
                 );
                 header.find('.device-text').text(dev.name);
@@ -66,8 +66,11 @@ $(() => {
                     });
 
                     event_manager.submitTask('obd_connect', {address: dev.address}).then((status) => {
-                        console.log(status);
-                        new_card.find('.card-header .bluetooth-loader').css({display: 'inline'});
+                        new_card.find('span.device-status')
+                            .removeClass(['connected-device', 'disconnected-device'])
+                            .addClass(status.success ? 'connected-device' : 'disconnected-device');
+
+                        new_card.find('.card-header .bluetooth-loader').css({display: 'none'});
                     });
                 })
             });

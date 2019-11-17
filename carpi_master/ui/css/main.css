@@ -84,6 +84,30 @@ section.splash-section .splash-text {
     color: lightgreen;
 }
 
+.disconnected-device {
+    color: lightcoral;
+}
+
+.device-status i {
+    display: none;
+}
+
+.device-status.connected-device i.fa-check {
+    display: inline;
+}
+
+.device-status.connected-device i.fa-times {
+    display: none;
+}
+
+.device-status.disconnected-device i.fa-check {
+    display: none;
+}
+
+.device-status.disconnected-device i.fa-times {
+    display: inline;
+}
+
 section.engine-section .gauge-wrapper {
     display: flex;
 }
