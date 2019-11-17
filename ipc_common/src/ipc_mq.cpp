@@ -6,8 +6,8 @@
 namespace carpi::ipc {
     LOGGER_IMPL(MessageQueue);
     static std::map<IpcMessageQueue, std::string> queue_names{
-            {IpcMessageQueue::CHROMIUM_EVENTS, "chromium_events"},
-            { IpcMessageQueue::GPS_BROADCAST, "gps_broadcast"}
+            {IpcMessageQueue::CHROMIUM_EVENTS, "/chromium_events"},
+            { IpcMessageQueue::GPS_BROADCAST, "/gps_broadcast"}
     };
 
     MessageQueue::MessageQueue(IpcMessageQueue queue) : MessageQueue(queue_names[queue]) {
