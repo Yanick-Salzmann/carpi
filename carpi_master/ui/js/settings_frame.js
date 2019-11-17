@@ -65,7 +65,7 @@ $(() => {
                         display: 'inline'
                     });
 
-                    sendCefRequest('obd_connect', {address: dev.address}).then((status) => {
+                    event_manager.submitTask('obd_connect', {address: dev.address}).then((status) => {
                         console.log(status);
                         new_card.find('.card-header .bluetooth-loader').css({display: 'inline'});
                     });
