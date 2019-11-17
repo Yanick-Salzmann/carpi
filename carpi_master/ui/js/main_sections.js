@@ -20,7 +20,7 @@ $(() => {
         on_show_settings_sections();
     });
 
-    $('#settings-back-button').click(() => {
+    $('#settings-back-button, #engine-back-button').click(() => {
         hide_all_sections();
         show_splash_sections();
     });
