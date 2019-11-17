@@ -6,7 +6,7 @@
 #include <common_utils/error.hpp>
 #include <arpa/inet.h>
 #include <net/if.h>
-#include <bits/ioctls.h>
+#include <sys/ioctl.h>
 
 namespace carpi::gps {
     LOGGER_IMPL(NetBroadcast);
