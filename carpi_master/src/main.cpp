@@ -15,7 +15,7 @@ namespace carpi {
                 .mq_maxmsg = 5,
                 .mq_msgsize = 512
         };
-        const auto mq = mq_open("/gpsbroadcast", O_RDWR | O_CREAT | O_CLOEXEC, 0777, &attributes);
+        const auto mq = mq_open("/gpsbroadcast", O_RDWR);
         std::array<std::uint8_t, 512> message_data{};
         const auto msg_size = mq_receive(mq, (char *) message_data.data(),512, nullptr);
         std::cout << "Read: " << msg_size << std::endl;
