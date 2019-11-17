@@ -80,7 +80,9 @@ namespace carpi::gps {
                _address_family == AF_INET ? sizeof _ip4_broadcast : sizeof _ip6_broadcast
         );
 
-        log->error("Error sending data: {} (errno={})", utils::error_to_string(errno), errno);
+        if(rc < 0) {
+            log->error("Error sending data: {} (errno={})", utils::error_to_string(errno), errno);
+        }
     }
 
     void NetBroadcast::on_measurement(const GpsMeasurement &gps_data) {
