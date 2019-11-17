@@ -31,7 +31,7 @@ namespace carpi::gps {
                               sizeof ipv6_addr) == nullptr) {
                     log->error("inet_ntop: {} (errno={})", utils::error_to_string(errno), errno);
                 }
-                log->info("Net Mask: {} (name: {}, flags: {})", ipv6_addr, if_addrs->ifa_name, if_addrs->ifa_flags);
+                log->info("Bcast: {} (name: {}, flags: {})", ipv6_addr, if_addrs->ifa_name, if_addrs->ifa_flags);
             }
 
             if_addrs = if_addrs->ifa_next;
