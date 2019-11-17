@@ -21,6 +21,14 @@ namespace carpi::gps {
             freeifaddrs(addrs);
         });
 
+        while(if_addrs != nullptr) {
+            if(if_addrs->ifa_addr->sa_family == AF_INET || if_addrs->ifa_addr->sa_family == AF_INET6) {
+                break;
+            }
+
+            if_addrs = if_addrs->ifa_next;
+        }
+
         log->info("Address family: {}", if_addrs->ifa_addr->sa_family);
 
         char ipv6_addr[1024]{};
