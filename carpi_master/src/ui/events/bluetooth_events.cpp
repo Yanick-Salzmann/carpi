@@ -89,4 +89,11 @@ namespace carpi::ui::events {
                 {"success", is_success}
         };
     }
+
+    nlohmann::json ObdStatusResponse::to_json() const {
+        return json {
+                {"speed", speed},
+                {"rpm", rpm}
+        };
+    }
 }

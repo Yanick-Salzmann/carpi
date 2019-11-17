@@ -34,6 +34,8 @@ namespace carpi::ui::events {
     struct ObdStatusResponse {
         float rpm;
         uint32_t speed;
+
+        [[nodiscard]] nlohmann::json to_json() const;
     };
 
     class BluetoothEvents : public utils::Singleton<BluetoothEvents> {

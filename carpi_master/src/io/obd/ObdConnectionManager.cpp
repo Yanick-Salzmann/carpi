@@ -16,16 +16,16 @@ namespace carpi::io::obd {
 
     uint32_t ObdConnectionManager::fetch_speed() {
         utils::Any speed{};
-        if (!_connection->send_command(carpi::obd::COMMAND_LIST["SPEED"], speed)) {
+        if (!_connection->send_command(carpi::obd::COMMAND_LIST.find("SPEED")->second, speed)) {
             return 0;
         }
 
         return utils::any_cast<uint32_t>(speed);
     }
 
-    uint32_t ObdConnectionManager::fetch_rpm() {
+    float ObdConnectionManager::fetch_rpm() {
         utils::Any rpm{};
-        if(!_connection->send_command(carpi::obd::COMMAND_LIST["RPM"], rpm)) {
+        if(!_connection->send_command(carpi::obd::COMMAND_LIST.find("RPM")->second, rpm)) {
             return 0;
         }
 
