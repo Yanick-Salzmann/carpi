@@ -11,10 +11,6 @@ namespace carpi {
     char **_argv;
 
     void mq_listener() {
-        mq_attr attributes{
-                .mq_maxmsg = 5,
-                .mq_msgsize = 512
-        };
         const auto mq = mq_open("/gpsbroadcast", O_RDONLY);
         std::array<std::uint8_t, 513> message_data{};
         const auto msg_size = mq_receive(mq, (char *) message_data.data(),513, nullptr);
