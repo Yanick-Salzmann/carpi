@@ -31,7 +31,7 @@ namespace carpi {
     }
 
     gps::GpsMeasurement read_measurement(net::UdpBroadcast &bcast) {
-        std::size_t size = read_data<std::size_t>(bcast);
+        uint32_t size = read_data<uint32_t>(bcast);
         read_data<uint32_t>(bcast);
         return {
                 .lat = read_data<double>(bcast),
