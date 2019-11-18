@@ -7,7 +7,12 @@ namespace carpi::net {
     LOGGER_IMPL(UdpBroadcast);
 
     UdpBroadcast::UdpBroadcast(uint16_t port, bool receiver) {
-        _socket = socket(AF_INET, SOCK_DGRAM, 0);
+        if(!get_broadcast_address(_address_family, _ip4_addr, _ip6_addr)) {
+            log->error("Error fetching broadcast address");
+            throw std::runtime_error{"Error getting broadcast address"};
+        }
+
+        _socket = socket(_address_family, SOCK_DGRAM, 0);
 
         uint32_t broadcast = 1;
 
@@ -16,19 +21,14 @@ namespace carpi::net {
             throw std::runtime_error{"Error setting socket to broadcast"};
         }
 
-        if(!get_broadcast_address(_address_family, _ip4_addr, _ip6_addr)) {
-            log->error("Error fetching broadcast address");
-            throw std::runtime_error{"Error getting broadcast address"};
-        }
+        _ip4_addr.sin_port = htons(port);
+        _ip6_addr.sin6_port = htons(port);
 
         if(receiver) {
             _ip4_addr.sin_addr.s_addr = INADDR_ANY;
             _ip6_addr.sin6_addr = in6addr_any;
             convert_to_receiver();
         }
-
-        _ip4_addr.sin_port = htons(port);
-        _ip6_addr.sin6_port = htons(port);
     }
 
     std::ptrdiff_t UdpBroadcast::send_data(const std::vector<uint8_t> &data) {
