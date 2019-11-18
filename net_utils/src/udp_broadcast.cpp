@@ -48,6 +48,7 @@ namespace carpi::net {
             }
 
             log->info("Received {} bytes from {}:{}", inet_ntoa(remote_addr.sin_addr), ntohs(remote_addr.sin_port));
+            return num_read;
         } else {
             sockaddr_in6 remote_addr{};
             socklen_t remote_len = sizeof remote_addr;
@@ -58,6 +59,7 @@ namespace carpi::net {
 
             char ip_buffer[100]{};
             log->info("Received {} bytes from {}:{}", inet_ntop(AF_INET6, &remote_addr.sin6_addr, ip_buffer, sizeof ip_buffer));
+            return num_read;
         }
     }
 
