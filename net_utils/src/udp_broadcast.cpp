@@ -24,6 +24,7 @@ namespace carpi::net {
         if(receiver) {
             _ip4_addr.sin_addr.s_addr = INADDR_ANY;
             _ip6_addr.sin6_addr = in6addr_any;
+            convert_to_receiver();
         }
 
         _ip4_addr.sin_port = htons(port);
