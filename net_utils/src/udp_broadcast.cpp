@@ -58,6 +58,8 @@ namespace carpi::net {
             log->error("Error binding UDP broadcast receiver: {} (errno={})", utils::error_to_string(errno), errno);
             throw std::runtime_error{"Error binding UDP receiver"};
         }
+
+        log->info("UDP broadcast bound to port: {}", htons(_ip4_addr.sin_port));
     }
 
     std::ptrdiff_t UdpBroadcast::read_data(void *buffer, std::size_t to_read) {
