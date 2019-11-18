@@ -19,6 +19,7 @@ namespace carpi {
         while (to_read > 0) {
             const auto num_read = bcast.read_data(ptr, to_read);
             if (num_read < 0) {
+                std::cout << "ERROR" << std::endl;
                 throw std::runtime_error{"Error reading data"};
             }
 
