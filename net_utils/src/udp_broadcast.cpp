@@ -63,6 +63,7 @@ namespace carpi::net {
     }
 
     std::ptrdiff_t UdpBroadcast::read_data(void *buffer, std::size_t to_read) {
+        log->info("Reading {} bytes", to_read);
         if(_address_family == AF_INET) {
             sockaddr_in remote_addr{};
             socklen_t remote_len = sizeof remote_addr;
