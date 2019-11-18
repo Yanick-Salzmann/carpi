@@ -54,7 +54,7 @@ namespace carpi::net {
             len = sizeof _ip6_addr;
         }
 
-        if(!bind(_socket, addr_ptr, len)) {
+        if(bind(_socket, addr_ptr, len) < 0) {
             log->error("Error binding UDP broadcast receiver: {} (errno={})", utils::error_to_string(errno), errno);
             throw std::runtime_error{"Error binding UDP receiver"};
         }
