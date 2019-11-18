@@ -22,6 +22,8 @@ namespace carpi::gps {
         const auto rc = _broadcast->send_data(data);
         if(rc < 0) {
             log->error("Error sending data: {} (errno={})", utils::error_to_string(errno), errno);
+        } else {
+            log->info("Sent {} bytes", rc);
         }
     }
 

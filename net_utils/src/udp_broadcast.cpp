@@ -63,30 +63,14 @@ namespace carpi::net {
     }
 
     std::ptrdiff_t UdpBroadcast::read_data(void *buffer, std::size_t to_read) {
-        log->info("Reading {} bytes", to_read);
         if(_address_family == AF_INET) {
             sockaddr_in remote_addr{};
             socklen_t remote_len = sizeof remote_addr;
-            log->info("BEFORE RCVFROM");
-            const auto num_read = recvfrom(_socket, buffer, to_read, 0, (sockaddr*)&remote_addr, &remote_len);
-            log->info("AFTER RCVFROM");
-            if(num_read <= 0) {
-                return num_read;
-            }
-
-            log->info("Received {} bytes from {}:{}", num_read, inet_ntoa(remote_addr.sin_addr), ntohs(remote_addr.sin_port));
-            return num_read;
+            return recvfrom(_socket, buffer, to_read, 0, (sockaddr*)&remote_addr, &remote_len);
         } else {
             sockaddr_in6 remote_addr{};
             socklen_t remote_len = sizeof remote_addr;
-            const auto num_read = recvfrom(_socket,buffer, to_read, 0, (sockaddr*)&remote_addr, &remote_len);
-            if(num_read <= 0) {
-                return num_read;
-            }
-
-            char ip_buffer[100]{};
-            log->info("Received {} bytes from {}:{}", inet_ntop(AF_INET6, &remote_addr.sin6_addr, ip_buffer, sizeof ip_buffer));
-            return num_read;
+            return recvfrom(_socket,buffer, to_read, 0, (sockaddr*)&remote_addr, &remote_len);
         }
     }
 }
