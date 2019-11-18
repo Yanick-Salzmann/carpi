@@ -39,28 +39,7 @@ namespace carpi::net {
     }
 
     std::ptrdiff_t UdpBroadcast::read_data(std::vector<uint8_t> &data) {
-        if(_address_family == AF_INET) {
-            sockaddr_in remote_addr{};
-            socklen_t remote_len = sizeof remote_addr;
-            const auto num_read = recvfrom(_socket, data.data(), data.size(), 0, (sockaddr*)&remote_addr, &remote_len);
-            if(num_read <= 0) {
-                return num_read;
-            }
-
-            log->info("Received {} bytes from {}:{}", inet_ntoa(remote_addr.sin_addr), ntohs(remote_addr.sin_port));
-            return num_read;
-        } else {
-            sockaddr_in6 remote_addr{};
-            socklen_t remote_len = sizeof remote_addr;
-            const auto num_read = recvfrom(_socket, data.data(), data.size(), 0, (sockaddr*)&remote_addr, &remote_len);
-            if(num_read <= 0) {
-                return num_read;
-            }
-
-            char ip_buffer[100]{};
-            log->info("Received {} bytes from {}:{}", inet_ntop(AF_INET6, &remote_addr.sin6_addr, ip_buffer, sizeof ip_buffer));
-            return num_read;
-        }
+        return read_data(data.data(), data.size());
     }
 
     void UdpBroadcast::convert_to_receiver() {
@@ -77,6 +56,31 @@ namespace carpi::net {
         if(!bind(_socket, addr_ptr, len)) {
             log->error("Error binding UDP broadcast receiver: {} (errno={})", utils::error_to_string(errno), errno);
             throw std::runtime_error{"Error binding UDP receiver"};
+        }
+    }
+
+    std::ptrdiff_t UdpBroadcast::read_data(void *buffer, std::size_t to_read) {
+        if(_address_family == AF_INET) {
+            sockaddr_in remote_addr{};
+            socklen_t remote_len = sizeof remote_addr;
+            const auto num_read = recvfrom(_socket, buffer, to_read, 0, (sockaddr*)&remote_addr, &remote_len);
+            if(num_read <= 0) {
+                return num_read;
+            }
+
+            log->info("Received {} bytes from {}:{}", inet_ntoa(remote_addr.sin_addr), ntohs(remote_addr.sin_port));
+            return num_read;
+        } else {
+            sockaddr_in6 remote_addr{};
+            socklen_t remote_len = sizeof remote_addr;
+            const auto num_read = recvfrom(_socket,buffer, to_read, 0, (sockaddr*)&remote_addr, &remote_len);
+            if(num_read <= 0) {
+                return num_read;
+            }
+
+            char ip_buffer[100]{};
+            log->info("Received {} bytes from {}:{}", inet_ntop(AF_INET6, &remote_addr.sin6_addr, ip_buffer, sizeof ip_buffer));
+            return num_read;
         }
     }
 }

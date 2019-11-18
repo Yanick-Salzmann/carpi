@@ -24,6 +24,7 @@ namespace carpi::net {
 
         std::ptrdiff_t send_data(const std::vector<uint8_t>& data);
         std::ptrdiff_t read_data(std::vector<uint8_t>& data);
+        std::ptrdiff_t read_data(void* buffer, std::size_t to_read);
     };
 }
 

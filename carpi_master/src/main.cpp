@@ -4,24 +4,50 @@
 #include <ui/web_core.hpp>
 #include <data_server/http_server.hpp>
 #include <io/camera/camera_stream.hpp>
-#include <mqueue.h>
+#include <net_utils/udp_broadcast.hpp>
+#include <gps/gps_listener.hpp>
 
 namespace carpi {
     int _argc;
     char **_argv;
 
-    void mq_listener() {
-        const auto mq = mq_open("/gpsbroadcast", O_RDONLY);
-        std::cout << "MQ Open: " << mq << std::endl;
-        std::array<std::uint8_t, 513> message_data{};
-        const auto msg_size = mq_receive(mq, (char *) message_data.data(),512, nullptr);
-        std::cout << "Read: " << msg_size << std::endl;
+    template<typename T>
+    T read_data(net::UdpBroadcast &bcast) {
+        std::size_t to_read = sizeof(T);
+        T ret;
+        uint8_t *ptr = (uint8_t *) &ret;
+        while (to_read > 0) {
+            const auto num_read = bcast.read_data(ptr, to_read);
+            if (num_read < 0) {
+                throw std::runtime_error{"Error reading data"};
+            }
+
+            to_read -= num_read;
+            ptr += num_read;
+        }
+
+        return ret;
+    }
+
+    gps::GpsMeasurement read_measurement(net::UdpBroadcast &bcast) {
+        std::size_t size = read_data<std::size_t>(bcast);
+        read_data<uint32_t>(bcast);
+        return {
+                .lat = read_data<double>(bcast),
+                .lon = read_data<double>(bcast),
+                .alt = read_data<double>(bcast)
+        };
     }
 
     int main(int argc, char *argv[]) {
-        std::thread t{mq_listener};
-        std::string line{};
         utils::Logger log{"main"};
+        net::UdpBroadcast bcast{3377, true};
+        while (true) {
+            gps::GpsMeasurement m = read_measurement(bcast);
+            log->info("GPS: {}/{}/{}", m.lat, m.lon, m.alt);
+        }
+
+        std::string line{};
         _argc = argc;
         _argv = argv;
 
