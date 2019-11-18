@@ -34,6 +34,7 @@ target_link_libraries(carpi_master
         ipc_common
         wiring_utils
         data_server
+        net_utils
         Threads::Threads
         ${OPENGLES2_LIBRARIES}
         ${EGL_LIBRARIES}
