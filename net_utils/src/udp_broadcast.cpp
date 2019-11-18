@@ -67,12 +67,14 @@ namespace carpi::net {
         if(_address_family == AF_INET) {
             sockaddr_in remote_addr{};
             socklen_t remote_len = sizeof remote_addr;
+            log->info("BEFORE RCVFROM");
             const auto num_read = recvfrom(_socket, buffer, to_read, 0, (sockaddr*)&remote_addr, &remote_len);
+            log->info("AFTER RCVFROM");
             if(num_read <= 0) {
                 return num_read;
             }
 
-            log->info("Received {} bytes from {}:{}", inet_ntoa(remote_addr.sin_addr), ntohs(remote_addr.sin_port));
+            log->info("Received {} bytes from {}:{}", num_read, inet_ntoa(remote_addr.sin_addr), ntohs(remote_addr.sin_port));
             return num_read;
         } else {
             sockaddr_in6 remote_addr{};
