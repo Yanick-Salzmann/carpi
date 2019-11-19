@@ -4,7 +4,7 @@
 #include <string>
 
 namespace carpi::gps {
-    static std::string GPS_MULTICAST_INTERFACE;
+    std::string gps_multicast_interface();
 }
 
 #endif //CARPI_GPS_GPS_CONSTANTS_HPP

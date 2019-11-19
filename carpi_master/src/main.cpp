@@ -43,7 +43,7 @@ namespace carpi {
 
     int main(int argc, char *argv[]) {
         utils::Logger log{"main"};
-        net::UdpMulticast bcast{gps::GPS_MULTICAST_INTERFACE, 3377, true};
+        net::UdpMulticast bcast{gps::gps_multicast_interface(), 3377, true};
         while (true) {
             gps::GpsMeasurement m = read_measurement(bcast);
             log->info("GPS: {}/{}/{}", m.lat, m.lon, m.alt);
