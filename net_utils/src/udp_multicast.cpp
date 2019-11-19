@@ -7,9 +7,12 @@ namespace carpi::net {
     LOGGER_IMPL(UdpMulticast);
 
     UdpMulticast::UdpMulticast(const std::string &address, uint16_t port, bool receiver) {
-        if (inet_pton(AF_INET6, address.c_str(), &_addr6) == 1) {
+        _addr4.sin_family = AF_INET;
+        _addr6.sin6_family = AF_INET6;
+
+        if (inet_pton(AF_INET6, address.c_str(), &_addr6.sin6_addr) == 1) {
             _addr_family = AF_INET6;
-        } else if (inet_pton(AF_INET, address.c_str(), &_addr4) == 1) {
+        } else if (inet_pton(AF_INET, address.c_str(), &_addr4.sin_addr) == 1) {
             _addr_family = AF_INET;
         } else {
             log->error("Cannot parse '{}' as IPv4 or IPv6 address");
