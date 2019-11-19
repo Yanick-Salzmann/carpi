@@ -91,8 +91,6 @@ $(() => {
         scan_devices();
     };
 
-    scan_devices();
-
     reload_button.click(() => {
         scan_devices();
     });
