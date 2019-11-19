@@ -15,11 +15,10 @@ namespace carpi {
     gps::GpsMeasurement read_measurement(net::UdpMulticast &bcast) {
         static uint8_t buffer[32]{};
         const auto read = bcast.read_data(buffer, sizeof buffer);
-        std::cout << "READ: {}" << read << std::endl;
         return {
-                .lat = *((double*) buffer + 8),
-                .lon = *((double*) buffer + 16),
-                .alt = *((double*) buffer + 24)
+                .lat = *((double*) (buffer + 8)),
+                .lon = *((double*) (buffer + 16)),
+                .alt = *((double*) (buffer + 24))
         };
     }
 
@@ -28,7 +27,7 @@ namespace carpi {
         net::UdpMulticast bcast{gps::gps_multicast_interface(), 3377, true};
         while (true) {
             gps::GpsMeasurement m = read_measurement(bcast);
-            //log->info("GPS: {}/{}/{}", m.lat, m.lon, m.alt);
+            log->info("GPS: {}/{}/{}", m.lat, m.lon, m.alt);
         }
 
         std::string line{};
