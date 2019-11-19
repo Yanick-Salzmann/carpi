@@ -12,7 +12,7 @@ namespace carpi {
 
     void GpsListenerThread::start_loop() {
         _is_running = true;
-        //_gps_loop = std::thread{[=]() { gps_loop(); }};
+        _gps_loop = std::thread{[=]() { gps_loop(); }};
     }
 
     void GpsListenerThread::gps_loop() {
