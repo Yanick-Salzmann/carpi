@@ -12,32 +12,13 @@ namespace carpi {
     int _argc;
     char **_argv;
 
-    template<typename T>
-    T read_data(net::UdpMulticast &bcast) {
-        std::size_t to_read = sizeof(T);
-        T ret;
-        uint8_t *ptr = (uint8_t *) &ret;
-        while (to_read > 0) {
-            const auto num_read = bcast.read_data(ptr, to_read);
-            if (num_read < 0) {
-                std::cout << "ERROR" << std::endl;
-                throw std::runtime_error{"Error reading data"};
-            }
-
-            to_read -= num_read;
-            ptr += num_read;
-        }
-
-        return ret;
-    }
-
     gps::GpsMeasurement read_measurement(net::UdpMulticast &bcast) {
-        uint32_t size = read_data<uint32_t>(bcast);
-        read_data<uint32_t>(bcast);
+        static uint8_t buffer[36]{};
+        bcast.read_data(buffer, sizeof buffer);
         return {
-                .lat = read_data<double>(bcast),
-                .lon = read_data<double>(bcast),
-                .alt = read_data<double>(bcast)
+                .lat = *((double*) buffer + 8),
+                .lon = *((double*) buffer + 16),
+                .alt = *((double*) buffer + 24)
         };
     }
 
