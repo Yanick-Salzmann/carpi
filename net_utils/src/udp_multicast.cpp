@@ -48,10 +48,9 @@ namespace carpi::net {
                 throw std::runtime_error{"Error binding UDP"};
             }
 
-            ip_mreq mreq{
-                    .imr_multiaddr = gaddr4,
-                    .imr_interface.s_addr = htonl(INADDR_ANY)
-            };
+            ip_mreq mreq{};
+            mreq.imr_multiaddr = gaddr4;
+            mreq.imr_interface.s_addr = htonl(INADDR_ANY);
 
             if (setsockopt(_socket, IPPROTO_IP, IP_ADD_MEMBERSHIP, &mreq, sizeof mreq) < 0) {
                 log->error("Error adding membership to multicast address: {} (errno={})", utils::error_to_string(errno), errno);
