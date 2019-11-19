@@ -102,4 +102,8 @@ namespace carpi::net {
             return recvfrom(_socket, buffer, to_read, 0, (sockaddr *) &remote_addr, &remote_len);
         }
     }
+
+    void UdpMulticast::close() {
+        ::close(_socket);
+    }
 }
