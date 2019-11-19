@@ -23,13 +23,10 @@ namespace carpi::gps {
         const auto rc = _broadcast->send_data(data);
         if(rc < 0) {
             log->error("Error sending data: {} (errno={})", utils::error_to_string(errno), errno);
-        } else {
-            log->info("Sent {} bytes", rc);
         }
     }
 
     void NetBroadcast::on_measurement(const GpsMeasurement &gps_data) {
-        log->info("GPS: {}/{}/{}", gps_data.lat, gps_data.lon, gps_data.alt);
         ipc::IpcPackage package{ipc::Opcodes::MSG_GPS_UPDATE};
         package << gps_data.lat << gps_data.lon << gps_data.alt;
         send_packet(package);
