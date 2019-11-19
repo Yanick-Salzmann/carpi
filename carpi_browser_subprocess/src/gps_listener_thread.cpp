@@ -11,6 +11,10 @@ namespace carpi {
     }
 
     void GpsListenerThread::start_loop() {
+        if(_is_running) {
+            return;
+        }
+
         _is_running = true;
         _gps_loop = std::thread{[=]() { gps_loop(); }};
     }
@@ -35,9 +39,9 @@ namespace carpi {
     void GpsListenerThread::stop() {
         _is_running = false;
         _multicast->close();
-        //if (_gps_loop.joinable()) {
-        //    _gps_loop.join();
-        //}
+        if (_gps_loop.joinable()) {
+            _gps_loop.join();
+        }
     }
 
     void GpsListenerThread::active_measurement(gps::GpsMeasurement &m) {

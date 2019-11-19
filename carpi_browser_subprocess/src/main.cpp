@@ -8,7 +8,5 @@ int main(int argc, char* argv[]) {
     CefMainArgs main_args{argc, argv};
     CefRefPtr<carpi::MainApp> app{new carpi::MainApp{}};
 
-    sGpsListener->start();
-
     return CefExecuteProcess(main_args, app, nullptr);
 }

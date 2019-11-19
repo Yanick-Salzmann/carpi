@@ -5,6 +5,8 @@
 namespace carpi {
 
     bool GpsCallback::Execute(const CefString &name, CefRefPtr<CefV8Value> object, const CefV8ValueList &arguments, CefRefPtr<CefV8Value> &retval, CefString &exception) {
+        sGpsListener->start();
+
         gps::GpsMeasurement measurement{};
         sGpsListener->active_measurement(measurement);
 
