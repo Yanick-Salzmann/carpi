@@ -4,14 +4,14 @@
 #include <common_utils/log.hpp>
 #include <ipc_common/ipc_package.hpp>
 #include <gps/gps_listener.hpp>
-#include <net_utils/udp_broadcast.hpp>
+#include <net_utils/udp_multicast.hpp>
 #include <memory>
 
 namespace carpi::gps {
     class NetBroadcast {
         LOGGER;
 
-        std::shared_ptr<net::UdpBroadcast> _broadcast;
+        std::shared_ptr<net::UdpMulticast> _broadcast;
 
         void send_packet(const ipc::IpcPackage& packet);
 

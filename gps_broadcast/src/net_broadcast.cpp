@@ -1,12 +1,13 @@
 #include "net_broadcast.hpp"
 #include <common_utils/error.hpp>
+#include <gps/gps_constants.hpp>
 
 
 namespace carpi::gps {
     LOGGER_IMPL(NetBroadcast);
 
     NetBroadcast::NetBroadcast() {
-        _broadcast = std::make_shared<net::UdpBroadcast>(3377, false);
+        _broadcast = std::make_shared<net::UdpMulticast>(GPS_MULTICAST_INTERFACE, 3377, false);
     }
 
     void NetBroadcast::send_packet(const ipc::IpcPackage &packet) {

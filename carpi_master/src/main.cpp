@@ -4,15 +4,16 @@
 #include <ui/web_core.hpp>
 #include <data_server/http_server.hpp>
 #include <io/camera/camera_stream.hpp>
-#include <net_utils/udp_broadcast.hpp>
+#include <net_utils/udp_multicast.hpp>
 #include <gps/gps_listener.hpp>
+#include <gps/gps_constants.hpp>
 
 namespace carpi {
     int _argc;
     char **_argv;
 
     template<typename T>
-    T read_data(net::UdpBroadcast &bcast) {
+    T read_data(net::UdpMulticast &bcast) {
         std::size_t to_read = sizeof(T);
         T ret;
         uint8_t *ptr = (uint8_t *) &ret;
@@ -30,7 +31,7 @@ namespace carpi {
         return ret;
     }
 
-    gps::GpsMeasurement read_measurement(net::UdpBroadcast &bcast) {
+    gps::GpsMeasurement read_measurement(net::UdpMulticast &bcast) {
         uint32_t size = read_data<uint32_t>(bcast);
         read_data<uint32_t>(bcast);
         return {
@@ -42,7 +43,7 @@ namespace carpi {
 
     int main(int argc, char *argv[]) {
         utils::Logger log{"main"};
-        net::UdpBroadcast bcast{3377, true};
+        net::UdpMulticast bcast{gps::GPS_MULTICAST_INTERFACE, 3377, true};
         while (true) {
             gps::GpsMeasurement m = read_measurement(bcast);
             log->info("GPS: {}/{}/{}", m.lat, m.lon, m.alt);
