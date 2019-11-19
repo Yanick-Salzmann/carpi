@@ -33,9 +33,9 @@ namespace carpi {
     void GpsListenerThread::stop() {
         _is_running = false;
         //_multicast->close();
-        if (_gps_loop.joinable()) {
-            _gps_loop.join();
-        }
+        //if (_gps_loop.joinable()) {
+        //    _gps_loop.join();
+        //}
     }
 
     void GpsListenerThread::active_measurement(gps::GpsMeasurement &m) {
