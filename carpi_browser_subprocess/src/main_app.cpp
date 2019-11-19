@@ -1,7 +1,7 @@
 #include "main_app.hpp"
 #include "camera_frame_callback.hpp"
 #include "env_var_callback.hpp"
-#include "gps_event_listener.hpp"
+#include "gps_callback.hpp"
 
 namespace carpi {
 
@@ -26,8 +26,9 @@ namespace carpi {
     void MainApp::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefV8Context> context) {
         _router->OnContextCreated(browser, frame, context);
 
-        context->GetGlobal()->SetValue("fetch_raw_frame", CefV8Value::CreateFunction("fetch_raw_frame", new carpi::CameraFrameCallback()), V8_PROPERTY_ATTRIBUTE_READONLY);
-        context->GetGlobal()->SetValue("get_env_value", CefV8Value::CreateFunction("get_env_value", new carpi::EnvVarCallback()), V8_PROPERTY_ATTRIBUTE_READONLY);
+        context->GetGlobal()->SetValue("fetch_raw_frame", CefV8Value::CreateFunction("fetch_raw_frame", new CameraFrameCallback()), V8_PROPERTY_ATTRIBUTE_READONLY);
+        context->GetGlobal()->SetValue("get_env_value", CefV8Value::CreateFunction("get_env_value", new EnvVarCallback()), V8_PROPERTY_ATTRIBUTE_READONLY);
+        context->GetGlobal()->SetValue("gps_get_coordinates", CefV8Value::CreateFunction("gps_get_coordinates", new GpsCallback()), V8_PROPERTY_ATTRIBUTE_READONLY);
     }
 
     void MainApp::OnContextReleased(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefV8Context> context) {
