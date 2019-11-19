@@ -4,31 +4,13 @@
 #include <ui/web_core.hpp>
 #include <data_server/http_server.hpp>
 #include <io/camera/camera_stream.hpp>
-#include <net_utils/udp_multicast.hpp>
-#include <gps/gps_listener.hpp>
-#include <gps/gps_constants.hpp>
 
 namespace carpi {
     int _argc;
     char **_argv;
 
-    gps::GpsMeasurement read_measurement(net::UdpMulticast &bcast) {
-        static uint8_t buffer[32]{};
-        const auto read = bcast.read_data(buffer, sizeof buffer);
-        return {
-                .lat = *((double*) (buffer + 8)),
-                .lon = *((double*) (buffer + 16)),
-                .alt = *((double*) (buffer + 24))
-        };
-    }
-
     int main(int argc, char *argv[]) {
         utils::Logger log{"main"};
-        net::UdpMulticast bcast{gps::gps_multicast_interface(), 3377, true};
-        while (true) {
-            gps::GpsMeasurement m = read_measurement(bcast);
-            log->info("GPS: {}/{}/{}", m.lat, m.lon, m.alt);
-        }
 
         std::string line{};
         _argc = argc;
