@@ -16,6 +16,8 @@ namespace carpi::net {
             throw std::runtime_error{"Invalid multicast address"};
         }
 
+        log->info("Using address family: {}", (_addr_family == AF_INET) ? "IPv4" : "IPv6");
+
         _socket = socket(_addr_family, SOCK_DGRAM, 0);
         if (_socket < 0) {
             log->error("Error creating UDP socket: {} (errno={})", utils::error_to_string(errno), errno);
