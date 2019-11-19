@@ -28,8 +28,6 @@ namespace carpi {
                 continue;
             }
 
-            log->info("received data");
-
             const auto measurement = *(const gps::GpsMeasurement *) (gps_buffer + 8);
             std::lock_guard<std::mutex> l{_measure_lock};
             _active_measurement = measurement;
