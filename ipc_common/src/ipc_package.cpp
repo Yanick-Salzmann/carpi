@@ -60,12 +60,10 @@ namespace carpi::ipc {
 
     void IpcPackage::write(const void *buffer, std::size_t size) {
         const auto num_bytes = _write_pos + size;
-        auto final_size = _data.size();
-        while (final_size < num_bytes) {
-            final_size = std::max<std::size_t>(final_size * 1.5f, final_size + 1);
+        if(_data.size() < num_bytes) {
+            _data.resize(num_bytes);
         }
 
-        _data.resize(final_size);
         memcpy(_data.data() + _write_pos, buffer, size);
         _write_pos += size;
     }
