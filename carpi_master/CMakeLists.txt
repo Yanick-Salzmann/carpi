@@ -35,6 +35,7 @@ target_link_libraries(carpi_master
         wiring_utils
         data_server
         net_utils
+        gps_utils
         Threads::Threads
         ${OPENGLES2_LIBRARIES}
         ${EGL_LIBRARIES}
