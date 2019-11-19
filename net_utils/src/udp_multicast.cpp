@@ -27,16 +27,16 @@ namespace carpi::net {
             throw std::runtime_error{"Error creating UDP socket"};
         }
 
-        uint32_t reuse = 0;
-        if (setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof reuse) < 0) {
-            log->error("Error setting SO_REUSEADDR on UDP socket: {} (errno={})", utils::error_to_string(errno), errno);
-            throw std::runtime_error{"Error creating UDP socket"};
-        }
-
         _addr4.sin_port = htons(port);
         _addr6.sin6_port = htons(port);
 
         if (receiver) {
+            uint32_t reuse = 1;
+            if (setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof reuse) < 0) {
+                log->error("Error setting SO_REUSEADDR on UDP socket: {} (errno={})", utils::error_to_string(errno), errno);
+                throw std::runtime_error{"Error creating UDP socket"};
+            }
+
             const auto inaddr4 = _addr4.sin_addr;
             const auto inaddr6 = _addr6.sin6_addr;
 
