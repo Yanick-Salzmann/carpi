@@ -7,7 +7,11 @@ namespace carpi {
     LOGGER_IMPL(GpsListenerThread);
 
     GpsListenerThread::GpsListenerThread() {
-        _multicast = std::make_shared<net::UdpMulticast>(gps::gps_multicast_interface(), 3377, true);
+        try {
+            _multicast = std::make_shared<net::UdpMulticast>(gps::gps_multicast_interface(), 3377, true);
+        } catch (std::exception& e) {
+            log->error("Error creating multicast server: {}", e.what());
+        }
     }
 
     void GpsListenerThread::start_loop() {
