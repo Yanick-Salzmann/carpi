@@ -20,4 +20,5 @@ target_link_libraries(carpi_browser_subprocess
         /usr/local/lib/libcef_dll_wrapper.a
         /usr/local/bin/libcef.so
         Threads::Threads
+        gps_utils
 )
