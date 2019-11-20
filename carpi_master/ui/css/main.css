@@ -154,7 +154,7 @@ section.map-section div.left-control-area .zoom-button {
     text-align: center;
 }
 
-section.map-section div.left-control-area .zoom-button:hover, section.map-section div.left-control-area .zoom-button:active {
+section.map-section div.left-control-area .zoom-button:active {
     border: 1px solid white;
     background-color: white;
 }
