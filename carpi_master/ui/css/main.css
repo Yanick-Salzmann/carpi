@@ -137,3 +137,7 @@ section.map-section div.left-control-area {
     flex-direction: column;
     z-index: 999;
 }
+
+section.map-section div.left-control-area *:not(:first-child) {
+    margin-top: 10px;
+}
