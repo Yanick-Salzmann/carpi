@@ -6,7 +6,7 @@ $(() => {
 
     function on_update() {
         const position = gps_get_coordinates();
-        map.setView([position.lat, position.lon], 13);
+        map.setView([position.lat, position.lon], 21);
     }
 
     window.on_show_map_section = function () {
