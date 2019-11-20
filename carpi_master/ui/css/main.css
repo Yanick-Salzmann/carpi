@@ -16,6 +16,11 @@ body > section {
     height: calc(100% - 60px);
 }
 
+section.map-section {
+    display: none;
+    position: relative;
+}
+
 section.engine-section {
     display: none;
 }

@@ -33,4 +33,13 @@ $(() => {
 
         on_show_car_section();
     });
+
+    $('#map-splash-card').click(() => {
+        hide_all_sections();
+        $('body > section.map-section').css({
+            display: 'block'
+        });
+
+        on_show_map_section();
+    })
 });
