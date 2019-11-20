@@ -146,8 +146,8 @@ section.map-section div.left-control-area .zoom-button {
     display: block;
     width: 40px;
     height: 40px;
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.7);
     color: black;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.7);
     border-radius: 5px;
 }
