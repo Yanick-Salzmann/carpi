@@ -124,3 +124,7 @@ section.map-section div#leaflet-map-container {
     bottom: 0;
     right: 0;
 }
+
+.leaflet-control-container {
+    display: none !important;
+}
