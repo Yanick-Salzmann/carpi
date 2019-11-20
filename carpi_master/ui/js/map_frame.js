@@ -16,8 +16,8 @@ $(() => {
     }).addTo(map);
 
     map.on('zoomend', () => {
-       zoom_level = map.getZoom();
-       localStorage.setItem('map.zoom', zoom_level.toString());
+        zoom_level = map.getZoom();
+        localStorage.setItem('map.zoom', zoom_level.toString());
     });
 
     let is_initialized = false;
@@ -35,6 +35,18 @@ $(() => {
     $('#follow-position-map-button').click(() => {
         is_custom_position = false;
         on_update();
+    });
+
+    $('#zoom-in-map-button').click(() => {
+        zoom_level = Math.min(zoom_level + 1, 18);
+        localStorage.setItem('map.zoom', zoom_level.toString());
+        map.setZoom(zoom_level);
+    });
+
+    $('#zoom-out-map-button').click(() => {
+        zoom_level = Math.max(zoom_level, -1, 0);
+        localStorage.setItem('map.zoom', zoom_level.toString());
+        map.setZoom(zoom_level);
     });
 
     function on_update() {
