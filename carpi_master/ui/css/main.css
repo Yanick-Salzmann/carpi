@@ -116,3 +116,11 @@ section.splash-section .splash-text {
 section.engine-section .gauge-wrapper {
     display: flex;
 }
+
+section.map-section div#leaflet-map-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+}
