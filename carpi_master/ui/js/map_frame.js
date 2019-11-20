@@ -15,6 +15,11 @@ $(() => {
         radius: 2
     }).addTo(map);
 
+    map.on('zoomend', () => {
+       zoom_level = map.getZoom();
+       localStorage.setItem('map.zoom', zoom_level.toString());
+    });
+
     let is_initialized = false;
     let is_custom_position = false;
 
