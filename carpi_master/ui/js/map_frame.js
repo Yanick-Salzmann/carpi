@@ -22,6 +22,11 @@ $(() => {
         is_custom_position = true;
     });
 
+    $('#center-camera-map-button').click(() => {
+        const position = gps_get_coordinates();
+        map.setView([position.lat, position.lon], zoom_level);
+    });
+
     function on_update() {
         const position = gps_get_coordinates();
         if (!is_custom_position) {
