@@ -24,7 +24,7 @@ $(() => {
 
     $('#center-camera-map-button').click(() => {
         const position = gps_get_coordinates();
-        map.setView([position.lat, position.lon], zoom_level);
+        map.setView([position.lat, position.lon], map.getZoom());
     });
 
     function on_update() {
