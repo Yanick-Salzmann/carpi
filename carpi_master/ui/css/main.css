@@ -128,3 +128,10 @@ section.map-section div#leaflet-map-container {
 .leaflet-control-container {
     display: none !important;
 }
+
+section.map-section div.left-control-area {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    display: flex;
+}

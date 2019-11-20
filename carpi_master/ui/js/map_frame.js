@@ -1,4 +1,10 @@
 $(() => {
+    let zoom_level = parseInt(localStorage.getItem("map.zoom"));
+    if(isNaN(zoom_level)) {
+        zoom_level = 21;
+        localStorage.setItem('map.zoom', zoom_level.toString());
+    }
+
     const env_config = get_env_value('HERE_APP_ID', 'HERE_APP_CODE');
 
     const map = L.map('leaflet-map-container');
