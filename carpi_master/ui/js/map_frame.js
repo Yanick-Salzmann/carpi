@@ -14,11 +14,16 @@ $(() => {
             fillOpacity: 0.5,
             radius: 2
     }).addTo(map);
+
     let is_initialized = false;
+    let is_custom_position = false;
 
     function on_update() {
         const position = gps_get_coordinates();
-        map.setView([position.lat, position.lon], 21);
+        if(!is_custom_position) {
+            map.setView([position.lat, position.lon], zoom_level);
+        }
+
         cur_pos.setLatLng([position.lat, position.lon]);
     }
 
