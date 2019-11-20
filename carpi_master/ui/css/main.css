@@ -142,7 +142,7 @@ section.map-section div.left-control-area *:not(:first-child) {
     margin-top: 10px;
 }
 
-section.map-section div.left-control-area .zoom-button {
+section.map-section div.left-control-area .control-button {
     display: block;
     width: 40px;
     height: 40px;
@@ -154,7 +154,7 @@ section.map-section div.left-control-area .zoom-button {
     text-align: center;
 }
 
-section.map-section div.left-control-area .zoom-button:active {
+section.map-section div.left-control-area .control-button:active {
     border: 1px solid white;
     background-color: white;
 }
