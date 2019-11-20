@@ -132,7 +132,7 @@ section.map-section div#leaflet-map-container {
 section.map-section div.left-control-area {
     position: absolute;
     top: 15px;
-    left: 15px;
+    left: 35px;
     display: flex;
     flex-direction: column;
     z-index: 999;

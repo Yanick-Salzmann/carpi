@@ -27,6 +27,11 @@ $(() => {
         map.setView([position.lat, position.lon], map.getZoom());
     });
 
+    $('#follow-position-map-button').click(() => {
+        is_custom_position = false;
+        on_update();
+    });
+
     function on_update() {
         const position = gps_get_coordinates();
         if (!is_custom_position) {
