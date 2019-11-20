@@ -141,3 +141,12 @@ section.map-section div.left-control-area {
 section.map-section div.left-control-area *:not(:first-child) {
     margin-top: 10px;
 }
+
+section.map-section div.left-control-area .zoom-button {
+    display: block;
+    width: 40px;
+    height: 40px;
+    border: 1px solid white;
+    color: black;
+    background-color: white;
+}
