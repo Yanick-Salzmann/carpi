@@ -44,7 +44,7 @@ $(() => {
     });
 
     $('#zoom-out-map-button').click(() => {
-        zoom_level = Math.max(zoom_level, -1, 0);
+        zoom_level = Math.max(zoom_level - 1, 0);
         localStorage.setItem('map.zoom', zoom_level.toString());
         map.setZoom(zoom_level);
     });
