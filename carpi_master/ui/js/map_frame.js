@@ -24,7 +24,7 @@ $(() => {
 
     map.addObject(cur_pos);
 
-    map.on('zoomend', () => {
+    map.addEventListener('mapviewchangeend', () => {
         zoom_level = map.getZoom();
         localStorage.setItem('map.zoom', zoom_level.toString());
     });
