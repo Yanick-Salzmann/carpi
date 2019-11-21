@@ -63,7 +63,7 @@ $(() => {
             map.setCenter({lat: position.lat, lng: position.lon});
         }
 
-        cur_pos.setCenter([position.lat, position.lon]);
+        cur_pos.setCenter({lat: position.lat, lng: position.lon});
     }
 
     window.on_show_map_section = function () {
