@@ -7,13 +7,11 @@ $(() => {
 
     const defaultLayers = here_platform.createDefaultLayers();
 
-    const env_config = get_env_value('HERE_APP_ID', 'HERE_APP_CODE');
-
     const map = new H.Map(document.getElementById('leaflet-map-container'),
         defaultLayers.vector.normal.map,
         {
-            zoom: zoom_level,
-            center: {lat: 0, lng: 0}
+            zoom: 10,
+            center: { lng: 13.4, lat: 52.51 }
         }
     );
 
@@ -60,10 +58,10 @@ $(() => {
     function on_update() {
         const position = gps_get_coordinates();
         if (!is_custom_position) {
-            map.setCenter({lat: position.lat, lng: position.lon});
+            //map.setCenter({lat: position.lat, lng: position.lon});
         }
 
-        cur_pos.setCenter({lat: position.lat, lng: position.lon});
+        //cur_pos.setCenter({lat: position.lat, lng: position.lon});
     }
 
     window.on_show_map_section = function () {
