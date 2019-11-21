@@ -75,6 +75,7 @@ namespace carpi::ui {
         browser_settings.universal_access_from_file_urls = STATE_ENABLED;
         browser_settings.file_access_from_file_urls = STATE_ENABLED;
         browser_settings.windowless_frame_rate = 60; // just in case
+        browser_settings.web_security = STATE_DISABLED;
 
         window_info.x = window_info.y = 0;
         window_info.width = screen->width;
