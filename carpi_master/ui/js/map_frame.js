@@ -9,7 +9,7 @@ $(() => {
 
     const env_config = get_env_value('HERE_APP_ID', 'HERE_APP_CODE');
 
-    const map = new H.map(document.getElementById('leaflet-map-container'),
+    const map = new H.Map(document.getElementById('leaflet-map-container'),
         defaultLayers.vector.normal.map,
         {
             zoom: zoom_level,
