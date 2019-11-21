@@ -8,26 +8,34 @@
         }
     </style>
 
+    <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+
     <link rel="stylesheet" href="lib/bootstrap.css">
     <link rel="stylesheet" href="lib/fa/css/all.css">
-    <link rel="stylesheet" href="lib/leaflet/leaflet.css">
+<!--    <link rel="stylesheet" href="lib/leaflet/leaflet.css">-->
     <link rel="stylesheet" href="css/main.css">
 
     <script src="lib/jquery-3.4.1.js"></script>
     <script src="lib/bootstrap.min.js"></script>
-    <script src="lib/leaflet/leaflet.js"></script>
-    <script src="lib/leaflet/here/leaflet-tilelayer-here.js"></script>
+<!--    <script src="lib/leaflet/leaflet.js"></script>-->
+<!--    <script src="lib/leaflet/here/leaflet-tilelayer-here.js"></script>-->
+    <script src="lib/here/mapsjs-core.js"></script>
+    <script src="lib/here/mapsjs-service.js"></script>
 
     <script src="js/prototypes.js"></script>
     <script src="js/event_manager.js"></script>
     <script src="js/settings_frame.js"></script>
     <script src="js/car_frame.js"></script>
     <script src="js/main_sections.js"></script>
+    <script src="js/here_integration.js"></script>
     <script src="js/map_frame.js"></script>
     <!--    <script src="js/camera_frame.js"></script>-->
 </head>
 <body>
 <!--    <canvas id="video-canvas"></canvas>-->
+<section class="nav-section">
+
+</section>
 <section class="map-section">
     <div class="left-control-area">
         <div class="control-button" id="zoom-in-map-button"><span><i class="fa fa-plus"></i></span></div>

@@ -5,22 +5,30 @@ $(() => {
         localStorage.setItem('map.zoom', zoom_level.toString());
     }
 
+    const defaultLayers = here_platform.createDefaultLayers();
+
     const env_config = get_env_value('HERE_APP_ID', 'HERE_APP_CODE');
 
-    const map = L.map('leaflet-map-container');
-    const cur_pos = L.circle([0, 0], {
-        color: 'blue',
-        fillColor: '#30f',
-        fillOpacity: 0.5,
-        radius: 2
-    }).addTo(map);
+    const map = new H.map(document.getElementById('leaflet-map-container'),
+        defaultLayers.vector.normal.map,
+        {
+            zoom: zoom_level,
+            center: {lat: 0, lng: 0}
+        }
+    );
+
+    const cur_pos = H.map.Circle({lat: 0, lng: 0}, 2, {
+        strokeColor: 'blue',
+        fillColor: 'rgba(0, 48, 255, 0.5)'
+    });
+
+    map.addObject(cur_pos);
 
     map.on('zoomend', () => {
         zoom_level = map.getZoom();
         localStorage.setItem('map.zoom', zoom_level.toString());
     });
 
-    let is_initialized = false;
     let is_custom_position = false;
 
     $('#leaflet-map-container').mousedown(() => {
@@ -29,7 +37,7 @@ $(() => {
 
     $('#center-camera-map-button').click(() => {
         const position = gps_get_coordinates();
-        map.setView([position.lat, position.lon], map.getZoom());
+        map.setView({lat: position.lat, lng: position.lon});
     });
 
     $('#follow-position-map-button').click(() => {
@@ -52,22 +60,14 @@ $(() => {
     function on_update() {
         const position = gps_get_coordinates();
         if (!is_custom_position) {
-            map.setView([position.lat, position.lon], zoom_level);
+            map.setCenter({lat: position.lat, lng: position.lon});
         }
 
-        cur_pos.setLatLng([position.lat, position.lon]);
+        cur_pos.setCenter([position.lat, position.lon]);
     }
 
     window.on_show_map_section = function () {
-        if (!is_initialized) {
-            is_initialized = true;
-
-            L.tileLayer.here({appId: env_config['HERE_APP_ID'], appCode: env_config['HERE_APP_CODE'], scheme: 'hybrid.day.transit'})
-                .addTo(map);
-
-            gps_get_coordinates();
-        }
-
+        gps_get_coordinates();
         setInterval(on_update, 500);
     }
 });

@@ -29,6 +29,10 @@ section.settings-section {
     display: none;
 }
 
+section.nav-section {
+    display: none;
+}
+
 section.settings-section h1 {
     padding-left: 5px;
     padding-top: 5px;
