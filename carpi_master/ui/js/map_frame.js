@@ -17,7 +17,7 @@ $(() => {
         }
     );
 
-    const cur_pos = H.map.Circle({lat: 0, lng: 0}, 2, {
+    const cur_pos = new H.map.Circle({lat: 0, lng: 0}, 2, {
         strokeColor: 'blue',
         fillColor: 'rgba(0, 48, 255, 0.5)'
     });
