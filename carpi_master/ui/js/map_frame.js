@@ -11,9 +11,12 @@ $(() => {
         defaultLayers.vector.normal.map,
         {
             zoom: 10,
-            center: { lng: 13.4, lat: 52.51 }
+            center: { lng: 13.4, lat: 52.51 },
+            pixelRatio: window.devicePixelRatio || 1
         }
     );
+
+    window.addEventListener('resize', () => map.getViewPort().resize());
 
     /*const cur_pos = new H.map.Circle({lat: 0, lng: 0}, 2, {
         strokeColor: 'blue',
