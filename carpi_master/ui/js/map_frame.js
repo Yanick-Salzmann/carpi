@@ -5,13 +5,23 @@ $(() => {
         localStorage.setItem('map.zoom', zoom_level.toString());
     }
 
-    const defaultLayers = here_platform.createDefaultLayers();
+    const env_config = get_env_value('HERE_APP_ID', 'HERE_APP_CODE');
 
-    let map = undefined;
-    let cur_pos = undefined;
+    const map = L.map('leaflet-map-container');
+    const cur_pos = L.circle([0, 0], {
+        color: 'blue',
+        fillColor: '#30f',
+        fillOpacity: 0.5,
+        radius: 2
+    }).addTo(map);
 
-    let is_custom_position = false;
+    map.on('zoomend', () => {
+        zoom_level = map.getZoom();
+        localStorage.setItem('map.zoom', zoom_level.toString());
+    });
+
     let is_initialized = false;
+    let is_custom_position = false;
 
     $('#leaflet-map-container').mousedown(() => {
         is_custom_position = true;
@@ -19,7 +29,7 @@ $(() => {
 
     $('#center-camera-map-button').click(() => {
         const position = gps_get_coordinates();
-        map.setCenter({lat: position.lat, lng: position.lon});
+        map.setView([position.lat, position.lon], map.getZoom());
     });
 
     $('#follow-position-map-button').click(() => {
@@ -42,40 +52,22 @@ $(() => {
     function on_update() {
         const position = gps_get_coordinates();
         if (!is_custom_position) {
-            map.setCenter({lat: position.lat, lng: position.lon});
+            map.setView([position.lat, position.lon], zoom_level);
         }
 
-        cur_pos.setCenter({lat: position.lat, lng: position.lon});
+        cur_pos.setLatLng([position.lat, position.lon]);
     }
 
     window.on_show_map_section = function () {
-        if(!is_initialized) {
-            map = new H.Map(document.getElementById('leaflet-map-container'),
-                defaultLayers.vector.normal.map,
-                {
-                    zoom: 18,
-                    center: { lng: 13.4, lat: 52.51 },
-                    pixelRatio: window.devicePixelRatio || 1
-                }
-            );
-
-            window.addEventListener('resize', () => map.getViewPort().resize());
-
-            cur_pos = new H.map.Circle({ lng: 13.4, lat: 52.51 }, 2, {
-                strokeColor: 'blue',
-                fillColor: 'rgba(0, 48, 255, 0.5)'
-            });
-
-            map.addObject(cur_pos);
-
-            map.addEventListener('mapviewchangeend', () => {
-                zoom_level = map.getZoom();
-                localStorage.setItem('map.zoom', zoom_level.toString());
-            });
-
+        if (!is_initialized) {
             is_initialized = true;
+
+            L.tileLayer.here({appId: env_config['HERE_APP_ID'], appCode: env_config['HERE_APP_CODE'], scheme: 'hybrid.day.transit'})
+                .addTo(map);
+
             gps_get_coordinates();
         }
+
         setInterval(on_update, 500);
     }
 });
