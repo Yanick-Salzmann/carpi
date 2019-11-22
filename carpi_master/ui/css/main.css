@@ -121,7 +121,7 @@ section.engine-section .gauge-wrapper {
     display: flex;
 }
 
-div#leaflet-map-container {
+section.map-section div#leaflet-map-container {
     position: absolute;
     left: 0;
     top: 0;
