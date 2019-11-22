@@ -58,6 +58,22 @@ $(() => {
         cur_pos.setLatLng([position.lat, position.lon]);
     }
 
+    function load_demo_route() {
+        // https://route.api.here.com/routing/7.2/calculateroute.json?waypoint0=52.5160%2C13.3779&waypoint1=52.5206%2C13.3862&mode=fastest%3Bcar%3Btraffic%3Aenabled&app_id=YmpbtgZCcwDWK0hpeNhT&app_code=9BKI5apEtPvTBmhFOcXJrA&departure=now&legAttributes=shape
+        let base_url = "https://route.api.here.com/routing/7.2/calculateroute.json";
+        const wp0 = "47.3472889,7.8960178";
+        const wp1 = "47.3937279,8.5093238";
+
+        base_url += "?waypoint0=" + encodeURIComponent(wp0);
+        base_url += "&waypoint1=" + encodeURIComponent(wp1);
+        base_url += "&mode=" + encodeURIComponent("faster;car;traffic:enabled");
+        base_url += "&app_code=" + env_config["HERE_APP_CODE"];
+        base_url += "&app_id=" + env_config["HERE_APP_ID"];
+        base_url += "&departure=now&legAttributes=shape";
+
+        $.get(base_url).done(data => console.log(data));
+    }
+
     window.on_show_map_section = function () {
         if (!is_initialized) {
             is_initialized = true;
@@ -66,6 +82,7 @@ $(() => {
                 .addTo(map);
 
             gps_get_coordinates();
+            load_demo_route();
         }
 
         setInterval(on_update, 500);
