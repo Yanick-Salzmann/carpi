@@ -16,6 +16,7 @@ namespace carpi::gps {
     class GpsListener {
         LOGGER;
 
+        bool _is_in_main_thread = false;
         bool _is_running = false;
         std::thread _gps_thread;
         gps_data_t _gps_data{};
@@ -29,7 +30,7 @@ namespace carpi::gps {
         explicit GpsListener(const std::string& host = "localhost", uint16_t port = 2947);
         ~GpsListener();
 
-        void start_gps_loop();
+        void start_gps_loop(bool main_thread = false);
         void stop_gps_loop();
 
         void data_callback(std::function<void(const GpsMeasurement&)> callback) {

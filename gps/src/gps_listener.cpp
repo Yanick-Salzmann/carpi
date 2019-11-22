@@ -27,7 +27,7 @@ namespace carpi::gps {
         gps_close(&_gps_data);
     }
 
-    void GpsListener::start_gps_loop() {
+    void GpsListener::start_gps_loop(bool main_thread) {
         if (_is_running) {
             return;
         }
@@ -35,7 +35,13 @@ namespace carpi::gps {
         log->info("Starting GPS loop");
 
         _is_running = true;
-        _gps_thread = std::thread{[=]() { gps_loop(); }};
+        _is_in_main_thread = main_thread;
+
+        if(!main_thread) {
+            _gps_thread = std::thread{[=]() { gps_loop(); }};
+        } else {
+            gps_loop();
+        }
     }
 
     void GpsListener::stop_gps_loop() {
@@ -44,6 +50,10 @@ namespace carpi::gps {
         }
 
         _is_running = false;
+        if(_is_in_main_thread) {
+            return;
+        }
+
         if (_gps_thread.joinable()) {
             _gps_thread.join();
         }

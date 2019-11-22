@@ -1,20 +1,27 @@
 #include <iostream>
 #include <gps/gps_listener.hpp>
 #include "net_broadcast.hpp"
+#include <csignal>
 
 namespace carpi {
+    gps::GpsListener* gps_listener = nullptr;
+
+    void signal_handler(int signal) {
+        if(gps_listener != nullptr) {
+            gps_listener->stop_gps_loop();
+        }
+    }
+
     int main(int argc, char* argv[]) {
-        gps::GpsListener listener{};
-        listener.start_gps_loop();
+        gps_listener = new gps::GpsListener{};
 
         gps::NetBroadcast bcast{};
-        listener.data_callback([&](const auto& m) { bcast.on_measurement(m); });
+        gps_listener->data_callback([&](const auto& m) { bcast.on_measurement(m); });
 
-        std::cin.sync();
-        std::string line{};
-        std::getline(std::cin, line);
+        std::signal(SIGINT, signal_handler);
+        std::signal(SIGTERM, signal_handler);
 
-        listener.stop_gps_loop();
+        gps_listener->start_gps_loop(true);
         return 0;
     }
 }

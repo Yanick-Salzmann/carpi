@@ -35,7 +35,7 @@ $(() => {
 
     $('#center-camera-map-button').click(() => {
         const position = gps_get_coordinates();
-        map.setView({lat: position.lat, lng: position.lon});
+        map.setCenter({lat: position.lat, lng: position.lon});
     });
 
     $('#follow-position-map-button').click(() => {
