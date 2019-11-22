@@ -71,7 +71,7 @@ $(() => {
         base_url += "&app_id=" + env_config["HERE_APP_ID"];
         base_url += "&departure=now&legAttributes=shape";
 
-        $.get(base_url).done(data => console.log(data));
+        $.get(base_url).done(data => console.log(data.response.route[0].leg[0].shape));
     }
 
     window.on_show_map_section = function () {
