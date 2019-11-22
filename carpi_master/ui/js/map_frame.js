@@ -8,6 +8,8 @@ $(() => {
     const defaultLayers = here_platform.createDefaultLayers();
 
     let map = undefined;
+    let cur_pos = undefined;
+
     let is_custom_position = false;
     let is_initialized = false;
 
@@ -40,10 +42,10 @@ $(() => {
     function on_update() {
         const position = gps_get_coordinates();
         if (!is_custom_position) {
-            //map.setCenter({lat: position.lat, lng: position.lon});
+            map.setCenter({lat: position.lat, lng: position.lon});
         }
 
-        //cur_pos.setCenter({lat: position.lat, lng: position.lon});
+        cur_pos.setCenter({lat: position.lat, lng: position.lon});
     }
 
     window.on_show_map_section = function () {
@@ -59,7 +61,7 @@ $(() => {
 
             window.addEventListener('resize', () => map.getViewPort().resize());
 
-            const cur_pos = new H.map.Circle({ lng: 13.4, lat: 52.51 }, 2, {
+            cur_pos = new H.map.Circle({ lng: 13.4, lat: 52.51 }, 2, {
                 strokeColor: 'blue',
                 fillColor: 'rgba(0, 48, 255, 0.5)'
             });
