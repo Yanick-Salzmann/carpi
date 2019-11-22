@@ -15,14 +15,14 @@ $(() => {
         }
     );
 
-    const cur_pos = new H.map.Circle({lat: 0, lng: 0}, 2, {
+    /*const cur_pos = new H.map.Circle({lat: 0, lng: 0}, 2, {
         strokeColor: 'blue',
         fillColor: 'rgba(0, 48, 255, 0.5)'
     });
 
-    map.addObject(cur_pos);
+    map.addObject(cur_pos);*/
 
-    map.addEventListener('mapviewchangeend', () => {
+    /*map.addEventListener('mapviewchangeend', () => {
         zoom_level = map.getZoom();
         localStorage.setItem('map.zoom', zoom_level.toString());
     });
@@ -62,10 +62,10 @@ $(() => {
         }
 
         //cur_pos.setCenter({lat: position.lat, lng: position.lon});
-    }
+    }*/
 
     window.on_show_map_section = function () {
         gps_get_coordinates();
-        setInterval(on_update, 500);
+        //setInterval(on_update, 500);
     }
 });
