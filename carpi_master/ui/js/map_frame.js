@@ -66,7 +66,7 @@ $(() => {
 
         base_url += "?waypoint0=" + encodeURIComponent(wp0);
         base_url += "&waypoint1=" + encodeURIComponent(wp1);
-        base_url += "&mode=" + encodeURIComponent("faster;car;traffic:enabled");
+        base_url += "&mode=" + encodeURIComponent("fastest;car;traffic:enabled");
         base_url += "&app_code=" + env_config["HERE_APP_CODE"];
         base_url += "&app_id=" + env_config["HERE_APP_ID"];
         base_url += "&departure=now&legAttributes=shape";
