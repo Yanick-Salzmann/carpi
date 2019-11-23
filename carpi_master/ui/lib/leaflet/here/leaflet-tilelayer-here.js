@@ -8,6 +8,8 @@ L.TileLayer.HERE = L.TileLayer.extend({
         minZoom: 2,
         maxZoom: 18,
 
+        baseType: 'aerial',
+
         // 🍂option scheme: String = 'normal.day'
         // The "map scheme", as documented in the HERE API.
         scheme: 'normal.day',
@@ -50,18 +52,9 @@ L.TileLayer.HERE = L.TileLayer.extend({
 // 		&app_code={YOUR_APP_CODE}
 // 		&{param}={value}
 
-        var path = '/{resource}/2.1/{resource}/{mapId}/{scheme}/{z}/{x}/{y}/{tileResolution}/{format}?app_id={appId}&app_code={appCode}';
+        var path = '/maptile/2.1/{resource}/{mapId}/{scheme}/{z}/{x}/{y}/{tileResolution}/{format}?app_id={appId}&app_code={appCode}';
         var attributionPath = '/maptile/2.1/copyright/{mapId}?app_id={appId}&app_code={appCode}';
-
-        var tileServer = 'base.maps.api.here.com';
-        if (schemeStart == 'satellite' ||
-            schemeStart == 'terrain' ||
-            schemeStart == 'hybrid') {
-            tileServer = 'aerial.maps.api.here.com';
-        }
-        if (options.scheme.indexOf('.traffic.') !== -1) {
-            tileServer = 'traffic.maps.api.here.com';
-        }
+        const tileServer = options.baseType + '.maps.api.here.com';
 
         var tileUrl = 'https://{s}.' + tileServer + path;
 
