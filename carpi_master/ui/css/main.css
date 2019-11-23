@@ -233,6 +233,7 @@ section.nav-section div.wizard-body-wrapper > div.hidden {
     margin-top: 5px;
     margin-bottom: 15px;
     overflow: hidden;
+    white-space: nowrap;
 }
 
 section.nav-section .item-recommendation .recommendation {
