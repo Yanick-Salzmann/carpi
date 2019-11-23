@@ -10,7 +10,7 @@ $(() => {
 
     function loadInitialPlzValues() {
         for(let i in [...Array(10).keys()]) {
-            const row = plz_ch.rows[i];
+            const row = plz_ch[i];
             const text = `${row.plz} ${row.city} (${row.state_abbrvtn})`;
 
             const container = $('#nav-wizard-step-addr-ch .item-recommendation');
