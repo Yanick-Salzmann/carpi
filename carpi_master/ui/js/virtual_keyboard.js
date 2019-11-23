@@ -5,7 +5,7 @@ $(() => {
         ['⇪', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Ö', 'Ä', '$']
     ];
 
-    $('div.virtual-keyboard').each(() => {
+    $('div.virtual-keyboard').each(function() {
         const kb = $(this);
         const wrapper = $('<div class="vkb-wrapper"></div>');
         for(let row_idx in layout) {
