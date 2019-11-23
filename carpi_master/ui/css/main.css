@@ -162,3 +162,29 @@ section.map-section div.left-control-area .control-button:active {
     border: 1px solid white;
     background-color: white;
 }
+
+section.nav-section > div.top-level-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+section.nav-section div.top-level-wrapper div.header-area {
+    padding-left: 15px;
+    padding-top: 10px;
+    flex-grow: 0;
+    border-bottom: 1px solid white;
+    margin-bottom: 15px;
+}
+
+section.nav-section div.top-level-wrapper div.wizard-body-wrapper {
+    flex-grow: 1;
+    width: 100%;
+    padding-left: 15px;
+}
+
+section.nav-section ul.full-screen-menu {
+    list-style: none;
+    padding: 0;
+}
