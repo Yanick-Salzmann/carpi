@@ -82,7 +82,9 @@ $(() => {
         if (!is_initialized) {
             is_initialized = true;
 
-            L.tileLayer.here({appId: env_config['HERE_APP_ID'], appCode: env_config['HERE_APP_CODE'], scheme: 'hybrid.day', resource: 'traffictile', baseType: 'traffic'})
+            L.tileLayer.here({appId: env_config['HERE_APP_ID'], appCode: env_config['HERE_APP_CODE'], scheme: 'hybrid.day', resource: 'traffictile', baseType: 'traffic', extra_params: [
+                    { key: "min_traffic_congestion", value: "heavy" }
+                ]})
                 .addTo(map);
 
             gps_get_coordinates();
