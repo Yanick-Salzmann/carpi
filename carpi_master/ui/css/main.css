@@ -238,6 +238,8 @@ section.nav-section div.wizard-body-wrapper > div.hidden {
 
 section.nav-section .item-recommendation .recommendation {
     display: inline-block;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 @font-face {
