@@ -32,5 +32,9 @@ $(() => {
         }
 
         kb.append(wrapper);
-    })
+    });
+
+    window.VirtualKeyboard = class VirtualKeyboard {
+
+    }
 });

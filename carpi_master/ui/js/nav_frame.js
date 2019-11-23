@@ -8,8 +8,21 @@ $(() => {
         $('#' + id).removeClass('hidden');
     }
 
+    function loadInitialPlzValues() {
+        for(let i in [...Array(10).keys()]) {
+            const row = plz_ch.rows[i];
+            const text = `${row.plz} ${row.city} (${row.state_abbrvtn})`;
+
+            const container = $('#nav-wizard-step-addr-ch .item-recommendation');
+            const parent = $('<div class="recommendation"></div>');
+            parent.text(text);
+            container.append(parent);
+        }
+    }
+
     $('#nav-find-addr-ch').click(() => {
         switchToWizardStep('nav-wizard-step-addr-ch');
+        loadInitialPlzValues();
     });
 
     window.on_show_nav_section = function() {
