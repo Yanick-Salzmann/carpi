@@ -225,6 +225,13 @@ section.nav-section div.wizard-body-wrapper > div.hidden {
     flex-grow: 1;
 }
 
+#nav-wizard-step-addr-ch .item-recommendation {
+    height: 30px;
+    background-color: #111;
+    border-bottom: 1px solid white;
+    overflow: hidden;
+}
+
 @font-face {
     font-family: "Noto Color Emoji";
     src: url("/fonts/NotoColorEmoji.ttf")
