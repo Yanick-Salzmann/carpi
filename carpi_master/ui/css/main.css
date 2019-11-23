@@ -207,3 +207,7 @@ section.nav-section ul.full-screen-menu li {
 section.nav-section ul.full-screen-menu li:active {
     background-color: darkgray;
 }
+
+section.nav-section div.wizard-body > div.hidden {
+    display: none;
+}
