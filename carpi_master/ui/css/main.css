@@ -246,6 +246,7 @@ section.nav-section div.wizard-body-wrapper > div.hidden {
     text-align: center;
     width: calc(100% / 14);
     font-size: 35px;
+    max-width: 65px;
 }
 
 .vkb-row-wrapper .vkb-key.keys-1 {
