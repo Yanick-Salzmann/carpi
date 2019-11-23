@@ -244,6 +244,7 @@ section.nav-section div.wizard-body-wrapper > div.hidden {
     position: relative;
     text-align: center;
     width: calc(100% / 14);
+    font-size: 35px;
 }
 
 .vkb-row-wrapper .vkb-key:after {
