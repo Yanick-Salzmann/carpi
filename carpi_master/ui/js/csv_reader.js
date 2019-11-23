@@ -18,6 +18,20 @@ class CsvReader {
 
     process_lines(data) {
         const lines = data.split(/$/m);
-        console.log(lines.length);
+        lines.shift(); // remove header
+        lines.forEach(line => {
+           this.rows.push(this.get_tokens(line));
+        });
+    }
+
+    get_tokens(line) {
+        const parts = line.split(',');
+        return {
+            plz: parseInt(parts[0]),
+            city: parts[1],
+            state: parts[2],
+            state_abbrvtn: parts[5],
+            country: parts[6]
+        }
     }
 }
