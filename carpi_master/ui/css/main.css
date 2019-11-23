@@ -229,6 +229,8 @@ section.nav-section div.wizard-body-wrapper > div.hidden {
     height: 30px;
     background-color: #111;
     border-bottom: 1px solid white;
+    border-top: 1px solid white;
+    margin-top: 5px;
     overflow: hidden;
 }
 
@@ -253,7 +255,7 @@ section.nav-section div.wizard-body-wrapper > div.hidden {
     text-align: center;
     width: calc(100% / 14);
     font-size: 35px;
-    max-width: 65px;
+    max-width: 60px;
 }
 
 .vkb-row-wrapper .vkb-key.keys-1 {
