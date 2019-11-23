@@ -225,6 +225,11 @@ section.nav-section div.wizard-body-wrapper > div.hidden {
     flex-grow: 1;
 }
 
+@font-face {
+    font-family: "Noto Color Emoji";
+    src: url("/fonts/NotoColorEmoji.ttf")
+}
+
 .vkb-wrapper {
     display: flex;
     flex-direction: column;
@@ -235,10 +240,9 @@ section.nav-section div.wizard-body-wrapper > div.hidden {
 }
 
 .vkb-row-wrapper .vkb-key {
-    flex-grow: 1;
-    width: 100%;
     position: relative;
     text-align: center;
+    width: calc(100% / 14);
 }
 
 .vkb-row-wrapper .vkb-key:after {
