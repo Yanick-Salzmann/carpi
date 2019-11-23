@@ -238,6 +238,7 @@ section.nav-section div.wizard-body-wrapper > div.hidden {
     flex-grow: 1;
     width: 100%;
     position: relative;
+    text-align: center;
 }
 
 .vkb-row-wrapper .vkb-key:after {
