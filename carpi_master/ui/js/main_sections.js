@@ -41,5 +41,14 @@ $(() => {
         });
 
         on_show_map_section();
-    })
+    });
+
+    $('#navigation-splash-card').click(() => {
+        hide_all_sections();
+        $('body > section.nav-section').css({
+            display: 'block'
+        });
+
+        on_show_nav_section();
+    });
 });
