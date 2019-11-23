@@ -208,6 +208,6 @@ section.nav-section ul.full-screen-menu li:active {
     background-color: darkgray;
 }
 
-section.nav-section div.wizard-body > div.hidden {
+section.nav-section div.wizard-body-wrapper > div.hidden {
     display: none;
 }
