@@ -9,7 +9,7 @@ $(() => {
     }
 
     $('#nav-find-addr-ch').click(() => {
-
+        switchToWizardStep('nav-wizard-step-addr-ch');
     });
 
     window.on_show_nav_section = function() {
