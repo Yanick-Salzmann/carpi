@@ -240,6 +240,7 @@ section.nav-section .item-recommendation .recommendation {
     display: inline-block;
     padding-left: 10px;
     padding-right: 10px;
+    line-height: 30px;
 }
 
 @font-face {
