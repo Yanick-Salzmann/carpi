@@ -6,15 +6,23 @@ $(() => {
         ['\u21e7', '<', 'Y', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '-', '\u21e7'],
     ];
 
+    const number_layout = [
+      [' ', '/', '*', '-'],
+      ['7', '8', '9', '+'],
+      ['4', '5', '6', ' '],
+      ['1', '2', '3', ' '],
+      ['0', '.', ',', ' ']
+    ];
+
     $('div.virtual-keyboard').each(function() {
         const kb = $(this);
         const wrapper = $('<div class="vkb-wrapper"></div>');
-        for(let row_idx in layout) {
-            const row = layout[row_idx];
+        for(let row_idx in number_layout) {
+            const row = number_layout[row_idx];
             const row_wrapper = $('<div class="vkb-row-wrapper"></div>');
             for(let key_idx in row) {
                 const key = row[key_idx];
-                const cur_key = $('<span class="vkb-key"></span>');
+                const cur_key = $('<span class="vkb-key keys-4"></span>');
                 const cur_content = $('<div class="content"></div>');
                 cur_content.text(key);
                 cur_key.append(cur_content);
