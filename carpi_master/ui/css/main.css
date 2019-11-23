@@ -227,7 +227,7 @@ section.nav-section div.wizard-body-wrapper > div.hidden {
 
 @font-face {
     font-family: "Noto Color Emoji";
-    src: url("/fonts/NotoColorEmoji.ttf")
+    src: url("/fonts/NotoEmoji-Regular.ttf")
 }
 
 .vkb-wrapper {
