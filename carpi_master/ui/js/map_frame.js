@@ -74,7 +74,7 @@ $(() => {
         $.get(base_url).done(data => {
             const shape = data.response.route[0].leg[0].shape
             const linePoints = shape.map(rt => [parseFloat(rt.split(",")[0]), parseFloat(rt.split(",")[1])]);
-            L.polyline(linePoints, {color: 'blue'}).addTo(map)
+            L.polyline(linePoints, {color: 'rgba(0, 0, 255, 0.5)'}).addTo(map)
         });
     }
 
