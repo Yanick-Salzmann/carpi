@@ -238,3 +238,8 @@ section.nav-section div.wizard-body-wrapper > div.hidden {
     flex-grow: 1;
 }
 
+.vkb-row-wrapper .vkb-key:after {
+    content: "";
+    display: block;
+    padding-bottom: 100%;
+}
