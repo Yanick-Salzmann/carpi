@@ -14,7 +14,9 @@ $(() => {
             for(let key_idx in row) {
                 const key = row[key_idx];
                 const cur_key = $('<span class="vkb-key"></span>');
-                cur_key.text(key);
+                const cur_content = $('<div class="content"></div>');
+                cur_content.text(key);
+                cur_key.append(cur_content);
                 row_wrapper.append(cur_key);
             }
             wrapper.append(row_wrapper);

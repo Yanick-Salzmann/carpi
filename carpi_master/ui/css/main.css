@@ -236,10 +236,17 @@ section.nav-section div.wizard-body-wrapper > div.hidden {
 
 .vkb-row-wrapper .vkb-key {
     flex-grow: 1;
+    width: 100%;
 }
 
 .vkb-row-wrapper .vkb-key:after {
     content: "";
     display: block;
     padding-bottom: 100%;
+}
+
+.vkb-row-wrapper .vkb-key .content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
 }
