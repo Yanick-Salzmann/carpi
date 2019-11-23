@@ -224,3 +224,17 @@ section.nav-section div.wizard-body-wrapper > div.hidden {
 #nav-wizard-step-addr-ch .flex-wrapper div.virtual-keyboard {
     flex-grow: 1;
 }
+
+.vkb-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.vkb-wrapper .vkb-row-wrapper {
+    display: flex;
+}
+
+.vkb-row-wrapper .vkb-key {
+    flex-grow: 1;
+}
+
