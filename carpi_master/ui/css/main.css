@@ -259,6 +259,11 @@ section.nav-section div.wizard-body-wrapper > div.hidden {
     max-width: 60px;
 }
 
+.vkb-row-wrapper .vkb-key:active {
+    background-color: #999;
+    color: black;
+}
+
 .vkb-row-wrapper .vkb-key.keys-1 {
     width: 100%;
 }
