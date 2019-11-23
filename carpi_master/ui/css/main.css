@@ -178,13 +178,27 @@ section.nav-section div.top-level-wrapper div.header-area {
     margin-bottom: 15px;
 }
 
+section.nav-section div.top-level-wrapper div.header-area h1 {
+    font-weight: bold;
+}
+
 section.nav-section div.top-level-wrapper div.wizard-body-wrapper {
     flex-grow: 1;
     width: 100%;
-    padding-left: 15px;
 }
 
 section.nav-section ul.full-screen-menu {
     list-style: none;
     padding: 0;
+}
+
+section.nav-section ul.full-screen-menu li {
+    padding-left: 15px;
+    width: 100%;
+    background-color: ghostwhite;
+    color: black;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-size: 30px;
+    font-weight: bold;
 }
