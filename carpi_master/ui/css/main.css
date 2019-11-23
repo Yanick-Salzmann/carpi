@@ -201,6 +201,7 @@ section.nav-section ul.full-screen-menu li {
     padding-bottom: 15px;
     font-size: 30px;
     font-weight: bold;
+    border: 1px solid black;
 }
 
 section.nav-section ul.full-screen-menu li:active {
