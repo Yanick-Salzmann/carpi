@@ -36,6 +36,19 @@ namespace carpi {
     };
 
     auto ChAddressReader::Execute(const CefString &name, CefRefPtr<CefV8Value> object, const CefV8ValueList &arguments, CefRefPtr<CefV8Value> &retval, CefString &exception) -> bool {
+        if(arguments.empty()) {
+            retval = CefV8Value::CreateArray(0);
+            return true;
+        }
+
+        CefRefPtr<CefV8Value> val = arguments[0];
+        if(!(val->IsInt() || val->IsUInt())) {
+            retval = CefV8Value::CreateArray(0);
+            return true;
+        }
+
+        const auto search_plz = val->GetUIntValue();
+
         std::ifstream is{"../../carpi_browser_subprocess/data/CH_addresses.csv"};
 
         std::string line{};
@@ -44,6 +57,11 @@ namespace carpi {
 
         while (std::getline(is, line)) {
             const auto parts = utils::split(line, ';');
+            auto plz = std::stoi(parts[7]);
+            if(plz != search_plz) {
+                continue;
+            }
+
             elements.emplace_back(parts[5], parts[6], parts[7], parts[9], parts[10], parts[11]);
         }
 
