@@ -64,7 +64,6 @@ namespace carpi {
             }
 
             const auto parts = utils::split(line, ';');
-            std::cout << parts[7] << std::endl;
             auto plz = std::stoi(parts[7]);
             if(plz != search_plz) {
                 continue;
