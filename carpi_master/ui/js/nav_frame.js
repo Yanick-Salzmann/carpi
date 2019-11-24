@@ -29,7 +29,7 @@ $(() => {
     }
 
     function loadInitialCityValues() {
-        const cities = [...plz_ch].sort((a, b) => {
+        const cities = [...plz_ch].filter(val => !isNaN(val.plz)).sort((a, b) => {
             if(a && b && a.city && b.city) {
                 return a.city.localeCompare(b.city);
             }

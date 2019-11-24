@@ -128,4 +128,4 @@ third_party/**
 .idea/misc.xml
 .idea/modules.xml
 
-carpi_master/ui/data/CH_addresses.csv
+carpi_browser_subprocess/data/CH_addresses.csv
