@@ -1,0 +1,943 @@
+Avenue PETIT-SENN;2;Chêne-Bourg
+Avenue PETIT-SENN;4;Chêne-Bourg
+Avenue PETIT-SENN;8;Chêne-Bourg
+Avenue PETIT-SENN;7;Chêne-Bourg
+Avenue PETIT-SENN;9;Chêne-Bourg
+Avenue PETIT-SENN;11;Chêne-Bourg
+Avenue PETIT-SENN;16;Chêne-Bourg
+Route de Sous-Moulin;10;Chêne-Bourg
+Route de Sous-Moulin;12;Chêne-Bourg
+Route de Sous-Moulin;12a;Chêne-Bourg
+Route de Sous-Moulin;12b;Chêne-Bourg
+Route de Sous-Moulin;12c;Chêne-Bourg
+Route de Sous-Moulin;14;Chêne-Bourg
+Route de Sous-Moulin;16;Chêne-Bourg
+Route de Sous-Moulin;18;Chêne-Bourg
+Route de Sous-Moulin;20;Chêne-Bourg
+Route de Sous-Moulin;22;Chêne-Bourg
+Route de Sous-Moulin;24;Chêne-Bourg
+Route de Sous-Moulin;26;Chêne-Bourg
+Chemin de l'Anjoulaz;10;Chêne-Bourg
+Chemin de l'Anjoulaz;16;Chêne-Bourg
+Chemin de l'Anjoulaz;18;Chêne-Bourg
+Avenue PETIT-SENN;6;Chêne-Bourg
+Avenue du Vieux-Bourg;4;Chêne-Bourg
+Avenue du Vieux-Bourg;6;Chêne-Bourg
+Avenue du Vieux-Bourg;5;Chêne-Bourg
+Avenue du Vieux-Bourg;14;Chêne-Bourg
+Avenue du Vieux-Bourg;10;Chêne-Bourg
+Avenue du Vieux-Bourg;10b;Chêne-Bourg
+Avenue du Vieux-Bourg;7;Chêne-Bourg
+Chemin du Printemps;3;Chêne-Bourg
+Avenue du Vieux-Bourg;20;Chêne-Bourg
+Avenue du Vieux-Bourg;22;Chêne-Bourg
+Avenue du Vieux-Bourg;24;Chêne-Bourg
+Avenue du Vieux-Bourg;26;Chêne-Bourg
+Avenue du Vieux-Bourg;25;Chêne-Bourg
+Avenue du Vieux-Bourg;27;Chêne-Bourg
+Avenue du Vieux-Bourg;29;Chêne-Bourg
+Avenue du Vieux-Bourg;31;Chêne-Bourg
+Avenue du Vieux-Bourg;33;Chêne-Bourg
+Avenue du Vieux-Bourg;35;Chêne-Bourg
+Avenue du Vieux-Bourg;37;Chêne-Bourg
+Avenue du Vieux-Bourg;39;Chêne-Bourg
+Avenue du Vieux-Bourg;36;Chêne-Bourg
+Rue de Genève;6;Chêne-Bourg
+Rue de Genève;8;Chêne-Bourg
+Rue de Genève;16;Chêne-Bourg
+Rue de Genève;18;Chêne-Bourg
+Rue de Genève;20;Chêne-Bourg
+Rue de Genève;14;Chêne-Bourg
+Rue de Genève;22;Chêne-Bourg
+Rue du Gothard;1;Chêne-Bourg
+Rue du Gothard;4;Chêne-Bourg
+Rue du Gothard;6;Chêne-Bourg
+Rue du Gothard;7;Chêne-Bourg
+Rue du Gothard;12;Chêne-Bourg
+Rue du Gothard;3;Chêne-Bourg
+Rue du Gothard;16;Chêne-Bourg
+Rue du Gothard;16b;Chêne-Bourg
+Rue du Gothard;18b;Chêne-Bourg
+Rue du Gothard;10;Chêne-Bourg
+Rue du Gothard;19;Chêne-Bourg
+Rue du Gothard;20;Chêne-Bourg
+Rue du Gothard;9;Chêne-Bourg
+Rue du Gothard;14;Chêne-Bourg
+Rue du Gothard;11;Chêne-Bourg
+Rue du Gothard;24;Chêne-Bourg
+Rue du Gothard;5;Chêne-Bourg
+Rue du Gothard;2;Chêne-Bourg
+Rue du Gothard;18a;Chêne-Bourg
+Rue du Gothard;18;Chêne-Bourg
+Chemin du Bois-Des-Arts;41;Chêne-Bourg
+Chemin de Floraire;17;Chêne-Bourg
+Rue Jean-PELLETIER;3;Chêne-Bourg
+Rue Jean-PELLETIER;5;Chêne-Bourg
+Rue Jean-PELLETIER;7;Chêne-Bourg
+Avenue PETIT-SENN;26;Chêne-Bourg
+Avenue PETIT-SENN;24;Chêne-Bourg
+Avenue PETIT-SENN;32;Chêne-Bourg
+Avenue PETIT-SENN;34;Chêne-Bourg
+Avenue PETIT-SENN;50;Chêne-Bourg
+Route de Sous-Moulin;6;Chêne-Bourg
+Route de Sous-Moulin;8;Chêne-Bourg
+Route de Sous-Moulin;19;Chêne-Bourg
+Chemin de Floraire;25;Chêne-Bourg
+Avenue PETIT-SENN;13;Chêne-Bourg
+Avenue PETIT-SENN;15;Chêne-Bourg
+Avenue PETIT-SENN;17;Chêne-Bourg
+Avenue PETIT-SENN;19;Chêne-Bourg
+Avenue PETIT-SENN;21;Chêne-Bourg
+Avenue PETIT-SENN;23;Chêne-Bourg
+Avenue PETIT-SENN;25;Chêne-Bourg
+Avenue PETIT-SENN;27;Chêne-Bourg
+Avenue PETIT-SENN;35;Chêne-Bourg
+Avenue PETIT-SENN;29;Chêne-Bourg
+Avenue PETIT-SENN;31;Chêne-Bourg
+Avenue PETIT-SENN;33;Chêne-Bourg
+Avenue PETIT-SENN;37;Chêne-Bourg
+Avenue PETIT-SENN;39;Chêne-Bourg
+Avenue PETIT-SENN;41b;Chêne-Bourg
+Avenue PETIT-SENN;45;Chêne-Bourg
+Avenue PETIT-SENN;47;Chêne-Bourg
+Avenue PETIT-SENN;49;Chêne-Bourg
+Avenue PETIT-SENN;49b;Chêne-Bourg
+Avenue PETIT-SENN;51;Chêne-Bourg
+Chemin des Chalets;4;Chêne-Bourg
+Rue de Genève;40;Chêne-Bourg
+Rue de Genève;42;Chêne-Bourg
+Rue de Genève;46;Chêne-Bourg
+Rue de Genève;50;Chêne-Bourg
+Rue de Genève;52;Chêne-Bourg
+Rue de Genève;56;Chêne-Bourg
+Rue de Genève;64;Chêne-Bourg
+Rue de Genève;68bis;Chêne-Bourg
+Rue de Genève;70;Chêne-Bourg
+Rue de Genève;76bis;Chêne-Bourg
+Rue de Genève;80;Chêne-Bourg
+Rue de Genève;82;Chêne-Bourg
+Rue de Genève;84;Chêne-Bourg
+Rue de Genève;72;Chêne-Bourg
+Rue de Genève;68;Chêne-Bourg
+Rue de Genève;44;Chêne-Bourg
+Rue de Genève;50bis;Chêne-Bourg
+Rue de Genève;48;Chêne-Bourg
+Rue de Genève;52bis;Chêne-Bourg
+Rue de Genève;60;Chêne-Bourg
+Rue de Genève;62;Chêne-Bourg
+Rue de Genève;86;Chêne-Bourg
+Rue de Genève;88;Chêne-Bourg
+Rue de Genève;90;Chêne-Bourg
+Avenue de Thônex;4;Chêne-Bourg
+Avenue de Thônex;6;Chêne-Bourg
+Avenue de Thônex;6a;Chêne-Bourg
+Avenue de Thônex;6b;Chêne-Bourg
+Avenue de Thônex;6c;Chêne-Bourg
+Avenue de Thônex;8;Chêne-Bourg
+Avenue de Thônex;10;Chêne-Bourg
+Avenue de Thônex;12;Chêne-Bourg
+Avenue de Thônex;12a;Chêne-Bourg
+Avenue de Thônex;14;Chêne-Bourg
+Avenue de Thônex;16;Chêne-Bourg
+Avenue de Thônex;20bis;Chêne-Bourg
+Avenue de Thônex;22;Chêne-Bourg
+Parc Dinu-LIPATTI;1;Chêne-Bourg
+Parc Dinu-LIPATTI;3;Chêne-Bourg
+Parc Dinu-LIPATTI;5;Chêne-Bourg
+Parc Dinu-LIPATTI;7;Chêne-Bourg
+Parc Dinu-LIPATTI;9;Chêne-Bourg
+Parc Dinu-LIPATTI;11;Chêne-Bourg
+Parc Dinu-LIPATTI;13;Chêne-Bourg
+Parc Dinu-LIPATTI;15;Chêne-Bourg
+Parc Dinu-LIPATTI;17;Chêne-Bourg
+Parc Dinu-LIPATTI;19;Chêne-Bourg
+Avenue de Bel-Air;7;Chêne-Bourg
+Avenue de Bel-Air;5;Chêne-Bourg
+Avenue de Bel-Air;3;Chêne-Bourg
+Avenue de Bel-Air;1;Chêne-Bourg
+Avenue de Bel-Air;4;Chêne-Bourg
+Avenue de Bel-Air;12;Chêne-Bourg
+Rue de Genève;5;Chêne-Bourg
+Avenue François-Adolphe-GRISON;1;Chêne-Bourg
+Avenue François-Adolphe-GRISON;3;Chêne-Bourg
+Avenue François-Adolphe-GRISON;5;Chêne-Bourg
+Avenue François-Adolphe-GRISON;7;Chêne-Bourg
+Avenue François-Adolphe-GRISON;9;Chêne-Bourg
+Avenue Rév.-P.-DECHEVRENS;5;Chêne-Bourg
+Rue Dr-Georges-AUDÉOUD;10;Chêne-Bourg
+Rue PEILLONNEX;3;Chêne-Bourg
+Rue PEILLONNEX;5;Chêne-Bourg
+Rue PEILLONNEX;9;Chêne-Bourg
+Rue PEILLONNEX;11;Chêne-Bourg
+Rue PEILLONNEX;13;Chêne-Bourg
+Rue PEILLONNEX;15;Chêne-Bourg
+Rue PEILLONNEX;17;Chêne-Bourg
+Place de la Gare;8;Chêne-Bourg
+Place de la Gare;5;Chêne-Bourg
+Rue de Genève;25;Chêne-Bourg
+Avenue François-Adolphe-GRISON;10;Chêne-Bourg
+Avenue François-Adolphe-GRISON;18;Chêne-Bourg
+Avenue François-Adolphe-GRISON;20;Chêne-Bourg
+Avenue François-Adolphe-GRISON;30;Chêne-Bourg
+Avenue François-Adolphe-GRISON;32;Chêne-Bourg
+Avenue François-Adolphe-GRISON;26;Chêne-Bourg
+Avenue François-Adolphe-GRISON;28;Chêne-Bourg
+Rue François-PERRÉARD;2;Chêne-Bourg
+Rue François-PERRÉARD;4;Chêne-Bourg
+Rue François-PERRÉARD;15;Chêne-Bourg
+Rue François-PERRÉARD;17;Chêne-Bourg
+Rue François-PERRÉARD;19;Chêne-Bourg
+Rue François-PERRÉARD;21;Chêne-Bourg
+Rue François-PERRÉARD;23;Chêne-Bourg
+Rue François-PERRÉARD;14;Chêne-Bourg
+Rue François-PERRÉARD;16;Chêne-Bourg
+Rue François-PERRÉARD;18;Chêne-Bourg
+Rue François-PERRÉARD;20;Chêne-Bourg
+Rue PEILLONNEX;31;Chêne-Bourg
+Rue PEILLONNEX;33;Chêne-Bourg
+Rue PEILLONNEX;39;Chêne-Bourg
+Rue PEILLONNEX;41;Chêne-Bourg
+Chemin de la Gravière;5;Chêne-Bourg
+Rue PEILLONNEX;4;Chêne-Bourg
+Rue PEILLONNEX;6;Chêne-Bourg
+Rue PEILLONNEX;8;Chêne-Bourg
+Rue PEILLONNEX;10;Chêne-Bourg
+Rue PEILLONNEX;18;Chêne-Bourg
+Rue PEILLONNEX;20;Chêne-Bourg
+Rue PEILLONNEX;26;Chêne-Bourg
+Rue PEILLONNEX;28;Chêne-Bourg
+Rue PEILLONNEX;30;Chêne-Bourg
+Rue PEILLONNEX;32;Chêne-Bourg
+Rue PEILLONNEX;36;Chêne-Bourg
+Rue PEILLONNEX;38;Chêne-Bourg
+Rue PEILLONNEX;40;Chêne-Bourg
+Rue de Genève;67;Chêne-Bourg
+Rue de Genève;69;Chêne-Bourg
+Rue de Genève;71;Chêne-Bourg
+Rue de Genève;73;Chêne-Bourg
+Rue de Genève;75;Chêne-Bourg
+Rue de Genève;77;Chêne-Bourg
+Rue François-JACQUIER;5;Chêne-Bourg
+Rue François-JACQUIER;7;Chêne-Bourg
+Rue François-JACQUIER;9;Chêne-Bourg
+Rue François-JACQUIER;11;Chêne-Bourg
+Rue François-JACQUIER;18;Chêne-Bourg
+Rue François-JACQUIER;13;Chêne-Bourg
+Rue François-JACQUIER;15;Chêne-Bourg
+Rue François-JACQUIER;24;Chêne-Bourg
+Rue François-JACQUIER;14;Chêne-Bourg
+Rue François-JACQUIER;12;Chêne-Bourg
+Route de Jussy;7;Chêne-Bourg
+Avenue de Bel-Air;11;Chêne-Bourg
+Avenue de Bel-Air;11bis;Chêne-Bourg
+Avenue de Bel-Air;13;Chêne-Bourg
+Avenue de Bel-Air;15;Chêne-Bourg
+Avenue de Bel-Air;17;Chêne-Bourg
+Avenue de Bel-Air;19;Chêne-Bourg
+Avenue de Bel-Air;21;Chêne-Bourg
+Avenue de Bel-Air;23;Chêne-Bourg
+Avenue de Bel-Air;25;Chêne-Bourg
+Avenue de Bel-Air;27;Chêne-Bourg
+Avenue de Bel-Air;29;Chêne-Bourg
+Chemin CAVUSSIN;3;Chêne-Bourg
+Chemin CAVUSSIN;4;Chêne-Bourg
+Chemin CAVUSSIN;5;Chêne-Bourg
+Chemin CAVUSSIN;9;Chêne-Bourg
+Chemin CAVUSSIN;11;Chêne-Bourg
+Chemin CAVUSSIN;13;Chêne-Bourg
+Chemin CAVUSSIN;15;Chêne-Bourg
+Chemin CAVUSSIN;17;Chêne-Bourg
+Chemin CAVUSSIN;19;Chêne-Bourg
+Chemin CAVUSSIN;21;Chêne-Bourg
+Chemin des Ormes;4;Chêne-Bourg
+Chemin des Ormes;5;Chêne-Bourg
+Chemin des Ormes;7;Chêne-Bourg
+Chemin des Hutins-des-Bois;1a;Chêne-Bourg
+Chemin des Hutins-des-Bois;2;Chêne-Bourg
+Chemin des Hutins-des-Bois;3;Chêne-Bourg
+Chemin des Hutins-des-Bois;5;Chêne-Bourg
+Chemin des Hutins-des-Bois;4a;Chêne-Bourg
+Chemin des Hutins-des-Bois;6;Chêne-Bourg
+Chemin des Hutins-des-Bois;8;Chêne-Bourg
+Chemin des Hutins-des-Bois;17;Chêne-Bourg
+Avenue de Bel-Air;33;Chêne-Bourg
+Avenue de Bel-Air;35;Chêne-Bourg
+Avenue de Bel-Air;37a;Chêne-Bourg
+Avenue de Bel-Air;37b;Chêne-Bourg
+Chemin des Hutins-des-Bois;15;Chêne-Bourg
+Chemin des Ormes;3;Chêne-Bourg
+Avenue de Bel-Air;39a;Chêne-Bourg
+Avenue de Bel-Air;39b;Chêne-Bourg
+Avenue de Bel-Air;39c;Chêne-Bourg
+Avenue de Bel-Air;41b;Chêne-Bourg
+Avenue de Bel-Air;43c;Chêne-Bourg
+Avenue de Bel-Air;43a;Chêne-Bourg
+Avenue de Bel-Air;43b;Chêne-Bourg
+Avenue de Bel-Air;41a;Chêne-Bourg
+Avenue de Bel-Air;45a;Chêne-Bourg
+Avenue de Bel-Air;45b;Chêne-Bourg
+Avenue de Bel-Air;49;Chêne-Bourg
+Avenue de Bel-Air;49a;Chêne-Bourg
+Avenue de Bel-Air;49b;Chêne-Bourg
+Avenue de Bel-Air;49c;Chêne-Bourg
+Avenue de Bel-Air;57;Chêne-Bourg
+Avenue de Bel-Air;55;Chêne-Bourg
+Avenue de Bel-Air;55a;Chêne-Bourg
+Avenue de Bel-Air;51;Chêne-Bourg
+Avenue de Bel-Air;51a;Chêne-Bourg
+Avenue de Bel-Air;51b;Chêne-Bourg
+Chemin de la Gravière;7;Chêne-Bourg
+Chemin de la Mousse;50c;Chêne-Bourg
+Chemin de la Mousse;6;Chêne-Bourg
+Chemin de la Mousse;6a;Chêne-Bourg
+Chemin de la Mousse;8;Chêne-Bourg
+Chemin de la Mousse;10;Chêne-Bourg
+Chemin de la Mousse;28;Chêne-Bourg
+Chemin de la Mousse;30;Chêne-Bourg
+Chemin de la Mousse;60;Chêne-Bourg
+Chemin de la Mousse;54b;Chêne-Bourg
+Chemin de la Mousse;52b;Chêne-Bourg
+Chemin de la Mousse;54;Chêne-Bourg
+Chemin de la Mousse;52;Chêne-Bourg
+Chemin de la Mousse;52a;Chêne-Bourg
+Chemin de la Mousse;42;Chêne-Bourg
+Chemin de la Mousse;38;Chêne-Bourg
+Chemin de la Mousse;16;Chêne-Bourg
+Avenue de l'Aurore;1;Chêne-Bourg
+Avenue de l'Aurore;2;Chêne-Bourg
+Avenue de l'Aurore;4;Chêne-Bourg
+Avenue du Rond-Point;5;Chêne-Bourg
+Avenue de l'Aurore;6;Chêne-Bourg
+Avenue de l'Aurore;5;Chêne-Bourg
+Avenue de l'Aurore;10;Chêne-Bourg
+Avenue de l'Aurore;11;Chêne-Bourg
+Avenue de l'Aurore;12;Chêne-Bourg
+Avenue de l'Aurore;14;Chêne-Bourg
+Avenue de l'Aurore;16;Chêne-Bourg
+Avenue de l'Aurore;18;Chêne-Bourg
+Avenue de l'Aurore;20;Chêne-Bourg
+Avenue de l'Aurore;22;Chêne-Bourg
+Avenue de l'Aurore;24;Chêne-Bourg
+Avenue de l'Aurore;28;Chêne-Bourg
+Avenue du Rond-Point;2;Chêne-Bourg
+Avenue de Bel-Air;16;Chêne-Bourg
+Avenue de Bel-Air;18;Chêne-Bourg
+Avenue de Bel-Air;20;Chêne-Bourg
+Avenue de Bel-Air;22;Chêne-Bourg
+Avenue de Bel-Air;24;Chêne-Bourg
+Avenue de Bel-Air;26;Chêne-Bourg
+Avenue de Bel-Air;30;Chêne-Bourg
+Avenue de Bel-Air;32;Chêne-Bourg
+Avenue de Bel-Air;38;Chêne-Bourg
+Avenue de l'Aurore;19;Chêne-Bourg
+Avenue de Bel-Air;42;Chêne-Bourg
+Avenue de l'Aurore;8;Chêne-Bourg
+Avenue de l'Aurore;23;Chêne-Bourg
+Avenue de Bel-Air;44;Chêne-Bourg
+Avenue de Bel-Air;50;Chêne-Bourg
+Avenue de Bel-Air;52;Chêne-Bourg
+Avenue de Bel-Air;58;Chêne-Bourg
+Avenue de Bel-Air;60;Chêne-Bourg
+Avenue de Bel-Air;62;Chêne-Bourg
+Avenue des Grands-Monts;5;Chêne-Bourg
+Avenue des Grands-Monts;6;Chêne-Bourg
+Avenue des Grands-Monts;8;Chêne-Bourg
+Avenue des Grands-Monts;10bis;Chêne-Bourg
+Avenue des Grands-Monts;12;Chêne-Bourg
+Avenue des Grands-Monts;13;Chêne-Bourg
+Avenue des Grands-Monts;16;Chêne-Bourg
+Avenue des Grands-Monts;18;Chêne-Bourg
+Avenue des Grands-Monts;21;Chêne-Bourg
+Avenue des Grands-Monts;23;Chêne-Bourg
+Avenue des Grands-Monts;35;Chêne-Bourg
+Avenue de la Martinière;30;Chêne-Bourg
+Chemin des Meures;2;Chêne-Bourg
+Chemin des Meures;3;Chêne-Bourg
+Chemin des Meures;4;Chêne-Bourg
+Chemin des Meures;5;Chêne-Bourg
+Chemin des Meures;6;Chêne-Bourg
+Chemin des Meures;7;Chêne-Bourg
+Chemin des Meures;8;Chêne-Bourg
+Avenue des Ormeaux;1;Chêne-Bourg
+Avenue des Ormeaux;3;Chêne-Bourg
+Avenue des Ormeaux;5;Chêne-Bourg
+Avenue des Ormeaux;6;Chêne-Bourg
+Avenue des Ormeaux;7;Chêne-Bourg
+Avenue des Ormeaux;8;Chêne-Bourg
+Avenue des Ormeaux;9;Chêne-Bourg
+Avenue des Ormeaux;11;Chêne-Bourg
+Avenue des Ormeaux;14;Chêne-Bourg
+Avenue du Rond-Point;7;Chêne-Bourg
+Avenue du Rond-Point;11;Chêne-Bourg
+Avenue du Rond-Point;13;Chêne-Bourg
+Avenue du Rond-Point;15;Chêne-Bourg
+Avenue du Rond-Point;17;Chêne-Bourg
+Avenue du Rond-Point;19;Chêne-Bourg
+Chemin du Saut-du-Loup;2;Chêne-Bourg
+Chemin du Saut-du-Loup;4;Chêne-Bourg
+Chemin du Saut-du-Loup;6;Chêne-Bourg
+Chemin du Saut-du-Loup;8;Chêne-Bourg
+Chemin du Saut-du-Loup;8a;Chêne-Bourg
+Chemin du Saut-du-Loup;8b;Chêne-Bourg
+Chemin du Saut-du-Loup;10;Chêne-Bourg
+Chemin du Saut-du-Loup;12;Chêne-Bourg
+Avenue des Vergys;3;Chêne-Bourg
+Avenue des Vergys;4;Chêne-Bourg
+Avenue des Vergys;5;Chêne-Bourg
+Avenue des Vergys;6;Chêne-Bourg
+Avenue des Vergys;7;Chêne-Bourg
+Avenue des Vergys;8;Chêne-Bourg
+Avenue des Vergys;9;Chêne-Bourg
+Avenue des Vergys;10;Chêne-Bourg
+Avenue des Vergys;11;Chêne-Bourg
+Avenue des Vergys;12;Chêne-Bourg
+Avenue des Vergys;13;Chêne-Bourg
+Avenue des Vergys;14;Chêne-Bourg
+Avenue des Vergys;15;Chêne-Bourg
+Avenue des Vergys;16;Chêne-Bourg
+Avenue des Vergys;17;Chêne-Bourg
+Chemin de la Mousse;15;Chêne-Bourg
+Chemin de la Mousse;19;Chêne-Bourg
+Chemin de la Mousse;23;Chêne-Bourg
+Avenue de la Martinière;3;Chêne-Bourg
+Avenue de la Martinière;4;Chêne-Bourg
+Avenue de la Martinière;5;Chêne-Bourg
+Avenue de la Martinière;6;Chêne-Bourg
+Avenue de la Martinière;7;Chêne-Bourg
+Avenue de la Martinière;8;Chêne-Bourg
+Avenue de la Martinière;10;Chêne-Bourg
+Avenue de la Martinière;11;Chêne-Bourg
+Avenue de la Martinière;13;Chêne-Bourg
+Avenue de la Martinière;14;Chêne-Bourg
+Avenue de la Martinière;15;Chêne-Bourg
+Avenue de la Martinière;16;Chêne-Bourg
+Avenue de la Martinière;18;Chêne-Bourg
+Avenue de la Martinière;19;Chêne-Bourg
+Avenue de la Martinière;24;Chêne-Bourg
+Avenue du Rond-Point;16;Chêne-Bourg
+Avenue du Rond-Point;18;Chêne-Bourg
+Avenue du Simplon;1;Chêne-Bourg
+Avenue du Simplon;2;Chêne-Bourg
+Avenue du Simplon;4;Chêne-Bourg
+Avenue du Simplon;5;Chêne-Bourg
+Avenue du Simplon;8;Chêne-Bourg
+Avenue du Simplon;9;Chêne-Bourg
+Avenue du Simplon;10;Chêne-Bourg
+Avenue du Simplon;13;Chêne-Bourg
+Avenue du Simplon;15;Chêne-Bourg
+Avenue du Simplon;17;Chêne-Bourg
+Avenue du Simplon;21;Chêne-Bourg
+Avenue du Simplon;22;Chêne-Bourg
+Avenue des Allinges;2;Chêne-Bourg
+Avenue des Allinges;3;Chêne-Bourg
+Avenue des Allinges;10;Chêne-Bourg
+Avenue des Allinges;14;Chêne-Bourg
+Avenue des Allinges;15;Chêne-Bourg
+Avenue des Allinges;16;Chêne-Bourg
+Avenue Helvétique;1;Chêne-Bourg
+Avenue Helvétique;2;Chêne-Bourg
+Avenue Helvétique;6;Chêne-Bourg
+Avenue Helvétique;8;Chêne-Bourg
+Avenue Helvétique;9;Chêne-Bourg
+Avenue Helvétique;10;Chêne-Bourg
+Avenue Helvétique;11;Chêne-Bourg
+Avenue Helvétique;13;Chêne-Bourg
+Avenue Helvétique;14;Chêne-Bourg
+Avenue Helvétique;18;Chêne-Bourg
+Avenue des Allinges;4;Chêne-Bourg
+Chemin du Buet;3;Chêne-Bourg
+Chemin du Buet;4;Chêne-Bourg
+Chemin du Buet;5;Chêne-Bourg
+Chemin du Buet;6;Chêne-Bourg
+Chemin de la Gravière;17;Chêne-Bourg
+Chemin de la Gravière;19;Chêne-Bourg
+Chemin de la Gravière;20;Chêne-Bourg
+Chemin de la Gravière;21;Chêne-Bourg
+Chemin de la Gravière;22;Chêne-Bourg
+Chemin de la Gravière;23;Chêne-Bourg
+Chemin de la Gravière;25;Chêne-Bourg
+Chemin de la Gravière;27;Chêne-Bourg
+Chemin de la Gravière;28;Chêne-Bourg
+Chemin de la Gravière;30;Chêne-Bourg
+Chemin de la Gravière;32;Chêne-Bourg
+Chemin de la Gravière;35;Chêne-Bourg
+Chemin des Mésanges;3;Chêne-Bourg
+Chemin des Mésanges;7;Chêne-Bourg
+Chemin de la Mousse;35;Chêne-Bourg
+Chemin de la Mousse;43;Chêne-Bourg
+Chemin de la Mousse;45;Chêne-Bourg
+Chemin du Saut-du-Loup;14;Chêne-Bourg
+Chemin du Saut-du-Loup;20;Chêne-Bourg
+Chemin du Saut-du-Loup;22;Chêne-Bourg
+Chemin du Saut-du-Loup;24;Chêne-Bourg
+Chemin du Saut-du-Loup;26;Chêne-Bourg
+Avenue des Vergys;18;Chêne-Bourg
+Avenue des Grands-Monts;32;Chêne-Bourg
+Avenue des Vergys;20;Chêne-Bourg
+Avenue des Vergys;23;Chêne-Bourg
+Avenue des Vergys;25;Chêne-Bourg
+Avenue des Vergys;25a;Chêne-Bourg
+Avenue des Vergys;26;Chêne-Bourg
+Avenue des Vergys;27;Chêne-Bourg
+Avenue des Vergys;28;Chêne-Bourg
+Avenue des Vergys;29;Chêne-Bourg
+Avenue des Vergys;29a;Chêne-Bourg
+Avenue des Vergys;31;Chêne-Bourg
+Avenue des Vergys;32;Chêne-Bourg
+Avenue des Grands-Monts;34;Chêne-Bourg
+Avenue des Grands-Monts;36;Chêne-Bourg
+Chemin des Mésanges;5a;Chêne-Bourg
+Chemin de la Gravière;15;Chêne-Bourg
+Avenue de Bel-Air;59;Chêne-Bourg
+Avenue de Bel-Air;61;Chêne-Bourg
+Avenue de Bel-Air;61a;Chêne-Bourg
+Avenue de Bel-Air;63;Chêne-Bourg
+Avenue de Bel-Air;65;Chêne-Bourg
+Avenue de Bel-Air;67;Chêne-Bourg
+Avenue de Bel-Air;69;Chêne-Bourg
+Avenue de Bel-Air;71;Chêne-Bourg
+Avenue de Bel-Air;73;Chêne-Bourg
+Avenue de Bel-Air;75;Chêne-Bourg
+Avenue de Bel-Air;77;Chêne-Bourg
+Avenue de Bel-Air;79;Chêne-Bourg
+Avenue de Bel-Air;81;Chêne-Bourg
+Avenue de Bel-Air;83;Chêne-Bourg
+Avenue de Bel-Air;85;Chêne-Bourg
+Avenue A.-M.-MIRANY;31;Chêne-Bourg
+Avenue A.-M.-MIRANY;33;Chêne-Bourg
+Avenue A.-M.-MIRANY;35;Chêne-Bourg
+Avenue A.-M.-MIRANY;37;Chêne-Bourg
+Avenue de Bel-Air;87;Chêne-Bourg
+Avenue de Bel-Air;89;Chêne-Bourg
+Avenue de Bel-Air;91;Chêne-Bourg
+Avenue de Bel-Air;93;Chêne-Bourg
+Avenue de Bel-Air;95;Chêne-Bourg
+Avenue A.-M.-MIRANY;13;Chêne-Bourg
+Avenue A.-M.-MIRANY;15;Chêne-Bourg
+Avenue A.-M.-MIRANY;17;Chêne-Bourg
+Avenue A.-M.-MIRANY;19;Chêne-Bourg
+Avenue A.-M.-MIRANY;21;Chêne-Bourg
+Avenue A.-M.-MIRANY;23;Chêne-Bourg
+Avenue A.-M.-MIRANY;25;Chêne-Bourg
+Avenue A.-M.-MIRANY;27;Chêne-Bourg
+Avenue A.-M.-MIRANY;29;Chêne-Bourg
+Avenue A.-M.-MIRANY;7;Chêne-Bourg
+Avenue A.-M.-MIRANY;9;Chêne-Bourg
+Avenue A.-M.-MIRANY;11;Chêne-Bourg
+Avenue A.-M.-MIRANY;1;Chêne-Bourg
+Avenue A.-M.-MIRANY;3;Chêne-Bourg
+Avenue A.-M.-MIRANY;5;Chêne-Bourg
+Avenue de Bel-Air;66;Chêne-Bourg
+Avenue de Bel-Air;68;Chêne-Bourg
+Avenue de Bel-Air;70;Chêne-Bourg
+Avenue de Bel-Air;70bis;Chêne-Bourg
+Avenue de Bel-Air;74;Chêne-Bourg
+Avenue de Bel-Air;76;Chêne-Bourg
+Avenue de Bel-Air;78;Chêne-Bourg
+Avenue de Bel-Air;80;Chêne-Bourg
+Avenue de Bel-Air;82;Chêne-Bourg
+Avenue de Bel-Air;84;Chêne-Bourg
+Avenue de Bel-Air;86;Chêne-Bourg
+Chemin du Petit-Bel-Air;1;Chêne-Bourg
+Chemin du Petit-Bel-Air;13;Chêne-Bourg
+Chemin du Petit-Bel-Air;17;Chêne-Bourg
+Chemin du Petit-Bel-Air;19;Chêne-Bourg
+Chemin du Petit-Bel-Air;21;Chêne-Bourg
+Chemin du Petit-Bel-Air;23;Chêne-Bourg
+Chemin du Petit-Bel-Air;25;Chêne-Bourg
+Chemin du Petit-Bel-Air;27;Chêne-Bourg
+Chemin du Petit-Bel-Air;29;Chêne-Bourg
+Chemin du Petit-Bel-Air;31;Chêne-Bourg
+Chemin du Petit-Bel-Air;33;Chêne-Bourg
+Chemin du Petit-Bel-Air;35;Chêne-Bourg
+Chemin du Petit-Bel-Air;37;Chêne-Bourg
+Chemin du Petit-Bel-Air;39;Chêne-Bourg
+Chemin du Petit-Bel-Air;41;Chêne-Bourg
+Chemin du Petit-Bel-Air;43;Chêne-Bourg
+Chemin du Petit-Bel-Air;45;Chêne-Bourg
+Chemin du Petit-Bel-Air;47;Chêne-Bourg
+Chemin du Petit-Bel-Air;49;Chêne-Bourg
+Chemin du Petit-Bel-Air;57;Chêne-Bourg
+Chemin du Petit-Bel-Air;59;Chêne-Bourg
+Chemin du Petit-Bel-Air;61;Chêne-Bourg
+Chemin du Petit-Bel-Air;65;Chêne-Bourg
+Chemin du Petit-Bel-Air;67;Chêne-Bourg
+Chemin du Petit-Bel-Air;15;Chêne-Bourg
+Chemin du Saut-du-Loup;1;Chêne-Bourg
+Chemin du Saut-du-Loup;3;Chêne-Bourg
+Chemin du Saut-du-Loup;5;Chêne-Bourg
+Chemin du Saut-du-Loup;7;Chêne-Bourg
+Chemin du Saut-du-Loup;11;Chêne-Bourg
+Chemin du Saut-du-Loup;15;Chêne-Bourg
+Chemin du Saut-du-Loup;17;Chêne-Bourg
+Chemin du Saut-du-Loup;19a;Chêne-Bourg
+Chemin de Clairejoie;1;Chêne-Bourg
+Chemin de Clairejoie;2;Chêne-Bourg
+Chemin de Clairejoie;3;Chêne-Bourg
+Chemin de Clairejoie;4;Chêne-Bourg
+Chemin de Clairejoie;5;Chêne-Bourg
+Chemin de Clairejoie;7;Chêne-Bourg
+Chemin de Clairejoie;8;Chêne-Bourg
+Chemin de Clairejoie;9;Chêne-Bourg
+Chemin de Clairejoie;10;Chêne-Bourg
+Chemin de Clairejoie;11;Chêne-Bourg
+Chemin de Clairejoie;12;Chêne-Bourg
+Chemin de Clairejoie;14;Chêne-Bourg
+Chemin du Saut-du-Loup;9;Chêne-Bourg
+Chemin des Lilas-Blancs;2;Chêne-Bourg
+Chemin des Lilas-Blancs;2a;Chêne-Bourg
+Chemin des Lilas-Blancs;3;Chêne-Bourg
+Chemin des Lilas-Blancs;4;Chêne-Bourg
+Chemin des Lilas-Blancs;7;Chêne-Bourg
+Chemin des Lilas-Blancs;9;Chêne-Bourg
+Chemin des Lilas-Blancs;10;Chêne-Bourg
+Chemin des Lilas-Blancs;12a;Chêne-Bourg
+Chemin des Lilas-Blancs;14;Chêne-Bourg
+Chemin des Lilas-Blancs;15;Chêne-Bourg
+Chemin des Lilas-Blancs;16;Chêne-Bourg
+Chemin des Lilas-Blancs;17;Chêne-Bourg
+Chemin des Lilas-Blancs;18;Chêne-Bourg
+Chemin des Lilas-Blancs;6;Chêne-Bourg
+Chemin des Lilas-Blancs;8;Chêne-Bourg
+Route de Jussy;4bis;Chêne-Bourg
+Rue Dr-Georges-AUDÉOUD;9;Chêne-Bourg
+Avenue Edouard-BAUD;8;Chêne-Bourg
+Place de la Gare;2;Chêne-Bourg
+Avenue du Vieux-Bourg;14a;Chêne-Bourg
+Avenue du Vieux-Bourg;8;Chêne-Bourg
+Avenue des Vergys;33;Chêne-Bourg
+Avenue de Thônex;18;Chêne-Bourg
+Route de Sous-Moulin;17;Chêne-Bourg
+Route de Sous-Moulin;9;Chêne-Bourg
+Route de Sous-Moulin;3;Chêne-Bourg
+Chemin du Saut-du-Loup;21;Chêne-Bourg
+Avenue PETIT-SENN;50bis;Chêne-Bourg
+Avenue PETIT-SENN;46;Chêne-Bourg
+Avenue PETIT-SENN;30;Chêne-Bourg
+Avenue PETIT-SENN;28;Chêne-Bourg
+Avenue PETIT-SENN;22;Chêne-Bourg
+Avenue PETIT-SENN;5;Chêne-Bourg
+Rue Jean-PELLETIER;6;Chêne-Bourg
+Rue PEILLONNEX;37;Chêne-Bourg
+Rue PEILLONNEX;35;Chêne-Bourg
+Rue PEILLONNEX;22;Chêne-Bourg
+Rue de Genève;33;Chêne-Bourg
+Chemin de la Mousse;58b;Chêne-Bourg
+Chemin de la Mousse;58;Chêne-Bourg
+Chemin de la Mousse;56b;Chêne-Bourg
+Chemin de la Mousse;56;Chêne-Bourg
+Chemin de la Mousse;50;Chêne-Bourg
+Chemin de la Mousse;46;Chêne-Bourg
+Chemin de la Mousse;36;Chêne-Bourg
+Chemin de la Mousse;34;Chêne-Bourg
+Chemin de la Mousse;32;Chêne-Bourg
+Chemin de la Mousse;18;Chêne-Bourg
+Chemin de la Mousse;12;Chêne-Bourg
+Chemin des Choucas;3;Chêne-Bourg
+Chemin des Mésanges;15;Chêne-Bourg
+Chemin des Mésanges;13;Chêne-Bourg
+Chemin des Mésanges;11;Chêne-Bourg
+Chemin des Mésanges;9;Chêne-Bourg
+Chemin des Mésanges;5;Chêne-Bourg
+Route de Jussy;15;Chêne-Bourg
+Route de Jussy;5;Chêne-Bourg
+Route de Jussy;4;Chêne-Bourg
+Route de Jussy;1;Chêne-Bourg
+Route de Jussy;2;Chêne-Bourg
+Rue François-JACQUIER;17;Chêne-Bourg
+Chemin de la Gravière;29;Chêne-Bourg
+Chemin de la Gravière;16;Chêne-Bourg
+Chemin de la Gravière;14;Chêne-Bourg
+Chemin de la Gravière;11;Chêne-Bourg
+Chemin de la Gravière;9;Chêne-Bourg
+Chemin de la Gravière;5a;Chêne-Bourg
+Avenue des Grands-Monts;31a;Chêne-Bourg
+Avenue des Grands-Monts;20;Chêne-Bourg
+Avenue des Grands-Monts;10;Chêne-Bourg
+Rue du Gothard;17;Chêne-Bourg
+Rue du Gothard;13;Chêne-Bourg
+Rue de Genève;78;Chêne-Bourg
+Rue de Genève;76;Chêne-Bourg
+Rue de Genève;74;Chêne-Bourg
+Rue de Genève;54;Chêne-Bourg
+Rue de Genève;38;Chêne-Bourg
+Rue de Genève;28;Chêne-Bourg
+Rue de Genève;10;Chêne-Bourg
+Rue de Genève;4;Chêne-Bourg
+Rue de Genève;2bis;Chêne-Bourg
+Rue de Genève;2;Chêne-Bourg
+Avenue François-Adolphe-GRISON;12;Chêne-Bourg
+Chemin de Floraire;23;Chêne-Bourg
+Chemin de Floraire;11;Chêne-Bourg
+Chemin de Floraire;7;Chêne-Bourg
+Chemin de Floraire;5;Chêne-Bourg
+Chemin de Floraire;5a;Chêne-Bourg
+Chemin de Floraire;7a;Chêne-Bourg
+Chemin de la Gravière;13;Chêne-Bourg
+Avenue des Ormeaux;10;Chêne-Bourg
+Avenue de Bel-Air;47a;Chêne-Bourg
+Avenue de Bel-Air;47b;Chêne-Bourg
+Avenue de Bel-Air;47c;Chêne-Bourg
+Avenue de Bel-Air;74a;Chêne-Bourg
+Avenue de Bel-Air;74b;Chêne-Bourg
+Avenue PETIT-SENN;41;Chêne-Bourg
+Avenue PETIT-SENN;41a;Chêne-Bourg
+Avenue PETIT-SENN;41e;Chêne-Bourg
+Avenue PETIT-SENN;41f;Chêne-Bourg
+Avenue PETIT-SENN;41h;Chêne-Bourg
+Avenue des Allinges;1;Chêne-Bourg
+Avenue de l'Aurore;15;Chêne-Bourg
+Avenue PETIT-SENN;41g;Chêne-Bourg
+Avenue de Bel-Air;30a;Chêne-Bourg
+Avenue de Bel-Air;58a;Chêne-Bourg
+Avenue des Grands-Monts;32a;Chêne-Bourg
+Avenue des Grands-Monts;32b;Chêne-Bourg
+Avenue du Vieux-Bourg;30;Chêne-Bourg
+Avenue du Vieux-Bourg;32;Chêne-Bourg
+Avenue du Vieux-Bourg;34;Chêne-Bourg
+Avenue du Vieux-Bourg;38;Chêne-Bourg
+Avenue du Vieux-Bourg;40;Chêne-Bourg
+Avenue du Vieux-Bourg;42;Chêne-Bourg
+Avenue du Vieux-Bourg;44;Chêne-Bourg
+Avenue du Vieux-Bourg;46;Chêne-Bourg
+Avenue du Vieux-Bourg;48;Chêne-Bourg
+Avenue du Vieux-Bourg;50;Chêne-Bourg
+Avenue du Vieux-Bourg;52;Chêne-Bourg
+Avenue du Vieux-Bourg;56;Chêne-Bourg
+Avenue du Vieux-Bourg;58;Chêne-Bourg
+Chemin des Lilas-Blancs;7bis;Chêne-Bourg
+Chemin du Saut-du-Loup;9bis;Chêne-Bourg
+Route de Sous-Moulin;11;Chêne-Bourg
+Route de Sous-Moulin;13;Chêne-Bourg
+Route de Sous-Moulin;15;Chêne-Bourg
+Route de Sous-Moulin;2;Chêne-Bourg
+Route de Sous-Moulin;21;Chêne-Bourg
+Route de Sous-Moulin;2a;Chêne-Bourg
+Route de Sous-Moulin;37;Chêne-Bourg
+Route de Sous-Moulin;4;Chêne-Bourg
+Route de Sous-Moulin;4a;Chêne-Bourg
+Route de Sous-Moulin;4b;Chêne-Bourg
+Route de Sous-Moulin;5;Chêne-Bourg
+Route de Sous-Moulin;7;Chêne-Bourg
+Chemin des Mésanges;19;Chêne-Bourg
+Avenue PETIT-SENN;41i;Chêne-Bourg
+Avenue PETIT-SENN;41j;Chêne-Bourg
+Chemin du Petit-Bel-Air;5;Chêne-Bourg
+Chemin du Petit-Bel-Air;5a;Chêne-Bourg
+Chemin du Petit-Bel-Air;7;Chêne-Bourg
+Avenue Helvétique;3;Chêne-Bourg
+Chemin du Petit-Bel-Air;53;Chêne-Bourg
+Chemin du Petit-Bel-Air;55;Chêne-Bourg
+Avenue PETIT-SENN;41c;Chêne-Bourg
+Route de Sous-Moulin;27;Chêne-Bourg
+Route de Sous-Moulin;29;Chêne-Bourg
+Route de Sous-Moulin;31;Chêne-Bourg
+Route de Sous-Moulin;33;Chêne-Bourg
+Route de Sous-Moulin;35;Chêne-Bourg
+Avenue PETIT-SENN;42b;Chêne-Bourg
+Avenue PETIT-SENN;42a;Chêne-Bourg
+Avenue PETIT-SENN;42;Chêne-Bourg
+Avenue PETIT-SENN;44;Chêne-Bourg
+Avenue PETIT-SENN;44bis;Chêne-Bourg
+Route de Malagnou;251;Chêne-Bourg
+Route de Malagnou;253;Chêne-Bourg
+Route de Malagnou;255;Chêne-Bourg
+Chemin des Ormes;6;Chêne-Bourg
+Chemin des Ormes;8;Chêne-Bourg
+Route de Malagnou;263;Chêne-Bourg
+Route de Malagnou;265;Chêne-Bourg
+Avenue PETIT-SENN;31a;Chêne-Bourg
+Route de Sous-Moulin;8c;Chêne-Bourg
+Route de Sous-Moulin;8b;Chêne-Bourg
+Route de Sous-Moulin;8a;Chêne-Bourg
+Route de Malagnou;261;Chêne-Bourg
+Rue de Genève;50a;Chêne-Bourg
+Rue de Genève;50b;Chêne-Bourg
+Rue de Genève;50d;Chêne-Bourg
+Route de Malagnou;257;Chêne-Bourg
+Route de Malagnou;259;Chêne-Bourg
+Avenue des Allinges;11;Chêne-Bourg
+Avenue du Simplon;12;Chêne-Bourg
+Avenue François-Adolphe-GRISON;11;Chêne-Bourg
+Rue PEILLONNEX;31a;Chêne-Bourg
+Avenue des Allinges;13;Chêne-Bourg
+Avenue François-Adolphe-GRISON;4;Chêne-Bourg
+Chemin des Mésanges;1a;Chêne-Bourg
+Chemin des Mésanges;1b;Chêne-Bourg
+Chemin des Mésanges;1c;Chêne-Bourg
+Rue de Genève;21;Chêne-Bourg
+Rue de Genève;23;Chêne-Bourg
+Avenue des Grands-Monts;1;Chêne-Bourg
+Chemin des Lilas-Blancs;5;Chêne-Bourg
+Avenue de Bel-Air;13;Chêne-Bourg
+Avenue A.-M.-MIRANY;36;Chêne-Bourg
+Avenue PETIT-SENN;16;Chêne-Bourg
+Rue PEILLONNEX;31a;Chêne-Bourg
+Avenue de l'Aurore;7;Chêne-Bourg
+Avenue A.-M.-MIRANY;36;Chêne-Bourg
+Chemin de la Mousse;14;Chêne-Bourg
+Rue PEILLONNEX;41;Chêne-Bourg
+Rue PEILLONNEX;41;Chêne-Bourg
+Avenue François-Adolphe-GRISON;20;Chêne-Bourg
+Rue du Gothard;5;Chêne-Bourg
+Route de Sous-Moulin;18;Chêne-Bourg
+Rue des Charbonniers;3;Chêne-Bourg
+Rue des Charbonniers;1;Chêne-Bourg
+Chemin de la Gravière;29;Chêne-Bourg
+Route de Sous-Moulin;28;Chêne-Bourg
+Chemin des Lilas-Blancs;14a;Chêne-Bourg
+Rue de Genève;50c;Chêne-Bourg
+Avenue PETIT-SENN;31b;Chêne-Bourg
+Avenue François-Adolphe-GRISON;2;Chêne-Bourg
+Chemin du Petit-Bel-Air;3;Chêne-Bourg
+Avenue de Bel-Air;74c;Chêne-Bourg
+Chemin de la Mousse;18;Chêne-Bourg
+Chemin du Saut-du-Loup;23;Chêne-Bourg
+Chemin du Bois-Des-Arts;45;Chêne-Bourg
+Avenue PETIT-SENN;16;Chêne-Bourg
+Place de la Gare;18;Chêne-Bourg
+Rue PEILLONNEX;31a;Chêne-Bourg
+Route de Sous-Moulin;28;Chêne-Bourg
+Avenue des Vergys;5;Chêne-Bourg
+Chemin des Lilas-Blancs;12;Chêne-Bourg
+Rue PEILLONNEX;6;Chêne-Bourg
+Chemin de l'Anjoulaz;19;Chêne-Bourg
+Avenue des Grands-Monts;35;Chêne-Bourg
+Avenue de Bel-Air;33;Chêne-Bourg
+Chemin de la Mousse;18;Chêne-Bourg
+Rue PEILLONNEX;36bis;Chêne-Bourg
+Chemin de la Mousse;16;Chêne-Bourg
+Chemin de la Mousse;18;Chêne-Bourg
+Chemin de la Mousse;18;Chêne-Bourg
+Place de la Gare;18;Chêne-Bourg
+Chemin de la Mousse;50;Chêne-Bourg
+Chemin de la Mousse;32;Chêne-Bourg
+Chemin du Printemps;5;Chêne-Bourg
+Rue PEILLONNEX;31a;Chêne-Bourg
+Rue Jean-PELLETIER;9;Chêne-Bourg
+Avenue PETIT-SENN;13;Chêne-Bourg
+Avenue de Bel-Air;61ter;Chêne-Bourg
+Rue François-JACQUIER;;Chêne-Bourg
+Chemin de la Mousse;18;Chêne-Bourg
+Chemin des Hutins-des-Bois;7;Chêne-Bourg
+Chemin de la Mousse;58b;Chêne-Bourg
+Rue PEILLONNEX;41;Chêne-Bourg
+Avenue de Bel-Air;2;Chêne-Bourg
+Route de Sous-Moulin;28;Chêne-Bourg
+Rue du Gothard;13a;Chêne-Bourg
+Chemin des Choucas;3;Chêne-Bourg
+Rue François-PERRÉARD;4;Chêne-Bourg
+Rue de Genève;28;Chêne-Bourg
+Rue PEILLONNEX;12;Chêne-Bourg
+Avenue A.-M.-MIRANY;36;Chêne-Bourg
+Avenue du Vieux-Bourg;10a;Chêne-Bourg
+Chemin de la Gravière;26;Chêne-Bourg
+Chemin de la Gravière;26a;Chêne-Bourg
+Avenue de Bel-Air;72a;Chêne-Bourg
+Avenue de Bel-Air;72;Chêne-Bourg
+Rue de Genève;80a;Chêne-Bourg
+Rue de Genève;80b;Chêne-Bourg
+Rue de Genève;80d;Chêne-Bourg
+Rue de Genève;80c;Chêne-Bourg
+Avenue PETIT-SENN;36;Chêne-Bourg
+Avenue PETIT-SENN;36b;Chêne-Bourg
+Avenue PETIT-SENN;38;Chêne-Bourg
+Avenue de Thônex;24;Chêne-Bourg
+Avenue PETIT-SENN;40;Chêne-Bourg
+Avenue A.-M.-MIRANY;36;Chêne-Bourg
+Chemin des Hutins-des-Bois;1;Chêne-Bourg
+Chemin des Lilas-Blancs;14b;Chêne-Bourg
+Avenue PETIT-SENN;36a;Chêne-Bourg
+Chemin de l'Anjoulaz;14;Chêne-Bourg
+Chemin de l'Anjoulaz;12;Chêne-Bourg
+Avenue de Bel-Air;35;Chêne-Bourg
+Avenue des Grands-Monts;27;Chêne-Bourg
+Avenue des Grands-Monts;29;Chêne-Bourg
+Chemin de la Gravière;36;Chêne-Bourg
+Chemin de la Gravière;38;Chêne-Bourg
+Chemin de Clairejoie;10a;Chêne-Bourg
+Chemin de Floraire;13a;Chêne-Bourg
+Chemin de Floraire;13;Chêne-Bourg
+Rue PEILLONNEX;35b;Chêne-Bourg
+Rue PEILLONNEX;35a;Chêne-Bourg
+Rue PEILLONNEX;35c;Chêne-Bourg
+Rue du Gothard;15;Chêne-Bourg
+Avenue des Grands-Monts;9;Chêne-Bourg
+Avenue des Grands-Monts;7;Chêne-Bourg
+Avenue des Vergys;30;Chêne-Bourg
+Chemin du Saut-du-Loup;19;Chêne-Bourg
+Chemin de la Gravière;24;Chêne-Bourg
+Avenue de Bel-Air;64;Chêne-Bourg
+Avenue de Bel-Air;9;Chêne-Bourg
+Avenue de Bel-Air;9a;Chêne-Bourg
+Avenue de Bel-Air;9b;Chêne-Bourg
+Avenue de Bel-Air;9c;Chêne-Bourg
+Chemin de la Gravière;37;Chêne-Bourg
+Avenue des Grands-Monts;30;Chêne-Bourg
+Chemin de la Gravière;31;Chêne-Bourg
+Chemin de la Gravière;31a;Chêne-Bourg
+Chemin de la Gravière;31b;Chêne-Bourg
+Chemin de la Gravière;31c;Chêne-Bourg
+Avenue de Thônex;28;Chêne-Bourg
+Avenue de Thônex;30;Chêne-Bourg
+Chemin de Clairejoie;6c;Chêne-Bourg
+Chemin de Clairejoie;6b;Chêne-Bourg
+Chemin de Clairejoie;6a;Chêne-Bourg
+Chemin de Clairejoie;6;Chêne-Bourg
+Chemin du Printemps;5;Chêne-Bourg
+Avenue de Bel-Air;80a;Chêne-Bourg
+Avenue de Bel-Air;80b;Chêne-Bourg
+Avenue des Grands-Monts;35;Chêne-Bourg
+Avenue Rév.-P.-DECHEVRENS;8;Chêne-Bourg
+Chemin de la Mousse;47;Chêne-Bourg
+Chemin de la Mousse;47a;Chêne-Bourg
+Chemin de la Mousse;49;Chêne-Bourg
+Chemin de la Mousse;49a;Chêne-Bourg
+Chemin du Petit-Bel-Air;11e;Chêne-Bourg
+Chemin du Petit-Bel-Air;11d;Chêne-Bourg
+Chemin du Petit-Bel-Air;11c;Chêne-Bourg
+Chemin du Petit-Bel-Air;11b;Chêne-Bourg
+Chemin du Petit-Bel-Air;11;Chêne-Bourg
+Chemin du Petit-Bel-Air;11a;Chêne-Bourg
+Avenue de Bel-Air;20;Chêne-Bourg
+Chemin des Meures;6;Chêne-Bourg
+Chemin des Meures;6a;Chêne-Bourg
+Chemin des Meures;6b;Chêne-Bourg
+Avenue de Bel-Air;54;Chêne-Bourg
+Avenue de Bel-Air;54a;Chêne-Bourg
+Chemin du Saut-du-Loup;16;Chêne-Bourg
+Chemin du Saut-du-Loup;18;Chêne-Bourg
+Chemin du Petit-Bel-Air;65a;Chêne-Bourg
+Chemin du Petit-Bel-Air;65b;Chêne-Bourg
+Chemin du Petit-Bel-Air;65c;Chêne-Bourg
+Chemin du Petit-Bel-Air;67;Chêne-Bourg
+Rue de Genève;24;Chêne-Bourg
+Rue du Péage;5;Chêne-Bourg
+Rue du Gothard;22;Chêne-Bourg
+Rue de Genève;1;Chêne-Bourg
+Rue de Genève;3;Chêne-Bourg
+Avenue Edouard-BAUD;2;Chêne-Bourg
+Place Louis-FAVRE;1;Chêne-Bourg
+Rue Antoine-FLOQUET;14;Chêne-Bourg
+Rue PEILLONNEX;19;Chêne-Bourg
+Avenue de Bel-Air;31;Chêne-Bourg
+Avenue de l'Aurore;21;Chêne-Bourg
+Avenue de Bel-Air;40;Chêne-Bourg
+Avenue du Simplon;3;Chêne-Bourg
+Rue Dr-Georges-AUDÉOUD;7;Chêne-Bourg
+Place de la Gare;4;Chêne-Bourg
+Rue PEILLONNEX;2;Chêne-Bourg
+Chemin de la Mousse;50a;Chêne-Bourg
+Chemin de la Gravière;18;Chêne-Bourg
+Route de Jussy;3;Chêne-Bourg
+Chemin de la Gravière;3;Chêne-Bourg
+Chemin de la Mousse;37;Chêne-Bourg
+Place de la Gare;1;Chêne-Bourg
+Avenue François-Adolphe-GRISON;6;Chêne-Bourg
+Avenue de Bel-Air;31;Chêne-Bourg
+Chemin de la Mousse;50a;Chêne-Bourg
+Rue Jean-PELLETIER;2;Chêne-Bourg
+Rue François-PERRÉARD;22;Chêne-Bourg
+Chemin de la Mousse;50b;Chêne-Bourg
+Chemin de la Mousse;50b;Chêne-Bourg
+Place de la Gare;6;Chêne-Bourg
