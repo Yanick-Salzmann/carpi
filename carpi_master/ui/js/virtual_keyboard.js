@@ -1,5 +1,5 @@
 $(() => {
-    const layout = [
+    const regular_layout = [
         ['\u00A7', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '\'', '^', '\u2190'],
         ['\u2b0c', 'Q', 'W', 'E', 'R', 'T', 'Z', 'U', 'I', 'O', 'P', '\u00DC', '\u00A8'],
         ['\u21ea', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', '\u00D6', '\u00C4', '$'],
@@ -7,34 +7,68 @@ $(() => {
     ];
 
     const number_layout = [
-      ['\u2190', '/', '*', '-'],
-      ['7', '8', '9', '+'],
-      ['4', '5', '6', ' '],
-      ['1', '2', '3', ' '],
-      ['0', '.', ',', ' ']
+        ['\u2190', '/', '*', '-'],
+        ['7', '8', '9', '+'],
+        ['4', '5', '6', ' '],
+        ['1', '2', '3', ' '],
+        ['0', '.', ',', ' ']
     ];
 
-    $('div.virtual-keyboard').each(function() {
-        const kb = $(this);
-        const wrapper = $('<div class="vkb-wrapper"></div>');
-        for(let row_idx in number_layout) {
-            const row = number_layout[row_idx];
-            const row_wrapper = $('<div class="vkb-row-wrapper"></div>');
-            for(let key_idx in row) {
-                const key = row[key_idx];
-                const cur_key = $('<span class="vkb-key keys-4"></span>');
-                const cur_content = $('<div class="content"></div>');
-                cur_content.text(key);
-                cur_key.append(cur_content);
-                row_wrapper.append(cur_key);
-            }
-            wrapper.append(row_wrapper);
+    window.VirtualKeyboard = class VirtualKeyboard {
+        static layouts = {
+            REGULAR: 0,
+            NUMBER_ONLY: 1
+        };
+
+        constructor(element, callback) {
+            this.kb = element;
+            this.callback = callback;
         }
 
-        kb.append(wrapper);
-    });
+        setLayout(layout) {
+            switch (layout) {
+                case VirtualKeyboard.layouts.REGULAR: {
+                    this.activateLayout(regular_layout);
+                    break;
+                }
 
-    window.VirtualKeyboard = class VirtualKeyboard {
+                case VirtualKeyboard.layouts.NUMBER_ONLY: {
+                    this.activateLayout(number_layout);
+                    break;
+                }
 
+                default: {
+                    throw "Invalid layout specified, must be 0 (REGULAR) or 1 (NUMBER_ONLY)";
+                }
+            }
+        }
+
+        activateLayout(layout) {
+            this.kb.empty();
+
+            const wrapper = $('<div class="vkb-wrapper"></div>');
+            for (let row_idx = 0; row_idx < layout.length; ++row_idx) {
+                const row = layout[row_idx];
+                const row_wrapper = $('<div class="vkb-row-wrapper"></div>');
+                for (let key_idx = 0; key_idx < row.length; ++key_idx) {
+                    const key = row[key_idx];
+                    const cur_key = $('<span class="vkb-key keys-4"></span>');
+                    const cur_content = $('<div class="content"></div>');
+                    cur_content.text(key);
+                    cur_key.append(cur_content);
+                    row_wrapper.append(cur_key);
+                    cur_key.click(() => {
+                        if (key === '\u2190') {
+                            this.callback('\b');
+                        } else {
+                            this.callback(key);
+                        }
+                    });
+                }
+                wrapper.append(row_wrapper);
+            }
+
+            this.kb.append(wrapper);
+        }
     }
 });
