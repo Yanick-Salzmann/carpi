@@ -42,19 +42,19 @@ $(() => {
             return;
         }
 
-        if (isNaN(parseInt(plz_prefix))) {
+        const search_plz = parseInt(plz_prefix);
+        if (isNaN(search_plz)) {
             return;
         }
 
         container.empty();
 
         const dividend = Math.pow(10, 4 - len);
-        const search_plz = Math.floor(parseInt(plz_prefix) / dividend);
 
         let num_results = 0;
         for (let i = 0; i < plz_ch.length && num_results < 10; ++i) {
             const key = Math.floor(plz_ch[i].plz / dividend);
-            if(key !== search_plz) {
+            if (key !== search_plz) {
                 continue;
             }
 
