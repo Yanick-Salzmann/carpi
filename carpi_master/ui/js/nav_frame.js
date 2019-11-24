@@ -31,6 +31,8 @@ $(() => {
         console.log(key);
     });
 
+    plz_keyboard.setLayout(VirtualKeyboard.layouts.NUMBER_ONLY);
+
     window.on_show_nav_section = function () {
 
     }

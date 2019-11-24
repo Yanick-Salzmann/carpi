@@ -23,6 +23,7 @@ $(() => {
         constructor(element, callback) {
             this.kb = element;
             this.callback = callback;
+            this.setLayout(VirtualKeyboard.layouts.REGULAR);
         }
 
         setLayout(layout) {
