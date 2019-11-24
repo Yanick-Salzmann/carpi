@@ -30,6 +30,7 @@ $(() => {
     let plz_prefix = '';
 
     function updatePlzFilter() {
+        $('#ch-post-code-input-target').val(plz_prefix);
         const container = $('#nav-wizard-step-addr-ch .item-recommendation');
         const len = plz_prefix.length;
         if (len > 4) {
