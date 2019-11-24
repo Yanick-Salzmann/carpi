@@ -13,39 +13,6 @@ namespace carpi {
     int main(int argc, char *argv[]) {
         utils::Logger log{"main"};
 
-        wiring::Gpio gpio;
-        auto pin = gpio.open_pin(40);
-        auto pin3 = gpio.open_pin(38);
-        auto pin4 = gpio.open_pin(36);
-        pin3.mode(wiring::GpioMode::OUTPUT_MODE);
-        pin4.mode(wiring::GpioMode::OUTPUT_MODE);
-        pin.mode(wiring::GpioMode::OUTPUT_MODE);
-
-        std::thread t1{[pin]() {
-            while (true) {
-                pin.high();
-                std::this_thread::sleep_for(std::chrono::milliseconds(50));
-                pin.low();
-                std::this_thread::sleep_for(std::chrono::milliseconds(50));
-            }
-        }};
-
-        std::thread t2{[pin3]() {
-            while (true) {
-                pin3.high();
-                std::this_thread::sleep_for(std::chrono::milliseconds(65));
-                pin3.low();
-                std::this_thread::sleep_for(std::chrono::milliseconds(65));
-            }
-        }};
-
-        while(true) {
-            pin4.high();
-            std::this_thread::sleep_for(std::chrono::milliseconds(55));
-            pin4.low();
-            std::this_thread::sleep_for(std::chrono::milliseconds(55));
-        }
-
         std::string line{};
         _argc = argc;
         _argv = argv;
