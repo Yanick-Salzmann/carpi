@@ -53,19 +53,47 @@ $(() => {
 
         const dividend = Math.pow(10, 4 - len);
 
+        let next_chars = [];
+
         let num_results = 0;
-        for (let i = 0; i < plz_ch.length && num_results < 10; ++i) {
+        for (let i = 0; i < plz_ch.length; ++i) {
             const key = Math.floor(plz_ch[i].plz / dividend);
             if (key !== search_plz) {
                 continue;
             }
 
             const row = plz_ch[i];
-            const text = `${row.plz} ${row.city} (${row.state_abbrvtn})`;
-            const parent = $('<div class="recommendation"></div>');
-            parent.text(text);
-            container.append(parent);
-            ++num_results;
+            if(num_results < 10) {
+                const text = `${row.plz} ${row.city} (${row.state_abbrvtn})`;
+                const parent = $('<div class="recommendation"></div>');
+                parent.text(text);
+                container.append(parent);
+                ++num_results;
+            } else {
+                if(len < 4) {
+                    const next_num = Math.floor((plz_ch[i].plz * 10) / dividend) % 10;
+                    if(next_chars.indexOf(next_num) < 0) {
+                        next_chars.push(next_num);
+                    }
+                }
+            }
+        }
+
+        if(len >= 4) {
+            plz_keyboard.filterEnabledKeys(key => key === '\b');
+        } else {
+            plz_keyboard.filterEnabledKeys(key => {
+                if(key === '\b') {
+                    return true;
+                }
+
+                const num_key = parseInt(key);
+                if(isNaN(num_key)) {
+                    return false;
+                }
+
+                return next_chars.indexOf(num_key) >= 0;
+            })
         }
     }
 
