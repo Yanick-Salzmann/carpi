@@ -243,11 +243,6 @@ section.nav-section .item-recommendation .recommendation {
     line-height: 30px;
 }
 
-@font-face {
-    font-family: "Noto Color Emoji";
-    src: url("/fonts/NotoColorEmoji.ttf")
-}
-
 .vkb-wrapper {
     display: flex;
     flex-direction: column;
@@ -259,7 +254,6 @@ section.nav-section .item-recommendation .recommendation {
 }
 
 .vkb-row-wrapper .vkb-key {
-    /*font-family: "Noto Color Emoji", sans-serif;*/
     position: relative;
     text-align: center;
     width: calc(100% / 14);
