@@ -63,32 +63,32 @@ $(() => {
             }
 
             const row = plz_ch[i];
-            if(num_results < 10) {
+            if (num_results < 10) {
                 const text = `${row.plz} ${row.city} (${row.state_abbrvtn})`;
                 const parent = $('<div class="recommendation"></div>');
                 parent.text(text);
                 container.append(parent);
                 ++num_results;
-            } else {
-                if(len < 4) {
-                    const next_num = Math.floor((plz_ch[i].plz * 10) / dividend) % 10;
-                    if(next_chars.indexOf(next_num) < 0) {
-                        next_chars.push(next_num);
-                    }
+            }
+
+            if (len < 4) {
+                const next_num = Math.floor((plz_ch[i].plz * 10) / dividend) % 10;
+                if (next_chars.indexOf(next_num) < 0) {
+                    next_chars.push(next_num);
                 }
             }
         }
 
-        if(len >= 4) {
+        if (len >= 4) {
             plz_keyboard.filterEnabledKeys(key => key === '\b');
         } else {
             plz_keyboard.filterEnabledKeys(key => {
-                if(key === '\b') {
+                if (key === '\b') {
                     return true;
                 }
 
                 const num_key = parseInt(key);
-                if(isNaN(num_key)) {
+                if (isNaN(num_key)) {
                     return false;
                 }
 
