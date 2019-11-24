@@ -50,8 +50,8 @@ namespace carpi {
 
         const auto search_plz = val->GetUIntValue();
 
-        std::stringstream target_file{"../../carpi_browser_subprocess/data/plz_map/"};
-        target_file << search_plz << ".dat";
+        std::stringstream target_file{};
+        target_file << "../../carpi_browser_subprocess/data/plz_map/" << search_plz << ".dat";
 
         std::cout << "Opening: " << target_file.str() << std::endl;
 
