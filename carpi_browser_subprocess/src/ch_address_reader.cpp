@@ -77,7 +77,7 @@ namespace carpi {
                 continue;
             }
 
-            utils::split(line, ';', data_container);
+            data_container = utils::split(line, ';');
             auto plz = std::stoi(data_container[3]);
             if(plz != search_plz) {
                 continue;
