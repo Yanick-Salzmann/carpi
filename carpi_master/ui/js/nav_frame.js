@@ -12,9 +12,9 @@ $(() => {
         $('#' + id).removeClass('hidden');
     }
 
-    function loadInitialPlzValues() {
-        for (let i in [...Array(10).keys()]) {
-            const row = plz_ch[i];
+    function loadInitialRecommendations(elements) {
+        for(let i in [...Array(10).keys()]) {
+            const row = elements[i];
             const text = `${row.plz} ${row.city} (${row.state_abbrvtn})`;
 
             const container = $('#nav-wizard-step-addr-ch .item-recommendation');
@@ -24,12 +24,22 @@ $(() => {
         }
     }
 
+    function loadInitialPlzValues() {
+        loadInitialRecommendations(plz_ch);
+    }
+
+    function loadInitialCityValues() {
+        const cities = [...plz_ch].sort((a, b) => a.city.localeCompare(b.city));
+        loadInitialRecommendations(cities);
+    }
+
     $('#nav-find-addr-ch').click(() => {
         switchToWizardStep('nav-wizard-step-addr-ch');
         loadInitialPlzValues();
     });
 
     let plz_prefix = '';
+    let city_prefix = '';
 
     function defaultNumberFiltering() {
         plz_keyboard.filterEnabledKeys(key => key === '\b' || !isNaN(parseInt(key)));
@@ -65,7 +75,7 @@ $(() => {
 
         const dividend = Math.pow(10, 4 - len);
 
-        let next_chars = [];
+        let next_plz_chars = [];
 
         let num_results = 0;
         for (let i = 0; i < plz_ch.length; ++i) {
@@ -85,8 +95,8 @@ $(() => {
 
             if (len < 4) {
                 const next_num = Math.floor((plz_ch[i].plz * 10) / dividend) % 10;
-                if (next_chars.indexOf(next_num) < 0) {
-                    next_chars.push(next_num);
+                if (next_plz_chars.indexOf(next_num) < 0) {
+                    next_plz_chars.push(next_num);
                 }
             }
         }
@@ -104,12 +114,16 @@ $(() => {
                     return false;
                 }
 
-                return next_chars.indexOf(num_key) >= 0;
+                return next_plz_chars.indexOf(num_key) >= 0;
             })
         }
     }
 
-    const plz_keyboard = new VirtualKeyboard($('#nav-wizard-step-addr-ch .virtual-keyboard'), (key) => {
+    function updateCityFilter() {
+
+    }
+
+    function updateKeyPlz(key) {
         if (key === '\b') {
             if (!plz_prefix.length) {
                 loadInitialPlzValues();
@@ -128,6 +142,22 @@ $(() => {
 
         plz_prefix += key;
         updatePlzFilter();
+    }
+
+    function updateKeyCity(key) {
+        if (key === '\b') {
+            if(!city_prefix) {
+                loadInitialCityValues();
+            }
+        }
+    }
+
+    const plz_keyboard = new VirtualKeyboard($('#nav-wizard-step-addr-ch .virtual-keyboard'), (key) => {
+        if(is_post_code_input) {
+            updateKeyPlz(key);
+        } else {
+            updateKeyCity(key);
+        }
     });
 
     plz_keyboard.setLayout(VirtualKeyboard.layouts.REGULAR);
