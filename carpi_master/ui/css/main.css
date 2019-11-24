@@ -267,9 +267,13 @@ section.nav-section .item-recommendation .recommendation {
     max-width: 60px;
 }
 
-.vkb-row-wrapper .vkb-key:active {
+.vkb-row-wrapper .vkb-key:not(.disabled):active {
     background-color: #999;
     color: black;
+}
+
+.vkb-row-wrapper .vkb-key.disabled {
+    color: #555;
 }
 
 .vkb-row-wrapper .vkb-key.keys-1 {

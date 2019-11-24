@@ -26,6 +26,21 @@ $(() => {
             this.setLayout(VirtualKeyboard.layouts.REGULAR);
         }
 
+        filterEnabledKeys(filter) {
+            const keys = this.kb.find('span.vkb-key');
+            for (let i = 0; i < keys.length; ++i) {
+                const key = $(keys.eq(i));
+                const isEnabled = filter(key.find('div.content').text());
+                if (isEnabled) {
+                    key.removeClass('disabled');
+                } else {
+                    if (!key.hasClass('disabled')) {
+                        key.addClass('disabled');
+                    }
+                }
+            }
+        }
+
         setLayout(layout) {
             switch (layout) {
                 case VirtualKeyboard.layouts.REGULAR: {
