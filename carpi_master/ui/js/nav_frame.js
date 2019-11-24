@@ -33,13 +33,13 @@ $(() => {
         $('#ch-post-code-input-target').val(plz_prefix);
         const container = $('#nav-wizard-step-addr-ch .item-recommendation');
         const len = plz_prefix.length;
-        console.log(len);
         if (len > 4) {
             container.empty();
             return;
         }
 
         if (!len) {
+            container.empty();
             loadInitialPlzValues();
             return;
         }
