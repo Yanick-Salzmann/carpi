@@ -6,7 +6,12 @@ add_executable(carpi_master src/main.cpp src/comm/comm_server.hpp src/comm/comm_
         #src/gl/Buffers.cpp src/gl/Buffers.hpp src/gl/graphics_device.hpp src/gl/graphics_device.cpp src/gl/Program.hpp src/gl/vertex_element.cpp src/gl/vertex_element.hpp
         src/ui/web_core.hpp src/ui/web_core.cpp src/ui/web_application.hpp src/ui/web_application.cpp src/main.hpp src/ui/web_client.hpp src/ui/web_client.cpp src/io/local_scheme_handler.hpp src/io/local_scheme_handler.cpp src/comm/ipc_server.hpp src/comm/ipc_server.cpp src/comm/ipc_client_manager.hpp src/comm/ipc_client_manager.cpp src/comm/ipc_connection.hpp src/comm/ipc_connection.cpp src/io/camera/camera_stream.hpp src/io/camera/camera_stream.cpp src/ui/event_manager.hpp src/ui/event_manager.cpp src/ui/events/bluetooth_events.hpp src/ui/events/bluetooth_events.cpp src/io/obd/ObdConnectionManager.hpp src/io/obd/ObdConnectionManager.cpp)
 
-add_custom_command(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/ui/data/CH_addresses.csv COMMAND unzip ${CMAKE_CURRENT_SOURCE_DIR}/ui/data/CH_addresses.zip DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/ui/data/CH_addresses.zip)
+add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/ui/data/CH_addresses.csv
+        COMMAND "unzip ${CMAKE_CURRENT_SOURCE_DIR}/ui/data/CH_addresses.zip"
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/ui/data/CH_addresses.zip
+)
+
 add_dependencies(carpi_master bluetooth_utils video_stream obd carpi_browser_subprocess ipc_common wiring_utils data_server json net_utils gps_utils)
 
 find_package(Threads)
@@ -27,7 +32,7 @@ target_include_directories(carpi_master PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src
         ${FFMPEG_INCLUDE_DIRS}
         /usr/local/include/cef
-)
+        )
 
 target_link_libraries(carpi_master
         bluetooth_utils
