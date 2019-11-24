@@ -53,12 +53,12 @@ $(() => {
         setLayout(layout) {
             switch (layout) {
                 case VirtualKeyboard.layouts.REGULAR: {
-                    this.activateLayout(regular_layout);
+                    this.activateLayout(regular_layout, 14);
                     break;
                 }
 
                 case VirtualKeyboard.layouts.NUMBER_ONLY: {
-                    this.activateLayout(number_layout);
+                    this.activateLayout(number_layout, 4);
                     break;
                 }
 
@@ -68,7 +68,7 @@ $(() => {
             }
         }
 
-        activateLayout(layout) {
+        activateLayout(layout, width) {
             this.kb.empty();
 
             const wrapper = $('<div class="vkb-wrapper"></div>');
@@ -77,7 +77,7 @@ $(() => {
                 const row_wrapper = $('<div class="vkb-row-wrapper"></div>');
                 for (let key_idx = 0; key_idx < row.length; ++key_idx) {
                     const key = row[key_idx];
-                    const cur_key = $('<span class="vkb-key keys-4"></span>');
+                    const cur_key = $('<span class="vkb-key keys-' + width + '"></span>');
                     const cur_content = $('<div class="content"></div>');
                     cur_key.click(() => {
                         if (key === '\u2190') {
