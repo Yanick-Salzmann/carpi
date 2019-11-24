@@ -81,7 +81,6 @@ $(() => {
                     const cur_content = $('<div class="content"></div>');
                     cur_key.click(() => {
                         if(cur_key.hasClass('disabled')) {
-                            console.log('Disabled key');
                             return;
                         }
 
