@@ -1,9 +1,11 @@
 $(() => {
+    let is_post_code_input = true;
+
     let plz_ch = null;
-    const reader = new PlzCsvReader("data/plz_ch.csv");
-    reader.then((info) => {
-        plz_ch = info;
-    });
+    let ch_addresses = null;
+
+    new PlzCsvReader("data/plz_ch.csv").then(info => plz_ch = info);
+    new ChAddressesCsvReader("data/CH_addresses.csv").then(info => ch_addresses = info);
 
     function switchToWizardStep(id) {
         $('section.nav-section .wizard-body-wrapper > div:not(.hidden)').addClass('hidden');
@@ -131,13 +133,12 @@ $(() => {
     plz_keyboard.setLayout(VirtualKeyboard.layouts.REGULAR);
     defaultNumberFiltering();
 
-    let is_post_code_input = true;
     $('#plz-ch-input-post-or-city-toggle').click(() => {
         is_post_code_input = !is_post_code_input;
         $('#plz-ch-input-post-or-city-toggle').text(is_post_code_input ? "Post Code" : "City");
     });
 
     window.on_show_nav_section = function () {
-
+        console.log(ch_addresses);
     }
 });

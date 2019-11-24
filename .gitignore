@@ -127,3 +127,5 @@ third_party/**
 *.iml
 .idea/misc.xml
 .idea/modules.xml
+
+carpi_master/ui/data/CH_addresses.csv
