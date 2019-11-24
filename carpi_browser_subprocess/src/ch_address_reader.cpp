@@ -36,9 +36,7 @@ namespace carpi {
     };
 
     auto ChAddressReader::Execute(const CefString &name, CefRefPtr<CefV8Value> object, const CefV8ValueList &arguments, CefRefPtr<CefV8Value> &retval, CefString &exception) -> bool {
-        static std::filesystem::path addr_path{"../../carpi_browser_subprocess/data/CH_addresses.csv"};
-
-        std::ifstream is{addr_path};
+        std::ifstream is{"../../carpi_browser_subprocess/data/CH_addresses.csv"};
 
         std::string line{};
 
