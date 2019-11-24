@@ -131,6 +131,12 @@ $(() => {
     plz_keyboard.setLayout(VirtualKeyboard.layouts.REGULAR);
     defaultNumberFiltering();
 
+    let is_post_code_input = true;
+    $('#plz-ch-input-post-or-city-toggle').click(() => {
+        is_post_code_input = !is_post_code_input;
+        $('#plz-ch-input-post-or-city-toggle').text(is_post_code_input ? "Post Code" : "City");
+    });
+
     window.on_show_nav_section = function () {
 
     }
