@@ -29,11 +29,20 @@ $(() => {
 
     let plz_prefix = '';
 
+    function defaultNumberFiltering() {
+        plz_keyboard.filterEnabledKeys(key => key === '\b' || !isNaN(parseInt(key)));
+    }
+
+    function backspaceOnlyFiltering() {
+        plz_keyboard.filterEnabledKeys(key => key === '\b');
+    }
+
     function updatePlzFilter() {
         $('#ch-post-code-input-target').val(plz_prefix);
         const container = $('#nav-wizard-step-addr-ch .item-recommendation');
         const len = plz_prefix.length;
         if (len > 4) {
+            backspaceOnlyFiltering();
             container.empty();
             return;
         }
@@ -41,6 +50,7 @@ $(() => {
         if (!len) {
             container.empty();
             loadInitialPlzValues();
+            defaultNumberFiltering();
             return;
         }
 
@@ -80,7 +90,7 @@ $(() => {
         }
 
         if (len >= 4) {
-            plz_keyboard.filterEnabledKeys(key => key === '\b');
+            backspaceOnlyFiltering();
         } else {
             plz_keyboard.filterEnabledKeys(key => {
                 if (key === '\b') {
@@ -119,7 +129,7 @@ $(() => {
     });
 
     plz_keyboard.setLayout(VirtualKeyboard.layouts.REGULAR);
-    plz_keyboard.filterEnabledKeys(key => !isNaN(parseInt(key)) || key === '\b');
+    defaultNumberFiltering();
 
     window.on_show_nav_section = function () {
 
