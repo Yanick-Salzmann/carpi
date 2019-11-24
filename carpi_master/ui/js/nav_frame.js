@@ -29,7 +29,30 @@ $(() => {
     }
 
     function loadInitialCityValues() {
-        const cities = [...plz_ch].sort((a, b) => a.city.localeCompare(b.city));
+        const cities = [...plz_ch].sort((a, b) => {
+            if(a && b && a.city && b.city) {
+                return a.city.localeCompare(b.city);
+            }
+
+            if(!a && b) {
+                return -1;
+            }
+
+            if(a && !b) {
+                return 1;
+            }
+
+            if(a.city && !b.city) {
+                return 1;
+            }
+
+            if(!a.city && b.city) {
+                return -1;
+            }
+
+            return 0;
+        });
+
         loadInitialRecommendations(cities);
     }
 
