@@ -7,11 +7,11 @@ namespace carpi::wiring {
         pinMode(_pin_index, mode == GpioMode::OUTPUT_MODE ? OUTPUT : INPUT);
     }
 
-    void GpioPin::high() {
+    void GpioPin::high() const {
         digitalWrite(_pin_index, HIGH);
     }
 
-    void GpioPin::low() {
+    void GpioPin::low() const {
         digitalWrite(_pin_index, LOW);
     }
 

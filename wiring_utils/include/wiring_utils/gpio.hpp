@@ -24,8 +24,8 @@ namespace carpi::wiring {
             return _mode;
         }
 
-        void high();
-        void low();
+        void high() const;
+        void low() const;
     };
 
     class Gpio {
