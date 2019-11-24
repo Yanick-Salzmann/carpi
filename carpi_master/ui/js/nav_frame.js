@@ -71,6 +71,7 @@ $(() => {
     const plz_keyboard = new VirtualKeyboard($('#nav-wizard-step-addr-ch .virtual-keyboard'), (key) => {
         if (key === '\b') {
             if (!plz_prefix.length) {
+                loadInitialPlzValues();
                 return;
             }
 
@@ -88,7 +89,7 @@ $(() => {
         updatePlzFilter();
     });
 
-    plz_keyboard.setLayout(VirtualKeyboard.layouts.NUMBER_ONLY);
+    plz_keyboard.setLayout(VirtualKeyboard.layouts.REGULAR);
     plz_keyboard.filterEnabledKeys(key => !isNaN(parseInt(key)) || key === '\b');
 
     window.on_show_nav_section = function () {
