@@ -1,6 +1,6 @@
 $(() => {
     let plz_ch = null;
-    const reader = new CsvReader("data/plz_ch.csv");
+    const reader = new PlzCsvReader("data/plz_ch.csv");
     reader.then((info) => {
         plz_ch = info;
     });
@@ -27,8 +27,64 @@ $(() => {
         loadInitialPlzValues();
     });
 
+    let plz_prefix = '';
+
+    function updatePlzFilter() {
+        const container = $('#nav-wizard-step-addr-ch .item-recommendation');
+        const len = plz_prefix.length;
+        if (len > 4) {
+            container.empty();
+            return;
+        }
+
+        if (!len) {
+            loadInitialPlzValues();
+            return;
+        }
+
+        if (isNaN(parseInt(plz_prefix))) {
+            return;
+        }
+
+        container.empty();
+
+        const dividend = Math.pow(10, 4 - len);
+        const search_plz = Math.floor(parseInt(plz_prefix) / dividend);
+
+        let num_results = 0;
+        for (let i = 0; i < plz_ch.length && num_results < 10; ++i) {
+            const key = Math.floor(plz_ch[i].plz / dividend);
+            if(key !== search_plz) {
+                continue;
+            }
+
+            const row = plz_ch[i];
+            const text = `${row.plz} ${row.city} (${row.state_abbrvtn})`;
+            const parent = $('<div class="recommendation"></div>');
+            parent.text(text);
+            container.append(parent);
+            ++num_results;
+        }
+    }
+
     const plz_keyboard = new VirtualKeyboard($('#nav-wizard-step-addr-ch .virtual-keyboard'), (key) => {
-        console.log(key);
+        if (key === '\b') {
+            if (!plz_prefix.length) {
+                return;
+            }
+
+            plz_prefix = plz_prefix.substr(0, plz_prefix.length - 1);
+            updatePlzFilter();
+            return;
+        }
+
+        const num = parseInt(key);
+        if (isNaN(num)) {
+            return;
+        }
+
+        plz_prefix += key;
+        updatePlzFilter();
     });
 
     plz_keyboard.setLayout(VirtualKeyboard.layouts.NUMBER_ONLY);

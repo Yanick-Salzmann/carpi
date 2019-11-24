@@ -1,4 +1,4 @@
-class CsvReader {
+class PlzCsvReader {
     constructor(path) {
         this.rows = [];
 
