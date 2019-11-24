@@ -80,6 +80,11 @@ $(() => {
                     const cur_key = $('<span class="vkb-key keys-' + width + '"></span>');
                     const cur_content = $('<div class="content"></div>');
                     cur_key.click(() => {
+                        if(cur_key.hasClass('disabled')) {
+                            console.log('Disabled key');
+                            return;
+                        }
+
                         if (key === '\u2190') {
                             this.callback('\b');
                         } else {
