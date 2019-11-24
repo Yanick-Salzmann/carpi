@@ -15,6 +15,7 @@ namespace carpi::utils {
     auto to_lower(const std::string& value) -> std::string;
 
     auto split(const std::string& value, const char& delimiter) -> std::vector<std::string>;
+    void split(const std::string& value, const char& delimiter, std::vector<std::string>& parts);
 }
 
 #endif //CARPI_COMMON_UTILS_STRING_HPP

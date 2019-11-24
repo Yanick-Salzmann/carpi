@@ -6,8 +6,8 @@
 namespace carpi::utils {
 
     auto trim_left(const std::string &value) -> std::string {
-        const auto itr = std::find_if(value.begin(), value.end(), [](const auto& chr) { return !std::isspace(chr); });
-        if(itr == value.end()) {
+        const auto itr = std::find_if(value.begin(), value.end(), [](const auto &chr) { return !std::isspace(chr); });
+        if (itr == value.end()) {
             return {};
         }
 
@@ -15,8 +15,8 @@ namespace carpi::utils {
     }
 
     auto trim_right(const std::string &value) -> std::string {
-        const auto itr = std::find_if(value.rbegin(), value.rend(), [](const auto& chr) { return !std::isspace(chr); });
-        if(itr == value.rend()) {
+        const auto itr = std::find_if(value.rbegin(), value.rend(), [](const auto &chr) { return !std::isspace(chr); });
+        if (itr == value.rend()) {
             return {};
         }
 
@@ -25,7 +25,7 @@ namespace carpi::utils {
 
     auto to_lower(const std::string &value) -> std::string {
         std::string ret{};
-        std::transform(value.begin(), value.end(), std::back_inserter(ret), [](const auto& chr) { return std::tolower(chr); });
+        std::transform(value.begin(), value.end(), std::back_inserter(ret), [](const auto &chr) { return std::tolower(chr); });
         return ret;
     }
 
@@ -35,10 +35,25 @@ namespace carpi::utils {
         sstream.str(value);
 
         std::string cur_line;
-        while(std::getline(sstream, cur_line, delimiter)) {
+        while (std::getline(sstream, cur_line, delimiter)) {
             ret.emplace_back(cur_line);
         }
 
         return ret;
+    }
+
+    void split(const std::string &value, const char &delimiter, std::vector<std::string> &parts) {
+        auto cur_index = std::string::size_type{0};
+        auto last_index = std::string::size_type{0};
+
+        auto index = 0;
+
+        while((cur_index = value.find(delimiter)) != std::string::npos) {
+            parts[index++] = value.substr(last_index, cur_index - last_index);
+        }
+
+        if(last_index != value.size()) {
+            parts[index] = value.substr(last_index);
+        }
     }
 }

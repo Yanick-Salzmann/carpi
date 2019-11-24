@@ -56,6 +56,9 @@ namespace carpi {
 
         std::vector<AddressElement> elements{};
 
+        std::vector<std::string> data_container{};
+        data_container.resize(1024);
+
         auto is_first = true;
         while (std::getline(is, line)) {
             if(is_first) {
@@ -63,13 +66,13 @@ namespace carpi {
                 continue;
             }
 
-            const auto parts = utils::split(line, ';');
-            auto plz = std::stoi(parts[7]);
+            utils::split(line, ';', data_container);
+            auto plz = std::stoi(data_container[7]);
             if(plz != search_plz) {
                 continue;
             }
 
-            elements.emplace_back(parts[5], parts[6], parts[7], parts[9], parts[10], parts[11]);
+            elements.emplace_back(data_container[5], data_container[6], data_container[7], data_container[9], data_container[10], data_container[11]);
         }
 
         retval = CefV8Value::CreateArray(elements.size());
