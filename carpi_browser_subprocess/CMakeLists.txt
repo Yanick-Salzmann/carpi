@@ -25,6 +25,7 @@ target_link_libraries(carpi_browser_subprocess
         ipc_common
         /usr/local/lib/libcef_dll_wrapper.a
         /usr/local/bin/libcef.so
+        stdc++fs
         Threads::Threads
         gps_utils
         net_utils
