@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION ${CMAKE_VERSION})
 project(carpi_browser_subprocess)
 
 add_custom_command(
-        OUTPUT data/CH_addresses.csv
-        COMMAND unzip -n data/CH_addresses.zip -d data
-        DEPENDS data/CH_addresses.zip
+        OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/data/CH_addresses.csv
+        COMMAND unzip -n ${CMAKE_CURRENT_SOURCE_DIR}/data/CH_addresses.zip -d ${CMAKE_CURRENT_SOURCE_DIR}/data
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/data/CH_addresses.zip
 )
 
 add_executable(carpi_browser_subprocess data/CH_addresses.csv src/main.cpp src/camera_frame_callback.hpp src/camera_frame_callback.cpp src/main_app.hpp src/main_app.cpp src/env_var_callback.hpp src/env_var_callback.cpp src/gps_listener_thread.hpp src/gps_listener_thread.cpp src/gps_callback.hpp src/gps_callback.cpp)
