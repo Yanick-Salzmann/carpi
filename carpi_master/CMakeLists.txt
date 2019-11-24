@@ -3,7 +3,7 @@ project(carpi_master)
 
 add_custom_command(
         OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/ui/data/CH_addresses.csv
-        COMMAND unzip ${CMAKE_CURRENT_SOURCE_DIR}/ui/data/CH_addresses.zip
+        COMMAND unzip -n ${CMAKE_CURRENT_SOURCE_DIR}/ui/data/CH_addresses.zip
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/ui/data/CH_addresses.zip
 )
 
