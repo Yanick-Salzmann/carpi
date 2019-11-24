@@ -53,8 +53,6 @@ namespace carpi {
         std::stringstream target_file{};
         target_file << "../../carpi_browser_subprocess/data/plz_map/" << search_plz << ".dat";
 
-        std::cout << "Opening: " << target_file.str() << std::endl;
-
         std::ifstream is{target_file.str()};
         if(!is.is_open()) {
             retval = CefV8Value::CreateArray(0);
@@ -67,8 +65,6 @@ namespace carpi {
 
         std::vector<std::string> data_container{};
         data_container.resize(1024);
-
-        auto start1 = std::chrono::high_resolution_clock::now();
 
         auto is_first = true;
         while (std::getline(is, line)) {
@@ -85,10 +81,6 @@ namespace carpi {
 
             elements.emplace_back(data_container[0], data_container[1], data_container[2], data_container[3], data_container[0], data_container[0]);
         }
-
-        const auto end1 = std::chrono::high_resolution_clock::now();
-
-        std::cout << "Filtering time:" << std::chrono::duration_cast<std::chrono::milliseconds>(end1 - start1).count() << std::endl;
 
         retval = CefV8Value::CreateArray(elements.size());
         std::size_t cur_index = 0;
