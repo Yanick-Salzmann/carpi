@@ -17,5 +17,6 @@ namespace carpi::wiring {
 
     Gpio::Gpio() {
         WiringContext ctx;
+        wiringPiSetupGpio();
     }
 }
