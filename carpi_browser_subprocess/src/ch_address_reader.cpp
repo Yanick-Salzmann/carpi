@@ -56,7 +56,13 @@ namespace carpi {
 
         std::vector<AddressElement> elements{};
 
+        auto is_first = true;
         while (std::getline(is, line)) {
+            if(is_first) {
+                is_first = false;
+                continue;
+            }
+
             const auto parts = utils::split(line, ';');
             std::cout << parts[7] << std::endl;
             auto plz = std::stoi(parts[7]);
