@@ -50,7 +50,14 @@ namespace carpi {
 
         const auto search_plz = val->GetUIntValue();
 
-        std::ifstream is{"../../carpi_browser_subprocess/data/CH_addresses.csv"};
+        std::stringstream target_file{"../../carpi_browser_subprocess/data/plz_map/"};
+        target_file << search_plz << ".dat";
+
+        std::ifstream is{target_file.str()};
+        if(!is.is_open()) {
+            retval = CefV8Value::CreateArray(0);
+            return true;
+        }
 
         std::string line{};
 
@@ -69,12 +76,12 @@ namespace carpi {
             }
 
             utils::split(line, ';', data_container);
-            auto plz = std::stoi(data_container[7]);
+            auto plz = std::stoi(data_container[3]);
             if(plz != search_plz) {
                 continue;
             }
 
-            elements.emplace_back(data_container[5], data_container[6], data_container[7], data_container[9], data_container[10], data_container[11]);
+            elements.emplace_back(data_container[0], data_container[1], data_container[2], data_container[3], data_container[0], data_container[0]);
         }
 
         const auto end1 = std::chrono::high_resolution_clock::now();
