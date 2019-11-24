@@ -15,6 +15,7 @@ namespace carpi {
 
         wiring::Gpio gpio;
         auto pin = gpio.open_pin(21);
+        pin.mode(wiring::GpioMode::OUTPUT_MODE);
         while(true) {
             pin.high();
             std::this_thread::sleep_for(std::chrono::milliseconds(50));
