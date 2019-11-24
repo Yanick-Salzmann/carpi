@@ -89,6 +89,7 @@ $(() => {
     });
 
     plz_keyboard.setLayout(VirtualKeyboard.layouts.NUMBER_ONLY);
+    plz_keyboard.filterEnabledKeys(key => !isNaN(parseInt(key)) || key === '\b');
 
     window.on_show_nav_section = function () {
 

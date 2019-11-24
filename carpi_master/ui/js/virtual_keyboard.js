@@ -14,6 +14,10 @@ $(() => {
         ['0', '.', ',', ' ']
     ];
 
+    const special_key_mapping = {
+        '\u2190': '\b'
+    };
+
     window.VirtualKeyboard = class VirtualKeyboard {
         static layouts = {
             REGULAR: 0,
@@ -30,7 +34,12 @@ $(() => {
             const keys = this.kb.find('span.vkb-key');
             for (let i = 0; i < keys.length; ++i) {
                 const key = $(keys.eq(i));
-                const isEnabled = filter(key.find('div.content').text());
+                let key_char = key.find('div.content').text();
+                if(key_char in special_key_mapping) {
+                    key_char = special_key_mapping[key_char];
+                }
+
+                const isEnabled = filter(key_char);
                 if (isEnabled) {
                     key.removeClass('disabled');
                 } else {
