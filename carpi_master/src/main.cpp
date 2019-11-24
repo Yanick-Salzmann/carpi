@@ -14,7 +14,7 @@ namespace carpi {
         utils::Logger log{"main"};
 
         wiring::Gpio gpio;
-        auto pin = gpio.open_pin(40);
+        auto pin = gpio.open_pin(21);
         while(true) {
             pin.high();
             std::this_thread::sleep_for(std::chrono::milliseconds(50));
