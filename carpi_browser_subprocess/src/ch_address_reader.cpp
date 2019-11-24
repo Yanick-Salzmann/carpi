@@ -53,6 +53,8 @@ namespace carpi {
         std::stringstream target_file{"../../carpi_browser_subprocess/data/plz_map/"};
         target_file << search_plz << ".dat";
 
+        std::cout << "Opening: " << target_file.str() << std::endl;
+
         std::ifstream is{target_file.str()};
         if(!is.is_open()) {
             retval = CefV8Value::CreateArray(0);
