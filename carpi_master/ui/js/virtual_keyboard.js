@@ -54,9 +54,6 @@ $(() => {
                     const key = row[key_idx];
                     const cur_key = $('<span class="vkb-key keys-4"></span>');
                     const cur_content = $('<div class="content"></div>');
-                    cur_content.text(key);
-                    cur_key.append(cur_content);
-                    row_wrapper.append(cur_key);
                     cur_key.click(() => {
                         if (key === '\u2190') {
                             this.callback('\b');
@@ -64,6 +61,9 @@ $(() => {
                             this.callback(key);
                         }
                     });
+                    cur_content.text(key);
+                    cur_key.append(cur_content);
+                    row_wrapper.append(cur_key);
                 }
                 wrapper.append(row_wrapper);
             }
