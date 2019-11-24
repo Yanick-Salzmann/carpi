@@ -56,8 +56,8 @@ namespace carpi {
 
         std::vector<AddressElement> elements{};
 
-        // std::vector<std::string> data_container{};
-        // data_container.resize(1024);
+        std::vector<std::string> data_container{};
+        data_container.resize(1024);
 
         auto start1 = std::chrono::high_resolution_clock::now();
 
@@ -68,7 +68,7 @@ namespace carpi {
                 continue;
             }
 
-            const auto data_container = utils::split(line, ';');
+            utils::split(line, ';', data_container);
             auto plz = std::stoi(data_container[7]);
             if(plz != search_plz) {
                 continue;
@@ -79,7 +79,7 @@ namespace carpi {
 
         const auto end1 = std::chrono::high_resolution_clock::now();
 
-        std::cout << "Filtering time: {}" << std::chrono::duration_cast<std::chrono::milliseconds>(end1 - start1).count() << std::endl;
+        std::cout << "Filtering time:" << std::chrono::duration_cast<std::chrono::milliseconds>(end1 - start1).count() << std::endl;
 
         retval = CefV8Value::CreateArray(elements.size());
         std::size_t cur_index = 0;
