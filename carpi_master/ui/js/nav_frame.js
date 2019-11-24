@@ -5,7 +5,7 @@ $(() => {
     let ch_addresses = null;
 
     new PlzCsvReader("data/plz_ch.csv").then(info => plz_ch = info);
-    new ChAddressesCsvReader("data/CH_addresses.csv").then(info => ch_addresses = info);
+    //new ChAddressesCsvReader("data/CH_addresses.csv").then(info => ch_addresses = info);
 
     function switchToWizardStep(id) {
         $('section.nav-section .wizard-body-wrapper > div:not(.hidden)').addClass('hidden');

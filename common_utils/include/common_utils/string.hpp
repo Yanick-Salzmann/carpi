@@ -2,16 +2,19 @@
 #define CARPI_COMMON_UTILS_STRING_HPP
 
 #include <string>
+#include <vector>
 
 namespace carpi::utils {
-    std::string trim_left(const std::string& value);
-    std::string trim_right(const std::string& value);
+    auto trim_left(const std::string& value) -> std::string;
+    auto trim_right(const std::string& value) -> std::string;
 
-    inline std::string trim(const std::string& value) {
+    inline auto trim(const std::string& value) -> std::string {
         return trim_left(trim_right(value));
     }
 
-    std::string to_lower(const std::string& value);
+    auto to_lower(const std::string& value) -> std::string;
+
+    auto split(const std::string& value, const char& delimiter) -> std::vector<std::string>;
 }
 
 #endif //CARPI_COMMON_UTILS_STRING_HPP

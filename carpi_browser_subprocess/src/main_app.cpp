@@ -2,6 +2,7 @@
 #include "camera_frame_callback.hpp"
 #include "env_var_callback.hpp"
 #include "gps_callback.hpp"
+#include "ch_address_reader.hpp"
 
 namespace carpi {
 
@@ -29,6 +30,7 @@ namespace carpi {
         context->GetGlobal()->SetValue("fetch_raw_frame", CefV8Value::CreateFunction("fetch_raw_frame", new CameraFrameCallback()), V8_PROPERTY_ATTRIBUTE_READONLY);
         context->GetGlobal()->SetValue("get_env_value", CefV8Value::CreateFunction("get_env_value", new EnvVarCallback()), V8_PROPERTY_ATTRIBUTE_READONLY);
         context->GetGlobal()->SetValue("gps_get_coordinates", CefV8Value::CreateFunction("gps_get_coordinates", new GpsCallback()), V8_PROPERTY_ATTRIBUTE_READONLY);
+        context->GetGlobal()->SetValue("ch_get_addresses", CefV8Value::CreateFunction("ch_get_addresses", new ChAddressReader()), V8_PROPERTY_ATTRIBUTE_READONLY);
     }
 
     void MainApp::OnContextReleased(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefV8Context> context) {

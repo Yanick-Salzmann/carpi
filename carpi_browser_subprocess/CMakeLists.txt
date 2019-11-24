@@ -7,7 +7,7 @@ add_custom_command(
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/data/CH_addresses.zip
 )
 
-add_executable(carpi_browser_subprocess data/CH_addresses.csv src/main.cpp src/camera_frame_callback.hpp src/camera_frame_callback.cpp src/main_app.hpp src/main_app.cpp src/env_var_callback.hpp src/env_var_callback.cpp src/gps_listener_thread.hpp src/gps_listener_thread.cpp src/gps_callback.hpp src/gps_callback.cpp)
+add_executable(carpi_browser_subprocess data/CH_addresses.csv src/main.cpp src/camera_frame_callback.hpp src/camera_frame_callback.cpp src/main_app.hpp src/main_app.cpp src/env_var_callback.hpp src/env_var_callback.cpp src/gps_listener_thread.hpp src/gps_listener_thread.cpp src/gps_callback.hpp src/gps_callback.cpp src/ch_address_reader.hpp src/ch_address_reader.cpp)
 
 add_dependencies(carpi_browser_subprocess common_utils ipc_common net_utils gps_utils)
 
