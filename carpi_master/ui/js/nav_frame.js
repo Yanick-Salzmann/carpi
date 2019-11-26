@@ -19,7 +19,7 @@ $(() => {
             const row = elements[i];
             const text = `${row.plz} ${row.city} (${row.state_abbrvtn})`;
 
-            const container = $('#nav-wizard-step-addr-ch .item-recommendation');
+            const container = $('#nav-wizard-step-addr-ch-plz .item-recommendation');
             const parent = $('<div class="recommendation"></div>');
             parent.click(() => {
                 onCitySelected(row.plz);
@@ -79,7 +79,7 @@ $(() => {
 
     function updatePlzFilter() {
         $('#ch-post-code-input-target').val(plz_prefix);
-        const container = $('#nav-wizard-step-addr-ch .item-recommendation');
+        const container = $('#nav-wizard-step-addr-ch-plz .item-recommendation');
         const len = plz_prefix.length;
         if (len > 4) {
             backspaceOnlyFiltering();

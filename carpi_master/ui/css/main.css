@@ -212,20 +212,20 @@ section.nav-section div.wizard-body-wrapper > div.hidden {
     display: none;
 }
 
-#nav-wizard-step-addr-ch .flex-wrapper {
+#nav-wizard-step-addr-ch-plz .flex-wrapper {
     display: flex;
     flex-direction: column;;
 }
 
-#nav-wizard-step-addr-ch .flex-wrapper .plz-input-wrapper {
+#nav-wizard-step-addr-ch-plz .flex-wrapper .plz-input-wrapper {
     flex-grow: 0;
 }
 
-#nav-wizard-step-addr-ch .flex-wrapper div.virtual-keyboard {
+#nav-wizard-step-addr-ch-plz .flex-wrapper div.virtual-keyboard {
     flex-grow: 1;
 }
 
-#nav-wizard-step-addr-ch .item-recommendation {
+#nav-wizard-step-addr-ch-plz .item-recommendation {
     height: 30px;
     background-color: #111;
     border-bottom: 1px solid white;
