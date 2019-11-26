@@ -183,7 +183,7 @@ $(() => {
         }
     }
 
-    const plz_keyboard = new VirtualKeyboard($('#nav-wizard-step-addr-ch .virtual-keyboard'), (key) => {
+    const plz_keyboard = new VirtualKeyboard($('#nav-wizard-step-addr-ch-plz .virtual-keyboard'), (key) => {
         if(is_post_code_input) {
             updateKeyPlz(key);
         } else {
