@@ -66,13 +66,7 @@ namespace carpi {
         std::vector<std::string> data_container{};
         data_container.resize(1024);
 
-        auto is_first = true;
         while (std::getline(is, line)) {
-            if(is_first) {
-                is_first = false;
-                continue;
-            }
-
             data_container = utils::split(line, ';');
             auto plz = std::stoi(data_container[3]);
             if(plz != search_plz) {
