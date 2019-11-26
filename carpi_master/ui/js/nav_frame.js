@@ -2,14 +2,16 @@ $(() => {
     let is_post_code_input = true;
 
     let plz_ch = null;
-    let ch_addresses = null;
 
     new PlzCsvReader("data/plz_ch.csv").then(info => plz_ch = info);
-    //new ChAddressesCsvReader("data/CH_addresses.csv").then(info => ch_addresses = info);
 
     function switchToWizardStep(id) {
         $('section.nav-section .wizard-body-wrapper > div:not(.hidden)').addClass('hidden');
         $('#' + id).removeClass('hidden');
+    }
+
+    function onCitySelected(plz) {
+        console.log(ch_get_addresses(plz));
     }
 
     function loadInitialRecommendations(elements) {
@@ -19,6 +21,9 @@ $(() => {
 
             const container = $('#nav-wizard-step-addr-ch .item-recommendation');
             const parent = $('<div class="recommendation"></div>');
+            parent.click(() => {
+                onCitySelected(row.plz);
+            });
             parent.text(text);
             container.append(parent);
         }
@@ -111,6 +116,9 @@ $(() => {
             if (num_results < 10) {
                 const text = `${row.plz} ${row.city} (${row.state_abbrvtn})`;
                 const parent = $('<div class="recommendation"></div>');
+                parent.click(() => {
+                    onCitySelected(row.plz);
+                });
                 parent.text(text);
                 container.append(parent);
                 ++num_results;
