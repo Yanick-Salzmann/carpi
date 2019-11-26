@@ -2,6 +2,7 @@ $(() => {
     let is_post_code_input = true;
 
     let plz_ch = null;
+    let active_addresses = null;
 
     new PlzCsvReader("data/plz_ch.csv").then(info => plz_ch = info);
 
@@ -11,7 +12,8 @@ $(() => {
     }
 
     function onCitySelected(plz) {
-        console.log(ch_get_addresses(plz));
+        active_addresses = ch_get_addresses(plz);
+        switchToWizardStep("nav-wizard-step-addr-ch-street");
     }
 
     function loadInitialRecommendations(elements) {
