@@ -62,7 +62,7 @@ $(() => {
     }
 
     $('#nav-find-addr-ch').click(() => {
-        switchToWizardStep('nav-wizard-step-addr-ch');
+        switchToWizardStep('nav-wizard-step-addr-ch-plz');
         loadInitialPlzValues();
     });
 
