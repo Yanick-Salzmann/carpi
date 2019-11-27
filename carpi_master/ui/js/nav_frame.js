@@ -28,9 +28,6 @@ $(() => {
         unique_streets = _.uniq(active_addresses, addr => addr.street);
         unique_streets = _.sortBy(unique_streets, addr => addr.street);
 
-        console.log(unique_streets);
-        console.log(street_map);
-
         switchToWizardStep("nav-wizard-step-addr-ch-street");
     }
 
@@ -211,7 +208,13 @@ $(() => {
         }
     });
 
-    plz_keyboard.setLayout(VirtualKeyboard.layouts.REGULAR);
+    const street_keyboard = new VirtualKeyboard($('#nav-wizard-step-addr-ch-street .virtual-keyboard'), (key) => {
+
+    });
+
+    plz_keyboard.setLayout(VirtualKeyboard.layouts.NUMBER_ONLY);
+    street_keyboard.setLayout(VirtualKeyboard.layouts.REGULAR);
+
     defaultNumberFiltering();
 
     $('#plz-ch-input-post-or-city-toggle').click(() => {
