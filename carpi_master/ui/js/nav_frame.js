@@ -4,6 +4,7 @@ $(() => {
     let plz_ch = null;
     let active_addresses = null;
     let unique_streets = [];
+    let street_map = {};
 
     new PlzCsvReader("data/plz_ch.csv").then(info => plz_ch = info);
 
@@ -14,10 +15,22 @@ $(() => {
 
     function onCitySelected(plz) {
         active_addresses = ch_get_addresses(plz);
+        street_map = {};
+        for(let i = 0; i < active_addresses.length; ++i) {
+            const addr = active_addresses[i];
+            if(addr.street in street_map) {
+                street_map[addr.street].push(addr);
+            } else {
+                street_map[addr.street] = [addr];
+            }
+        }
+
         unique_streets = _.uniq(active_addresses, addr => addr.street);
         unique_streets = _.sortBy(unique_streets, addr => addr.street);
 
         console.log(unique_streets);
+        console.log(street_map);
+
         switchToWizardStep("nav-wizard-step-addr-ch-street");
     }
 
