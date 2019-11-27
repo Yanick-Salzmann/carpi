@@ -3,6 +3,7 @@ $(() => {
 
     let plz_ch = null;
     let active_addresses = null;
+    let unique_streets = [];
 
     new PlzCsvReader("data/plz_ch.csv").then(info => plz_ch = info);
 
@@ -13,6 +14,8 @@ $(() => {
 
     function onCitySelected(plz) {
         active_addresses = ch_get_addresses(plz);
+        unique_streets = _.uniq(active_addresses, addr => addr.street);
+        console.log(unique_streets);
         switchToWizardStep("nav-wizard-step-addr-ch-street");
     }
 
