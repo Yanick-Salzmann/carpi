@@ -15,6 +15,8 @@ $(() => {
     function onCitySelected(plz) {
         active_addresses = ch_get_addresses(plz);
         unique_streets = _.uniq(active_addresses, addr => addr.street);
+        unique_streets = _.sortBy(unique_streets, addr => addr.street);
+
         console.log(unique_streets);
         switchToWizardStep("nav-wizard-step-addr-ch-street");
     }
