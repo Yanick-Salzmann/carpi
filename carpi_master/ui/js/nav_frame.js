@@ -4,6 +4,7 @@ $(() => {
     let plz_ch = null;
     let active_addresses = null;
     let unique_streets = [];
+    let active_streets = [];
     let street_map = {};
 
     new PlzCsvReader("data/plz_ch.csv").then(info => plz_ch = info);
@@ -15,11 +16,13 @@ $(() => {
 
     let address_prefix = '';
 
-    function initialStreetRecommendations() {
-        for(let i in [...Array(Math.min(10, unique_streets.length))]) {
-            const row = unique_streets[i];
+    function streetRecommendations(values) {
+        const container = $('#nav-wizard-step-addr-ch-street .item-recommendation');
+        container.empty();
+
+        for(let i in [...Array(Math.min(10, values.length))]) {
+            const row = values[i];
             const text = row.street;
-            const container = $('#nav-wizard-step-addr-ch-street .item-recommendation');
             const parent = $('<div class="recommendation"></div>');
             parent.text(text);
             container.append(parent);
@@ -50,9 +53,25 @@ $(() => {
         address_prefix = '';
         updateStreetKeyboard(_.uniq(unique_streets.map(addr => addr.street[0].toLowerCase())));
 
-        initialStreetRecommendations();
+        streetRecommendations(unique_streets);
 
         switchToWizardStep("nav-wizard-step-addr-ch-street");
+    }
+
+    function onStreetKeyPressed(key) {
+        if(key === '\b') {
+            if(!address_prefix) {
+                return;
+            }
+
+            address_prefix = address_prefix.substr(0, address_prefix.length - 1);
+        } else {
+            address_prefix += key;
+        }
+
+        active_addresses = unique_streets.filter(addr => addr.street.toLowerCase().startsWith(address_prefix.toLowerCase()));
+        updateStreetKeyboard(_.uniq(active_addresses.map(addr => addr.street[0].toLowerCase())));
+        streetRecommendations(active_addresses);
     }
 
     function loadInitialRecommendations(elements) {
@@ -233,7 +252,7 @@ $(() => {
     });
 
     const street_keyboard = new VirtualKeyboard($('#nav-wizard-step-addr-ch-street .virtual-keyboard'), (key) => {
-
+        onStreetKeyPressed(key);
     });
 
     plz_keyboard.setLayout(VirtualKeyboard.layouts.NUMBER_ONLY);
