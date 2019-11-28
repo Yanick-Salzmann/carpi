@@ -17,7 +17,7 @@ $(() => {
 
     function updateStreetKeyboard(keys) {
         street_keyboard.filterEnabledKeys(key => {
-           return key === '\b' || keys.indexOf(key) >= 0;
+           return key === '\b' || keys.indexOf(key.toLowerCase()) >= 0;
         });
     }
 
