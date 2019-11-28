@@ -20,10 +20,13 @@ $(() => {
         const container = $('#nav-wizard-step-addr-ch-street .item-recommendation');
         container.empty();
 
-        for(let i in [...Array(Math.min(10, values.length))]) {
+        for (let i in [...Array(Math.min(10, values.length))]) {
             const row = values[i];
             const text = row.street;
             const parent = $('<div class="recommendation"></div>');
+            parent.click(() => {
+                onStreetSelected(row);
+            });
             parent.text(text);
             container.append(parent);
         }
@@ -31,16 +34,16 @@ $(() => {
 
     function updateStreetKeyboard(keys) {
         street_keyboard.filterEnabledKeys(key => {
-           return key === '\b' || keys.indexOf(key.toLowerCase()) >= 0;
+            return key === '\b' || keys.indexOf(key.toLowerCase()) >= 0;
         });
     }
 
     function onCitySelected(plz) {
         active_addresses = ch_get_addresses(plz);
         street_map = {};
-        for(let i = 0; i < active_addresses.length; ++i) {
+        for (let i = 0; i < active_addresses.length; ++i) {
             const addr = active_addresses[i];
-            if(addr.street in street_map) {
+            if (addr.street in street_map) {
                 street_map[addr.street].push(addr);
             } else {
                 street_map[addr.street] = [addr];
@@ -58,9 +61,14 @@ $(() => {
         switchToWizardStep("nav-wizard-step-addr-ch-street");
     }
 
+    function onStreetSelected(address) {
+        switchToWizardStep("nav-wizard-step-addr-ch-street-number");
+        console.log(street_map[address.street]);
+    }
+
     function onStreetKeyPressed(key) {
-        if(key === '\b') {
-            if(!address_prefix) {
+        if (key === '\b') {
+            if (!address_prefix) {
                 return;
             }
 
@@ -77,7 +85,7 @@ $(() => {
     }
 
     function loadInitialRecommendations(elements) {
-        for(let i in [...Array(10).keys()]) {
+        for (let i in [...Array(10).keys()]) {
             const row = elements[i];
             const text = `${row.plz} ${row.city} (${row.state_abbrvtn})`;
 
@@ -97,23 +105,23 @@ $(() => {
 
     function loadInitialCityValues() {
         const cities = [...plz_ch].filter(val => !isNaN(val.plz)).sort((a, b) => {
-            if(a && b && a.city && b.city) {
+            if (a && b && a.city && b.city) {
                 return a.city.localeCompare(b.city);
             }
 
-            if(!a && b) {
+            if (!a && b) {
                 return -1;
             }
 
-            if(a && !b) {
+            if (a && !b) {
                 return 1;
             }
 
-            if(a.city && !b.city) {
+            if (a.city && !b.city) {
                 return 1;
             }
 
-            if(!a.city && b.city) {
+            if (!a.city && b.city) {
                 return -1;
             }
 
@@ -239,14 +247,14 @@ $(() => {
 
     function updateKeyCity(key) {
         if (key === '\b') {
-            if(!city_prefix) {
+            if (!city_prefix) {
                 loadInitialCityValues();
             }
         }
     }
 
     const plz_keyboard = new VirtualKeyboard($('#nav-wizard-step-addr-ch-plz .virtual-keyboard'), (key) => {
-        if(is_post_code_input) {
+        if (is_post_code_input) {
             updateKeyPlz(key);
         } else {
             updateKeyCity(key);
@@ -257,8 +265,13 @@ $(() => {
         onStreetKeyPressed(key);
     });
 
+    const street_num_keyboard = new VirtualKeyboard($('#nav-wizard-step-addr-ch-street-number .virtual-keyboard'), key => {
+
+    });
+
     plz_keyboard.setLayout(VirtualKeyboard.layouts.NUMBER_ONLY);
     street_keyboard.setLayout(VirtualKeyboard.layouts.REGULAR);
+    street_num_keyboard.setLayout(VirtualKeyboard.layouts.REGULAR);
 
     defaultNumberFiltering();
 
