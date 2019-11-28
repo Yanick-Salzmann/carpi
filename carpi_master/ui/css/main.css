@@ -180,6 +180,10 @@ section.nav-section div.top-level-wrapper div.header-area {
     align-items: center;
 }
 
+section.nav-section div.top-level-wrapper div.header-area div.back-button-wrapper {
+    padding-right: 15px;
+}
+
 section.nav-section div.top-level-wrapper div.header-area h1 {
     font-weight: bold;
     flex-grow: 1;
