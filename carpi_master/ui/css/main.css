@@ -172,7 +172,6 @@ section.nav-section > div.top-level-wrapper {
 
 section.nav-section div.top-level-wrapper div.header-area {
     padding-left: 15px;
-    padding-top: 10px;
     flex-grow: 0;
     border-bottom: 1px solid white;
     margin-bottom: 15px;
@@ -184,7 +183,16 @@ section.nav-section div.top-level-wrapper div.header-area div.back-button-wrappe
     padding-right: 15px;
 }
 
+section.nav-section div.header-area div.back-button-wrapper button {
+    border-radius: 50px;
+    width: 50px;
+    height: 50px;
+    font-size: 30px;
+    padding-left: 10px;
+}
+
 section.nav-section div.top-level-wrapper div.header-area h1 {
+    padding-top: 10px;
     font-weight: bold;
     flex-grow: 1;
 }
