@@ -69,6 +69,8 @@ $(() => {
             address_prefix += key;
         }
 
+        $('#ch-street-input-target').text(address_prefix);
+
         active_addresses = unique_streets.filter(addr => addr.street.toLowerCase().startsWith(address_prefix.toLowerCase()));
         updateStreetKeyboard(_.uniq(active_addresses.filter(addr => addr.street.length > address_prefix.length).map(addr => addr.street[address_prefix.length].toLowerCase())));
         streetRecommendations(active_addresses);
