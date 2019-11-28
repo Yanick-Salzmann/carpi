@@ -64,7 +64,19 @@ $(() => {
     function onStreetSelected(address) {
         switchToWizardStep("nav-wizard-step-addr-ch-street-number");
         cur_street_numbers = _.sortBy(street_map[address.street], addr => addr.number);
-        console.log(cur_street_numbers);
+        updateStreetNumberRecommendations(cur_street_numbers);
+    }
+
+    function updateStreetNumberRecommendations(elements) {
+        const container = $('#nav-wizard-step-addr-ch-street-number .item-recommendation');
+        container.empty();
+
+        for(let i in [...Array(Math.min(10, elements.length))]) {
+            const row = elements[i];
+            const parent = $('<div class="recommendation"></div>');
+            parent.text(row.number);
+            container.append(parent);
+        }
     }
 
     function onStreetKeyPressed(key) {
