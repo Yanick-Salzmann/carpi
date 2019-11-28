@@ -15,6 +15,17 @@ $(() => {
 
     let address_prefix = '';
 
+    function initialStreetRecommendations() {
+        for(let i in [...Array(Math.min(10, unique_streets.length))]) {
+            const row = unique_streets[i];
+            const text = row.street;
+            const container = $('#nav-wizard-step-addr-ch-street .item-recommendation');
+            const parent = $('<div class="recommendation"></div>');
+            parent.text(text);
+            container.append(parent);
+        }
+    }
+
     function updateStreetKeyboard(keys) {
         street_keyboard.filterEnabledKeys(key => {
            return key === '\b' || keys.indexOf(key.toLowerCase()) >= 0;
@@ -38,6 +49,8 @@ $(() => {
 
         address_prefix = '';
         updateStreetKeyboard(_.uniq(unique_streets.map(addr => addr.street[0].toLowerCase())));
+
+        initialStreetRecommendations();
 
         switchToWizardStep("nav-wizard-step-addr-ch-street");
     }

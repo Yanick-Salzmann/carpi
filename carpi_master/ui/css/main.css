@@ -225,7 +225,7 @@ section.nav-section div.wizard-body-wrapper > div.hidden {
     flex-grow: 1;
 }
 
-#nav-wizard-step-addr-ch-plz .item-recommendation {
+section.nav-section .item-recommendation {
     height: 30px;
     background-color: #111;
     border-bottom: 1px solid white;
