@@ -13,6 +13,14 @@ $(() => {
         $('#' + id).removeClass('hidden');
     }
 
+    let address_prefix = '';
+
+    function updateStreetKeyboard(keys) {
+        street_keyboard.filterEnabledKeys(key => {
+           return key === '\b' || keys.indexOf(key) >= 0;
+        });
+    }
+
     function onCitySelected(plz) {
         active_addresses = ch_get_addresses(plz);
         street_map = {};
@@ -27,6 +35,9 @@ $(() => {
 
         unique_streets = _.uniq(active_addresses, addr => addr.street);
         unique_streets = _.sortBy(unique_streets, addr => addr.street);
+
+        address_prefix = '';
+        updateStreetKeyboard(_.uniq(unique_streets.map(street => street[0].toLowerCase())));
 
         switchToWizardStep("nav-wizard-step-addr-ch-street");
     }
