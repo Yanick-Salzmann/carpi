@@ -2,10 +2,16 @@ $(() => {
     let is_post_code_input = true;
 
     let plz_ch = null;
-    let active_addresses = null;
+
     let unique_streets = [];
     let street_map = {};
+
     let cur_street_numbers = [];
+
+    let plz_prefix = '';
+    let city_prefix = '';
+    let address_prefix = '';
+    let number_prefix = '';
 
     new PlzCsvReader("data/plz_ch.csv").then(info => plz_ch = info);
 
@@ -14,7 +20,6 @@ $(() => {
         $('#' + id).removeClass('hidden');
     }
 
-    let address_prefix = '';
 
     function streetRecommendations(values) {
         const container = $('#nav-wizard-step-addr-ch-street .item-recommendation');
@@ -39,7 +44,7 @@ $(() => {
     }
 
     function onCitySelected(plz) {
-        active_addresses = ch_get_addresses(plz);
+        const active_addresses = ch_get_addresses(plz);
         street_map = {};
         for (let i = 0; i < active_addresses.length; ++i) {
             const addr = active_addresses[i];
@@ -79,6 +84,20 @@ $(() => {
         }
     }
 
+    function onStreetNumKeyPressed(key) {
+        if(key === '\b') {
+            if(!number_prefix) {
+                return;
+            }
+
+            number_prefix = number_prefix.substr(0, number_prefix.length - 1);
+        } else {
+            number_prefix += key;
+        }
+        $('#ch-street-num-input-target').val(address_prefix);
+        updateStreetNumberRecommendations(cur_street_numbers.filter(addr => addr.number.startsWith(number_prefix)).map(addr => addr.number));
+    }
+
     function onStreetKeyPressed(key) {
         if (key === '\b') {
             if (!address_prefix) {
@@ -92,9 +111,9 @@ $(() => {
 
         $('#ch-street-input-target').val(address_prefix);
 
-        active_addresses = unique_streets.filter(addr => addr.street.toLowerCase().startsWith(address_prefix.toLowerCase()));
-        updateStreetKeyboard(_.uniq(active_addresses.filter(addr => addr.street.length > address_prefix.length).map(addr => addr.street[address_prefix.length].toLowerCase())));
-        streetRecommendations(active_addresses);
+        const addrs = unique_streets.filter(addr => addr.street.toLowerCase().startsWith(address_prefix.toLowerCase()));
+        updateStreetKeyboard(_.uniq(addrs.filter(addr => addr.street.length > address_prefix.length).map(addr => addr.street[address_prefix.length].toLowerCase())));
+        streetRecommendations(addrs);
     }
 
     function loadInitialRecommendations(elements) {
@@ -148,9 +167,6 @@ $(() => {
         switchToWizardStep('nav-wizard-step-addr-ch-plz');
         loadInitialPlzValues();
     });
-
-    let plz_prefix = '';
-    let city_prefix = '';
 
     function defaultNumberFiltering() {
         plz_keyboard.filterEnabledKeys(key => key === '\b' || !isNaN(parseInt(key)));
@@ -279,7 +295,7 @@ $(() => {
     });
 
     const street_num_keyboard = new VirtualKeyboard($('#nav-wizard-step-addr-ch-street-number .virtual-keyboard'), key => {
-
+        onStreetNumKeyPressed(key);
     });
 
     plz_keyboard.setLayout(VirtualKeyboard.layouts.NUMBER_ONLY);
