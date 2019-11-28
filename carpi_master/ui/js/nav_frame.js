@@ -4,8 +4,8 @@ $(() => {
     let plz_ch = null;
     let active_addresses = null;
     let unique_streets = [];
-    let active_streets = [];
     let street_map = {};
+    let cur_street_numbers = [];
 
     new PlzCsvReader("data/plz_ch.csv").then(info => plz_ch = info);
 
@@ -63,7 +63,8 @@ $(() => {
 
     function onStreetSelected(address) {
         switchToWizardStep("nav-wizard-step-addr-ch-street-number");
-        console.log(street_map[address.street]);
+        cur_street_numbers = _.sortBy(street_map[address.street], addr => addr.number);
+        console.log(cur_street_numbers);
     }
 
     function onStreetKeyPressed(key) {
