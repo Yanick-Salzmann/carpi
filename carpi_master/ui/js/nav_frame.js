@@ -37,7 +37,7 @@ $(() => {
         unique_streets = _.sortBy(unique_streets, addr => addr.street);
 
         address_prefix = '';
-        updateStreetKeyboard(_.uniq(unique_streets.map(street => street[0].toLowerCase())));
+        updateStreetKeyboard(_.uniq(unique_streets.map(addr => addr.street[0].toLowerCase())));
 
         switchToWizardStep("nav-wizard-step-addr-ch-street");
     }
