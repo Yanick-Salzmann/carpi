@@ -176,10 +176,13 @@ section.nav-section div.top-level-wrapper div.header-area {
     flex-grow: 0;
     border-bottom: 1px solid white;
     margin-bottom: 15px;
+    display: flex;
+    align-items: center;
 }
 
 section.nav-section div.top-level-wrapper div.header-area h1 {
     font-weight: bold;
+    flex-grow: 1;
 }
 
 section.nav-section div.top-level-wrapper div.wizard-body-wrapper {
