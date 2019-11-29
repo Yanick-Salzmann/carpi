@@ -311,9 +311,14 @@ $(() => {
         onStreetNumKeyPressed(key);
     });
 
+    const poi_keyboard = new VirtualKeyboard($('#nav-wizard-step-poi-search .virtual-keyboard'), key => {
+
+    });
+
     plz_keyboard.setLayout(VirtualKeyboard.layouts.NUMBER_ONLY);
     street_keyboard.setLayout(VirtualKeyboard.layouts.REGULAR);
     street_num_keyboard.setLayout(VirtualKeyboard.layouts.REGULAR);
+    poi_keyboard.setLayout(VirtualKeyboard.layouts.REGULAR);
 
     defaultNumberFiltering();
 
