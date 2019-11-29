@@ -176,11 +176,6 @@ $(() => {
         loadInitialRecommendations(cities);
     }
 
-    $('#nav-find-addr-ch').click(() => {
-        switchToWizardStep('nav-wizard-step-addr-ch-plz');
-        loadInitialPlzValues();
-    });
-
     function defaultNumberFiltering() {
         plz_keyboard.filterEnabledKeys(key => key === '\b' || !isNaN(parseInt(key)));
     }
@@ -325,6 +320,15 @@ $(() => {
     $('#plz-ch-input-post-or-city-toggle').click(() => {
         is_post_code_input = !is_post_code_input;
         $('#plz-ch-input-post-or-city-toggle').text(is_post_code_input ? "Post Code" : "City");
+    });
+
+    $('#nav-find-addr-ch').click(() => {
+        switchToWizardStep('nav-wizard-step-addr-ch-plz');
+        loadInitialPlzValues();
+    });
+
+    $('#nav-find-poi').click(() => {
+       switchToWizardStep('nav-wizard-step-poi-search');
     });
 
     window.on_show_nav_section = function () {
