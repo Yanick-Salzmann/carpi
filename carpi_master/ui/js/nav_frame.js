@@ -106,7 +106,7 @@ $(() => {
         }
 
         $('#ch-street-num-input-target').val(number_prefix);
-        const addrs = cur_street_numbers.filter(addr => addr.number.startsWith(number_prefix));
+        const addrs = cur_street_numbers.filter(addr => addr.number.toLowerCase().startsWith(number_prefix.toLowerCase()));
         updateStreetNumberRecommendations(addrs);
         updateStreetNumberKeyboard(addrs);
     }
