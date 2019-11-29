@@ -67,7 +67,7 @@ $(() => {
     }
 
     function updateStreetNumberKeyboard(addresses) {
-        const available = addresses.filter(addr => addr.number.length > number_prefix)
+        const available = addresses.filter(addr => addr.number.length > number_prefix.length)
             .map(addr => addr.number[number_prefix].toLowerCase());
 
         street_num_keyboard.filterEnabledKeys(key => {
