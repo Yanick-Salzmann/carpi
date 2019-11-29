@@ -327,3 +327,7 @@ section.nav-section .item-recommendation .recommendation {
     top: 50%;
     transform: translateY(-50%);
 }
+
+#nav-wizard-step-poi-search .poi-search-input-wrapper {
+    padding-right: 5px;
+}
