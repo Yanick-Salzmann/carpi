@@ -7,12 +7,14 @@
 #include <functional>
 
 namespace carpi::gps {
+#pragma pack(push, 1)
     struct GpsMeasurement {
         bool fix;
         double lat;
         double lon;
         double alt;
     };
+#pragma pack(pop)
 
     class GpsListener {
         LOGGER;
