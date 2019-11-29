@@ -189,6 +189,8 @@ section.nav-section div.header-area div.back-button-wrapper button {
     height: 50px;
     font-size: 30px;
     padding-left: 10px;
+    color: #333;
+    background-color: white;
 }
 
 section.nav-section div.top-level-wrapper div.header-area h1 {
