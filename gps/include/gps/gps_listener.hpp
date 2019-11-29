@@ -8,6 +8,7 @@
 
 namespace carpi::gps {
     struct GpsMeasurement {
+        bool fix;
         double lat;
         double lon;
         double alt;

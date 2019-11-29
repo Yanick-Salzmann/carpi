@@ -28,7 +28,7 @@ namespace carpi::gps {
 
     void NetBroadcast::on_measurement(const GpsMeasurement &gps_data) {
         ipc::IpcPackage package{ipc::Opcodes::MSG_GPS_UPDATE};
-        package << gps_data.lat << gps_data.lon << gps_data.alt;
+        package << gps_data.fix << gps_data.lat << gps_data.lon << gps_data.alt;
         send_packet(package);
     }
 }

@@ -37,7 +37,7 @@ namespace carpi::gps {
         _is_running = true;
         _is_in_main_thread = main_thread;
 
-        if(!main_thread) {
+        if (!main_thread) {
             _gps_thread = std::thread{[=]() { gps_loop(); }};
         } else {
             gps_loop();
@@ -50,7 +50,7 @@ namespace carpi::gps {
         }
 
         _is_running = false;
-        if(_is_in_main_thread) {
+        if (_is_in_main_thread) {
             return;
         }
 
@@ -71,9 +71,21 @@ namespace carpi::gps {
                 if (_gps_data.status == STATUS_FIX && (_gps_data.fix.mode == MODE_2D || _gps_data.fix.mode == MODE_3D) &&
                     !std::isnan(_gps_data.fix.latitude) && !std::isnan(_gps_data.fix.longitude)) {
                     GpsMeasurement ms{
+                            .fix = true,
                             .lat = _gps_data.fix.latitude,
                             .lon = _gps_data.fix.longitude,
                             .alt = _gps_data.fix.altitude
+                    };
+
+                    {
+                        std::lock_guard<std::mutex> l{_callback_lock};
+                        if (_callback) {
+                            _callback(ms);
+                        }
+                    }
+                } else {
+                    GpsMeasurement ms {
+                        .fix = false
                     };
 
                     {
