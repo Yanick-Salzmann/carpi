@@ -23,6 +23,7 @@
     <script src="js/map_frame.js"></script>
     <script src="js/plz_csv_reader.js"></script>
     <script src="js/addresses_csv_reader.js"></script>
+    <script src="js/here_api.js"></script>
     <script src="js/nav_frame.js"></script>
 </head>
 <body>
@@ -50,7 +51,7 @@
                         </div>
                         <input type="text" class="form-control" id="poi-search-input-target">
                         <div class="input-group-append">
-                            <button class="btn btn-success">Search</button>
+                            <button class="btn btn-success" id="poi-search-trigger">Search</button>
                         </div>
                     </div>
                     <div class="virtual-keyboard" data-input-target="poi-search-input-target"></div>

@@ -290,6 +290,10 @@ $(() => {
         }
     }
 
+    function searchForPoi() {
+        here_api.fetch_pois("Museum");
+    }
+
     const plz_keyboard = new VirtualKeyboard($('#nav-wizard-step-addr-ch-plz .virtual-keyboard'), (key) => {
         if (is_post_code_input) {
             updateKeyPlz(key);
@@ -341,6 +345,8 @@ $(() => {
     $('#nav-find-poi').click(() => {
        switchToWizardStep('nav-wizard-step-poi-search');
     });
+
+    $('#poi-search-trigger').click(searchForPoi);
 
     window.on_show_nav_section = function () {
 
