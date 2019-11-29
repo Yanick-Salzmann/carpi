@@ -66,17 +66,27 @@ $(() => {
         switchToWizardStep("nav-wizard-step-addr-ch-street");
     }
 
+    function updateStreetNumberKeyboard(addresses) {
+        const available = addresses.filter(addr => addr.number.length > number_prefix)
+            .map(addr => addr.number[address_prefix].toLowerCase());
+
+        street_num_keyboard.filterEnabledKeys(key => {
+            return key === '\b' && available.indexOf(key) >= 0;
+        });
+    }
+
     function onStreetSelected(address) {
         switchToWizardStep("nav-wizard-step-addr-ch-street-number");
         cur_street_numbers = _.sortBy(street_map[address.street], addr => addr.number);
         updateStreetNumberRecommendations(cur_street_numbers);
+        updateStreetNumberKeyboard(cur_street_numbers);
     }
 
     function updateStreetNumberRecommendations(elements) {
         const container = $('#nav-wizard-step-addr-ch-street-number .item-recommendation');
         container.empty();
 
-        for(let i in [...Array(Math.min(10, elements.length))]) {
+        for (let i in [...Array(Math.min(10, elements.length))]) {
             const row = elements[i];
             const parent = $('<div class="recommendation"></div>');
             parent.text(row.number);
@@ -85,8 +95,8 @@ $(() => {
     }
 
     function onStreetNumKeyPressed(key) {
-        if(key === '\b') {
-            if(!number_prefix) {
+        if (key === '\b') {
+            if (!number_prefix) {
                 return;
             }
 
@@ -96,7 +106,9 @@ $(() => {
         }
 
         $('#ch-street-num-input-target').val(number_prefix);
-        updateStreetNumberRecommendations(cur_street_numbers.filter(addr => addr.number.startsWith(number_prefix)));
+        const addrs = cur_street_numbers.filter(addr => addr.number.startsWith(number_prefix));
+        updateStreetNumberRecommendations(addrs);
+        updateStreetNumberRecommendations(addrs);
     }
 
     function onStreetKeyPressed(key) {
