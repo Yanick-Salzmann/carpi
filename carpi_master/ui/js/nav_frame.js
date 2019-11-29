@@ -96,7 +96,7 @@ $(() => {
         }
 
         $('#ch-street-num-input-target').val(number_prefix);
-        updateStreetNumberRecommendations(cur_street_numbers.filter(addr => addr.number.startsWith(number_prefix)).map(addr => addr.number));
+        updateStreetNumberRecommendations(cur_street_numbers.filter(addr => addr.number.startsWith(number_prefix)));
     }
 
     function onStreetKeyPressed(key) {
