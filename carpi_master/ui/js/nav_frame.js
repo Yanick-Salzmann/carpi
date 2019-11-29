@@ -88,7 +88,7 @@ $(() => {
         const container = $('#nav-wizard-step-addr-ch-street-number .item-recommendation');
         container.empty();
 
-        for (let i in [...Array(Math.min(10, elements.length))]) {
+        for (let i in [...Array(Math.min(50, elements.length))]) {
             const row = elements[i];
             const parent = $('<div class="recommendation"></div>');
             parent.text(row.number);
