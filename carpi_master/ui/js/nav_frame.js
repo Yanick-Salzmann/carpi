@@ -307,7 +307,18 @@ $(() => {
     });
 
     const poi_keyboard = new VirtualKeyboard($('#nav-wizard-step-poi-search .virtual-keyboard'), key => {
+        const target = $('#poi-search-input-target');
 
+        const cur_text = target.val();
+        if(key !== '\b') {
+            target.val(cur_text + key);
+        } else {
+            if(cur_text.empty()) {
+                return;
+            }
+
+            target.val(cur_text.substr(0, cur_text.length - 1));
+        }
     });
 
     plz_keyboard.setLayout(VirtualKeyboard.layouts.NUMBER_ONLY);
