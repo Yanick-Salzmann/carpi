@@ -71,7 +71,7 @@ $(() => {
             .map(addr => addr.number[number_prefix.length].toLowerCase());
 
         street_num_keyboard.filterEnabledKeys(key => {
-            return key === '\b' && available.indexOf(key) >= 0;
+            return key === '\b' || available.indexOf(key) >= 0;
         });
     }
 
