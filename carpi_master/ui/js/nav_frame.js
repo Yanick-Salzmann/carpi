@@ -108,7 +108,7 @@ $(() => {
         $('#ch-street-num-input-target').val(number_prefix);
         const addrs = cur_street_numbers.filter(addr => addr.number.startsWith(number_prefix));
         updateStreetNumberRecommendations(addrs);
-        updateStreetNumberRecommendations(addrs);
+        updateStreetNumberKeyboard(addrs);
     }
 
     function onStreetKeyPressed(key) {
