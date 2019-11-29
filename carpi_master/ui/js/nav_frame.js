@@ -313,7 +313,7 @@ $(() => {
         if(key !== '\b') {
             target.val(cur_text + key);
         } else {
-            if(cur_text.empty()) {
+            if(!cur_text) {
                 return;
             }
 
