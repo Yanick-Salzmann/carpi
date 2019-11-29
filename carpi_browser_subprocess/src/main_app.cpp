@@ -15,6 +15,7 @@ namespace carpi {
     }
 
     void MainApp::OnBeforeCommandLineProcessing(const CefString &process_type, CefRefPtr<CefCommandLine> command_line) {
+        command_line->AppendSwitchWithValue("--disable-features", "CrossSiteDocumentBlockingAlways,CrossSiteDocumentBlockingIfIsolating");
         CefApp::OnBeforeCommandLineProcessing(process_type, command_line);
     }
 
