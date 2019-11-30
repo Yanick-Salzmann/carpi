@@ -44,7 +44,7 @@ $(() => {
 
                 $.get(url)
                     .done((data) => {
-                        resolve(data.results.map(result => {
+                        resolve(data.results.items.map(result => {
                             result.distance = get_distance(cur_pos, {lat: result.position[0], lon: result.position[1]});
                             return result;
                         }));
