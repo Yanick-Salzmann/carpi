@@ -290,6 +290,18 @@ $(() => {
         }
     }
 
+    function format_distance(distance) {
+        let unit = "m";
+        let digits = 0;
+        if(distance >= 1000) {
+            distance /= 1000;
+            unit = "km";
+            digits = 2;
+        }
+
+        return distance.toFixed(digits) + unit;
+    }
+
     function searchForPoi() {
         const target = $('#poi-search-input-target');
         if (!target.val()) {
@@ -301,7 +313,7 @@ $(() => {
             target.empty();
             results.forEach(result => {
                 const elem = $('<li></li>');
-                elem.text(`${result.title} - ${result.distance} meters away`);
+                elem.text(`${result.title} - ${format_distance(result.distance)}`);
                 target.append(elem);
             });
             console.log(results);
