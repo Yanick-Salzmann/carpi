@@ -375,6 +375,21 @@ $(() => {
 
     $('#poi-search-trigger').click(searchForPoi);
 
+    $('#nav-back-button').click(() => {
+        const visible_step = $('section.nav-section .wizard-body-wrapper > div:not(.hidden)');
+        if(visible_step.length === 0) {
+            return;
+        }
+
+        const cur_step = $(visible_step.eq(0));
+        const previous = cur_step.attr('data-previous-step');
+        if(!previous) {
+            return;
+        }
+
+        switchToWizardStep(previous);
+    });
+
     window.on_show_nav_section = function () {
 
     }
