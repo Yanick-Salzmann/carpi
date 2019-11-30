@@ -319,7 +319,7 @@ $(() => {
                 elem.append(document.createTextNode(`${result.title} - ${format_distance(result.distance)}`));
                 target.append(elem);
             });
-            console.log(results);
+
             switchToWizardStep('nav-wizard-step-poi-result');
         });
     }
