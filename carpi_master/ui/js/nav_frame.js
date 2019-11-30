@@ -318,7 +318,7 @@ $(() => {
                 elem.append(img);
                 let text = result.title;
                 if(result.vicinity) {
-                    text += ', ' + result.vicinity.replaceAll('\n', ', ');
+                    text += ', ' + result.vicinity.replace('\n', ', ');
                 }
 
                 text += ' - ' + format_distance(result.distance);
