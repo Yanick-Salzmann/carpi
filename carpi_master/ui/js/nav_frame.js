@@ -317,8 +317,8 @@ $(() => {
                 img.attr('src', result.icon ? result.icon : 'https://download.vcdn.cit.data.here.com/p/d/places2_stg/icons/categories/35.icon');
                 elem.append(img);
                 let text = result.title;
-                if(result.vincinity) {
-                    text += ', ' + result.vincinity.replaceAll('\n', ', ');
+                if(result.vicinity) {
+                    text += ', ' + result.vicinity.replaceAll('\n', ', ');
                 }
 
                 text += ' - ' + format_distance(result.distance);
