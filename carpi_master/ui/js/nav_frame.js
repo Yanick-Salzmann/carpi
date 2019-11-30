@@ -316,7 +316,13 @@ $(() => {
                 const img = $('<img>');
                 img.attr('src', result.icon ? result.icon : 'https://download.vcdn.cit.data.here.com/p/d/places2_stg/icons/categories/35.icon');
                 elem.append(img);
-                elem.append(document.createTextNode(`${result.title} - ${format_distance(result.distance)}`));
+                let text = result.title;
+                if(result.vincinity) {
+                    text += ', ' + result.vincinity.replaceAll('\n', ', ');
+                }
+
+                text += ' - ' + format_distance(result.distance);
+                elem.append(document.createTextNode(text));
                 target.append(elem);
             });
 
