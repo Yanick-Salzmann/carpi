@@ -302,6 +302,7 @@ $(() => {
             results.forEach(result => {
                 const elem = $('<li></li>');
                 elem.text(`${result.title} - ${result.distance} meters away`);
+                target.append(elem);
             });
             console.log(results);
             switchToWizardStep('nav-wizard-step-poi-result');
