@@ -291,7 +291,21 @@ $(() => {
     }
 
     function searchForPoi() {
-        here_api.fetch_pois("Museum");
+        const target = $('#poi-search-input-target');
+        if (!target.val()) {
+            return;
+        }
+
+        here_api.fetch_pois(target.val()).then(results => {
+            const target = $('#nav-wizard-step-poi-result > ul');
+            target.empty();
+            results.forEach(result => {
+                const elem = $('<li></li>');
+                elem.text(`${result.title} - ${result.distance} meters away`);
+            });
+            console.log(results);
+            switchToWizardStep('nav-wizard-step-poi-result');
+        });
     }
 
     const plz_keyboard = new VirtualKeyboard($('#nav-wizard-step-addr-ch-plz .virtual-keyboard'), (key) => {
@@ -314,10 +328,10 @@ $(() => {
         const target = $('#poi-search-input-target');
 
         const cur_text = target.val();
-        if(key !== '\b') {
+        if (key !== '\b') {
             target.val(cur_text + key);
         } else {
-            if(!cur_text) {
+            if (!cur_text) {
                 return;
             }
 
@@ -343,7 +357,7 @@ $(() => {
     });
 
     $('#nav-find-poi').click(() => {
-       switchToWizardStep('nav-wizard-step-poi-search');
+        switchToWizardStep('nav-wizard-step-poi-search');
     });
 
     $('#poi-search-trigger').click(searchForPoi);
