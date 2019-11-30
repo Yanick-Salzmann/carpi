@@ -313,7 +313,10 @@ $(() => {
             target.empty();
             results.forEach(result => {
                 const elem = $('<li></li>');
-                elem.text(`${result.title} - ${format_distance(result.distance)}`);
+                const img = $('<img>');
+                img.attr('src', result.icon ? result.icon : 'https://download.vcdn.cit.data.here.com/p/d/places2_stg/icons/categories/35.icon');
+                elem.append(img);
+                elem.append(document.createTextNode(`${result.title} - ${format_distance(result.distance)}`));
                 target.append(elem);
             });
             console.log(results);
