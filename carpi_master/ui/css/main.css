@@ -221,6 +221,10 @@ section.nav-section ul.full-screen-menu li {
     border: 1px solid black;
 }
 
+section.nav-section ul.full-screen-menu li img {
+    width: 30px;
+}
+
 section.nav-section ul.full-screen-menu li:active {
     background-color: darkgray;
 }
