@@ -319,7 +319,9 @@ $(() => {
                 elem.append('<span></span>');
                 let text = result.title;
                 if(result.vicinity) {
-                    text += ', ' + result.vicinity.replace('\n', ', ');
+                    const lines = result.vicinity.split('\n');
+                    const address = lines[lines.length - 1];
+                    text += ', ' + address;
                 }
 
                 text += ' - ' + format_distance(result.distance);
