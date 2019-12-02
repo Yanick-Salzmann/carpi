@@ -326,7 +326,7 @@ $(() => {
                 elem.find('span').text(text);
                 const new_elem = elem.appendTo(target);
                 const text_elem = new_elem.find('span');
-                text_elem.load(() => {
+                text_elem.on('load', () => {
                     let font_size = 30;
                     while(text_elem.width() > target.width() - 30 && font_size > 10) {
                         font_size -= 5;
