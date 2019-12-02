@@ -327,7 +327,6 @@ $(() => {
                 const new_elem = elem.appendTo(target);
                 let font_size = 30;
                 while(new_elem.width() > target.width() - 30 && font_size > 10) {
-                    console.log(new_elem.width(), target.width());
                     font_size -= 5;
                     new_elem.attr('style', 'font-size: ' + font_size + 'px');
                 }
