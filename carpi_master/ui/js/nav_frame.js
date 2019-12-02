@@ -356,10 +356,11 @@ $(() => {
             preview_map.setView([cur_coords.lat, cur_coords.lon], 13);
             preview_map.fitBounds(L.polyline([poi.position, [cur_coords.lat, cur_coords.lon]]).getBounds());
 
-            const dst_marker = L.marker(poi.position).addTo(preview_map);
-            const src_marker = L.marker([cur_coords.lat, cur_coords.lon]).addTo(preview_map);
-
-            dst_marker.bindPopup(poi.title).openPopup();
+            preview_map.addLayer(
+                L.popup()
+                    .setLatLng(poi.position)
+                    .setContent(poi.title)
+            );
 
             here_api.reverse_geocode(cur_coords).then(result => {
                 console.log(result);
@@ -367,11 +368,11 @@ $(() => {
                     return;
                 }
 
-                const popup = L.popup()
-                    .setLatLng([cur_coords.lat, cur_coords.lon])
-                    .setContent(result[0].Location.Address.Label.replace(/, /g, "<br>"));
-
-                preview_map.addLayer(popup);
+                preview_map.addLayer(
+                    L.popup()
+                        .setLatLng([cur_coords.lat, cur_coords.lon])
+                        .setContent(result[0].Location.Address.Label.replace(/, /g, "<br>"))
+                );
             });
         }, 100);
     }
