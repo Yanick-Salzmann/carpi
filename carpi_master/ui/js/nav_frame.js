@@ -354,6 +354,8 @@ $(() => {
             const cur_coords = gps_get_coordinates();
             preview_map.setView([cur_coords.lat, cur_coords.lon], 13);
             preview_map.fitBounds(poi.position, [cur_coords.lat, cur_coords.lon]);
+            L.marker(poi.position).addTo(preview_map);
+            L.marker([cur_coords.lat, cur_coords.lon]).addTo(preview_map);
         }, 100);
     }
 
