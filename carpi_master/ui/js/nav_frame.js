@@ -316,16 +316,18 @@ $(() => {
                 const img = $('<img>');
                 img.attr('src', result.icon ? result.icon : 'https://download.vcdn.cit.data.here.com/p/d/places2_stg/icons/categories/35.icon');
                 elem.append(img);
+                elem.append('<span></span>');
                 let text = result.title;
                 if(result.vicinity) {
                     text += ', ' + result.vicinity.replace('\n', ', ');
                 }
 
                 text += ' - ' + format_distance(result.distance);
-                elem.append(document.createTextNode(text));
+                elem.find('span').text(text);
                 const new_elem = elem.appendTo(target);
                 let font_size = 30;
                 while(new_elem.width() > target.width() - 30 && font_size > 10) {
+                    console.log(new_elem.width(), target.width());
                     font_size -= 5;
                     new_elem.attr('style', 'font-size: ' + font_size + 'px');
                 }
