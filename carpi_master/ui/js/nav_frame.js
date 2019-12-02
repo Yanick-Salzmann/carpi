@@ -323,7 +323,12 @@ $(() => {
 
                 text += ' - ' + format_distance(result.distance);
                 elem.append(document.createTextNode(text));
-                target.append(elem);
+                const new_elem = target.append(elem);
+                let font_size = 30;
+                while(new_elem.width() > target.width() - 30 && font_size > 10) {
+                    font_size -= 5;
+                    new_elem.attr('style', 'font-size: ' + font_size + 'px');
+                }
             });
 
             switchToWizardStep('nav-wizard-step-poi-result');

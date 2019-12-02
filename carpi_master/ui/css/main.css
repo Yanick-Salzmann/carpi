@@ -219,6 +219,8 @@ section.nav-section ul.full-screen-menu li {
     font-size: 30px;
     font-weight: bold;
     border: 1px solid black;
+    overflow-x: hidden;
+    white-space: nowrap;
 }
 
 section.nav-section ul.full-screen-menu li img {
