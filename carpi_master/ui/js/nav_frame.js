@@ -323,7 +323,7 @@ $(() => {
 
                 text += ' - ' + format_distance(result.distance);
                 elem.append(document.createTextNode(text));
-                const new_elem = target.append(elem);
+                const new_elem = elem.appendTo(target);
                 let font_size = 30;
                 while(new_elem.width() > target.width() - 30 && font_size > 10) {
                     font_size -= 5;
