@@ -325,10 +325,11 @@ $(() => {
                 text += ' - ' + format_distance(result.distance);
                 elem.find('span').text(text);
                 const new_elem = elem.appendTo(target);
+                const text_elem = new_elem.find('span');
                 let font_size = 30;
-                while(new_elem.width() > target.width() - 30 && font_size > 10) {
+                while(text_elem.width() > target.width() - 30 && font_size > 10) {
                     font_size -= 5;
-                    new_elem.attr('style', 'font-size: ' + font_size + 'px');
+                    text_elem.attr('style', 'font-size: ' + font_size + 'px');
                 }
             });
 
