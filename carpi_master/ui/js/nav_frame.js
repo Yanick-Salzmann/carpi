@@ -339,14 +339,21 @@ $(() => {
                 });
 
                 new_elem.click(() => {
-                    const cur_coords = gps_get_coordinates();
-                    preview_map.setView([cur_coords.lat, cur_coords.lon], 13);
-                    switchToWizardStep('nav-wizard-route-preview')
+                    switch_to_preview();
                 })
             });
 
             switchToWizardStep('nav-wizard-step-poi-result');
         });
+    }
+
+    function switch_to_preview() {
+        switchToWizardStep('nav-wizard-route-preview');
+
+        setTimeout(() => {
+            const cur_coords = gps_get_coordinates();
+            preview_map.setView([cur_coords.lat, cur_coords.lon], 13);
+        }, 100);
     }
 
     const plz_keyboard = new VirtualKeyboard($('#nav-wizard-step-addr-ch-plz .virtual-keyboard'), (key) => {
