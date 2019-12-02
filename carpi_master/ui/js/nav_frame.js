@@ -385,7 +385,7 @@ $(() => {
         appId: env_config['HERE_APP_ID'], appCode: env_config['HERE_APP_CODE'], scheme: 'hybrid.day', resource: 'traffictile', baseType: 'traffic', extra_params: [
             {key: "min_traffic_congestion", value: "heavy"}
         ]
-    }).addTo(map);
+    }).addTo(preview_map);
 
     plz_keyboard.setLayout(VirtualKeyboard.layouts.NUMBER_ONLY);
     street_keyboard.setLayout(VirtualKeyboard.layouts.REGULAR);
