@@ -13,6 +13,8 @@ $(() => {
     let address_prefix = '';
     let number_prefix = '';
 
+    let preview_map = null;
+
     new PlzCsvReader("data/plz_ch.csv").then(info => plz_ch = info);
 
     function switchToWizardStep(id) {
@@ -335,6 +337,10 @@ $(() => {
                         text_elem.attr('style', 'font-size: ' + font_size + 'px');
                     }
                 });
+
+                new_elem.click(() => {
+                    switchToWizardStep('nav-wizard-route-preview')
+                })
             });
 
             switchToWizardStep('nav-wizard-step-poi-result');
@@ -371,6 +377,15 @@ $(() => {
             target.val(cur_text.substr(0, cur_text.length - 1));
         }
     });
+
+    const env_config = get_env_value('HERE_APP_ID', 'HERE_APP_CODE');
+
+    preview_map = L.map('route-preview-map');
+    L.tileLayer.here({
+        appId: env_config['HERE_APP_ID'], appCode: env_config['HERE_APP_CODE'], scheme: 'hybrid.day', resource: 'traffictile', baseType: 'traffic', extra_params: [
+            {key: "min_traffic_congestion", value: "heavy"}
+        ]
+    }).addTo(map);
 
     plz_keyboard.setLayout(VirtualKeyboard.layouts.NUMBER_ONLY);
     street_keyboard.setLayout(VirtualKeyboard.layouts.REGULAR);
