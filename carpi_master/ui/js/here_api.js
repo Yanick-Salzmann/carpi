@@ -36,7 +36,7 @@ $(() => {
 
                $.get(url)
                    .done(data => {
-                       resolve(data.Response.View.Result);
+                       resolve(data.Response.View[0].Result);
                    })
                    .fail(err => reject(err));
             });
