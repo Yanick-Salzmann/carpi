@@ -339,7 +339,7 @@ $(() => {
                 });
 
                 new_elem.click(() => {
-                    switch_to_preview();
+                    switch_to_preview(result);
                 })
             });
 
@@ -347,12 +347,13 @@ $(() => {
         });
     }
 
-    function switch_to_preview() {
+    function switch_to_preview(poi) {
         switchToWizardStep('nav-wizard-route-preview');
 
         setTimeout(() => {
             const cur_coords = gps_get_coordinates();
             preview_map.setView([cur_coords.lat, cur_coords.lon], 13);
+            preview_map.fitBounds(poi.position, [cur_coords.lat, cur_coords.lon]);
         }, 100);
     }
 
