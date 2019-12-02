@@ -367,10 +367,11 @@ $(() => {
                     return;
                 }
 
-                L.popup()
+                const popup = L.popup()
                     .setLatLng([cur_coords.lat, cur_coords.lon])
-                    .setContent(result[0].Location.Address.Label.replace(", ", "<br>"))
-                    .openOn(preview_map);
+                    .setContent(result[0].Location.Address.Label.replace(", ", "<br>"));
+
+                preview_map.addLayer(popup);
             });
         }, 100);
     }
