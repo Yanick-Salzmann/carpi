@@ -295,7 +295,7 @@ $(() => {
     function format_distance(distance) {
         let unit = "m";
         let digits = 0;
-        if(distance >= 1000) {
+        if (distance >= 1000) {
             distance /= 1000;
             unit = "km";
             digits = 2;
@@ -320,7 +320,7 @@ $(() => {
                 elem.append(img);
                 elem.append('<span></span>');
                 let text = result.title;
-                if(result.vicinity) {
+                if (result.vicinity) {
                     const lines = result.vicinity.split('\n');
                     const address = lines[lines.length - 1];
                     text += ', ' + address;
@@ -332,7 +332,7 @@ $(() => {
                 const text_elem = new_elem.find('span');
                 text_elem.ready(() => {
                     let font_size = 30;
-                    while(text_elem.width() > target.width() - 60 && font_size > 10) {
+                    while (text_elem.width() > target.width() - 60 && font_size > 10) {
                         font_size -= 2;
                         text_elem.attr('style', 'font-size: ' + font_size + 'px');
                     }
@@ -363,11 +363,14 @@ $(() => {
 
             here_api.reverse_geocode(cur_coords).then(result => {
                 console.log(result);
-                if(!result) {
+                if (!result) {
                     return;
                 }
 
-                src_marker.bindPopup(result[0].Location.Address.Label).openPopup();
+                L.popup()
+                    .setLatLng([cur_coords.lat, cur_coords.lon])
+                    .setContent(result[0].Location.Address.Label.replace(", ", "<br>"))
+                    .openOn(preview_map);
             });
         }, 100);
     }
@@ -437,13 +440,13 @@ $(() => {
 
     $('#nav-back-button').click(() => {
         const visible_step = $('section.nav-section .wizard-body-wrapper > div:not(.hidden)');
-        if(visible_step.length === 0) {
+        if (visible_step.length === 0) {
             return;
         }
 
         const cur_step = $(visible_step.eq(0));
         const previous = cur_step.attr('data-previous-step');
-        if(!previous) {
+        if (!previous) {
             return;
         }
 
