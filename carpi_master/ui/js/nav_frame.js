@@ -368,10 +368,12 @@ $(() => {
                     return;
                 }
 
+                const address = result[0].Location.Address;
+
                 preview_map.addLayer(
                     L.popup()
                         .setLatLng([cur_coords.lat, cur_coords.lon])
-                        .setContent(result[0].Location.Address.Label.replace(/, /g, "<br>"))
+                        .setContent(`${address.Street} ${address.HouseNumber}<br>${address.City}`)
                 );
             });
         }, 100);
