@@ -326,12 +326,13 @@ $(() => {
                 elem.find('span').text(text);
                 const new_elem = elem.appendTo(target);
                 const text_elem = new_elem.find('span');
-                let font_size = 30;
-                while(text_elem.width() > target.width() - 30 && font_size > 10) {
-                    console.log(text_elem.width(), target.width());
-                    font_size -= 5;
-                    text_elem.attr('style', 'font-size: ' + font_size + 'px');
-                }
+                text_elem.load(() => {
+                    let font_size = 30;
+                    while(text_elem.width() > target.width() - 30 && font_size > 10) {
+                        font_size -= 5;
+                        text_elem.attr('style', 'font-size: ' + font_size + 'px');
+                    }
+                });
             });
 
             switchToWizardStep('nav-wizard-step-poi-result');
