@@ -369,7 +369,7 @@ $(() => {
 
                 const popup = L.popup()
                     .setLatLng([cur_coords.lat, cur_coords.lon])
-                    .setContent(result[0].Location.Address.Label.replace(", ", "<br>"));
+                    .setContent(result[0].Location.Address.Label.replace(/, /g, "<br>"));
 
                 preview_map.addLayer(popup);
             });
