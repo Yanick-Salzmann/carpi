@@ -355,6 +355,9 @@ $(() => {
             preview_map.setView([cur_coords.lat, cur_coords.lon], 13);
             preview_map.fitBounds(L.polyline([poi.position, [cur_coords.lat, cur_coords.lon]]).getBounds());
             const src_marker = L.marker(poi.position).addTo(preview_map);
+            here_api.reverse_geocode(cur_coords).then(result => {
+               console.log(result);
+            });
             const dst_marker = L.marker([cur_coords.lat, cur_coords.lon]).addTo(preview_map);
             dst_marker.bindPopup(poi.title).openPopup();
         }, 100);

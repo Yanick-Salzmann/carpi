@@ -28,6 +28,20 @@ $(() => {
     }
 
     class HereApi {
+        reverse_geocode(position) {
+            return new Promise((resolve, reject) => {
+               let url = 'https://reverse.geocoder.api.here.com/6.2/reversegeocode.json?prox=' + position.lat + ',' + position.lon + ',50' +
+                   '&mode=retrieveAddresses&maxResults=1&gen=9&app_id=' + encodeURIComponent(app_id) +
+                   "&app_code=" + encodeURIComponent(app_code);
+
+               $.get(url)
+                   .done(data => {
+                       resolve(data.View.Result);
+                   })
+                   .fail(err => reject(err));
+            });
+        }
+
         fetch_pois(search_text) {
             const cur_pos = gps_get_coordinates();
 
