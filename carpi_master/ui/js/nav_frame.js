@@ -363,6 +363,11 @@ $(() => {
 
             here_api.reverse_geocode(cur_coords).then(result => {
                 console.log(result);
+                if(!result) {
+                    return;
+                }
+
+                src_marker.bindPopup(result[0].Location.Address.Label).openPopup();
             });
         }, 100);
     }
