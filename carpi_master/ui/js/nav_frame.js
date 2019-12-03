@@ -15,11 +15,14 @@ $(() => {
 
     let preview_map = null;
 
+    let last_step = null;
+
     new PlzCsvReader("data/plz_ch.csv").then(info => plz_ch = info);
 
     function switchToWizardStep(id) {
         $('section.nav-section .wizard-body-wrapper > div:not(.hidden)').addClass('hidden');
-        $('#' + id).removeClass('hidden');
+        last_step = $('#' + id);
+        last_step.removeClass('hidden');
     }
 
 
@@ -451,6 +454,15 @@ $(() => {
         const cur_step = $(visible_step.eq(0));
         const previous = cur_step.attr('data-previous-step');
         if (!previous) {
+            return;
+        }
+
+        if (previous === "last-step") {
+            if (!last_step) {
+                return;
+            }
+
+            switchToWizardStep(last_step.attr('id'));
             return;
         }
 

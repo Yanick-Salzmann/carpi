@@ -4,7 +4,6 @@
 #include <ui/web_core.hpp>
 #include <data_server/http_server.hpp>
 #include <io/camera/camera_stream.hpp>
-#include <wiring_utils/gpio.hpp>
 
 namespace carpi {
     int _argc;
