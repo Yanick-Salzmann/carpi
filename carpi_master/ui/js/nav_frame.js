@@ -457,6 +457,8 @@ $(() => {
             return;
         }
 
+        console.log("Switching to navigation step: {}", previous);
+
         if (previous === "last-step") {
             if (!last_step) {
                 return;
