@@ -43,7 +43,7 @@
                     <li id="nav-find-poi">Find Point Of Interest</li>
                 </ul>
             </div>
-            <div id="nav-wizard-step-poi-search" class="hidden">
+            <div id="nav-wizard-step-poi-search" class="hidden" data-previous-step="nav-wizard-step-1">
                 <div class="flex-wrapper">
                     <div class="poi-search-input-wrapper input-group">
                         <div class="input-group-prepend">
@@ -61,7 +61,7 @@
                 <ul class="full-screen-menu">
                 </ul>
             </div>
-            <div id="nav-wizard-step-addr-ch-plz" class="hidden">
+            <div id="nav-wizard-step-addr-ch-plz" class="hidden" data-previous-step="nav-wizard-step-1">
                 <div class="flex-wrapper">
                     <div class="plz-input-wrapper input-group">
                         <div class="input-group-prepend">
@@ -73,7 +73,7 @@
                     <div class="virtual-keyboard" data-input-target="ch-post-code-input-target"></div>
                 </div>
             </div>
-            <div id="nav-wizard-step-addr-ch-street" class="hidden">
+            <div id="nav-wizard-step-addr-ch-street" class="hidden" data-previous-step="nav-wizard-step-addr-ch-plz">
                 <div class="flex-wrapper">
                     <div class="addr-input-wrapper input-group">
                         <div class="input-group-prepend">
@@ -85,7 +85,7 @@
                     <div class="virtual-keyboard" data-input-target="ch-street-input-target"></div>
                 </div>
             </div>
-            <div id="nav-wizard-step-addr-ch-street-number" class="hidden">
+            <div id="nav-wizard-step-addr-ch-street-number" class="hidden" data-previous-step="nav-wizard-step-addr-ch-street">
                 <div class="flex-wrapper">
                     <div class="addr-num-input-wrapper input-group">
                         <div class="input-group-prepend">
