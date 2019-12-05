@@ -28,6 +28,27 @@ $(() => {
     }
 
     class HereApi {
+        calc_route(from, to) {
+            let base_url = "https://route.api.here.com/routing/7.2/calculateroute.json";
+            const wp0 = encodeURIComponent(`${from[0]},${from[1]}`);
+            const wp1 = encodeURIComponent(`${to[0]},${to[1]}`;
+
+            base_url += "?waypoint0=" + wp0;
+            base_url += "&waypoint1=" + wp1;
+            base_url += "&mode=" + encodeURIComponent("fastest;car;traffic:enabled");
+            base_url += "&app_code=" + encodeURIComponent(app_code);
+            base_url += "&app_id=" + encodeURIComponent(app_id);
+            base_url += "&departure=now&legAttributes=shape";
+
+            return new Promise((resolve, reject) => {
+                $.get(base_url).done(data => {
+                    resolve(data);
+                }).fail(() => {
+                    reject();
+                })
+            });
+        }
+
         reverse_geocode(position) {
             return new Promise((resolve, reject) => {
                let url = 'https://reverse.geocoder.api.here.com/6.2/reversegeocode.json?prox=' + position.lat + ',' + position.lon + ',50' +

@@ -379,6 +379,10 @@ $(() => {
                         .setContent(`${address.Street} ${address.HouseNumber}<br>${address.City}`)
                 );
             });
+
+            here_api.calc_route([cur_coords.lat, cur_coords.lon], poi.position).then(result => {
+
+            });
         }, 100);
     }
 
