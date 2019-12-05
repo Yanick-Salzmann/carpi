@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
     bool run = true;
 
     std::thread t{
-        [&iface, &run]() {
+        [&iface, &run, &log]() {
             while(run) {
                 iface.write("F");
                 log->info("Distance: {}", iface.read(std::chrono::milliseconds{500}));
