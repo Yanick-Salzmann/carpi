@@ -31,7 +31,7 @@ $(() => {
         calc_route(from, to) {
             let base_url = "https://route.api.here.com/routing/7.2/calculateroute.json";
             const wp0 = encodeURIComponent(`${from[0]},${from[1]}`);
-            const wp1 = encodeURIComponent(`${to[0]},${to[1]}`;
+            const wp1 = encodeURIComponent(`${to[0]},${to[1]}`);
 
             base_url += "?waypoint0=" + wp0;
             base_url += "&waypoint1=" + wp1;
