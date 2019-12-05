@@ -23,6 +23,7 @@ add_subdirectory(data_server)
 add_subdirectory(gps)
 add_subdirectory(gps_broadcast)
 add_subdirectory(net_utils)
+add_subdirectory(distance_broadcast)
 
 add_subdirectory(obd)
 
