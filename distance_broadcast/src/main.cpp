@@ -4,6 +4,8 @@
 #include <wiring_utils/serial_interface.hpp>
 
 int main(int argc, char* argv[]) {
+    carpi::utils::Logger log{"Main"};
+
     if(argc < 3) {
         log->error("Usage: {} <serial_device> <baud_rate>", argv[0]);
         return 1;
