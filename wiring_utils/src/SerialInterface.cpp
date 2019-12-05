@@ -26,6 +26,8 @@ namespace carpi::wiring {
                 .tv_nsec = timeout_ns.count()
         };
 
+        log->info("Timeout: secs {}, ns {}", sleep_val.tv_sec, sleep_val.tv_nsec);
+
         auto has_read = false;
         std::string ret_val{};
         int next_char;
@@ -44,7 +46,7 @@ namespace carpi::wiring {
             }
 
             next_char = serialGetchar(_file);
-            if(next_char == '\0') {
+            if(next_char == '\n') {
                 break;
             }
             if (next_char != -1) {
