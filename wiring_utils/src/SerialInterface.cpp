@@ -44,6 +44,9 @@ namespace carpi::wiring {
             }
 
             next_char = serialGetchar(_file);
+            if(next_char == '\0') {
+                break;
+            }
             if (next_char != -1) {
                 ret_val += (char) next_char;
             }
