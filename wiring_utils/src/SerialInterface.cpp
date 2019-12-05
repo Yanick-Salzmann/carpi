@@ -34,6 +34,10 @@ namespace carpi::wiring {
         do {
             const auto num_available = serialDataAvail(_file);
             if (!num_available) {
+                if (has_read) {
+                    break;
+                }
+
                 const auto result = nanosleep(&sleep_val, nullptr);
                 if (result != 0 && result != EINTR) {
                     log->error("Error sleeping: {} (errno={})", utils::error_to_string(errno), errno);
@@ -45,10 +49,13 @@ namespace carpi::wiring {
                 return ret_val;
             }
 
+            has_read = true;
+
             next_char = serialGetchar(_file);
-            if(next_char == '\n') {
+            if (next_char == '\n' || next_char == '\0') {
                 break;
             }
+
             if (next_char != -1) {
                 ret_val += (char) next_char;
             }
