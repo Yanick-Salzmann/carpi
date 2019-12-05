@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
         [&iface, &run, &log]() {
             while(run) {
                 iface.write("F");
-                log->info("Distance: {}", iface.read_duration(std::chrono::milliseconds{500}));
+                log->info("Distance: {}", iface.read_duration(std::chrono::milliseconds{10}));
             }
         }
     };
