@@ -19,7 +19,7 @@ namespace carpi::wiring {
         std::string read(std::chrono::nanoseconds timeout_ns);
 
         template<typename Rep, typename Period>
-        std::string read(std::chrono::duration<Rep, Period> timeout) {
+        std::string read_duration(std::chrono::duration<Rep, Period> timeout) {
             return read(std::chrono::duration_cast<std::chrono::nanoseconds>(timeout));
         }
     };
