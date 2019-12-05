@@ -22,11 +22,9 @@ namespace carpi::wiring {
         timeout_ns -= secs;
 
         timespec sleep_val{
-                .tv_sec = secs.count(),
-                .tv_nsec = timeout_ns.count()
+                .tv_sec = static_cast<time_t>(secs.count()),
+                .tv_nsec = static_cast<__syscall_slong_t >(timeout_ns.count())
         };
-
-        log->info("Timeout: secs {}, ns {}", sleep_val.tv_sec, sleep_val.tv_nsec);
 
         auto has_read = false;
         std::string ret_val{};
