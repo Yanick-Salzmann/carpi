@@ -375,9 +375,12 @@ $(() => {
             preview_map.setView([cur_coords.lat, cur_coords.lon], 13);
             preview_map.fitBounds(L.polyline([poi.position, [cur_coords.lat, cur_coords.lon]]).getBounds());
 
-            console.log(poi);
+            let target_content = poi.title;
+            if(poi.vicinity) {
+                target_content += ', ' + poi.vicinity.replace('\n', ', ');
+            }
 
-            $('#route-preview-meta-info div.to span.variable').text(poi.title);
+            $('#route-preview-meta-info div.to span.variable').text(target_content);
             $('#route-preview-meta-info div.from span.variable').text(`${cur_coords.lat}, ${cur_coords.lon}`);
 
             here_api.reverse_geocode(cur_coords).then(result => {
