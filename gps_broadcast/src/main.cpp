@@ -35,7 +35,7 @@ namespace carpi {
         }
 
         if (toml::find_or<bool>(btconf, "enabled", false)) {
-            gps::BluetoothBroadcast bcast{tom::find<std::string>(btconf, "mode"), toml::find_or<std::string>(btconf, "target", "")};
+            gps::BluetoothBroadcast bcast{toml::find<std::string>(btconf, "mode"), toml::find_or<std::string>(btconf, "target", "")};
             gps_listener->data_callback([&](const auto& m) { });
         }
 

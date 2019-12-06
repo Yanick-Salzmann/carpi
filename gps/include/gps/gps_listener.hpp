@@ -5,7 +5,7 @@
 #include <string>
 #include <common_utils/log.hpp>
 #include <functional>
-#include <set>
+#include <deque>
 
 namespace carpi::gps {
 #pragma pack(push, 1)
@@ -26,7 +26,7 @@ namespace carpi::gps {
         gps_data_t _gps_data{};
         std::mutex _callback_lock;
 
-        std::set<std::function<void (const GpsMeasurement&)>> _callbacks;
+        std::deque<std::function<void (const GpsMeasurement&)>> _callbacks;
 
         void gps_loop();
 
@@ -39,7 +39,7 @@ namespace carpi::gps {
 
         void data_callback(std::function<void(const GpsMeasurement&)> callback) {
             std::lock_guard<std::mutex> l{_callback_lock};
-            _callbacks.emplace(std::move(callback));
+            _callbacks.emplace_back(std::move(callback));
         }
     };
 }
