@@ -366,3 +366,7 @@ section.nav-section .item-recommendation .recommendation {
     border: 1px solid ghostwhite;
     z-index: 999;
 }
+
+#route-preview-meta-info span:not(.variable) {
+    display: block;
+}
