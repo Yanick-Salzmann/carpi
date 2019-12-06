@@ -355,3 +355,13 @@ section.nav-section .item-recommendation .recommendation {
     right: 0;
     bottom: 0;
 }
+
+#route-preview-meta-info {
+    display: inline-block;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 10px;
+    background-color: rgba(50, 50, 50, 0.7);
+    border: 1px solid ghostwhite;
+}
