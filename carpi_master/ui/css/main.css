@@ -364,4 +364,5 @@ section.nav-section .item-recommendation .recommendation {
     padding: 10px;
     background-color: rgba(50, 50, 50, 0.7);
     border: 1px solid ghostwhite;
+    z-index: 999;
 }

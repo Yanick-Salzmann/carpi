@@ -409,6 +409,9 @@ $(() => {
                 const line = L.polyline(route_points, {color: 'rgba(0, 255, 255, 0.5)'});
                 preview_map.fitBounds(line.getBounds());
                 line.addTo(preview_map);
+
+                $('#route-preview-meta-info div.distance span.variable').text(distance);
+                $('#route-preview-meta-info div.duration span.variable').text(duration);
             });
         }, 100);
     }
