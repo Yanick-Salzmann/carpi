@@ -307,6 +307,21 @@ $(() => {
         return distance.toFixed(digits) + unit;
     }
 
+    function format_duration(duration) {
+        if(duration > 3600) {
+            const hours = (duration / 3600).toFixed(0);
+            const minutes = ((duration % 3600) / 60).toFixed(0);
+            if(!minutes) {
+                return `${hours}h`;
+            } else {
+                return `${hours}h ${minutes}m`;
+            }
+        } else {
+            const minutes = (duration / 60).toFixed(0);
+            return `${minutes}m`;
+        }
+    }
+
     function searchForPoi() {
         const target = $('#poi-search-input-target');
         if (!target.val()) {
@@ -381,7 +396,19 @@ $(() => {
             });
 
             here_api.calc_route([cur_coords.lat, cur_coords.lon], poi.position).then(result => {
-                console.log(result);
+                if(!result.response || !result.response.route || !result.response.route[0].leg) {
+                    return;
+                }
+
+                const leg = result.response.route[0].leg[0];
+                const distance = format_distance(leg.length);
+                const duration = format_duration(leg.travelTime);
+                console.log(distance, duration);
+
+                const route_points = leg.shape.map(point => [parseFloat(point.split(',')[0]), parseFloat(point.split(',')[1])]);
+                const line = L.polyline(route_points, {color: 'rgba(0, 255, 255, 0.5)'});
+                preview_map.fitBounds(line);
+                line.addTo(preview_map);
             });
         }, 100);
     }
