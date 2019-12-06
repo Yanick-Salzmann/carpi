@@ -8,7 +8,7 @@ namespace carpi::gps {
 
     NetBroadcast::NetBroadcast(std::string address, uint16_t port) {
         log->info("Starting UDP broadcast of GPS data on {}:{}", address, port);
-        _broadcast = std::make_shared<net::UdpMulticast>(std::move(address), port, false);
+        _broadcast = std::make_shared<net::UdpMulticast>(address, port, false);
     }
 
     void NetBroadcast::send_packet(const ipc::IpcPackage &packet) {
