@@ -1,0 +1,8 @@
+[gps.broadcast.udp]
+    enabled = true
+    address = "239.255.255.255"
+    port = 3377
+
+[gps.broadcast.bluetooth]
+    enabled = true
+    mode = "server"

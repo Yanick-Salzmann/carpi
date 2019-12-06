@@ -5,6 +5,7 @@ include(ExternalProject)
 
 set(SPDLOG_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/spdlog)
 set(JSON_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/json)
+set(TOML_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/toml)
 
 ExternalProject_Add(
         spdlog
@@ -38,4 +39,18 @@ ExternalProject_Add(
         CMAKE_CACHE_ARGS
         -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/json
         -DJSON_BuildTests:BOOL=OFF
+)
+
+ExternalProject_Add(
+        toml
+        PREFIX ${TOML_ROOT}
+        GIT_REPOSITORY https://github.com/ToruNiina/toml11.git
+        GIT_TAG master
+        UPDATE_COMMAND ""
+        PATCH_COMMAND ""
+        SOURCE_DIR ${TOML_ROOT}/src/toml11
+        INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/toml
+        CMAKE_CACHE_ARGS
+        -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/toml
+        -Dtoml11_BUILD_TEST:BOOL=OFF
 )

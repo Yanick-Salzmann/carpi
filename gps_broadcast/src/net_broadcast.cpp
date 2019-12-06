@@ -6,8 +6,8 @@
 namespace carpi::gps {
     LOGGER_IMPL(NetBroadcast);
 
-    NetBroadcast::NetBroadcast() {
-        _broadcast = std::make_shared<net::UdpMulticast>(gps_multicast_interface(), 3377, false);
+    NetBroadcast::NetBroadcast(std::string address, uint16_t port) {
+        _broadcast = std::make_shared<net::UdpMulticast>(std::move(address), port, false);
     }
 
     void NetBroadcast::send_packet(const ipc::IpcPackage &packet) {

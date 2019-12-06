@@ -16,7 +16,7 @@ namespace carpi::gps {
         void send_packet(const ipc::IpcPackage& packet);
 
     public:
-        NetBroadcast();
+        NetBroadcast(std::string address, uint16_t port);
 
         void on_measurement(const GpsMeasurement& measurement);
     };

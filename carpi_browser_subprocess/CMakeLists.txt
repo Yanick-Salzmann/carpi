@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION ${CMAKE_VERSION})
 project(carpi_browser_subprocess)
 
+configure_file(resources/config.toml resources/config.toml)
+
 add_custom_command(
         OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/data/CH_addresses.csv
         COMMAND unzip -n ${CMAKE_CURRENT_SOURCE_DIR}/data/CH_addresses.zip -d ${CMAKE_CURRENT_SOURCE_DIR}/data
