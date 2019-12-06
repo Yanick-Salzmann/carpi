@@ -316,6 +316,7 @@ $(() => {
         here_api.fetch_pois(target.val()).then(results => {
             const target = $('#nav-wizard-step-poi-result > ul');
             target.empty();
+
             results.forEach(result => {
                 const elem = $('<li></li>');
                 const img = $('<img>');
@@ -366,7 +367,6 @@ $(() => {
             );
 
             here_api.reverse_geocode(cur_coords).then(result => {
-                console.log(result);
                 if (!result) {
                     return;
                 }
@@ -381,7 +381,7 @@ $(() => {
             });
 
             here_api.calc_route([cur_coords.lat, cur_coords.lon], poi.position).then(result => {
-
+                console.log(result);
             });
         }, 100);
     }
