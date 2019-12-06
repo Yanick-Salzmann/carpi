@@ -17,6 +17,8 @@ namespace carpi::bluetooth {
     public:
         explicit BluetoothServer(uint8_t channel);
 
+        void close();
+
         std::shared_ptr<BluetoothConnection> accept_connection();
 
         [[nodiscard]] int fd() const {

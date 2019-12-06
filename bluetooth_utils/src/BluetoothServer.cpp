@@ -60,4 +60,8 @@ namespace carpi::bluetooth {
         log->debug("Accepted bluetooth client from {}", addr_name);
         return std::make_shared<BluetoothConnection>(client, client_addr);
     }
+
+    void BluetoothServer::close() {
+        ::close(_socket);
+    }
 }

@@ -1,0 +1,3 @@
+[gps.data.bluetooth]
+    source = "B8:27:EB:18:18:78"
+    channel = 15
