@@ -23,8 +23,12 @@ namespace carpi {
 
         gps_listener = new gps::GpsListener{};
 
-        if (toml::find_or<bool>(config, "gps.broadcast.udp.enabled", false)) {
-            gps::NetBroadcast bcast{toml::find<std::string>(config, "gps.broadcast.udp.address"), toml::find<uint16_t>(config, "gps.broadcast.udp.port")};
+        const auto gps_conf = toml::find(config, "gps");
+        const auto bcst_conf = toml::find(gps_conf, "broadcast");
+        const auto udp_conf = toml::find(bcst_conf, "udp");
+
+        if (toml::find_or<bool>(udp_conf, "enabled", false)) {
+            gps::NetBroadcast bcast{toml::find<std::string>(udp_conf, "address"), toml::find<uint16_t>(udp_conf, "port")};
             gps_listener->data_callback([&](const auto &m) { bcast.on_measurement(m); });
         }
 
