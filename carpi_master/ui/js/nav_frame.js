@@ -407,7 +407,7 @@ $(() => {
 
                 const route_points = leg.shape.map(point => [parseFloat(point.split(',')[0]), parseFloat(point.split(',')[1])]);
                 const line = L.polyline(route_points, {color: 'rgba(0, 255, 255, 0.5)'});
-                preview_map.fitBounds(line);
+                preview_map.fitBounds(line.getBounds());
                 line.addTo(preview_map);
             });
         }, 100);
