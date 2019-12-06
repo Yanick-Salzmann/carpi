@@ -1,5 +1,5 @@
 #include "ObdConnectionManager.hpp"
-#include <bluetooth_utils/BluetoothManager.hpp>
+#include <bluetooth_utils/bluetooth_manager.hpp>
 #include <obd/ObdCommandList.hpp>
 
 namespace carpi::io::obd {

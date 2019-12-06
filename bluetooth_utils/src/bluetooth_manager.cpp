@@ -1,4 +1,4 @@
-#include "bluetooth_utils/BluetoothManager.hpp"
+#include "bluetooth_utils/bluetooth_manager.hpp"
 #include "common_utils/error.hpp"
 
 namespace carpi::bluetooth {

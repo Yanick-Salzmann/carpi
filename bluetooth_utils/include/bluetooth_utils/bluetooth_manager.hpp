@@ -13,7 +13,7 @@
 #include <chrono>
 #include <common_utils/singleton.hpp>
 
-#include "BluetoothDevice.hpp"
+#include "bluetooth_device.hpp"
 
 namespace carpi::bluetooth {
     class BluetoothManager : public utils::Singleton<BluetoothManager> {

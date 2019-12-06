@@ -7,7 +7,7 @@
 #include <common_utils/singleton.hpp>
 #include <common_utils/log.hpp>
 #include <nlohmann/json.hpp>
-#include <bluetooth_utils/BluetoothServer.hpp>
+#include <bluetooth_utils/bluetooth_server.hpp>
 
 namespace carpi::ui::events {
     struct BluetoothDeviceInfo {

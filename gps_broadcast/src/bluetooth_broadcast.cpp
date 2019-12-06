@@ -1,6 +1,6 @@
 #include <common_utils/string.hpp>
-#include <bluetooth_utils/BluetoothDevice.hpp>
-#include <bluetooth_utils/BluetoothServer.hpp>
+#include <bluetooth_utils/bluetooth_device.hpp>
+#include <bluetooth_utils/bluetooth_server.hpp>
 #include "bluetooth_broadcast.hpp"
 
 namespace carpi::gps {

@@ -1,5 +1,5 @@
 #include "obd/ObdInterface.hpp"
-#include "bluetooth_utils/BluetoothConnection.hpp"
+#include "bluetooth_utils/bluetooth_connection.hpp"
 #include "obd/ObdCommand.hpp"
 #include "obd/msg/ObdMessage.hpp"
 #include "obd/ObdCommandList.hpp"

@@ -1,6 +1,6 @@
 #include <iostream>
-#include <bluetooth_utils/BluetoothManager.hpp>
-#include <bluetooth_utils/BluetoothConnection.hpp>
+#include <bluetooth_utils/bluetooth_manager.hpp>
+#include <bluetooth_utils/bluetooth_connection.hpp>
 
 namespace carpi {
     int main(int argc, char* argv[]) {

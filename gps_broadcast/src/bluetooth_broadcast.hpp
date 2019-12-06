@@ -6,8 +6,8 @@
 #include <common_utils/log.hpp>
 #include <ipc_common/ipc_package.hpp>
 #include <gps/gps_listener.hpp>
-#include "bluetooth_utils/BluetoothConnection.hpp"
-#include "bluetooth_utils/BluetoothServer.hpp"
+#include "bluetooth_utils/bluetooth_connection.hpp"
+#include "bluetooth_utils/bluetooth_server.hpp"
 
 namespace carpi::gps {
     class BluetoothBroadcast {

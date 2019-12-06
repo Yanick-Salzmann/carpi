@@ -1,6 +1,6 @@
 #include "bluetooth_events.hpp"
 #include "ui/event_manager.hpp"
-#include <bluetooth_utils/BluetoothManager.hpp>
+#include <bluetooth_utils/bluetooth_manager.hpp>
 #include <io/obd/ObdConnectionManager.hpp>
 
 namespace carpi::ui::events {

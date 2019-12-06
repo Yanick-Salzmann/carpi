@@ -9,7 +9,7 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <ipc_common/ipc_type.hpp>
-#include <bluetooth_utils/BluetoothConnection.hpp>
+#include <bluetooth_utils/bluetooth_connection.hpp>
 
 namespace carpi::comm {
     class IpcConnection;

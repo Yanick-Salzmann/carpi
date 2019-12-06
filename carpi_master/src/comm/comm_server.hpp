@@ -5,8 +5,8 @@
 #include <memory>
 #include <thread>
 
-#include <bluetooth_utils/BluetoothServer.hpp>
-#include <bluetooth_utils/BluetoothConnection.hpp>
+#include <bluetooth_utils/bluetooth_server.hpp>
+#include <bluetooth_utils/bluetooth_connection.hpp>
 
 #include <common_utils/log.hpp>
 

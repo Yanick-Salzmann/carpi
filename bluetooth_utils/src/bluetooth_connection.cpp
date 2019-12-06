@@ -1,5 +1,5 @@
 
-#include "bluetooth_utils/BluetoothConnection.hpp"
+#include "bluetooth_utils/bluetooth_connection.hpp"
 
 #include "bluetooth/bluetooth.h"
 #include "bluetooth/rfcomm.h"
