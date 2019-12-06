@@ -14,6 +14,11 @@ namespace carpi {
     }
 
     int main() {
+        {
+            std::ofstream os{"app.pid"};
+            os << getpid();
+        }
+
         const auto config = toml::parse("resources/config.toml");
 
         gps_listener = new gps::GpsListener{};
