@@ -3,6 +3,7 @@
 #include <common_utils/log.hpp>
 #include <wiring_utils/serial_interface.hpp>
 #include <wiring_utils/gpio.hpp>
+#include <wiring_utils/jsnsr04t_distance_sensor.hpp>
 
 int main(int argc, char *argv[]) {
     carpi::utils::Logger log{"Main"};
@@ -34,40 +35,9 @@ int main(int argc, char *argv[]) {
 //    run = false;
 //    t.join();
 
-    carpi::wiring::Gpio gpio{};
-    auto trig = gpio.open_pin(12);
-    auto echo = gpio.open_pin(11);
-    trig.mode(carpi::wiring::GpioMode::OUTPUT_MODE);
-    echo.mode(carpi::wiring::GpioMode::INPUT_MODE);
-
-    auto run = true;
-
-    std::thread t{
-            [&echo, &run, log]() {
-                auto was_high = false;
-                std::chrono::high_resolution_clock::time_point start;
-                while (run) {
-                    const auto cur = echo.state();
-                    if (cur && !was_high) {
-                        was_high = true;
-                        start = std::chrono::high_resolution_clock::now();
-                    } else if(!cur && was_high) {
-                        was_high = false;
-                        const auto diff = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - start).count();
-                        log->info("Distance: {} cm", diff / 58.0f);
-                    }
-                }
-            }
-    };
-
-    for(auto i = 0; i < 10; ++i) {
-        log->info("Trigger");
-        trig.high();
-        std::this_thread::sleep_for(std::chrono::milliseconds{100});
-        trig.low();
+    carpi::wiring::JSNSR04TDistanceSensor sensor{12, 11};
+    for(auto i = 0; i < 100; ++i) {
+        log->info("Distance: {}", sensor.current_distance().distance);
         std::this_thread::sleep_for(std::chrono::seconds{1});
     }
-
-    run = false;
-    t.join();
 }
