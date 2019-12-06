@@ -415,6 +415,10 @@ $(() => {
                 const distance = format_distance(leg.length);
                 const duration = format_duration(leg.travelTime);
 
+                preview_map.eachLayer(layer => {
+                   console.log(layer);
+                });
+
                 const route_points = leg.shape.map(point => [parseFloat(point.split(',')[0]), parseFloat(point.split(',')[1])]);
                 const line = L.polyline(route_points, {color: 'rgba(0, 255, 255, 0.5)'});
                 preview_map.fitBounds(line.getBounds());
