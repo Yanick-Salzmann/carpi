@@ -15,18 +15,6 @@ namespace carpi::bluetooth {
 
         char device_name[248]{};
 
-        /*const auto route = hci_get_route(&address);
-        if(route < 0) {
-            log->warn("No route to {} found: {} (errno={})", _address_string, utils::error_to_string(errno), errno);
-            throw std::runtime_error{"No route to device found"};
-        }
-
-        const auto remote_socket = hci_open_dev(route);
-        if(remote_socket < 0) {
-            log->warn("Cannot open connection to {}: {} (errno={})", _address_string, utils::error_to_string(errno), errno);
-            throw std::runtime_error{"Cannot connect to device"};
-        }*/
-
         if(hci_read_remote_name(_socket, &address, sizeof device_name, device_name, 0) == 0) {
             device_name[247] = '\0';
             _device_name.assign(device_name);
@@ -72,5 +60,24 @@ namespace carpi::bluetooth {
         log->debug("Created bluetooth connection to {} with channel={}", _address_string, channel);
 
         return std::make_shared<BluetoothConnection>(ret_client, rc_addr);
+    }
+
+    std::shared_ptr<BluetoothDevice> BluetoothDevice::open_device(const std::string &address) {
+        bdaddr_t bt_addr{};
+        str2ba(address.c_str(), &bt_addr);
+
+        const auto route = hci_get_route(nullptr);
+        if(route < 0) {
+            log->error("Error opening bluetooth device: Cannot get route: {} (errno={})", utils::error_to_string(), errno);
+            throw std::runtime_error{"Error opening route to BT device"};
+        }
+
+        const auto socket = hci_open_dev(route);
+        if(socket < 0) {
+            log->error("Error opening bluetooth device: Cannot open socket: {} (errno={})", utils::error_to_string(), errno);
+            throw std::runtime_error{"Error opening socket to BT device"};
+        }
+
+        return std::make_shared<BluetoothDevice>(socket, bt_addr);
     }
 }

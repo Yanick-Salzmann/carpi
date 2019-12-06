@@ -32,7 +32,7 @@ namespace carpi::bluetooth {
 
         ~BluetoothConnection();
 
-        [[nodiscard]] std::string to_string() const {
+        [[nodiscard]] auto to_string() const -> std::string {
             std::stringstream stream;
             stream << "<BluetoothConnection address=" << _address << ">";
             return stream.str();
@@ -44,7 +44,7 @@ namespace carpi::bluetooth {
 
         void close();
 
-        void write_data(const void *data, std::size_t num_bytes);
+        bool write_data(const void *data, std::size_t num_bytes);
 
         void read_data(void *buffer, std::size_t num_bytes);
 

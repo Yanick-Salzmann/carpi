@@ -30,6 +30,7 @@ namespace carpi {
         const auto btconf = toml::find(bcst_conf, "bluetooth");
 
         std::shared_ptr<gps::NetBroadcast> udp_bcast{};
+        std::shared_ptr<gps::BluetoothBroadcast> bt_bcast{};
 
         if (toml::find_or<bool>(udp_conf, "enabled", false)) {
             udp_bcast = std::make_shared<gps::NetBroadcast>(toml::find<std::string>(udp_conf, "address"), toml::find<uint16_t>(udp_conf, "port"));
@@ -37,8 +38,8 @@ namespace carpi {
         }
 
         if (toml::find_or<bool>(btconf, "enabled", false)) {
-            gps::BluetoothBroadcast bcast{toml::find<std::string>(btconf, "mode"), toml::find_or<std::string>(btconf, "target", "")};
-            gps_listener->data_callback([&](const auto& m) { });
+            bt_bcast = std::make_shared<gps::BluetoothBroadcast>(toml::find<std::string>(btconf, "mode"), toml::find_or<std::string>(btconf, "target", ""));
+            gps_listener->data_callback([&](const auto& m) { bt_bcast->on_measurement(m); });
         }
 
         std::signal(SIGINT, signal_handler);

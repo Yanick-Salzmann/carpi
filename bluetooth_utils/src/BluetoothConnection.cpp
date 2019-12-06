@@ -25,12 +25,14 @@ namespace carpi::bluetooth {
         return os << conn.to_string();
     }
 
-    void BluetoothConnection::write_data(const void *data, std::size_t num_bytes) {
+    bool BluetoothConnection::write_data(const void *data, std::size_t num_bytes) {
         const auto rc = send(_socket, data, num_bytes, 0);
         if (rc < 0) {
             log->warn("Error sending data over connection: {} (errno={})", utils::error_to_string(), errno);
-            return;
+            return false;
         }
+
+        return true;
     }
 
     void BluetoothConnection::read_data(void *buffer, std::size_t num_bytes) {
