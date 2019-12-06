@@ -367,6 +367,12 @@ section.nav-section .item-recommendation .recommendation {
     z-index: 999;
 }
 
-#route-preview-meta-info span:not(.variable) {
+#route-preview-meta-info button {
+    font-size: 0.8em;
+    line-height: 1;
+}
 
+#route-preview-meta-info .drive-wrapper {
+    display: flex;
+    justify-content: center;
 }
