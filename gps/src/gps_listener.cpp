@@ -79,8 +79,8 @@ namespace carpi::gps {
 
                     {
                         std::lock_guard<std::mutex> l{_callback_lock};
-                        if (_callback) {
-                            _callback(ms);
+                        for(const auto& callback : _callbacks) {
+                            callback(ms);
                         }
                     }
                 } else {
@@ -90,8 +90,8 @@ namespace carpi::gps {
 
                     {
                         std::lock_guard<std::mutex> l{_callback_lock};
-                        if (_callback) {
-                            _callback(ms);
+                        for(const auto& callback : _callbacks) {
+                            callback(ms);
                         }
                     }
                 }
