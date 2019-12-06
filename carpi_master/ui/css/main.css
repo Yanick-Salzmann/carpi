@@ -362,9 +362,13 @@ section.nav-section .item-recommendation .recommendation {
     top: 15px;
     right: 15px;
     padding: 10px;
-    background-color: rgba(50, 50, 50, 0.7);
+    background-color: rgba(50, 50, 50, 0.9);
     border: 1px solid ghostwhite;
     z-index: 999;
+}
+
+#route-preview-meta-info div span:not(.variable) {
+    font-weight: bold;
 }
 
 #route-preview-meta-info button {
