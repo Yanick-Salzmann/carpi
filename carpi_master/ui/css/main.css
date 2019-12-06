@@ -375,4 +375,5 @@ section.nav-section .item-recommendation .recommendation {
 #route-preview-meta-info .drive-wrapper {
     display: flex;
     justify-content: center;
+    margin-top: 15px;
 }

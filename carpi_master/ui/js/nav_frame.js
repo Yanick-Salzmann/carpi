@@ -375,6 +375,8 @@ $(() => {
             preview_map.setView([cur_coords.lat, cur_coords.lon], 13);
             preview_map.fitBounds(L.polyline([poi.position, [cur_coords.lat, cur_coords.lon]]).getBounds());
 
+            console.log(poi);
+
             $('#route-preview-meta-info div.to span.variable').text(poi.title);
             $('#route-preview-meta-info div.from span.variable').text(`${cur_coords.lat}, ${cur_coords.lon}`);
 
@@ -384,7 +386,20 @@ $(() => {
                 }
 
                 const address = result[0].Location.Address;
-                $('#route-preview-meta-info div.from span.variable').text(`${address.Street} ${address.HouseNumber}, ${address.City}`);
+                let content = '';
+                if(address.Street) {
+                    content += address.Street;
+                }
+
+                if(address.HouseNumber) {
+                    content += ' ' + address.HouseNumber;
+                }
+
+                if(address.City) {
+                    content += ', ' + address.City;
+                }
+
+                $('#route-preview-meta-info div.from span.variable').text(content);
             });
 
             here_api.calc_route([cur_coords.lat, cur_coords.lon], poi.position).then(result => {
