@@ -308,10 +308,10 @@ $(() => {
     }
 
     function format_duration(duration) {
-        if(duration > 3600) {
+        if (duration > 3600) {
             const hours = Math.floor(duration / 3600);
             const minutes = Math.floor((duration % 3600) / 60);
-            if(!minutes) {
+            if (!minutes) {
                 return `${hours.toFixed(0)} ${hours !== 1 ? 'hours' : 'hour'}`;
             } else {
                 return `${hours.toFixed(0)} ${hours !== 1 ? 'hours' : 'hour'} ${minutes.toFixed(0)} ${minutes !== 1 ? 'minutes' : 'minute'}`;
@@ -376,7 +376,7 @@ $(() => {
             preview_map.fitBounds(L.polyline([poi.position, [cur_coords.lat, cur_coords.lon]]).getBounds());
 
             let target_content = poi.title;
-            if(poi.vicinity) {
+            if (poi.vicinity) {
                 const lines = poi.vicinity.split('\n');
                 target_content += ', ' + lines[lines.length - 1];
             }
@@ -391,15 +391,15 @@ $(() => {
 
                 const address = result[0].Location.Address;
                 let content = '';
-                if(address.Street) {
+                if (address.Street) {
                     content += address.Street;
                 }
 
-                if(address.HouseNumber) {
+                if (address.HouseNumber) {
                     content += ' ' + address.HouseNumber;
                 }
 
-                if(address.City) {
+                if (address.City) {
                     content += ', ' + address.City;
                 }
 
@@ -407,7 +407,7 @@ $(() => {
             });
 
             here_api.calc_route([cur_coords.lat, cur_coords.lon], poi.position).then(result => {
-                if(!result.response || !result.response.route || !result.response.route[0].leg) {
+                if (!result.response || !result.response.route || !result.response.route[0].leg) {
                     return;
                 }
 
@@ -416,7 +416,9 @@ $(() => {
                 const duration = format_duration(leg.travelTime);
 
                 preview_map.eachLayer(layer => {
-                   console.log(layer instanceof L.polyline);
+                    if (layer._path) {
+                        preview_map.removeLayer(layer);
+                    }
                 });
 
                 const route_points = leg.shape.map(point => [parseFloat(point.split(',')[0]), parseFloat(point.split(',')[1])]);
