@@ -377,7 +377,8 @@ $(() => {
 
             let target_content = poi.title;
             if(poi.vicinity) {
-                target_content += ', ' + poi.vicinity.replace('\n', ', ');
+                const lines = poi.vicinity.split('\n');
+                target_content += ', ' + lines[lines.length - 1];
             }
 
             $('#route-preview-meta-info div.to span.variable').text(target_content);
