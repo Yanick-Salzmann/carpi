@@ -26,6 +26,8 @@ namespace carpi::wiring {
 
         void high() const;
         void low() const;
+
+        bool state() const;
     };
 
     class Gpio {

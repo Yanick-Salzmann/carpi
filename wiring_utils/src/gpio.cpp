@@ -15,6 +15,10 @@ namespace carpi::wiring {
         digitalWrite(_pin_index, LOW);
     }
 
+    bool GpioPin::state() const {
+        return digitalRead(_pin_index) == HIGH;
+    }
+
     Gpio::Gpio() {
         WiringContext ctx;
         wiringPiSetupPhys();
