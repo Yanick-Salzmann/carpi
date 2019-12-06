@@ -375,11 +375,8 @@ $(() => {
             preview_map.setView([cur_coords.lat, cur_coords.lon], 13);
             preview_map.fitBounds(L.polyline([poi.position, [cur_coords.lat, cur_coords.lon]]).getBounds());
 
-            preview_map.addLayer(
-                L.popup()
-                    .setLatLng(poi.position)
-                    .setContent(poi.title)
-            );
+            $('#route-preview-meta-info div.to span.variable').text(poi.title);
+            $('#route-preview-meta-info div.from span.variable').text(`${cur_coords.lat}, ${cur_coords.lon}`);
 
             here_api.reverse_geocode(cur_coords).then(result => {
                 if (!result) {
@@ -387,12 +384,7 @@ $(() => {
                 }
 
                 const address = result[0].Location.Address;
-
-                preview_map.addLayer(
-                    L.popup()
-                        .setLatLng([cur_coords.lat, cur_coords.lon])
-                        .setContent(`${address.Street} ${address.HouseNumber}<br>${address.City}`)
-                );
+                $('#route-preview-meta-info div.from span.variable').text(`${address.Street} ${address.HouseNumber}, ${address.City}`);
             });
 
             here_api.calc_route([cur_coords.lat, cur_coords.lon], poi.position).then(result => {
