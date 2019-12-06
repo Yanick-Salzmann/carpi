@@ -20,7 +20,7 @@ $(() => {
     new PlzCsvReader("data/plz_ch.csv").then(info => plz_ch = info);
 
     function switchToWizardStep(id) {
-        last_step = $('#section.nav-section .wizard-body-wrapper > div:not(.hidden)');
+        last_step = $('section.nav-section .wizard-body-wrapper > div:not(.hidden)');
         last_step.addClass('hidden');
         $('#' + id).removeClass('hidden');
     }
