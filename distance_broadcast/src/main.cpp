@@ -35,8 +35,8 @@ int main(int argc, char *argv[]) {
 //    t.join();
 
     carpi::wiring::Gpio gpio{};
-    auto trig = gpio.open_pin(18);
-    auto echo = gpio.open_pin(17);
+    auto trig = gpio.open_pin(12);
+    auto echo = gpio.open_pin(11);
     trig.mode(carpi::wiring::GpioMode::OUTPUT_MODE);
     echo.mode(carpi::wiring::GpioMode::INPUT_MODE);
 
