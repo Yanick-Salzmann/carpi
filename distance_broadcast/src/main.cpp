@@ -53,8 +53,8 @@ int main(int argc, char *argv[]) {
                         start = std::chrono::high_resolution_clock::now();
                     } else if(!cur && was_high) {
                         was_high = false;
-                        const auto diff = std::chrono::high_resolution_clock::now() - start;
-                        log->info("Time: {} us", std::chrono::duration_cast<std::chrono::microseconds>(diff).count());
+                        const auto diff = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - start).count();
+                        log->info("Distance: {} cm", diff / 58.0f);
                     }
                 }
             }
