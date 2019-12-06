@@ -309,16 +309,16 @@ $(() => {
 
     function format_duration(duration) {
         if(duration > 3600) {
-            const hours = (duration / 3600).toFixed(0);
-            const minutes = ((duration % 3600) / 60).toFixed(0);
+            const hours = Math.floor(duration / 3600);
+            const minutes = Math.floor((duration % 3600) / 60);
             if(!minutes) {
-                return `${hours}h`;
+                return `${hours.toFixed(0)} ${hours !== 1 ? 'hours' : 'hour'}`;
             } else {
-                return `${hours}h ${minutes}m`;
+                return `${hours.toFixed(0)} ${hours !== 1 ? 'hours' : 'hour'} ${minutes.toFixed(0)} ${minutes !== 1 ? 'minutes' : 'minute'}`;
             }
         } else {
-            const minutes = (duration / 60).toFixed(0);
-            return `${minutes}m`;
+            const minutes = Math.floor(duration / 60);
+            return `${minutes.toFixed(0)} ${minutes !== 1 ? 'minutes' : 'minute'}`;
         }
     }
 
