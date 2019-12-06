@@ -29,9 +29,11 @@ namespace carpi {
         const auto udp_conf = toml::find(bcst_conf, "udp");
         const auto btconf = toml::find(bcst_conf, "bluetooth");
 
+        std::shared_ptr<gps::NetBroadcast> udp_bcast{};
+
         if (toml::find_or<bool>(udp_conf, "enabled", false)) {
-            gps::NetBroadcast bcast{toml::find<std::string>(udp_conf, "address"), toml::find<uint16_t>(udp_conf, "port")};
-            gps_listener->data_callback([&](const auto &m) { bcast.on_measurement(m); });
+            udp_bcast = std::make_shared<gps::NetBroadcast>(toml::find<std::string>(udp_conf, "address"), toml::find<uint16_t>(udp_conf, "port"));
+            gps_listener->data_callback([](const auto &m) { udp_bcast->on_measurement(m); });
         }
 
         if (toml::find_or<bool>(btconf, "enabled", false)) {
