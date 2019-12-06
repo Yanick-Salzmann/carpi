@@ -414,7 +414,6 @@ $(() => {
                 const leg = result.response.route[0].leg[0];
                 const distance = format_distance(leg.length);
                 const duration = format_duration(leg.travelTime);
-                console.log(distance, duration);
 
                 const route_points = leg.shape.map(point => [parseFloat(point.split(',')[0]), parseFloat(point.split(',')[1])]);
                 const line = L.polyline(route_points, {color: 'rgba(0, 255, 255, 0.5)'});
