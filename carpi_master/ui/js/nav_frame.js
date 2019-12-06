@@ -416,7 +416,7 @@ $(() => {
                 const duration = format_duration(leg.travelTime);
 
                 preview_map.eachLayer(layer => {
-                   console.log(layer);
+                   console.log(layer instanceof L.polyline);
                 });
 
                 const route_points = leg.shape.map(point => [parseFloat(point.split(',')[0]), parseFloat(point.split(',')[1])]);
