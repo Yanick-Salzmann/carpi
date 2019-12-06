@@ -33,7 +33,7 @@ namespace carpi {
 
         if (toml::find_or<bool>(udp_conf, "enabled", false)) {
             udp_bcast = std::make_shared<gps::NetBroadcast>(toml::find<std::string>(udp_conf, "address"), toml::find<uint16_t>(udp_conf, "port"));
-            gps_listener->data_callback([](const auto &m) { udp_bcast->on_measurement(m); });
+            gps_listener->data_callback([udp_bcast](const auto &m) { udp_bcast->on_measurement(m); });
         }
 
         if (toml::find_or<bool>(btconf, "enabled", false)) {
