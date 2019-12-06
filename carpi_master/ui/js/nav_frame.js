@@ -20,9 +20,9 @@ $(() => {
     new PlzCsvReader("data/plz_ch.csv").then(info => plz_ch = info);
 
     function switchToWizardStep(id) {
-        $('section.nav-section .wizard-body-wrapper > div:not(.hidden)').addClass('hidden');
-        last_step = $('#' + id);
-        last_step.removeClass('hidden');
+        last_step = $('#section.nav-section .wizard-body-wrapper > div:not(.hidden)');
+        last_step.addClass('hidden');
+        $('#' + id).removeClass('hidden');
     }
 
 
@@ -500,8 +500,6 @@ $(() => {
         if (!previous) {
             return;
         }
-
-        console.log("Switching to navigation step: {}", previous);
 
         if (previous === "last-step") {
             if (!last_step) {
