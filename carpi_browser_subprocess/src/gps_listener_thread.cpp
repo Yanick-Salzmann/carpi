@@ -1,17 +1,28 @@
 #include "gps_listener_thread.hpp"
 #include <gps/gps_constants.hpp>
-#include <gps/gps_listener.hpp>
 #include <common_utils/error.hpp>
+#include <toml.hpp>
+#include <common_utils/string.hpp>
 
 namespace carpi {
     LOGGER_IMPL(GpsListenerThread);
 
     GpsListenerThread::GpsListenerThread() {
-            _multicast = std::make_shared<net::UdpMulticast>(gps::gps_multicast_interface(), 3377, true);
+        const auto cfg = toml::parse("resources/config.toml");
+        const auto gps_cfg = toml::find(cfg, "gps");
+        const auto gps_data_cfg = toml::find(gps_cfg, "data");
+
+        const auto mode = utils::to_lower(toml::find<std::string>(gps_data_cfg, "mode"));
+        if(mode == "bluetooth") {
+            const auto bt_cfg = toml::find(gps_data_cfg, "bluetooth");
+        } else {
+            const auto udp_cfg = toml::find(gps_data_cfg, "udp");
+            _multicast = std::make_shared<net::UdpMulticast>(toml::find<std::string>(udp_cfg, "address"), toml::find<uint16_t>(udp_cfg, "port"), true);
+        }
     }
 
     void GpsListenerThread::start_loop() {
-        if(_is_running) {
+        if (_is_running) {
             return;
         }
 

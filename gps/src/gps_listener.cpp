@@ -1,10 +1,13 @@
 #include <common_utils/error.hpp>
+#include <toml/parser.hpp>
 #include "gps/gps_listener.hpp"
 
 namespace carpi::gps {
     LOGGER_IMPL(GpsListener);
 
     GpsListener::GpsListener(const std::string &host, uint16_t port) {
+        const auto data = toml::parse("resources/config.toml");
+
         auto rc = gps_open(host.c_str(), std::to_string(port).c_str(), &_gps_data);
         if (rc < 0) {
             log->error("Error opening GPS socket: {} (errno={})", gps_errstr(rc), rc);
