@@ -3,7 +3,7 @@ project(gps_broadcast)
 
 configure_file(resources/config.toml resources/config.toml)
 
-add_executable(gps_broadcast src/main.cpp src/net_broadcast.hpp src/net_broadcast.cpp src/bluetooth_broadcast.hpp src/bluetooth_broadcast.cpp)
+add_executable(gps_broadcast src/main.cpp)
 
 add_dependencies(gps_broadcast gps_utils net_utils ipc_common toml)
 find_package(Threads)
