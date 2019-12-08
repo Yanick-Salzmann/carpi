@@ -83,7 +83,7 @@ namespace carpi::bluetooth {
         ba2str(&client_addr.rc_bdaddr, addr_name);
         addr_name[17] = '\0';
 
-        log->debug("Accepted bluetooth client from {}", addr_name);
+        log->info("Accepted bluetooth client from {}", addr_name);
         return std::make_shared<BluetoothConnection>(client, client_addr);
     }
 
