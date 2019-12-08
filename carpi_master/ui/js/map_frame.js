@@ -63,12 +63,16 @@ $(() => {
         const speed_data = meta_container.find('.speed-indicator span');
         const rpm_data = meta_container.find('.rpm-indicator span');
 
-        if(!window.obd_connected) {
-            speed_data.text("N/A");
-            rpm_data.text("N/A");
+        if (!window.obd_connected) {
+            speed_data.parent().css({display: 'none'});
+            rpm_data.parent().css({display: 'none'});
+
             setTimeout(update_car_data, 10);
             return;
         }
+
+        speed_data.parent().css({display: 'block'});
+        rpm_data.parent().css({display: 'block'});
 
         event_manager.submitTask('obd_status').then(resp => {
             speed_data.text(resp.speed);
