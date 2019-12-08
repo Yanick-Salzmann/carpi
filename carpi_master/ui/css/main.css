@@ -388,5 +388,5 @@ section.nav-section .item-recommendation .recommendation {
     left: 0;
     height: 30px;
     width: 100%;
-    background-color: black;
+    z-index: 999;
 }
