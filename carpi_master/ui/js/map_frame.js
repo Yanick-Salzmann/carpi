@@ -58,6 +58,28 @@ $(() => {
         cur_pos.setLatLng([position.lat, position.lon]);
     }
 
+    function update_car_data() {
+        const meta_container = $('.map-section .bottom-info-area');
+        const speed_data = meta_container.find('.speed-indicator span');
+        const rpm_data = meta_container.find('.rpm-indicator span');
+
+        if(!window.obd_connected) {
+            speed_data.text("N/A");
+            rpm_data.text("N/A");
+            setTimeout(update_car_data, 10);
+            return;
+        }
+
+        event_manager.submitTask('obd_status').then(resp => {
+            speed_data.text(resp.speed);
+            rpm_data.text(resp.rpm);
+
+            setTimeout(update_car_data, 10);
+        });
+    }
+
+    setTimeout(update_car_data, 10);
+
     window.on_show_map_section = function () {
         if (!is_initialized) {
             is_initialized = true;
