@@ -20,6 +20,7 @@ namespace carpi::gps {
     }
 
     BluetoothBroadcast::~BluetoothBroadcast() {
+        log->info("Stopping bluetooth broadcast");
         _is_running = false;
         if(_server) {
             _server->close();
