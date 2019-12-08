@@ -23,7 +23,7 @@ namespace carpi {
                     log->info("Opening bluetooth connection: {}", toml::find<std::string>(bt_cfg, "source"));
                     _bluetooth_connection = bluetooth::BluetoothDevice::open_device(toml::find<std::string>(bt_cfg, "source"))->connect(toml::find<uint8_t>(bt_cfg, "channel"));
                     log->info("Opened bluetooth connection: {}", _bluetooth_connection->to_string());
-                    _is_initialized;
+                    _is_initialized = true;
                 }
             }.detach();
 
