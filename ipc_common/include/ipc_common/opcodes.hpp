@@ -11,6 +11,7 @@ namespace carpi::ipc {
         MSG_OBD_FETCH_SPEED = 3,
         MSG_GPS_FETCH = 4,
         MSG_GPS_UPDATE = 5,
+        MSG_JSNSR04T_UPDATE = 6,
         FIRST_UNKNOWN_OPCODE
     };
 }

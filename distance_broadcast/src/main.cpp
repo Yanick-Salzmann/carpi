@@ -1,43 +1,69 @@
 #include <iostream>
+#include <csignal>
 
 #include <common_utils/log.hpp>
 #include <wiring_utils/serial_interface.hpp>
 #include <wiring_utils/gpio.hpp>
 #include <wiring_utils/jsnsr04t_distance_sensor.hpp>
+#include <toml.hpp>
+#include <ipc_common/net_broadcast.hpp>
+#include <ipc_common/bluetooth_broadcast.hpp>
+
+bool is_interrupted = false;
+
+void signal_handler(int) {
+    is_interrupted = true;
+}
+
+namespace carpi {
+    int main(int argc, char *argv[]) {
+        utils::Logger log{"Main"};
+
+        auto cfg = toml::parse("resources/config.toml");
+        auto sensor_cfg = toml::find(cfg, "jsnsr04t");
+        auto bcst_conf = toml::find(sensor_cfg, "broadcast");
+
+        const auto trig_pin = toml::find<uint32_t>(sensor_cfg, "trigger");
+        const auto echo_pin = toml::find<uint32_t>(sensor_cfg, "echo");
+
+        const auto udp_conf = toml::find(bcst_conf, "udp");
+        const auto btconf = toml::find(bcst_conf, "bluetooth");
+
+        std::shared_ptr<ipc::NetBroadcast> udp_bcast{};
+        std::shared_ptr<ipc::BluetoothBroadcast> bt_bcast{};
+
+        if (toml::find_or<bool>(udp_conf, "enabled", false)) {
+            udp_bcast = std::make_shared<ipc::NetBroadcast>(toml::find<std::string>(udp_conf, "address"), toml::find<uint16_t>(udp_conf, "port"));
+        }
+
+        if (toml::find_or<bool>(btconf, "enabled", false)) {
+            bt_bcast = std::make_shared<ipc::BluetoothBroadcast>(
+                    toml::find<std::string>(btconf, "mode"),
+                    toml::find_or<std::string>(btconf, "target", ""),
+                    toml::find<uint8_t>(btconf, "channel")
+            );
+        }
+
+        std::signal(SIGINT, signal_handler);
+        std::signal(SIGTERM, signal_handler);
+
+        carpi::wiring::JSNSR04TDistanceSensor sensor{trig_pin, echo_pin};
+        while (!is_interrupted) {
+            ipc::IpcPackage package{ipc::Opcodes::MSG_JSNSR04T_UPDATE};
+            package << sensor.current_distance().has_signal << sensor.current_distance().distance;
+            if (udp_bcast) {
+                udp_bcast->send_packet(package);
+            }
+
+            if (bt_bcast) {
+                bt_bcast->send_packet(package);
+            }
+
+            std::this_thread::sleep_for(std::chrono::milliseconds{100});
+        }
+    }
+}
 
 int main(int argc, char *argv[]) {
-    carpi::utils::Logger log{"Main"};
-
-//    if(argc < 3) {
-//        log->error("Usage: {} <serial_device> <baud_rate>", argv[0]);
-//        return 1;
-//    }
-//
-//    carpi::wiring::SerialInterface iface{argv[1], (uint32_t) std::stoul(argv[2])};
-//    bool run = true;
-//
-//    std::thread t{
-//        [&iface, &run, &log]() {
-//            while(run) {
-//                iface.write("F");
-//                log->info("Distance: {}", iface.read_duration(std::chrono::milliseconds{10}));
-//            }
-//        }
-//    };
-//
-//    std::string str;
-//    while(std::getline(std::cin, str)) {
-//        if(str.find("quit") != std::string::npos) {
-//            break;
-//        }
-//    }
-//
-//    run = false;
-//    t.join();
-
-    carpi::wiring::JSNSR04TDistanceSensor sensor{12, 11};
-    for(auto i = 0; i < 100; ++i) {
-        log->info("Distance: {}", sensor.current_distance().distance);
-        std::this_thread::sleep_for(std::chrono::seconds{1});
-    }
+    return carpi::main(argc, argv);
 }

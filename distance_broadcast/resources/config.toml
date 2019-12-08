@@ -1,9 +1,13 @@
-[gps.broadcast.udp]
+[jsnsr04t.broadcast.udp]
     enabled = true
     address = "239.255.255.255"
     port = 3378
 
-[gps.broadcast.bluetooth]
+[jsnsr04t.broadcast.bluetooth]
     enabled = true
     mode = "server"
     channel = 15
+
+[jsnsr04t]
+    trigger = 12
+    echo = 11
