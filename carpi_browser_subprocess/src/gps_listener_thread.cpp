@@ -3,6 +3,7 @@
 #include <common_utils/error.hpp>
 #include <toml.hpp>
 #include <common_utils/string.hpp>
+#include <bluetooth_utils/bluetooth_device.hpp>
 
 namespace carpi {
     LOGGER_IMPL(GpsListenerThread);
@@ -13,9 +14,12 @@ namespace carpi {
         const auto gps_data_cfg = toml::find(gps_cfg, "data");
 
         const auto mode = utils::to_lower(toml::find<std::string>(gps_data_cfg, "mode"));
-        if(mode == "bluetooth") {
+        if (mode == "bluetooth") {
+            _is_bluetooth_mode = true;
             const auto bt_cfg = toml::find(gps_data_cfg, "bluetooth");
+            _bluetooth_connection = bluetooth::BluetoothDevice::open_device(toml::find<std::string>(bt_cfg, "source"))->connect(toml::find<uint8_t>(bt_cfg, "channel"));
         } else {
+            _is_bluetooth_mode = false;
             const auto udp_cfg = toml::find(gps_data_cfg, "udp");
             _multicast = std::make_shared<net::UdpMulticast>(toml::find<std::string>(udp_cfg, "address"), toml::find<uint16_t>(udp_cfg, "port"), true);
         }
@@ -27,7 +31,11 @@ namespace carpi {
         }
 
         _is_running = true;
-        _gps_loop = std::thread{[=]() { gps_loop(); }};
+        if (_is_bluetooth_mode) {
+            _bt_loop = std::thread{[=]() { bluetooth_loop(); }};
+        } else {
+            _gps_loop = std::thread{[=]() { gps_loop(); }};
+        }
     }
 
     void GpsListenerThread::gps_loop() {
@@ -47,14 +55,41 @@ namespace carpi {
 
     void GpsListenerThread::stop() {
         _is_running = false;
-        _multicast->close();
+        if (_multicast) {
+            _multicast->close();
+        }
+
+        if (_bluetooth_connection) {
+            _bluetooth_connection->close();
+        }
+
         if (_gps_loop.joinable()) {
             _gps_loop.join();
+        }
+
+        if (_bt_loop.joinable()) {
+            _bt_loop.join();
         }
     }
 
     void GpsListenerThread::active_measurement(gps::GpsMeasurement &m) {
         std::lock_guard<std::mutex> l{_measure_lock};
         m = _active_measurement;
+    }
+
+    void GpsListenerThread::bluetooth_loop() {
+        uint8_t gps_buffer[8 + sizeof(gps::GpsMeasurement)]{};
+        while(_is_running) {
+            if(!_bluetooth_connection->read_data(gps_buffer, sizeof gps_buffer)) {
+                log->error("Error receiving GPS bluetooth data: {} (errno={})", utils::error_to_string(errno), errno);
+                continue;
+            }
+
+            const auto measurement = *(const gps::GpsMeasurement *) (gps_buffer + 8);
+            {
+                std::lock_guard<std::mutex> l{_measure_lock};
+                _active_measurement = measurement;
+            }
+        }
     }
 }

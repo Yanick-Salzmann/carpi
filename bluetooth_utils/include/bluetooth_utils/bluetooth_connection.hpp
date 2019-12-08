@@ -46,7 +46,7 @@ namespace carpi::bluetooth {
 
         bool write_data(const void *data, std::size_t num_bytes);
 
-        void read_data(void *buffer, std::size_t num_bytes);
+        bool read_data(void *buffer, std::size_t num_bytes);
 
         std::size_t read_some(void* buffer, std::size_t max_bytes);
 

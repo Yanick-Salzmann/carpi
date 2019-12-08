@@ -6,15 +6,19 @@
 #include <common_utils/singleton.hpp>
 #include <common_utils/log.hpp>
 #include <gps/gps_listener.hpp>
+#include <bluetooth_utils/bluetooth_connection.hpp>
 
 namespace carpi {
     class GpsListenerThread : public utils::Singleton<GpsListenerThread> {
         LOGGER;
 
         std::shared_ptr<net::UdpMulticast> _multicast;
+        std::shared_ptr<bluetooth::BluetoothConnection> _bluetooth_connection;
 
+        bool _is_bluetooth_mode = false;
         bool _is_running = false;
         std::thread _gps_loop{};
+        std::thread _bt_loop{};
 
         std::mutex _measure_lock;
         gps::GpsMeasurement _active_measurement;
@@ -22,6 +26,7 @@ namespace carpi {
         void start_loop();
 
         void gps_loop();
+        void bluetooth_loop();
 
     public:
         GpsListenerThread();

@@ -35,20 +35,22 @@ namespace carpi::bluetooth {
         return true;
     }
 
-    void BluetoothConnection::read_data(void *buffer, std::size_t num_bytes) {
+    bool BluetoothConnection::read_data(void *buffer, std::size_t num_bytes) {
         auto cur_ptr = (uint8_t *) buffer;
         auto remaining = num_bytes;
 
         while (remaining > 0) {
             const auto num_read = recv(_socket, cur_ptr, remaining, 0);
             if (num_read <= 0) {
-                log->error("Error reading data from connection: {} (errno={})", utils::error_to_string(), errno);
-                throw std::runtime_error("Error reading from connection");
+                log->warn("Error reading data from connection: {} (errno={})", utils::error_to_string(), errno);
+                return false;
             }
 
             cur_ptr += num_read;
             remaining -= num_read;
         }
+
+        return true;
     }
 
     void BluetoothConnection::close() {

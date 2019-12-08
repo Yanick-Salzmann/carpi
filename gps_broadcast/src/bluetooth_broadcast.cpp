@@ -20,7 +20,6 @@ namespace carpi::gps {
     }
 
     BluetoothBroadcast::~BluetoothBroadcast() {
-        log->info("Stopping bluetooth broadcast");
         _is_running = false;
         if(_server) {
             _server->close();
@@ -85,6 +84,7 @@ namespace carpi::gps {
                 break;
             }
 
+            log->info("Accepted new bluetooth broadcast connection: {}", conn->to_string());
             {
                 std::lock_guard<std::mutex> l{_connection_lock};
                 _server_connections.emplace_back(conn);
