@@ -17,6 +17,8 @@ namespace carpi {
 
         bool _is_bluetooth_mode = false;
         bool _is_running = false;
+        bool _is_initialized = false;
+
         std::thread _gps_loop{};
         std::thread _bt_loop{};
 

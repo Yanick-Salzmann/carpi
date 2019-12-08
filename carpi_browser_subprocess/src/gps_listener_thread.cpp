@@ -18,9 +18,15 @@ namespace carpi {
         if (mode == "bluetooth") {
             _is_bluetooth_mode = true;
             const auto bt_cfg = toml::find(gps_data_cfg, "bluetooth");
-            log->info("Opening bluetooth connection: {}", toml::find<std::string>(bt_cfg, "source"));
-            _bluetooth_connection = bluetooth::BluetoothDevice::open_device(toml::find<std::string>(bt_cfg, "source"))->connect(toml::find<uint8_t>(bt_cfg, "channel"));
-            log->info("Opened bluetooth connection: {}", _bluetooth_connection->to_string());
+            std::thread{
+                [bt_cfg, this]() {
+                    log->info("Opening bluetooth connection: {}", toml::find<std::string>(bt_cfg, "source"));
+                    _bluetooth_connection = bluetooth::BluetoothDevice::open_device(toml::find<std::string>(bt_cfg, "source"))->connect(toml::find<uint8_t>(bt_cfg, "channel"));
+                    log->info("Opened bluetooth connection: {}", _bluetooth_connection->to_string());
+                    _is_initialized;
+                }
+            }.detach();
+
         } else {
             _is_bluetooth_mode = false;
             const auto udp_cfg = toml::find(gps_data_cfg, "udp");
@@ -83,6 +89,11 @@ namespace carpi {
     void GpsListenerThread::bluetooth_loop() {
         uint8_t gps_buffer[8 + sizeof(gps::GpsMeasurement)]{};
         while(_is_running) {
+            if(!_is_initialized) {
+                std::this_thread::sleep_for(std::chrono::milliseconds{10});
+                continue;
+            }
+
             if(!_bluetooth_connection->read_data(gps_buffer, sizeof gps_buffer)) {
                 log->error("Error receiving GPS bluetooth data: {} (errno={})", utils::error_to_string(errno), errno);
                 continue;
