@@ -49,6 +49,11 @@ namespace carpi::bluetooth {
 
         const auto client = accept(_socket, (sockaddr*) &client_addr, &addr_size);
         if(client < 0) {
+            log->info("Accept failed");
+            if(_is_closing) {
+                return nullptr;
+            }
+
             log->error("Error accepting bluetooth client: {} (errno={})", utils::error_to_string(), errno);
             throw std::runtime_error("Error accepting bluetooth client");
         }
@@ -62,6 +67,7 @@ namespace carpi::bluetooth {
     }
 
     void BluetoothServer::close() {
+        _is_closing = true;
         ::close(_socket);
     }
 }

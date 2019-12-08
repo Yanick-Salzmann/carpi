@@ -14,6 +14,8 @@ namespace carpi::bluetooth {
 
         int _socket = -1;
 
+        bool _is_closing = false;
+
     public:
         explicit BluetoothServer(uint8_t channel);
 

@@ -81,6 +81,10 @@ namespace carpi::gps {
     void BluetoothBroadcast::passive_mode() {
         while (_is_running) {
             const auto conn = _server->accept_connection();
+            if(conn == nullptr) {
+                break;
+            }
+
             {
                 std::lock_guard<std::mutex> l{_connection_lock};
                 _server_connections.emplace_back(conn);
