@@ -60,11 +60,8 @@ namespace carpi::bluetooth {
             }
         }
 
-        log->info("Server socket is acceptable");
-
         const auto client = accept(_socket, (sockaddr*) &client_addr, &addr_size);
         if(client < 0) {
-            log->info("Accept failed");
             if(_is_closing) {
                 return nullptr;
             }
@@ -77,7 +74,7 @@ namespace carpi::bluetooth {
         ba2str(&client_addr.rc_bdaddr, addr_name);
         addr_name[17] = '\0';
 
-        log->info("Accepted bluetooth client from {}", addr_name);
+        log->debug("Accepted bluetooth client from {}", addr_name);
         return std::make_shared<BluetoothConnection>(client, client_addr);
     }
 

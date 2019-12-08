@@ -79,7 +79,6 @@ namespace carpi::gps {
 
     void BluetoothBroadcast::passive_mode() {
         while (_is_running) {
-            log->info("Accepting new connection");
             const auto conn = _server->accept_connection();
             if(conn == nullptr) {
                 break;

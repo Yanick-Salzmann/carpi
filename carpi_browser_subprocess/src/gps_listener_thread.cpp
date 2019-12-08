@@ -18,6 +18,7 @@ namespace carpi {
         if (mode == "bluetooth") {
             _is_bluetooth_mode = true;
             const auto bt_cfg = toml::find(gps_data_cfg, "bluetooth");
+            log->info("Opening bluetooth connection: {}", toml::find<std::string>(bt_cfg, "source"));
             _bluetooth_connection = bluetooth::BluetoothDevice::open_device(toml::find<std::string>(bt_cfg, "source"))->connect(toml::find<uint8_t>(bt_cfg, "channel"));
             log->info("Opened bluetooth connection: {}", _bluetooth_connection->to_string());
         } else {
