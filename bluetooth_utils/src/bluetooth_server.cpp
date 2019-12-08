@@ -47,17 +47,9 @@ namespace carpi::bluetooth {
         sockaddr_rc client_addr{};
         socklen_t addr_size = sizeof client_addr;
 
-        fd_set sock_set{};
-        FD_SET(_socket, &sock_set);
-
-        timeval timeout{
-            .tv_sec = 0,
-            .tv_usec = 10000
-        };
-
         auto ret = 0;
 
-        while((ret = select(_socket + 1, &sock_set, nullptr, nullptr, &timeout)) <= 0) {
+        while((ret = perform_select()) <= 0) {
             if(_is_closing) {
                 return nullptr;
             }
@@ -92,5 +84,17 @@ namespace carpi::bluetooth {
     void BluetoothServer::close() {
         _is_closing = true;
         ::close(_socket);
+    }
+
+    int32_t BluetoothServer::perform_select() {
+        fd_set sock_set{};
+        FD_SET(_socket, &sock_set);
+
+        timeval timeout{
+                .tv_sec = 0,
+                .tv_usec = 10000
+        };
+
+        return select(_socket + 1, &sock_set, nullptr, nullptr, &timeout);
     }
 }

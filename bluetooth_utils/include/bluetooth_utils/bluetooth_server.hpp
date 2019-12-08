@@ -16,6 +16,8 @@ namespace carpi::bluetooth {
 
         bool _is_closing = false;
 
+        int32_t perform_select();
+
     public:
         explicit BluetoothServer(uint8_t channel);
 
