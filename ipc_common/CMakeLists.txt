@@ -13,4 +13,4 @@ target_include_directories(ipc_common PUBLIC
         ${CMAKE_SOURCE_DIR}/bluetooth_utils/include
         )
 
-target_link_libraries(ipc_common rt)
+target_link_libraries(ipc_common net_utils bluetooth_utils rt)
