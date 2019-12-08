@@ -30,7 +30,9 @@ namespace carpi {
         } else {
             _is_bluetooth_mode = false;
             const auto udp_cfg = toml::find(gps_data_cfg, "udp");
-            _multicast = std::make_shared<net::UdpMulticast>(toml::find<std::string>(udp_cfg, "address"), toml::find<uint16_t>(udp_cfg, "port"), true);
+            const auto bcast_address = toml::find<std::string>(udp_cfg, "address");
+            const auto bcast_port = toml::find<uint16_t>(udp_cfg, "port");
+            _multicast = std::make_shared<net::UdpMulticast>(bcast_address, bcast_port, true);
         }
     }
 
