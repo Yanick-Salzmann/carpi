@@ -14,6 +14,7 @@ namespace carpi {
         const auto gps_data_cfg = toml::find(gps_cfg, "data");
 
         const auto mode = utils::to_lower(toml::find<std::string>(gps_data_cfg, "mode"));
+        log->info("GPS listening mode: {}", mode);
         if (mode == "bluetooth") {
             _is_bluetooth_mode = true;
             const auto bt_cfg = toml::find(gps_data_cfg, "bluetooth");
