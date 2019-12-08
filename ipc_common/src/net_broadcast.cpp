@@ -1,9 +1,7 @@
-#include "net_broadcast.hpp"
+#include <ipc_common/net_broadcast.hpp>
 #include <common_utils/error.hpp>
-#include <gps/gps_constants.hpp>
 
-
-namespace carpi::gps {
+namespace carpi::ipc {
     LOGGER_IMPL(NetBroadcast);
 
     NetBroadcast::NetBroadcast(std::string address, uint16_t port) {
@@ -25,11 +23,5 @@ namespace carpi::gps {
         if(rc < 0) {
             log->error("Error sending data: {} (errno={})", utils::error_to_string(errno), errno);
         }
-    }
-
-    void NetBroadcast::on_measurement(const GpsMeasurement &gps_data) {
-        ipc::IpcPackage package{ipc::Opcodes::MSG_GPS_UPDATE};
-        package << gps_data.fix << gps_data.lat << gps_data.lon << gps_data.alt;
-        send_packet(package);
     }
 }

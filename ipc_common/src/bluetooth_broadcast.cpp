@@ -1,9 +1,8 @@
-#include <common_utils/string.hpp>
+#include <ipc_common/bluetooth_broadcast.hpp>
 #include <bluetooth_utils/bluetooth_device.hpp>
-#include <bluetooth_utils/bluetooth_server.hpp>
-#include "bluetooth_broadcast.hpp"
+#include <common_utils/string.hpp>
 
-namespace carpi::gps {
+namespace carpi::ipc {
     LOGGER_IMPL(BluetoothBroadcast);
 
     BluetoothBroadcast::BluetoothBroadcast(const std::string &mode, std::string target_device, uint8_t channel) {
@@ -36,9 +35,9 @@ namespace carpi::gps {
         _server = std::make_shared<bluetooth::BluetoothServer>(channel);
 
         _listener_thread = std::thread{
-            [this]() {
-                passive_mode();
-            }
+                [this]() {
+                    passive_mode();
+                }
         };
     }
 
@@ -69,12 +68,6 @@ namespace carpi::gps {
                 }
             }
         }
-    }
-
-    void BluetoothBroadcast::on_measurement(const GpsMeasurement &gps_data) {
-        ipc::IpcPackage package{ipc::Opcodes::MSG_GPS_UPDATE};
-        package << gps_data.fix << gps_data.lat << gps_data.lon << gps_data.alt;
-        send_packet(package);
     }
 
     void BluetoothBroadcast::passive_mode() {

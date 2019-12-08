@@ -1,15 +1,15 @@
-#ifndef CARPI_BLUETOOTH_BROADCAST_HPP
-#define CARPI_BLUETOOTH_BROADCAST_HPP
+#ifndef CARPI_IPC_UTILS_BLUETOOTH_BROADCAST_HPP
+#define CARPI_IPC_UTILS_BLUETOOTH_BROADCAST_HPP
 
-#include <string>
-#include <list>
 #include <common_utils/log.hpp>
-#include <ipc_common/ipc_package.hpp>
-#include <gps/gps_listener.hpp>
-#include "bluetooth_utils/bluetooth_connection.hpp"
-#include "bluetooth_utils/bluetooth_server.hpp"
+#include <bluetooth_utils/bluetooth_connection.hpp>
+#include <bluetooth_utils/bluetooth_server.hpp>
+#include "ipc_package.hpp"
+#include <list>
+#include <thread>
+#include <memory>
 
-namespace carpi::gps {
+namespace carpi::ipc {
     class BluetoothBroadcast {
         typedef std::shared_ptr<bluetooth::BluetoothConnection> BtConnPtr;
 
@@ -28,8 +28,6 @@ namespace carpi::gps {
         void init_server_mode(uint8_t channel);
         void init_client_mode(std::string device_address, uint8_t channel);
 
-        void send_packet(const ipc::IpcPackage& package);
-
         void passive_mode();
 
     public:
@@ -42,8 +40,8 @@ namespace carpi::gps {
         void operator = (BluetoothBroadcast&) = delete;
         void operator = (BluetoothBroadcast&&) = delete;
 
-        void on_measurement(const GpsMeasurement& measurement);
+        void send_packet(const IpcPackage& package);
     };
 }
 
-#endif //CARPI_BLUETOOTH_BROADCAST_HPP
+#endif //CARPI_IPC_UTILS_BLUETOOTH_BROADCAST_HPP
