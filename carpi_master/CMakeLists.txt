@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION ${CMAKE_VERSION})
 project(carpi_master)
 
-configure_file(resources/config.toml resources/config.toml)
-
 add_executable(carpi_master
         src/main.cpp src/comm/comm_server.hpp src/comm/comm_server.cpp
         #src/gl/Buffers.cpp src/gl/Buffers.hpp src/gl/graphics_device.hpp src/gl/graphics_device.cpp src/gl/Program.hpp src/gl/vertex_element.cpp src/gl/vertex_element.hpp
