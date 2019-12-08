@@ -47,6 +47,27 @@ namespace carpi::bluetooth {
         sockaddr_rc client_addr{};
         socklen_t addr_size = sizeof client_addr;
 
+        fd_set sock_set{};
+        FD_SET(_socket, &sock_set);
+
+        timeval timeout{
+            .tv_sec = 0,
+            .tv_usec = 10000
+        };
+
+        auto ret = 0;
+
+        while((ret = select(_socket + 1, &sock_set, nullptr, nullptr, &timeout)) <= 0) {
+            if(_is_closing) {
+                return nullptr;
+            }
+
+            if(ret < 0) {
+                log->error("Error accepting bluetooth client: {} (errno={})", utils::error_to_string(), errno);
+                throw std::runtime_error("Error accepting bluetooth client");
+            }
+        }
+
         const auto client = accept(_socket, (sockaddr*) &client_addr, &addr_size);
         if(client < 0) {
             log->info("Accept failed");
