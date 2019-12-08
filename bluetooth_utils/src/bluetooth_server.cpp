@@ -68,6 +68,8 @@ namespace carpi::bluetooth {
             }
         }
 
+        log->info("Server socket is acceptable");
+
         const auto client = accept(_socket, (sockaddr*) &client_addr, &addr_size);
         if(client < 0) {
             log->info("Accept failed");
