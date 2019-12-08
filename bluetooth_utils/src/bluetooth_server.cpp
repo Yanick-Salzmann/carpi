@@ -40,7 +40,7 @@ namespace carpi::bluetooth {
         ba2str(&rc_addr.rc_bdaddr, addr_name);
         addr_name[17] = '\0';
 
-        log->debug("Bluetooth server listening on socket {:X}, addr={}, psm={}", _socket, addr_name, channel);
+        log->info("Bluetooth server listening on socket {:X}, addr={}, channel={}", _socket, addr_name, channel);
     }
 
     std::shared_ptr<BluetoothConnection> BluetoothServer::accept_connection() {
