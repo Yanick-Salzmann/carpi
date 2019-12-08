@@ -401,3 +401,14 @@ section.nav-section .item-recommendation .recommendation {
     border-top: 1px solid #333;
     border-right: 1px solid #333;
 }
+
+.map-section .bottom-info-area .rpm-indicator {
+    height: 100%;
+    padding: 5px 10px;
+    background-color: rgba(200, 200, 200, 0.8);
+    color: black;
+    font-weight: bold;
+    border-top-left-radius: 15px;
+    border-top: 1px solid #333;
+    border-left: 1px solid #333;
+}
