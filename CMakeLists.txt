@@ -8,7 +8,9 @@ set(CMAKE_CXX_STANDARD 17)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 set(ENV{PKG_CONFIG_PATH} "${CMAKE_SOURCE_DIR}/pkgconfig:$ENV{PKG_CONFIG_PATH}")
 
-add_definitions("-Wno-psabi")
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    add_definitions("-Wno-psabi")
+endif ()
 
 find_package(PkgConfig)
 
