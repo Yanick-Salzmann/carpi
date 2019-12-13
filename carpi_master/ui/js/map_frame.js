@@ -8,6 +8,8 @@ $(() => {
     const env_config = get_env_value('HERE_APP_ID', 'HERE_APP_CODE');
 
     const map = L.map('leaflet-map-container');
+    window.main_map = map;
+
     const cur_pos = L.circle([0, 0], {
         color: 'blue',
         fillColor: '#30f',

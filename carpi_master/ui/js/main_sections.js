@@ -51,4 +51,23 @@ $(() => {
 
         on_show_nav_section();
     });
+
+    const visibility_callbacks = {
+        "navigation-splash-card": on_show_nav_section,
+        "map-splash-card": on_show_map_section,
+        "engine-splash-card": on_show_car_section,
+        "settings-splash-card": on_show_settings_sections
+    };
+
+    window.switch_to_splash_section = function (section) {
+        hide_all_sections();
+        $('#' + section).css({
+            display: 'block'
+        });
+
+        const callback = visibility_callbacks[section];
+        if (callback) {
+            callback();
+        }
+    }
 });
