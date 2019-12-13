@@ -389,6 +389,7 @@ section.nav-section .item-recommendation .recommendation {
     height: 35px;
     width: 100%;
     z-index: 999;
+    display: none;
 }
 
 .map-section .bottom-info-area .speed-indicator {
