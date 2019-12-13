@@ -37,7 +37,8 @@ $(() => {
         }).then(route => {
             clear_all_marker_layers();
             put_route_poly(route);
-            switch_to_splash_section("map-section")
+            switch_to_splash_section("map-section");
+            console.log(route);
         });
     }
 });
