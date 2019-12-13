@@ -17,7 +17,7 @@ $(() => {
 
     window.onRouteSelected = function(target) {
         defer_until_coordinates_available().then(coord => {
-            return here_api.calc_route(coord, target);
+            return here_api.calc_route([coord.lat, coord.lon], target);
         }).then(route => {
            console.log(route);
         });
