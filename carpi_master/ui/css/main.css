@@ -414,7 +414,16 @@ section.nav-section .item-recommendation .recommendation {
 }
 
 .map-section .nav-instruction-container {
-    font-weight: bold; /* TODO: just a placeholder for online editing */
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: auto;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: rgba(30, 30, 30, 0.8);
+    z-index: 999;
 }
 
 .map-section .nav-instruction-container .current-instruction {
