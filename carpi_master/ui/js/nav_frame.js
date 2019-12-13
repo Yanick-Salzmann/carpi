@@ -17,6 +17,8 @@ $(() => {
 
     let last_step = null;
 
+    let active_poi = null;
+
     new PlzCsvReader("data/plz_ch.csv").then(info => plz_ch = info);
 
     function switchToWizardStep(id) {
@@ -367,6 +369,8 @@ $(() => {
     }
 
     function switch_to_preview(poi) {
+        active_poi = poi;
+
         switchToWizardStep('nav-wizard-route-preview');
 
         setTimeout(() => {
@@ -430,6 +434,12 @@ $(() => {
                 $('#route-preview-meta-info div.duration span.variable').text(duration);
             });
         }, 100);
+    }
+
+    function activate_route() {
+        if(active_poi) {
+            onRouteSelected(active_poi.position);
+        }
     }
 
     const plz_keyboard = new VirtualKeyboard($('#nav-wizard-step-addr-ch-plz .virtual-keyboard'), (key) => {
@@ -518,6 +528,8 @@ $(() => {
 
         switchToWizardStep(previous);
     });
+
+    $('#nav-wizard-route-preview .drive-wrapper button').click(activate_route);
 
     window.on_show_nav_section = function () {
 
