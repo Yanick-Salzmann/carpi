@@ -64,6 +64,7 @@ $(() => {
 
     function update_car_data() {
         if(window.obd_connected === obd_status) {
+            setTimeout(update_car_data, 10);
             return;
         }
 
