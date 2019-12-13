@@ -64,7 +64,7 @@ $(() => {
 
         const dir_text = ((direction) => {
             switch(direction) {
-                case 'forward': return `Head ${angle_to_bearing(angle)} towards`;
+                case 'forward': return `Keep going ${angle_to_bearing(angle)} on`;
                 case 'bearRight': return "Keep right";
                 case 'lightRight': return "Slight right";
                 case 'right': return "Right";
