@@ -105,7 +105,8 @@ $(() => {
         }
 
         const maneuver = current_leg.maneuver[0];
-        console.log(format_maneuver(maneuver));
+        const maneuver_text = format_maneuver(maneuver);
+        $('section.map-section .nav-instruction-container span.current-instruction').text(maneuver_text);
     }
 
     window.onRouteSelected = function (target) {

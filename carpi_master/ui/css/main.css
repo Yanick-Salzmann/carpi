@@ -412,3 +412,11 @@ section.nav-section .item-recommendation .recommendation {
     border-top: 1px solid #333;
     border-left: 1px solid #333;
 }
+
+.map-section .nav-instruction-container {
+    font-weight: bold; /* TODO: just a placeholder for online editing */
+}
+
+.map-section .nav-instruction-container .current-instruction {
+    font-weight: bold;
+}
