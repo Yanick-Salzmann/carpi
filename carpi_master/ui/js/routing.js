@@ -19,7 +19,7 @@ $(() => {
         defer_until_coordinates_available().then(coord => {
             return here_api.calc_route([coord.lat, coord.lon], target);
         }).then(route => {
-           switch_to_splash_section("map-slash-card")
+           switch_to_splash_section("map-section")
         });
     }
 });
