@@ -36,6 +36,7 @@ $(() => {
             let leg_attribs = "shape";
             if (full_details) {
                 leg_attribs += ',maneuvers';
+                leg_attribs += "&maneuverAttributes=action,roadName,nextRoadName,travelTime,length"
             }
 
             base_url += "?waypoint0=" + wp0;
@@ -43,7 +44,7 @@ $(() => {
             base_url += "&mode=" + encodeURIComponent("fastest;car;traffic:enabled");
             base_url += "&app_code=" + encodeURIComponent(app_code);
             base_url += "&app_id=" + encodeURIComponent(app_id);
-            base_url += "&departure=now&legAttributes=shape";
+            base_url += "&departure=now&legAttributes=" + leg_attribs;
 
             return new Promise((resolve, reject) => {
                 $.get(base_url).done(data => {
