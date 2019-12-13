@@ -33,7 +33,7 @@ $(() => {
 
     window.onRouteSelected = function (target) {
         defer_until_coordinates_available().then(coord => {
-            return here_api.calc_route([coord.lat, coord.lon], target);
+            return here_api.calc_route([coord.lat, coord.lon], target, true);
         }).then(route => {
             clear_all_marker_layers();
             put_route_poly(route);

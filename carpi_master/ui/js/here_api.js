@@ -28,10 +28,15 @@ $(() => {
     }
 
     class HereApi {
-        calc_route(from, to) {
+        calc_route(from, to, full_details) {
             let base_url = "https://route.api.here.com/routing/7.2/calculateroute.json";
             const wp0 = encodeURIComponent(`${from[0]},${from[1]}`);
             const wp1 = encodeURIComponent(`${to[0]},${to[1]}`);
+
+            let leg_attribs = "shape";
+            if (full_details) {
+                leg_attribs += ',maneuvers';
+            }
 
             base_url += "?waypoint0=" + wp0;
             base_url += "&waypoint1=" + wp1;
@@ -51,15 +56,15 @@ $(() => {
 
         reverse_geocode(position) {
             return new Promise((resolve, reject) => {
-               let url = 'https://reverse.geocoder.api.here.com/6.2/reversegeocode.json?prox=' + position.lat + ',' + position.lon + ',50' +
-                   '&mode=retrieveAddresses&maxResults=1&gen=9&app_id=' + encodeURIComponent(app_id) +
-                   "&app_code=" + encodeURIComponent(app_code);
+                let url = 'https://reverse.geocoder.api.here.com/6.2/reversegeocode.json?prox=' + position.lat + ',' + position.lon + ',50' +
+                    '&mode=retrieveAddresses&maxResults=1&gen=9&app_id=' + encodeURIComponent(app_id) +
+                    "&app_code=" + encodeURIComponent(app_code);
 
-               $.get(url)
-                   .done(data => {
-                       resolve(data.Response.View[0].Result);
-                   })
-                   .fail(err => reject(err));
+                $.get(url)
+                    .done(data => {
+                        resolve(data.Response.View[0].Result);
+                    })
+                    .fail(err => reject(err));
             });
         }
 
