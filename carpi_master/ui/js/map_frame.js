@@ -1,4 +1,6 @@
 $(() => {
+    let obd_status = false;
+
     let zoom_level = parseInt(localStorage.getItem("map.zoom"));
     if (isNaN(zoom_level)) {
         zoom_level = 21;
@@ -61,6 +63,10 @@ $(() => {
     }
 
     function update_car_data() {
+        if(window.obd_connected === obd_status) {
+            return;
+        }
+
         const meta_container = $('.map-section .bottom-info-area');
         const speed_data = meta_container.find('.speed-indicator span');
         const rpm_data = meta_container.find('.rpm-indicator span');
