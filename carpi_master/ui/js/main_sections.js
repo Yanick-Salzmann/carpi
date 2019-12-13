@@ -61,7 +61,7 @@ $(() => {
 
     window.switch_to_splash_section = function (section) {
         hide_all_sections();
-        $('#' + section).css({
+        $('body > section.' + section).css({
             display: 'block'
         });
 
