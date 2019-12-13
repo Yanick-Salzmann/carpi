@@ -36,7 +36,7 @@ $(() => {
             let leg_attribs = "shape";
             if (full_details) {
                 leg_attribs += ',maneuvers';
-                leg_attribs += "&maneuverAttributes=action,roadName,nextRoadName,travelTime,length,direction"
+                leg_attribs += "&maneuverAttributes=startAngle,action,roadName,nextRoadName,travelTime,length,direction,notes,signPost,freewayExit,freewayJunction,roadShield"
             }
 
             base_url += "?waypoint0=" + wp0;
