@@ -8,6 +8,8 @@
 #include <toml.hpp>
 #include <ipc_common/net_broadcast.hpp>
 #include <ipc_common/bluetooth_broadcast.hpp>
+#include <fstream>
+#include <wiring_utils/fingerprint_sensor.hpp>
 
 bool is_interrupted = false;
 
@@ -17,7 +19,18 @@ void signal_handler(int) {
 
 namespace carpi {
     int main(int argc, char *argv[]) {
+        {
+            std::ofstream os{"app.pid"};
+            os << getpid();
+        }
         utils::Logger log{"Main"};
+
+        wiring::FingerprintSensor fps{"/dev/ttyUSB1", 19200};
+        if(fps.clear()) {
+            fps.enroll();
+        } else {
+            log->warn("Fingerpring sensor clearing failed");
+        }
 
         auto cfg = toml::parse("resources/config.toml");
         auto sensor_cfg = toml::find(cfg, "jsnsr04t");
@@ -47,7 +60,7 @@ namespace carpi {
         std::signal(SIGINT, signal_handler);
         std::signal(SIGTERM, signal_handler);
 
-        carpi::wiring::JSNSR04TDistanceSensor sensor{trig_pin, echo_pin};
+        wiring::JSNSR04TDistanceSensor sensor{trig_pin, echo_pin};
         while (!is_interrupted) {
             ipc::IpcPackage package{ipc::Opcodes::MSG_JSNSR04T_UPDATE};
             package << sensor.current_distance().has_signal << sensor.current_distance().distance;
