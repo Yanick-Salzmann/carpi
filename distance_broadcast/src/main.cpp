@@ -25,7 +25,7 @@ namespace carpi {
         }
         utils::Logger log{"Main"};
 
-        wiring::FingerprintSensor fps{"/dev/ttyUSB1", 19200};
+        wiring::FingerprintSensor fps{argv[1], 19200};
         if(fps.clear()) {
             fps.enroll(1);
         } else {
