@@ -44,7 +44,7 @@ namespace carpi::wiring {
         for (auto i = 0; i < 200; ++i) {
             ret.push_back(static_cast<uint8_t &&>(serialGetchar(_sensor)));
             if (!serialDataAvail(_sensor)) {
-                std::this_thread::sleep_for(std::chrono::milliseconds{20});
+                std::this_thread::sleep_for(std::chrono::milliseconds{50});
                 if (!serialDataAvail(_sensor)) {
                     break;
                 }
