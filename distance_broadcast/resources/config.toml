@@ -6,7 +6,7 @@
 [jsnsr04t.broadcast.bluetooth]
     enabled = true
     mode = "server"
-    channel = 15
+    channel = 16
 
 [jsnsr04t]
     trigger = 12
