@@ -9,6 +9,10 @@ namespace carpi::wiring {
 
     FingerprintSensor::FingerprintSensor(const std::string &device, std::size_t baud_rate) {
         _sensor = serialOpen(device.c_str(), static_cast<const int>(baud_rate));
+        if(_sensor < 0) {
+            log->error("Error opening fingerprint sensor on {}: {} (errno={})", device, utils::error_to_string(), errno);
+            throw std::runtime_error{"Error opening device"};
+        }
     }
 
     void FingerprintSensor::write_packet(const std::vector<uint8_t> &data) {
