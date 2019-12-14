@@ -2,6 +2,8 @@ $(() => {
     let current_route = null;
     let current_leg = null;
 
+    let current_maneuver = null;
+
     function defer_until_coordinates_available() {
         return new Promise((resolve) => {
             const update = function () {
@@ -99,14 +101,28 @@ $(() => {
         }
     }
 
+    function create_instruction_text(maneuver) {
+        const maneuver_text = format_maneuver(maneuver);
+        const cur_instr = $('section.map-section .nav-instruction-container span.current-instruction');
+        const instr_container = cur_instr.parent();
+        const is_toll_road = maneuver.notes.filter(note => note.code === 'tollRoad').length > 0;
+        if(is_toll_road) {
+            instr_container.addClass('toll-road');
+        } else {
+            instr_container.removeClass('toll-road');
+        }
+
+        cur_instr.text(maneuver_text);
+    }
+
     function update_active_maneuvre(initial) {
         if (!initial) {
             throw "TODO: Implement";
         }
 
         const maneuver = current_leg.maneuver[0];
-        const maneuver_text = format_maneuver(maneuver);
-        $('section.map-section .nav-instruction-container span.current-instruction').text(maneuver_text);
+        current_maneuver = maneuver;
+        create_instruction_text(maneuver);
     }
 
     window.onRouteSelected = function (target) {
