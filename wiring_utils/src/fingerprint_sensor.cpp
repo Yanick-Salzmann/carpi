@@ -114,7 +114,7 @@ namespace carpi::wiring {
     }
 
     bool FingerprintSensor::enroll_step(FingerprintSensor::Command enroll_cmd, uint16_t user_id) {
-        write_packet(enroll_cmd, static_cast<uint8_t>(user_id >> 8u), static_cast<uint8_t>(user_id & 0xFFu));
+        write_packet(enroll_cmd, static_cast<uint8_t>(user_id >> 8u), static_cast<uint8_t>(user_id & 0xFFu), 1);
         const auto enroll_result = checked_command_response(enroll_cmd);
         if(enroll_result != 1) {
             log->warn("Enrolling new user failed. Error: {}", enroll_result);
