@@ -27,7 +27,7 @@ namespace carpi {
 
         wiring::FingerprintSensor fps{"/dev/ttyUSB1", 19200};
         if(fps.clear()) {
-            fps.enroll();
+            fps.enroll(1);
         } else {
             log->warn("Fingerpring sensor clearing failed");
         }
