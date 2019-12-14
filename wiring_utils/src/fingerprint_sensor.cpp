@@ -24,6 +24,8 @@ namespace carpi::wiring {
         full_data[full_data.size() - 2] = generate_checksum(data);
         full_data[full_data.size() - 1] = END_OF_DATA;
 
+        log->info("Writing {} bytes (data part: {})", full_data.size(), data.size());
+
         if (write(_sensor, full_data.data(), full_data.size()) != full_data.size()) {
             log->error("Error writing packet to fingerprint sensor: {} (errno={})", errno, utils::error_to_string());
             throw std::runtime_error{"Error sending data"};
