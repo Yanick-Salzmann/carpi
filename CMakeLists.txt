@@ -32,3 +32,5 @@ add_subdirectory(obd)
 add_subdirectory(carpi_browser_subprocess)
 add_subdirectory(carpi_master)
 add_subdirectory(camera_slave)
+
+add_subdirectory(spotify_stream)

@@ -3,16 +3,18 @@
 #include <sstream>
 #include <iomanip>
 
+#include "helper/basen.hpp"
+
 namespace carpi::utils {
     uint8_t hex_char_to_byte(char c) {
         if (c >= 'A' && c <= 'F') {
-            return static_cast<uint8_t>(c - 'A') + 10;
+            return static_cast<uint8_t>((c - 'A') + 10);
         } else if (c >= 'a' && c <= 'f') {
-            return static_cast<uint8_t>(c - 'a') + 10;
+            return static_cast<uint8_t>((c - 'a') + 10);
         } else if (c >= '0' && c <= '9') {
             return static_cast<uint8_t>(c - '0');
         } else {
-            return -1;
+            return static_cast<uint8_t>(-1);
         }
     }
 
@@ -37,5 +39,15 @@ namespace carpi::utils {
         }
 
         return stream.str();
+    }
+
+    std::vector<uint8_t> utf8_to_bytes(const std::string &str) {
+        return std::vector<uint8_t>{str.begin(), str.end()};
+    }
+
+    std::string base64_encode(const std::vector<uint8_t> &bytes) {
+        std::string encoded{};
+        bn::encode_b64(bytes.begin(), bytes.end(), std::back_inserter(encoded));
+        return encoded;
     }
 }
