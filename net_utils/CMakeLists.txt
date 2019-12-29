@@ -4,7 +4,7 @@ project(net_utils)
 find_package(OpenSSL REQUIRED)
 find_package(CURL REQUIRED)
 
-add_library(net_utils SHARED src/iface_utils.cpp include/net_utils/udp_broadcast.hpp src/udp_broadcast.cpp include/net_utils/udp_multicast.hpp src/udp_multicast.cpp src/ssl_socket.cpp include/net_utils/ssl_socket.hpp include/net_utils/websocket_client.hpp src/websocket_client.cpp include/net_utils/url_parser.hpp src/url_parser.cpp include/net_utils/http_request.hpp src/http_request.cpp)
+add_library(net_utils SHARED src/iface_utils.cpp include/net_utils/udp_broadcast.hpp src/udp_broadcast.cpp include/net_utils/udp_multicast.hpp src/udp_multicast.cpp src/ssl_socket.cpp include/net_utils/ssl_socket.hpp include/net_utils/websocket_client.hpp src/websocket_client.cpp include/net_utils/url_parser.hpp src/url_parser.cpp include/net_utils/http_request.hpp src/http_request.cpp include/net_utils/http_client.hpp src/http_client.cpp include/net_utils/http_response.hpp src/http_response.cpp)
 
 add_dependencies(net_utils common_utils)
 

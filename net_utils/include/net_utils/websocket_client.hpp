@@ -5,6 +5,8 @@
 #include <memory>
 #include <common_utils/log.hpp>
 #include "url_parser.hpp"
+#include <map>
+#include <common_utils/random.hpp>
 
 namespace carpi::net {
     class SslSocket;
@@ -12,9 +14,17 @@ namespace carpi::net {
     class WebsocketClient {
         LOGGER;
 
+        uint32_t _client_mask = utils::random_uint32();
+
         Url _target_url;
         std::string _raw_address;
         std::shared_ptr<SslSocket> _socket;
+
+        std::thread _read_thread;
+
+        bool _is_running = true;
+
+        void read_loop();
 
         std::string read_one_http_response_line();
 
@@ -24,6 +34,8 @@ namespace carpi::net {
 
         void verify_upgrade_response();
 
+        bool is_successful_upgrade(const std::string& status_line, const std::multimap<std::string, std::string>& headers);
+
     public:
         /**
          * Create and connect as a websocket client to the given address.
@@ -32,6 +44,13 @@ namespace carpi::net {
          * @param wss_address full URL for the websocket (only wss:// supported)
          */
         explicit WebsocketClient(const std::string& wss_address);
+
+        WebsocketClient(WebsocketClient&) = delete;
+        WebsocketClient(WebsocketClient&&) = delete;
+
+        ~WebsocketClient();
+
+        void send_message(const std::string& message);
     };
 }
 

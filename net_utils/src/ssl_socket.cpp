@@ -38,6 +38,8 @@ namespace carpi::net {
         if (_ssl_ctx != nullptr) {
             SSL_CTX_free(_ssl_ctx);
         }
+
+        shutdown();
     }
 
     void SslSocket::print_ssl_errors() {
@@ -177,5 +179,14 @@ namespace carpi::net {
             cur_ptr += rc;
             to_read -= rc;
         }
+    }
+
+    void SslSocket::shutdown() {
+        if(_socket < 0) {
+            return;
+        }
+
+        close(_socket);
+        _socket = -1;
     }
 }

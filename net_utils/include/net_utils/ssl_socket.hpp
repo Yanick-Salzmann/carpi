@@ -35,6 +35,8 @@ namespace carpi::net {
         }
 
         std::string to_string();
+
+        void shutdown();
     };
 }
 

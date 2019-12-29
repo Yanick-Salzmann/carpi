@@ -22,6 +22,18 @@ namespace carpi::net {
 
         log->info("Socket connected: {}", _socket->to_string());
         upgrade_connection();
+
+        _read_thread = std::thread{[this]() { read_loop(); }};
+    }
+
+    WebsocketClient::~WebsocketClient() {
+        _socket->shutdown();
+
+        _is_running = false;
+
+        if (_read_thread.joinable()) {
+            _read_thread.join();
+        }
     }
 
     void WebsocketClient::verify_wss_url() {
@@ -63,9 +75,9 @@ namespace carpi::net {
 
         std::multimap<std::string, std::string> response_headers{};
         std::string header_line = read_one_http_response_line();
-        while(!header_line.empty()) {
+        while (!header_line.empty()) {
             const auto idx_colon = header_line.find(':');
-            if(idx_colon == std::string::npos) {
+            if (idx_colon == std::string::npos) {
                 response_headers.emplace(utils::to_lower(header_line), "");
             } else {
                 response_headers.emplace(utils::to_lower(utils::trim(header_line.substr(0, idx_colon))), utils::trim(header_line.substr(idx_colon + 1)));
@@ -74,10 +86,16 @@ namespace carpi::net {
             header_line = read_one_http_response_line();
         }
 
+        const auto is_upgrade_ok = is_successful_upgrade(status_line, response_headers);
+
         const auto content_length = response_headers.find("content-length");
-        if(content_length == response_headers.end()) {
+        if (content_length == response_headers.end()) {
+            if (is_upgrade_ok) {
+                return;
+            }
+
             log->warn("No content-length header in response found, cannot read body, assuming there is none");
-            return;
+            throw std::runtime_error{"Websocket Upgrade failed"};
         }
 
         const auto length = std::stoull(content_length->second);
@@ -86,27 +104,31 @@ namespace carpi::net {
         body_buffer.emplace_back('\0');
         body_buffer.emplace_back('\0');
 
-        std::string body = (const char*) body_buffer.data();
+        std::string body = (const char *) body_buffer.data();
         log->info(body);
+
+        if (!is_upgrade_ok) {
+            throw std::runtime_error{"Websocket Upgrade failed"};
+        }
     }
 
     std::string WebsocketClient::read_one_http_response_line() {
         std::vector<uint8_t> ret{};
         auto has_cr = false;
-        while(true) {
+        while (true) {
             const auto chr = _socket->read_one();
-            if(chr == '\r' && !has_cr) {
+            if (chr == '\r' && !has_cr) {
                 has_cr = true;
                 continue;
             }
 
-            if(chr == '\n') {
-                if(has_cr) {
+            if (chr == '\n') {
+                if (has_cr) {
                     break;
                 }
             }
 
-            if(has_cr) {
+            if (has_cr) {
                 ret.emplace_back('\r');
                 has_cr = false;
             }
@@ -115,6 +137,122 @@ namespace carpi::net {
         }
 
         ret.emplace_back('\0');
-        return (const char*) ret.data();
+        return (const char *) ret.data();
+    }
+
+    bool WebsocketClient::is_successful_upgrade(const std::string &status_line, const std::multimap<std::string, std::string> &headers) {
+        const auto idx_space_first = status_line.find(' ');
+        if (idx_space_first == std::string::npos) {
+            return false;
+        }
+
+        const auto idx_space = status_line.find(' ', idx_space_first + 1);
+        if (idx_space == std::string::npos) {
+            return false;
+        }
+
+        try {
+            if (std::stoi(status_line.substr(idx_space_first + 1, (idx_space - idx_space_first) - 1)) != 101) {
+                return false;
+            }
+        } catch (std::invalid_argument &) {
+            return false;
+        }
+
+        const auto upgrade_header = headers.find("upgrade");
+        if (upgrade_header == headers.end()) {
+            return false;
+        }
+
+        return utils::to_lower(utils::trim(upgrade_header->second)) == "websocket";
+    }
+
+    void WebsocketClient::read_loop() {
+        std::vector<uint8_t> full_payload{};
+        while(_is_running) {
+            try {
+                const auto b0 = _socket->read_one();
+                const auto b1 = _socket->read_one();
+
+                const auto fin = (b0 & 0x80u) != 0;
+                const auto opcode = b0 & 0x0Fu;
+
+                const auto masked = (b1 & 0x80u) != 0;
+                uint64_t length = b1 & 0x7Fu;
+
+                if(length == 126) {
+                    length = (((uint16_t) _socket->read_one()) << 8u) | _socket->read_one();
+                } else if(length == 127) {
+                    length = 0;
+                    for(auto i = 0; i < 8; ++i) {
+                        length |= ((uint64_t) _socket->read_one()) << (56 - i * 8);
+                    }
+                }
+
+                std::vector<uint8_t> payload(length);
+                _socket->read_all(payload.data(), payload.size());
+
+                full_payload.insert(full_payload.end(), payload.begin(), payload.end());
+                if(fin) {
+                    full_payload.emplace_back('\0');
+                    full_payload.emplace_back('\0');
+                    std::string data = (const char*) full_payload.data();
+                    full_payload.clear();
+                    log->info(">> {}", data);
+                } else {
+                    if(opcode != 0) {
+                        log->warn("Expected continuation opcode (0) but was {}", opcode);
+                    }
+                }
+
+            } catch (std::runtime_error& e) {
+                if(!_is_running) {
+                    return;
+                }
+
+                throw e;
+            }
+        }
+    }
+
+    void WebsocketClient::send_message(const std::string &message) {
+        std::vector<uint8_t> buffer{};
+        buffer.reserve(message.size() + 12);
+
+        buffer.emplace_back(0x81);
+
+        uint8_t b1 = 0x80; /* MASK */
+        const auto size = message.size();
+
+        if(size > 125) {
+            if(size > std::numeric_limits<uint16_t>::max()) {
+                b1 |= 127;
+                buffer.emplace_back(b1);
+                for(auto i = 0; i < 6; ++i) {
+                    buffer.emplace_back((size >> (i * 8u)) & 0xFF);
+                }
+            } else {
+                b1 |= 126;
+                buffer.emplace_back(b1);
+                for(auto i = 0; i < 2; ++i) {
+                    buffer.emplace_back((size >> (i * 8u)) & 0xFF);
+                }
+            }
+        } else {
+            b1 |= (uint8_t) size;
+            buffer.emplace_back(b1);
+        }
+
+        for(auto i = 0; i < 4; ++i) {
+            buffer.emplace_back(_client_mask >> (i * 8u));
+        }
+
+        auto mask_index = 0;
+        for(const auto& chr : message) {
+            buffer.emplace_back(((uint8_t) chr) ^ ((_client_mask >> (mask_index++ * 8u)) & 0xFF));
+            mask_index %= 4;
+        }
+
+        _socket->write(buffer.data(), buffer.size());
     }
 }
