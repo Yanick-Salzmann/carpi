@@ -1,19 +1,25 @@
 #include <iostream>
-#include <net_utils/ssl_socket.hpp>
-#include <net_utils/url_parser.hpp>
-#include <net_utils/websocket_client.hpp>
-#include <net_utils/http_client.hpp>
+#include "api_gateway.hpp"
+#include "oauth/refresh_flow.hpp"
+#include "websocket_interface.hpp"
+#include "spotify_device.hpp"
+#include <common_utils/log.hpp>
 
 namespace carpi {
     int main(int argc, const char* argv[]) {
-        //net::WebsocketClient websocket{"wss://gew-dealer.spotify.com/"
-        //                               "?access_token=BQAi1CCNKMChPYt-qvPjRS7mX__T941ksRVmlWAm3WQQ90in8CNOzMIq5RS8oEnL5FtGYAHXr2TYSzyFKJhT4yEAwfHQqFfBhWiwBiz4hjAT642Obr4BojD1rSh_-WM5B4Ahd3VcC8vO4UYgqhAyc7ABaYPbvzkykCVzzi24koArIwrr5AEPGJ0"};
+        using namespace spotify;
 
-        net::HttpClient client{};
-        net::HttpRequest request{"GET", "https://apresolve.spotify.com/?type=dealer"};
-        auto response = client.execute(request);
+        utils::Logger log{"main"};
 
-        std::cout << response.to_string() << std::endl;
+        sApiGateway->load_urls();
+        oauth::RefreshFlow refresh_flow;
+
+        WebsocketInterface wss_interface{refresh_flow.access_token()};
+        wss_interface.wait_for_login();
+
+        log->info("Spotify login complete, creating new device");
+
+        SpotifyDevice device{refresh_flow.access_token(), wss_interface.connection_id()};
 
         std::cin.get();
         return 0;

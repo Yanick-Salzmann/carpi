@@ -50,4 +50,8 @@ namespace carpi::utils {
         bn::encode_b64(bytes.begin(), bytes.end(), std::back_inserter(encoded));
         return encoded;
     }
+
+    std::string bytes_to_utf8(const std::vector<uint8_t> &bytes) {
+        return std::string{bytes.begin(), bytes.end()};
+    }
 }

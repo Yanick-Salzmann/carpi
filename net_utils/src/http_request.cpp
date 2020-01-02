@@ -45,8 +45,10 @@ namespace carpi::net {
         if(lower_method == "get") {
             curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
         } else if(lower_method == "post") {
+            curl_easy_setopt(curl, CURLOPT_PUT, 0L);
             curl_easy_setopt(curl, CURLOPT_POST, 1L);
         } else if(lower_method == "put") {
+            curl_easy_setopt(curl, CURLOPT_POST, 0L);
             curl_easy_setopt(curl, CURLOPT_PUT, 1L);
         } else {
             throw std::runtime_error{"Only GET, POST and PUT are supported for http requests for now"};
@@ -78,7 +80,7 @@ namespace carpi::net {
             *header_list = tmp;
         }
 
-        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, header_list);
+        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, *header_list);
     }
 
     std::string HttpRequest::format_header_for_curl(std::multimap<std::string, std::string>::const_iterator iterator) {

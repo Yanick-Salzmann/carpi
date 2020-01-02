@@ -116,6 +116,8 @@ namespace carpi::net {
             throw std::runtime_error{"Error executing HTTP request"};
         }
 
-        return {state.status_line, state.response_headers, state.response};
+        const auto resp = HttpResponse{state.status_line, state.response_headers, state.response};
+        log->debug("HTTP/1.1 {} {} >>> {} {}", request.method(), request.url(), resp.status_code(), resp.status_text());
+        return resp;
     }
 }

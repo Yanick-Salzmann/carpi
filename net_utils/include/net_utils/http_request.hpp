@@ -4,6 +4,7 @@
 #include "url_parser.hpp"
 #include <map>
 #include <curl/curl.h>
+#include <common_utils/conversion.hpp>
 
 namespace carpi::net {
     class HttpRequest {
@@ -26,6 +27,14 @@ namespace carpi::net {
 
         [[nodiscard]] std::vector<uint8_t> send_data() const;
 
+        std::string method() const {
+            return _method;
+        }
+
+        std::string url() const {
+            return _raw_url;
+        }
+
         HttpRequest& add_header(const std::string& key, const std::string& value) {
             _headers.emplace(key, value);
             return *this;
@@ -33,8 +42,13 @@ namespace carpi::net {
 
         void configure_client(CURL* curl, curl_slist** header_list) const;
 
-        const std::vector<uint8_t>& body() const {
+        [[nodiscard]] const std::vector<uint8_t>& body() const {
             return _body;
+        }
+
+        HttpRequest& string_body(const std::string& value) {
+            _body = utils::utf8_to_bytes(value);
+            return *this;
         }
     };
 }

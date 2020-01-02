@@ -7,6 +7,7 @@
 #include "url_parser.hpp"
 #include <map>
 #include <common_utils/random.hpp>
+#include <functional>
 
 namespace carpi::net {
     class SslSocket;
@@ -15,6 +16,8 @@ namespace carpi::net {
         LOGGER;
 
         uint32_t _client_mask = utils::random_uint32();
+
+        std::function<void (const std::string&)> _packet_callback;
 
         Url _target_url;
         std::string _raw_address;
@@ -43,7 +46,7 @@ namespace carpi::net {
          *
          * @param wss_address full URL for the websocket (only wss:// supported)
          */
-        explicit WebsocketClient(const std::string& wss_address);
+        explicit WebsocketClient(const std::string& wss_address, std::function<void (const std::string&)> callback);
 
         WebsocketClient(WebsocketClient&) = delete;
         WebsocketClient(WebsocketClient&&) = delete;

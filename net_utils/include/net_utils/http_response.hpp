@@ -24,7 +24,13 @@ namespace carpi::net {
             return _body;
         }
 
+        uint32_t status_code() const {
+            return _status_code;
+        }
 
+        std::string status_text() const {
+            return _status_text;
+        }
     };
 }
 

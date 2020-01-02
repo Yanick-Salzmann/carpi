@@ -12,7 +12,10 @@
 namespace carpi::net {
     LOGGER_IMPL(WebsocketClient);
 
-    WebsocketClient::WebsocketClient(const std::string &wss_address) : _target_url{UrlParser::parse(wss_address)}, _raw_address{wss_address} {
+    WebsocketClient::WebsocketClient(const std::string &wss_address, std::function<void(const std::string &)> callback) :
+            _target_url{UrlParser::parse(wss_address)},
+            _raw_address{wss_address},
+            _packet_callback{std::move(callback)} {
         verify_wss_url();
 
         _socket = std::make_shared<SslSocket>();
@@ -169,7 +172,7 @@ namespace carpi::net {
 
     void WebsocketClient::read_loop() {
         std::vector<uint8_t> full_payload{};
-        while(_is_running) {
+        while (_is_running) {
             try {
                 const auto b0 = _socket->read_one();
                 const auto b1 = _socket->read_one();
@@ -180,11 +183,11 @@ namespace carpi::net {
                 const auto masked = (b1 & 0x80u) != 0;
                 uint64_t length = b1 & 0x7Fu;
 
-                if(length == 126) {
+                if (length == 126) {
                     length = (((uint16_t) _socket->read_one()) << 8u) | _socket->read_one();
-                } else if(length == 127) {
+                } else if (length == 127) {
                     length = 0;
-                    for(auto i = 0; i < 8; ++i) {
+                    for (auto i = 0; i < 8; ++i) {
                         length |= ((uint64_t) _socket->read_one()) << (56 - i * 8);
                     }
                 }
@@ -193,20 +196,20 @@ namespace carpi::net {
                 _socket->read_all(payload.data(), payload.size());
 
                 full_payload.insert(full_payload.end(), payload.begin(), payload.end());
-                if(fin) {
+                if (fin) {
                     full_payload.emplace_back('\0');
                     full_payload.emplace_back('\0');
-                    std::string data = (const char*) full_payload.data();
+                    std::string data = (const char *) full_payload.data();
                     full_payload.clear();
-                    log->info(">> {}", data);
+                    _packet_callback(data);
                 } else {
-                    if(opcode != 0) {
+                    if (opcode != 0) {
                         log->warn("Expected continuation opcode (0) but was {}", opcode);
                     }
                 }
 
-            } catch (std::runtime_error& e) {
-                if(!_is_running) {
+            } catch (std::runtime_error &e) {
+                if (!_is_running) {
                     return;
                 }
 
@@ -224,17 +227,17 @@ namespace carpi::net {
         uint8_t b1 = 0x80; /* MASK */
         const auto size = message.size();
 
-        if(size > 125) {
-            if(size > std::numeric_limits<uint16_t>::max()) {
+        if (size > 125) {
+            if (size > std::numeric_limits<uint16_t>::max()) {
                 b1 |= 127;
                 buffer.emplace_back(b1);
-                for(auto i = 0; i < 6; ++i) {
+                for (auto i = 0; i < 6; ++i) {
                     buffer.emplace_back((size >> (i * 8u)) & 0xFF);
                 }
             } else {
                 b1 |= 126;
                 buffer.emplace_back(b1);
-                for(auto i = 0; i < 2; ++i) {
+                for (auto i = 0; i < 2; ++i) {
                     buffer.emplace_back((size >> (i * 8u)) & 0xFF);
                 }
             }
@@ -243,12 +246,12 @@ namespace carpi::net {
             buffer.emplace_back(b1);
         }
 
-        for(auto i = 0; i < 4; ++i) {
+        for (auto i = 0; i < 4; ++i) {
             buffer.emplace_back(_client_mask >> (i * 8u));
         }
 
         auto mask_index = 0;
-        for(const auto& chr : message) {
+        for (const auto &chr : message) {
             buffer.emplace_back(((uint8_t) chr) ^ ((_client_mask >> (mask_index++ * 8u)) & 0xFF));
             mask_index %= 4;
         }

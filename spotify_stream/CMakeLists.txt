@@ -7,13 +7,19 @@ if (NOT EXISTS ${CMAKE_CURRENT_BINARY_DIR}/resources/config.toml)
     configure_file(resources/config.toml resources/config.toml)
 endif ()
 
-add_executable(spotify_stream src/main.cpp src/websocket_interface.hpp src/websocket_interface.cpp src/oauth/refresh_flow.hpp src/oauth/refresh_flow.cpp)
+configure_file(resources/api.toml resources/api.toml)
 
-add_dependencies(spotify_stream net_utils toml)
+add_executable(spotify_stream src/main.cpp src/websocket_interface.hpp src/websocket_interface.cpp src/oauth/refresh_flow.hpp src/oauth/refresh_flow.cpp src/api_gateway.hpp src/api_gateway.cpp src/spotify_device.hpp src/spotify_device.cpp)
+
+add_dependencies(spotify_stream net_utils toml json)
 
 target_include_directories(
         spotify_stream PUBLIC
         ${CMAKE_SOURCE_DIR}/net_utils/include
         ${CMAKE_BINARY_DIR}/third_party/toml/include
+        ${CMAKE_BINARY_DIR}/third_party/json/include
 )
-target_link_libraries(spotify_stream net_utils)
+
+find_package(Threads)
+
+target_link_libraries(spotify_stream net_utils Threads::Threads)
