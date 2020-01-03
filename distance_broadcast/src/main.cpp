@@ -30,6 +30,7 @@ namespace carpi {
 
         if(fps.clear()) {
             fps.enroll(1);
+            log->info("Number of users: {}", (uint32_t) fps.user_count());
         } else {
             log->warn("Fingerpring sensor clearing failed");
         }
