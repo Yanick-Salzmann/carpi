@@ -168,10 +168,8 @@ namespace carpi::wiring {
             return 0;
         }
 
-        write_packet((Command)(CMD_USER_COUNT - 2));
-        checked_command_response((Command)(CMD_USER_COUNT - 2));
-        write_packet((Command)(CMD_USER_COUNT - 3));
-        checked_command_response((Command)(CMD_USER_COUNT - 3));
+        write_packet(CMD_GET_USER_ID);
+        checked_command_response(CMD_GET_USER_ID);
 
         return num_users;
     }
