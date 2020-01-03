@@ -10,7 +10,7 @@ namespace carpi::wiring {
 
     FingerprintSensor::FingerprintSensor(const std::string &device, std::size_t baud_rate) {
         _sensor = serialOpen(device.c_str(), static_cast<const int>(baud_rate));
-        if(_sensor < 0) {
+        if (_sensor < 0) {
             log->error("Error opening fingerprint sensor on {}: {} (errno={})", device, utils::error_to_string(), errno);
             throw std::runtime_error{"Error opening device"};
         }
@@ -33,10 +33,10 @@ namespace carpi::wiring {
         }
     }
 
-    uint8_t FingerprintSensor::generate_checksum(const std::vector<uint8_t> &data) {
+    uint8_t FingerprintSensor::generate_checksum(const std::vector<uint8_t> &data, std::size_t offset, std::size_t length) {
         uint8_t checksum = 0;
-        for (const auto &elem : data) {
-            checksum ^= elem;
+        for (std::size_t i = 0; i < length; ++i, ++offset) {
+            checksum ^= data[offset];
         }
 
         return checksum;
@@ -50,11 +50,8 @@ namespace carpi::wiring {
         std::vector<uint8_t> ret{};
         for (auto i = 0; i < 200; ++i) {
             ret.push_back(static_cast<uint8_t &&>(serialGetchar(_sensor)));
-            if (!serialDataAvail(_sensor)) {
-                std::this_thread::sleep_for(std::chrono::milliseconds{50});
-                if (!serialDataAvail(_sensor)) {
-                    break;
-                }
+            if (ret.back() == END_OF_DATA) {
+                break;
             }
         }
 
@@ -68,6 +65,21 @@ namespace carpi::wiring {
         if (response.empty()) {
             return 0;
         }
+
+        if (response[0] != START_OF_DATA) {
+            log->warn("FPC sensor data does not start with 0xF5");
+            return 0;
+        }
+
+        if (response[1] != generate_checksum(response, 2, response.size() - 3)) {
+            return 0;
+        }
+
+        if (response[response.size() - 1] != END_OF_DATA) {
+            log->warn("Partial response received, results might be wrong");
+        }
+
+        response = std::vector<uint8_t>{response.begin() + 2, response.end() - 1};
 
         switch (command) {
             case CMD_ENROLL1:
@@ -124,7 +136,7 @@ namespace carpi::wiring {
     bool FingerprintSensor::enroll_step(FingerprintSensor::Command enroll_cmd, uint16_t user_id) {
         write_packet(enroll_cmd, static_cast<uint8_t>(user_id >> 8u), static_cast<uint8_t>(user_id & 0xFFu), 1);
         const auto enroll_result = checked_command_response(enroll_cmd);
-        if(enroll_result != 1) {
+        if (enroll_result != 1) {
             log->warn("Enrolling new user failed. Error: {}", enroll_result);
             return false;
         }
@@ -140,7 +152,7 @@ namespace carpi::wiring {
     uint8_t FingerprintSensor::user_count() {
         write_packet(CMD_USER_COUNT);
         uint8_t num_users = 0;
-        if(checked_command_response(CMD_USER_COUNT, num_users) != 1) {
+        if (checked_command_response(CMD_USER_COUNT, num_users) != 1) {
             return 0;
         }
 
