@@ -11,7 +11,7 @@ add_dependencies(carpi_master bluetooth_utils video_stream obd carpi_browser_sub
 
 find_package(Threads)
 
-#find_package(OpenGLES2 REQUIRED)
+find_package(OpenGLES2 REQUIRED)
 find_package(FFmpeg REQUIRED)
 
 target_include_directories(carpi_master PUBLIC
@@ -22,8 +22,8 @@ target_include_directories(carpi_master PUBLIC
         ${CMAKE_SOURCE_DIR}/net_utils/include
         ${CMAKE_SOURCE_DIR}/gps/include
         ${CMAKE_BINARY_DIR}/third_party/json/include
-        #${OPENGLES2_INCLUDE_DIR}
-        #${EGL_INCLUDE_DIR}
+        ${OPENGLES2_INCLUDE_DIR}
+        ${EGL_INCLUDE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/src
         ${FFMPEG_INCLUDE_DIRS}
         /usr/local/include/cef
@@ -39,8 +39,8 @@ target_link_libraries(carpi_master
         net_utils
         gps_utils
         Threads::Threads
-        #${OPENGLES2_LIBRARIES}
-        #${EGL_LIBRARIES}
+        ${OPENGLES2_LIBRARIES}
+        ${EGL_LIBRARIES}
         ${FFMPEG_LIBRARIES}
         jpeg
         swscale
