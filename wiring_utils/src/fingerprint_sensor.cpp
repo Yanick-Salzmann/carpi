@@ -48,7 +48,16 @@ namespace carpi::wiring {
         }
 
         std::vector<uint8_t> ret{};
+        ret.push_back(static_cast<uint8_t &&>(serialGetchar(_sensor)));
+        if(ret.back() != START_OF_DATA) {
+            log->warn("Data is out of sync, FPC did not return start of data byte (0xF5) as first byte");
+        }
+
         for (auto i = 0; i < 200; ++i) {
+            while (serialDataAvail(_sensor) <= 0) {
+                std::this_thread::sleep_for(std::chrono::milliseconds{10});
+            }
+
             ret.push_back(static_cast<uint8_t &&>(serialGetchar(_sensor)));
             if (ret.back() == END_OF_DATA) {
                 break;
