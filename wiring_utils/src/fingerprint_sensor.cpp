@@ -80,7 +80,8 @@ namespace carpi::wiring {
             return 0;
         }
 
-        if (response[1] != generate_checksum(response, 2, response.size() - 3)) {
+        if (response[response.size() - 2] != generate_checksum(response, 1, response.size() - 3)) {
+            log->warn("Checksum of FPC packet does not match");
             return 0;
         }
 
@@ -88,7 +89,11 @@ namespace carpi::wiring {
             log->warn("Partial response received, results might be wrong");
         }
 
-        response = std::vector<uint8_t>{response.begin() + 2, response.end() - 1};
+        response = std::vector<uint8_t>{response.begin() + 1, response.end() - 2};
+        if(response[0] != command) {
+            log->warn("Expected opcode {} from FPC sensor, but received {}", command, response[0]);
+            return 0;
+        }
 
         switch (command) {
             case CMD_ENROLL1:
