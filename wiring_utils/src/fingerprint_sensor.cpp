@@ -4,6 +4,8 @@
 #include <common_utils/error.hpp>
 #include <common_utils/conversion.hpp>
 #include "wiring_utils/fingerprint_sensor.hpp"
+#include <chrono>
+#include <thread>
 
 namespace carpi::wiring {
     LOGGER_IMPL(FingerprintSensor);
@@ -47,7 +49,7 @@ namespace carpi::wiring {
 
         std::vector<uint8_t> ret{};
         ret.push_back(static_cast<uint8_t &&>(serialGetchar(_sensor)));
-        if(ret.back() != START_OF_DATA) {
+        if (ret.back() != START_OF_DATA) {
             log->warn("Data is out of sync, FPC did not return start of data byte (0xF5) as first byte");
         }
 
@@ -67,33 +69,18 @@ namespace carpi::wiring {
         return ret;
     }
 
-    uint8_t FingerprintSensor::checked_command_response(uint8_t command, uint8_t &ret_code) {
+    uint8_t FingerprintSensor::checked_command_response(uint8_t command, uint32_t &ret_code) {
         auto response = read_packet();
-        if (response.empty()) {
+        if(!verify_packet(response, true, command)) {
             return 0;
-        }
-
-        if (response[0] != START_OF_DATA) {
-            log->warn("FPC sensor data does not start with 0xF5");
-            return 0;
-        }
-
-        if (response[response.size() - 2] != generate_checksum(response, 1, response.size() - 3)) {
-            log->warn("Checksum of FPC packet does not match");
-            return 0;
-        }
-
-        if (response[response.size() - 1] != END_OF_DATA) {
-            log->warn("Partial response received, results might be wrong");
         }
 
         response = std::vector<uint8_t>{response.begin() + 1, response.end() - 2};
-        if(response[0] != command) {
-            log->warn("Expected opcode {} from FPC sensor, but received {}", command, response[0]);
-            return 0;
-        }
 
         switch (command) {
+            case CMD_USER_LIST:
+                break;
+
             case CMD_ENROLL1:
             case CMD_ENROLL2:
             case CMD_ENROLL3: {
@@ -114,13 +101,20 @@ namespace carpi::wiring {
                 return static_cast<uint8_t>(response[3] == ACK_SUCCESS ? 1 : 0);
             }
 
-            case CMD_USER_COUNT:
-            case CMD_GET_USER_ID: {
+            case CMD_USER_COUNT: {
                 if (response[3] != ACK_SUCCESS) {
                     return 0;
                 }
 
                 ret_code = response[2];
+                return 1;
+            }
+
+            case CMD_GET_USER_ID: {
+                if(response[3] != ACK_SUCCESS) {
+                    return 0;
+                }
+
                 return 1;
             }
 
@@ -161,22 +155,73 @@ namespace carpi::wiring {
         return checked_command_response(CMD_DELETE_ALL) == 1;
     }
 
-    uint8_t FingerprintSensor::user_count() {
+    uint32_t FingerprintSensor::user_count() {
         write_packet(CMD_USER_COUNT);
-        uint8_t num_users = 0;
+        uint32_t num_users = 0;
         if (checked_command_response(CMD_USER_COUNT, num_users) != 1) {
             return 0;
         }
 
-        write_packet(CMD_GET_USER_ID);
-        checked_command_response(CMD_GET_USER_ID);
-
         return num_users;
     }
 
-    uint16_t FingerprintSensor::match_user() {
+    uint32_t FingerprintSensor::match_user() {
         write_packet(CMD_SEARCH_USER);
         checked_command_response(CMD_SEARCH_USER);
         return 0;
+    }
+
+    bool FingerprintSensor::read_registered_users(std::vector<uint32_t>& user_ids) {
+        auto packet = read_packet();
+        if(!verify_packet(packet)) {
+            return false;
+        }
+
+        packet = std::vector<uint8_t>{packet.begin() + 1, packet.end() - 2};
+        const auto num_users = packet[1];
+        for(auto i = 0; i < num_users; ++i) {
+            user_ids.push_back(packet[6 + i]);
+        }
+
+        return false;
+    }
+
+    std::vector<uint32_t> FingerprintSensor::user_list() {
+        write_packet(CMD_GET_USER_ID);
+        checked_command_response(CMD_GET_USER_ID);
+
+        std::vector<uint32_t> users{};
+        if(!read_registered_users(users)) {
+            return {};
+        }
+
+        return users;
+    }
+
+    bool FingerprintSensor::verify_packet(const std::vector<uint8_t>& response, bool validate_command, uint8_t command) {
+        if (response.empty()) {
+            return false;
+        }
+
+        if (response[0] != START_OF_DATA) {
+            log->warn("FPC sensor data does not start with 0xF5");
+            return false;
+        }
+
+        if (response[response.size() - 2] != generate_checksum(response, 1, response.size() - 3)) {
+            log->warn("Checksum of FPC packet does not match");
+            return false;
+        }
+
+        if (response[response.size() - 1] != END_OF_DATA) {
+            log->warn("Partial response received, results might be wrong");
+        }
+
+        if (response[1] != command) {
+            log->warn("Expected opcode {} from FPC sensor, but received {}", command, response[1]);
+            return 0;
+        }
+
+        return true;
     }
 }

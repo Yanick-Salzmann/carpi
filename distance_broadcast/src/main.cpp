@@ -28,10 +28,7 @@ namespace carpi {
         wiring::FingerprintSensor fps{argv[1], 19200};
         log->info("Number of users: {}", (uint32_t) fps.user_count());
 
-        std::string line;
-        std::getline(std::cin, line);
-        fps.enroll(static_cast<uint16_t>(std::stoul(line)));
-        log->info("Number of users: {}", (uint32_t) fps.user_count());
+        log->info("User List: {}", fps.user_list());
         fps.match_user();
 
         auto cfg = toml::parse("resources/config.toml");

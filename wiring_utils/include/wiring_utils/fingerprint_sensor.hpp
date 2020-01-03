@@ -9,6 +9,7 @@
 namespace carpi::wiring {
     class FingerprintSensor {
         enum Command : uint8_t {
+            CMD_USER_LIST = 0x00,
             CMD_ENROLL1 = 0x01,
             CMD_ENROLL2 = 0x02,
             CMD_ENROLL3 = 0x03,
@@ -63,22 +64,27 @@ namespace carpi::wiring {
         std::vector<uint8_t> read_packet();
 
         uint8_t checked_command_response(uint8_t command) {
-            uint8_t ignored{};
+            uint32_t ignored{};
             return checked_command_response(command, ignored);
         }
 
-        uint8_t checked_command_response(uint8_t command, uint8_t& response);
+        uint8_t checked_command_response(uint8_t command, uint32_t& response);
+
+        bool read_registered_users(std::vector<uint32_t>& user_ids);
 
         bool enroll_step(Command enroll_cmd, uint16_t user_id);
+
+        bool verify_packet(const std::vector<uint8_t>& data, bool validate_command = false, uint8_t command = 0);
     public:
         explicit FingerprintSensor(const std::string& device, std::size_t baud_rate);
 
         bool enroll(uint16_t user_id);
         bool clear();
 
-        uint8_t user_count();
+        uint32_t user_count();
+        std::vector<uint32_t> user_list();
 
-        uint16_t match_user();
+        uint32_t match_user();
     };
 }
 
