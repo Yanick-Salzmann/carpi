@@ -77,6 +77,8 @@ namespace carpi::wiring {
         bool clear();
 
         uint8_t user_count();
+
+        uint16_t match_user();
     };
 }
 
