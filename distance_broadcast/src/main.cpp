@@ -31,10 +31,7 @@ namespace carpi {
 
         log->info("User List: {}", fmt::join(fps.user_list(), ", "));
         while(true) {
-            const auto user = fps.match_user();
-            if(user >= 0) {
-                log->info("Found user {}", user);
-            }
+            log->info("User 5 found: {}", fps.match_user(5));
         }
 
         auto cfg = toml::parse("resources/config.toml");
