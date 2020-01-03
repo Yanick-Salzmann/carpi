@@ -64,14 +64,12 @@ namespace carpi::wiring {
             }
         }
 
-        log->info("Read {} bytes ({})", ret.size(), utils::bytes_to_hex(ret));
-
         return ret;
     }
 
     uint8_t FingerprintSensor::checked_command_response(uint8_t command, uint32_t &ret_code) {
         auto response = read_packet();
-        if(!verify_packet(response, true, command)) {
+        if (!verify_packet(response, true, command)) {
             return 0;
         }
 
@@ -108,7 +106,7 @@ namespace carpi::wiring {
             }
 
             case CMD_GET_USER_ID: {
-                if(response[3] != ACK_SUCCESS) {
+                if (response[3] != ACK_SUCCESS) {
                     return 0;
                 }
 
@@ -117,7 +115,7 @@ namespace carpi::wiring {
 
             case CMD_SEARCH_USER: {
                 if (response[3] >= 1 && response[3] <= 3) {
-                    ret_code = response[2];
+                    ret_code = response[1];
                     return 1;
                 }
 
@@ -162,25 +160,29 @@ namespace carpi::wiring {
         return num_users;
     }
 
-    uint32_t FingerprintSensor::match_user() {
+    int32_t FingerprintSensor::match_user() {
         write_packet(CMD_SEARCH_USER);
-        checked_command_response(CMD_SEARCH_USER);
-        return 0;
+        uint32_t user_match = 0;
+        if (!checked_command_response(CMD_SEARCH_USER, user_match)) {
+            return -1;
+        }
+
+        return static_cast<int32_t>(user_match);
     }
 
-    bool FingerprintSensor::read_registered_users(std::vector<uint32_t>& user_ids) {
+    bool FingerprintSensor::read_registered_users(std::vector<uint32_t> &user_ids) {
         auto packet = read_packet();
-        if(!verify_packet(packet)) {
+        if (!verify_packet(packet)) {
             return false;
         }
 
         packet = std::vector<uint8_t>{packet.begin() + 1, packet.end() - 2};
         const auto num_users = packet[1];
-        for(auto i = 0; i < num_users; ++i) {
+        for (auto i = 0; i < num_users; ++i) {
             user_ids.push_back(packet[6 + i]);
         }
 
-        return false;
+        return true;
     }
 
     std::vector<uint32_t> FingerprintSensor::user_list() {
@@ -188,14 +190,14 @@ namespace carpi::wiring {
         checked_command_response(CMD_GET_USER_ID);
 
         std::vector<uint32_t> users{};
-        if(!read_registered_users(users)) {
+        if (!read_registered_users(users)) {
             return {};
         }
 
         return users;
     }
 
-    bool FingerprintSensor::verify_packet(const std::vector<uint8_t>& response, bool validate_command, uint8_t command) {
+    bool FingerprintSensor::verify_packet(const std::vector<uint8_t> &response, bool validate_command, uint8_t command) {
         if (response.empty()) {
             return false;
         }
