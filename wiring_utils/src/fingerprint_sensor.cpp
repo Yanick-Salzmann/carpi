@@ -25,8 +25,6 @@ namespace carpi::wiring {
         full_data[full_data.size() - 2] = generate_checksum(data);
         full_data[full_data.size() - 1] = END_OF_DATA;
 
-        log->info(">>> Sending {}", data[0]);
-
         if (write(_sensor, full_data.data(), full_data.size()) != full_data.size()) {
             log->error("Error writing packet to fingerprint sensor: {} (errno={})", errno, utils::error_to_string());
             throw std::runtime_error{"Error sending data"};
@@ -148,7 +146,7 @@ namespace carpi::wiring {
     }
 
     bool FingerprintSensor::enroll_step(FingerprintSensor::Command enroll_cmd, uint16_t user_id) {
-        write_packet(enroll_cmd, static_cast<uint8_t>(user_id >> 8u), static_cast<uint8_t>(user_id & 0xFFu), 1);
+        write_packet(enroll_cmd, static_cast<uint8_t>(user_id & 0xFFu), static_cast<uint8_t>(user_id >> 8u), 1);
         const auto enroll_result = checked_command_response(enroll_cmd);
         if (enroll_result != 1) {
             log->warn("Enrolling new user failed. Error: {}", enroll_result);
