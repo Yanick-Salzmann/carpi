@@ -181,7 +181,7 @@ namespace carpi::wiring {
         packet = std::vector<uint8_t>{packet.begin() + 1, packet.end() - 2};
         const auto num_users = packet[1];
         for (auto i = 0; i < num_users; ++i) {
-            user_ids.push_back(packet[2 + i]);
+            user_ids.push_back(packet[3 + i]);
         }
 
         return true;
