@@ -97,36 +97,36 @@ namespace carpi::wiring {
             case CMD_ENROLL1:
             case CMD_ENROLL2:
             case CMD_ENROLL3: {
-                if (response[4] == ACK_SUCCESS) {
+                if (response[3] == ACK_SUCCESS) {
                     return 1;
-                } else if (response[4] == ACK_USER_EXISTS) {
+                } else if (response[3] == ACK_USER_EXISTS) {
                     return ACK_USER_EXISTS;
-                } else if (response[4] == ACK_USER_OCCUPIED) {
+                } else if (response[3] == ACK_USER_OCCUPIED) {
                     return ACK_USER_OCCUPIED;
                 }
-                log->info("CMD_ENROLL1/2/3 response: {}", response[4]);
+                log->info("CMD_ENROLL1/2/3 response: {}", response[3]);
                 return 0;
             }
 
             case CMD_IDENTIFY_USER:
             case CMD_DELETE_ALL:
             case CMD_DELETE: {
-                return static_cast<uint8_t>(response[4] == ACK_SUCCESS ? 1 : 0);
+                return static_cast<uint8_t>(response[3] == ACK_SUCCESS ? 1 : 0);
             }
 
             case CMD_USER_COUNT:
             case CMD_GET_USER_ID: {
-                if (response[4] != ACK_SUCCESS) {
+                if (response[3] != ACK_SUCCESS) {
                     return 0;
                 }
 
-                ret_code = response[3];
+                ret_code = response[2];
                 return 1;
             }
 
             case CMD_SEARCH_USER: {
-                if (response[4] >= 1 && response[4] <= 3) {
-                    ret_code = response[3];
+                if (response[3] >= 1 && response[3] <= 3) {
+                    ret_code = response[2];
                     return 1;
                 }
 
