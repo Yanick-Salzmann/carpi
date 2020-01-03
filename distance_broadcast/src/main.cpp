@@ -26,6 +26,8 @@ namespace carpi {
         utils::Logger log{"Main"};
 
         wiring::FingerprintSensor fps{argv[1], 19200};
+        log->info("Number of users: {}", (uint32_t) fps.user_count());
+
         if(fps.clear()) {
             fps.enroll(1);
         } else {

@@ -135,4 +135,14 @@ namespace carpi::wiring {
         write_packet(CMD_DELETE_ALL);
         return checked_command_response(CMD_DELETE_ALL) == 1;
     }
+
+    uint8_t FingerprintSensor::user_count() {
+        write_packet(CMD_USER_COUNT);
+        uint8_t num_users = 0;
+        if(checked_command_response(CMD_USER_COUNT, num_users) != 1) {
+            return 0;
+        }
+
+        return num_users;
+    }
 }

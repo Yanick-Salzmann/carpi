@@ -74,6 +74,8 @@ namespace carpi::wiring {
 
         bool enroll(uint16_t user_id);
         bool clear();
+
+        uint8_t user_count();
     };
 }
 
