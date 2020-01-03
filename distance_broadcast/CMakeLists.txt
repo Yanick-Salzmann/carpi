@@ -17,4 +17,4 @@ target_include_directories(distance_broadcast PUBLIC
         ${CMAKE_SOURCE_DIR}/ipc_common/include
         ${CMAKE_BINARY_DIR}/third_party/toml/include
 )
-target_link_libraries(distance_broadcast common_utils net_utils wiring_utils bluetooth_utils ipc_common Threads::Threads)
+target_link_libraries(distance_broadcast net_utils wiring_utils bluetooth_utils ipc_common Threads::Threads)
