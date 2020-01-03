@@ -140,6 +140,7 @@ namespace carpi::wiring {
     }
 
     bool FingerprintSensor::enroll(uint16_t user_id) {
+        log->info("Enrolling user {}", user_id);
         return enroll_step(CMD_ENROLL1, user_id) &&
                enroll_step(CMD_ENROLL2, user_id) &&
                enroll_step(CMD_ENROLL3, user_id);
