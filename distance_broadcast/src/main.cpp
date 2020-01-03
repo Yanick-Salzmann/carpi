@@ -30,7 +30,9 @@ namespace carpi {
 
         if(fps.clear()) {
             log->info("Number of users: {}", (uint32_t) fps.user_count());
-            fps.enroll(1);
+            std::string line;
+            std::getline(std::cin, line);
+            fps.enroll(static_cast<uint16_t>(std::stoul(line)));
             log->info("Number of users: {}", (uint32_t) fps.user_count());
         } else {
             log->warn("Fingerpring sensor clearing failed");
