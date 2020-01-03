@@ -10,6 +10,8 @@
 #include <functional>
 
 namespace carpi::spotify {
+    class StateMachine;
+
     class WebsocketInterface {
         LOGGER;
 
@@ -25,6 +27,8 @@ namespace carpi::spotify {
         std::string _connection_id{};
 
         std::thread _ping_thread;
+
+        StateMachine* _state_machine = nullptr;
 
         void ping_loop();
 
@@ -51,6 +55,10 @@ namespace carpi::spotify {
 
         [[nodiscard]] std::string connection_id() const {
             return _connection_id;
+        }
+
+        void state_machine(StateMachine* machine) {
+            _state_machine = machine;
         }
     };
 }

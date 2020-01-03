@@ -3,6 +3,8 @@
 #include "oauth/refresh_flow.hpp"
 #include "websocket_interface.hpp"
 #include "spotify_device.hpp"
+#include "state_machine.hpp"
+#include "drm/widevine_adapter.hpp"
 #include <common_utils/log.hpp>
 
 namespace carpi {
@@ -10,6 +12,8 @@ namespace carpi {
         using namespace spotify;
 
         utils::Logger log{"main"};
+
+        drm::WidevineAdapter adapter{};
 
         sApiGateway->load_urls();
         oauth::RefreshFlow refresh_flow;
@@ -20,6 +24,7 @@ namespace carpi {
         log->info("Spotify login complete, creating new device");
 
         SpotifyDevice device{refresh_flow.access_token(), wss_interface.connection_id()};
+        StateMachine stateMachine{device, wss_interface};
 
         std::cin.get();
         return 0;

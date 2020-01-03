@@ -3,6 +3,7 @@
 #include <nlohmann/json.hpp>
 #include <chrono>
 #include <common_utils/string.hpp>
+#include "state_machine.hpp"
 
 namespace carpi::spotify {
     LOGGER_IMPL(WebsocketInterface);
@@ -133,7 +134,9 @@ namespace carpi::spotify {
     }
 
     void WebsocketInterface::handle_replace_state(nlohmann::json payload) {
-        log->info("Handle replace_state");
+        if(_state_machine) {
+            _state_machine->handle_state_replace(payload);
+        }
     }
 
     void WebsocketInterface::initialize_command_map() {
