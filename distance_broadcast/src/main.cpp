@@ -30,7 +30,9 @@ namespace carpi {
         log->info("Number of users: {}", (uint32_t) fps.user_count());
 
         log->info("User List: {}", fmt::join(fps.user_list(), ", "));
-        fps.match_user();
+        while(true) {
+            fps.match_user();
+        }
 
         auto cfg = toml::parse("resources/config.toml");
         auto sensor_cfg = toml::find(cfg, "jsnsr04t");
