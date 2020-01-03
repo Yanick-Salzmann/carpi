@@ -28,15 +28,10 @@ namespace carpi {
         wiring::FingerprintSensor fps{argv[1], 19200};
         log->info("Number of users: {}", (uint32_t) fps.user_count());
 
-        if(fps.clear()) {
-            log->info("Number of users: {}", (uint32_t) fps.user_count());
-            std::string line;
-            std::getline(std::cin, line);
-            fps.enroll(static_cast<uint16_t>(std::stoul(line)));
-            log->info("Number of users: {}", (uint32_t) fps.user_count());
-        } else {
-            log->warn("Fingerpring sensor clearing failed");
-        }
+        std::string line;
+        std::getline(std::cin, line);
+        fps.enroll(static_cast<uint16_t>(std::stoul(line)));
+        log->info("Number of users: {}", (uint32_t) fps.user_count());
 
         auto cfg = toml::parse("resources/config.toml");
         auto sensor_cfg = toml::find(cfg, "jsnsr04t");
