@@ -18,7 +18,7 @@ namespace carpi::spotify::oauth {
     }
 
     toml::value RefreshFlow::parse_config() {
-        return toml::parse("resources/config.toml");
+        return toml::parse("resources/spotify.toml");
     }
 
     void RefreshFlow::update_config() {
@@ -28,7 +28,7 @@ namespace carpi::spotify::oauth {
         toml::find(token, "refresh") = _refresh_token;
         toml::find(token, "creation") = (uint64_t) time(nullptr);
 
-        std::ofstream os{"resources/config.toml"};
+        std::ofstream os{"resources/spotify.toml"};
         os << cfg;
     }
 

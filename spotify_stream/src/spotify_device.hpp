@@ -12,12 +12,29 @@ namespace carpi::spotify {
         net::HttpClient _client;
         std::string _connection_id;
         std::string _access_token;
+        std::string _device_id;
 
+        std::atomic_uint64_t _sequence_number;
+
+        void verify_feature_flags();
         void enable_notifications();
         void create_device();
+        void setup_volume();
 
     public:
         explicit SpotifyDevice(std::string access_token, std::string connection_id);
+
+        uint64_t next_sequence_number() {
+            return ++_sequence_number;
+        }
+
+        [[nodiscard]] std::string device_id() const {
+            return _device_id;
+        }
+
+        [[nodiscard]] std::string access_token() const {
+            return _access_token;
+        }
     };
 }
 

@@ -31,7 +31,7 @@ namespace carpi::utils {
         return bytes;
     }
 
-    std::string bytes2hex(const void *binary, std::size_t length) {
+    std::string bytes_to_hex(const void *binary, std::size_t length) {
         std::stringstream stream{};
         const auto ptr = (const uint8_t*) binary;
         for (auto i = std::size_t{0}; i < length; ++i) {

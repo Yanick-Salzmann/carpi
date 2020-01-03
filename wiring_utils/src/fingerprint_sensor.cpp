@@ -79,6 +79,7 @@ namespace carpi::wiring {
                 } else if (response[4] == ACK_USER_OCCUPIED) {
                     return ACK_USER_OCCUPIED;
                 }
+                log->info("CMD_ENROLL1/2/3 response: {}", response[4]);
                 return 0;
             }
 
