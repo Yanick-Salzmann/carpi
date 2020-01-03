@@ -78,9 +78,6 @@ namespace carpi::wiring {
         response = std::vector<uint8_t>{response.begin() + 1, response.end() - 2};
 
         switch (command) {
-            case CMD_USER_LIST:
-                break;
-
             case CMD_ENROLL1:
             case CMD_ENROLL2:
             case CMD_ENROLL3: {
