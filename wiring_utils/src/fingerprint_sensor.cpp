@@ -175,6 +175,8 @@ namespace carpi::wiring {
     }
 
     uint16_t FingerprintSensor::match_user() {
+        write_packet(CMD_SEARCH_USER);
+        checked_command_response(CMD_SEARCH_USER);
         return 0;
     }
 }
