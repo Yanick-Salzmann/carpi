@@ -37,7 +37,8 @@ namespace carpi::wiring {
 
         int32_t _sensor;
 
-        static uint8_t generate_checksum(const std::vector<uint8_t>& data);
+        static uint8_t generate_checksum(const std::vector<uint8_t>& data) { generate_checksum(data, 0, data.size()); }
+        static uint8_t generate_checksum(const std::vector<uint8_t>& data, std::size_t offset, std::size_t length);
 
         void write_packet(Command command, uint8_t b1) {
             write_packet(command, b1, 0, 0, 0);
