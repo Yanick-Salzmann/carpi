@@ -14,10 +14,10 @@ namespace carpi::wiring {
             CMD_ENROLL3 = 0x03,
             CMD_DELETE = 0x04,
             CMD_DELETE_ALL = 0x05,
-            CMD_USER_COUNT = 0x06,
-            CMD_IDENTIFY_USER = 0x07,
-            CMD_SEARCH_USER = 0x08,
-            CMD_GET_USER_ID = 0x09
+            CMD_USER_COUNT = 0x09,
+            CMD_IDENTIFY_USER = 0x0b,
+            CMD_SEARCH_USER = 0x0c,
+            CMD_GET_USER_ID = 0x2b
         };
 
         enum Acknowledgment : uint8_t {
