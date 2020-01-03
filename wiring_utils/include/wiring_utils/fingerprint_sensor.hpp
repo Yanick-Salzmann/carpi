@@ -84,7 +84,8 @@ namespace carpi::wiring {
         uint32_t user_count();
         std::vector<uint32_t> user_list();
 
-        int32_t match_user();
+        int32_t find_user();
+        bool match_user(uint32_t user_id);
     };
 }
 

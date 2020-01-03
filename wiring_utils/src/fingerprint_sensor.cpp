@@ -160,7 +160,7 @@ namespace carpi::wiring {
         return num_users;
     }
 
-    int32_t FingerprintSensor::match_user() {
+    int32_t FingerprintSensor::find_user() {
         write_packet(CMD_SEARCH_USER);
         uint32_t user_match = 0;
         if (!checked_command_response(CMD_SEARCH_USER, user_match)) {
@@ -222,5 +222,10 @@ namespace carpi::wiring {
         }
 
         return true;
+    }
+
+    bool FingerprintSensor::match_user(uint32_t user_id) {
+        write_packet(CMD_IDENTIFY_USER, static_cast<uint8_t>(user_id >> 8u), static_cast<uint8_t>(user_id & 0xFFu));
+        return checked_command_response(CMD_IDENTIFY_USER) != 0;
     }
 }
