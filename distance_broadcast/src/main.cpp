@@ -29,6 +29,7 @@ namespace carpi {
         log->info("Number of users: {}", (uint32_t) fps.user_count());
 
         if(fps.clear()) {
+            log->info("Number of users: {}", (uint32_t) fps.user_count());
             fps.enroll(1);
             log->info("Number of users: {}", (uint32_t) fps.user_count());
         } else {
