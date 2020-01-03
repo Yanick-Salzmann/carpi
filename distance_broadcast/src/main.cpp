@@ -32,6 +32,7 @@ namespace carpi {
         std::getline(std::cin, line);
         fps.enroll(static_cast<uint16_t>(std::stoul(line)));
         log->info("Number of users: {}", (uint32_t) fps.user_count());
+        fps.match_user();
 
         auto cfg = toml::parse("resources/config.toml");
         auto sensor_cfg = toml::find(cfg, "jsnsr04t");
