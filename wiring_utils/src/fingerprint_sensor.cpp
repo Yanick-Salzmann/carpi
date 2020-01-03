@@ -2,6 +2,7 @@
 #include <cstring>
 #include <unistd.h>
 #include <common_utils/error.hpp>
+#include <common_utils/conversion.hpp>
 #include "wiring_utils/fingerprint_sensor.hpp"
 
 namespace carpi::wiring {
@@ -24,7 +25,7 @@ namespace carpi::wiring {
         full_data[full_data.size() - 2] = generate_checksum(data);
         full_data[full_data.size() - 1] = END_OF_DATA;
 
-        log->info("Writing {} bytes (data part: {})", full_data.size(), data.size());
+        log->info(">>> Sending {}", data[0]);
 
         if (write(_sensor, full_data.data(), full_data.size()) != full_data.size()) {
             log->error("Error writing packet to fingerprint sensor: {} (errno={})", errno, utils::error_to_string());
@@ -57,7 +58,7 @@ namespace carpi::wiring {
             }
         }
 
-        log->info("Read {} bytes", ret.size());
+        log->info("Read {} bytes ({})", ret.size(), utils::bytes_to_hex(ret));
 
         return ret;
     }
