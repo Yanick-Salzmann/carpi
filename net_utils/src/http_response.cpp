@@ -1,4 +1,4 @@
-#include <spdlog/fmt/bundled/format.h>
+#include <spdlog/log.h>
 #include "net_utils/http_response.hpp"
 #include <sstream>
 
