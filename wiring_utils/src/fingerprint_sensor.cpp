@@ -64,6 +64,8 @@ namespace carpi::wiring {
             }
         }
 
+        log->info("Received {}", utils::bytes_to_hex(ret));
+
         return ret;
     }
 
