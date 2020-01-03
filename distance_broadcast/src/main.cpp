@@ -10,6 +10,7 @@
 #include <ipc_common/bluetooth_broadcast.hpp>
 #include <fstream>
 #include <wiring_utils/fingerprint_sensor.hpp>
+#include <spdlog/spdlog.h>
 
 bool is_interrupted = false;
 
@@ -28,7 +29,7 @@ namespace carpi {
         wiring::FingerprintSensor fps{argv[1], 19200};
         log->info("Number of users: {}", (uint32_t) fps.user_count());
 
-        log->info("User List: {}", fps.user_list());
+        log->info("User List: {}", fmt::join(fps.user_list(), ", "));
         fps.match_user();
 
         auto cfg = toml::parse("resources/config.toml");
