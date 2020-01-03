@@ -10,7 +10,6 @@ configure_file(resources/config.toml resources/config.toml)
 add_dependencies(distance_broadcast common_utils net_utils wiring_utils bluetooth_utils toml ipc_common)
 
 target_include_directories(distance_broadcast PUBLIC
-        ${CMAKE_SOURCE_DIR}/common_utils/include
         ${CMAKE_SOURCE_DIR}/net_utils/include
         ${CMAKE_SOURCE_DIR}/wiring_utils/include
         ${CMAKE_SOURCE_DIR}/bluetooth_utils/include
