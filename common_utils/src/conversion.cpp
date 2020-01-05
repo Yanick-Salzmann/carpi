@@ -54,4 +54,10 @@ namespace carpi::utils {
     std::string bytes_to_utf8(const std::vector<uint8_t> &bytes) {
         return std::string{bytes.begin(), bytes.end()};
     }
+
+    std::vector<uint8_t> base64_decode(const std::string &data) {
+        std::vector<uint8_t> ret_data{};
+        bn::decode_b64(data.begin(), data.end(), std::back_inserter(ret_data));
+        return ret_data;
+    }
 }

@@ -1,4 +1,6 @@
 [spotify.api]
 refresh_token="https://accounts.spotify.com/api/token"
+app_certificate="https://api.spotify.com/v1/widevine-license/v1/application-certificate"
+license_url="https://api.spotify.com/v1/melody/v1/license_url?keysystem=com.widevine.alpha&mediatype=audio&sdk_name=harmony&sdk_version=3.19.1"
 env_key_client_id="SPOTIFY_CLIENT_ID"
 env_key_client_secret="SPOTIFY_CLIENT_SECRET"

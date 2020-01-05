@@ -13,6 +13,8 @@ namespace carpi::spotify {
         load_dealer_url();
         load_refresh_token_url();
         load_application_key();
+        load_app_cert_url();
+        load_license_url();
     }
 
     void ApiGateway::load_dealer_url() {
@@ -72,5 +74,15 @@ namespace carpi::spotify {
         _client_secret = env_client_secret;
 
         log->info("Spotify client ID: {}", _client_id);
+    }
+
+    void ApiGateway::load_app_cert_url() {
+        _app_certificate_endpoint = toml::find<std::string>(_api_cfg, "app_certificate");
+        log->info("Using widevine application certificate URL: {}", _app_certificate_endpoint);
+    }
+
+    void ApiGateway::load_license_url() {
+        _license_endpoint = toml::find<std::string>(_api_cfg, "license_url");
+        log->info("Using widevine license server retrieval URL: {}", _license_endpoint);
     }
 }
