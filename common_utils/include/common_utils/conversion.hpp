@@ -15,6 +15,8 @@ namespace carpi::utils {
     std::vector<uint8_t> utf8_to_bytes(const std::string& str);
     std::string bytes_to_utf8(const std::vector<uint8_t>& bytes);
 
+    std::vector<uint8_t> base64_decode(const std::string& data);
+
     std::string base64_encode(const std::vector<uint8_t>& bytes);
     inline std::string base64_encode(const std::string& data) {
         return base64_encode(utf8_to_bytes(data));

@@ -11,6 +11,8 @@ namespace carpi::spotify {
 
         std::string _gew_dealer;
         std::string _auth_api;
+        std::string _app_certificate_endpoint;
+        std::string _license_endpoint;
 
         std::string _client_id{};
         std::string _client_secret{};
@@ -21,6 +23,8 @@ namespace carpi::spotify {
 
         void load_dealer_url();
         void load_refresh_token_url();
+        void load_app_cert_url();
+        void load_license_url();
 
         void load_application_key();
 
@@ -41,6 +45,14 @@ namespace carpi::spotify {
 
         [[nodiscard]] std::string client_secret() const {
             return _client_secret;
+        }
+
+        [[nodiscard]] std::string app_certificate_endpoint() const {
+            return _app_certificate_endpoint;
+        }
+
+        [[nodiscard]] std::string license_endpoint() const {
+            return _license_endpoint;
         }
     };
 }

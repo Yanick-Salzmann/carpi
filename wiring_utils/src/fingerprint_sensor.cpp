@@ -220,7 +220,7 @@ namespace carpi::wiring {
 
         if (response[1] != command) {
             log->warn("Expected opcode {} from FPC sensor, but received {}", command, response[1]);
-            return 0;
+            return false;
         }
 
         return true;

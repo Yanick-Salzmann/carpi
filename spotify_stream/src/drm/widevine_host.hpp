@@ -4,12 +4,19 @@
 #include "../cdm/content_decryption_module.hpp"
 
 namespace carpi::spotify::drm {
+    class WidevineAdapter;
+
     class WidevineHost : public cdm::Host_10 {
         cdm::ContentDecryptionModule_10* _module = nullptr;
+        WidevineAdapter* _adapter = nullptr;
 
     public:
         void module(cdm::ContentDecryptionModule_10* module) {
             _module = module;
+        }
+
+        void adapter(WidevineAdapter* adapter) {
+            _adapter = adapter;
         }
 
         cdm::Buffer *Allocate(uint32_t capacity) override;
