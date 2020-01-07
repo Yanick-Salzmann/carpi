@@ -23,6 +23,8 @@ _deps
 .idea/**/dictionaries
 .idea/**/shelf
 
+.idea/other.xml
+
 # Generated files
 .idea/**/contentModel.xml
 
