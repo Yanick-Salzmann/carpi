@@ -13,7 +13,10 @@ namespace carpi::spotify::drm {
     const std::string WIDEVINE_KEY_SYSTEM{"com.widevine.alpha"};
 
     WidevineAdapter::WidevineAdapter(std::string access_token) : _access_token{std::move(access_token)} {
-        _cdm_library = dlopen("/opt/google/chrome/WidevineCdm/_platform_specific/linux_x64/libwidevinecdm.so", RTLD_NOW);
+        const auto widevine_module = toml::find<std::string>(toml::find(toml::parse("resources/config.toml"), "widevine"), "library");
+        log->info("Loading widevine from {}", widevine_module);
+
+        _cdm_library = dlopen(widevine_module.c_str(), RTLD_NOW);
         _create_cdm_instance = (decltype(_create_cdm_instance)) dlsym(_cdm_library, "CreateCdmInstance");
         const auto cdm = _create_cdm_instance(cdm::ContentDecryptionModule_10::kVersion, WIDEVINE_KEY_SYSTEM.c_str(), static_cast<uint32_t>(WIDEVINE_KEY_SYSTEM.size()), WidevineAdapter::create_cdm_host, this);
         _cdm = (cdm::ContentDecryptionModule_10 *) cdm;
@@ -98,7 +101,7 @@ namespace carpi::spotify::drm {
                     std::string id{session_id, session_id + size};
                     {
                         std::lock_guard<std::mutex> l{_session_lock};
-                        _active_sessions.emplace(id, std::make_shared<WidevineSession>(id));
+                        _active_sessions.emplace(id, std::make_shared<WidevineSession>(id, _license_server));
                     }
 
                     return id;

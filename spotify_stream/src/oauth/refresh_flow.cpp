@@ -18,7 +18,10 @@ namespace carpi::spotify::oauth {
     }
 
     toml::value RefreshFlow::parse_config() {
-        return toml::parse("resources/spotify.toml");
+        const auto root_config = toml::parse("resources/config.toml");
+        const auto spotify_config = toml::find(root_config, "spotify");
+        const auto path = toml::find<std::string>(spotify_config, "credentials");
+        return toml::parse(path);
     }
 
     void RefreshFlow::update_config() {

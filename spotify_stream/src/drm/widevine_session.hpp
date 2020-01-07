@@ -8,9 +8,10 @@
 namespace carpi::spotify::drm {
     class WidevineSession {
         std::string _session_id{};
+        std::string _license_server_url;
 
     public:
-        explicit WidevineSession(std::string session_id) : _session_id{std::move(session_id)} {
+        explicit WidevineSession(std::string session_id, std::string license_server_url) : _session_id{std::move(session_id)}, _license_server_url{std::move(license_server_url)} {
 
         }
 

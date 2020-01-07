@@ -1,2 +1,5 @@
 [widevine]
 library="/opt/google/chrome/WidevineCdm/_platform_specific/linux_x64/libwidevinecdm.so"
+
+[spotify]
+credentials="/var/local/carpi/spotify/spotify.toml"
