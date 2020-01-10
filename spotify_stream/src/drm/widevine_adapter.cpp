@@ -46,7 +46,7 @@ namespace carpi::spotify::drm {
     }
 
     void WidevineAdapter::session_promise_resolved(uint32_t promise_id, const char *session_id, uint32_t session_id_size) {
-        std::packaged_task<std::string(const char *, uint32_t)> *session_task = nullptr;
+        std::packaged_task<std::string (const char*, uint32_t)>* session_task = nullptr;
         {
             std::lock_guard<std::mutex> l{_promise_lock};
             const auto itr = _session_promises.find(promise_id);
@@ -96,7 +96,7 @@ namespace carpi::spotify::drm {
 
         std::packaged_task<std::string(const char *, uint32_t)> task{
                 [this](const char *session_id, uint32_t size) {
-                    if (session_id == nullptr) {
+                    if(session_id == nullptr) {
                         return std::string{};
                     }
 
@@ -120,10 +120,10 @@ namespace carpi::spotify::drm {
             _session_promises.insert(std::make_pair<>(promise_id, &task));
         }
 
-        _cdm->CreateSessionAndGenerateRequest(promise_id, cdm::SessionType::kTemporary, cdm::InitDataType::kCenc, pssh_box.data(), static_cast<uint32_t>(pssh_box.size()));
+        _cdm->CreateSessionAndGenerateRequest(promise_id, cdm::SessionType::kTemporary, cdm::InitDataType::kCenc, pssh_box.data(), pssh_box.size());
 
         const auto session_id = promise.get();
-        if (session_id.empty()) {
+        if(session_id.empty()) {
             return nullptr;
         }
 
@@ -150,28 +150,22 @@ namespace carpi::spotify::drm {
 
     void WidevineAdapter::fetch_server_certificate() {
         net::HttpRequest req{"GET", sApiGateway->app_certificate_endpoint()};
-        req.add_header("Authorization", fmt::format("Bearer {}", _access_token))
-                .add_header("cache-control", "no-cache")
-                .add_header("referer", "https://sdk.scdn.co/embedded/index.html")
-                .add_header("pragma", "no-cache")
-                .add_header("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36");
-
+        req.add_header("Authorization", fmt::format("Bearer {}", _access_token));
 
         const auto response = _client.execute(req);
-        if (response.status_code() != 200) {
+        if(response.status_code() != 200) {
             log->error("Error fetching widevine application certificate: {} {} ({})", response.status_code(), response.status_text(), utils::bytes_to_utf8(response.body()));
             throw std::runtime_error{"Error getting widevine license certificate"};
         }
 
         const auto cert = response.body();
-        const auto hdr = response.header("content-length");
 
         uint32_t promise_id = 0;
         auto success = false;
-        std::packaged_task<void(bool)> task{
-                [&success](bool result) {
-                    success = result;
-                }
+        std::packaged_task<void (bool)> task{
+            [&success](bool result) {
+                success = result;
+            }
         };
 
         {
@@ -236,7 +230,7 @@ namespace carpi::spotify::drm {
         std::lock_guard<std::mutex> l{_license_server_lock};
         time_t cur_time{};
         time(&cur_time);
-        if (cur_time < _license_server_expiration) {
+        if(cur_time < _license_server_expiration) {
             return;
         }
 
