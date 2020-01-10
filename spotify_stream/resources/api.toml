@@ -2,5 +2,8 @@
 refresh_token="https://accounts.spotify.com/api/token"
 app_certificate="https://api.spotify.com/v1/widevine-license/v1/application-certificate"
 license_url="https://api.spotify.com/v1/melody/v1/license_url?keysystem=com.widevine.alpha&mediatype=audio&sdk_name=harmony&sdk_version=3.19.1"
+seektable_url="https://seektables.scdn.co/seektable"
+audio_cdn_prefix="https://api.spotify.com/v1/storage-resolve/files/audio/interactive"
+audio_cdn_suffix="?version=10000000&product=9&platform=39&alt=json"
 env_key_client_id="SPOTIFY_CLIENT_ID"
 env_key_client_secret="SPOTIFY_CLIENT_SECRET"

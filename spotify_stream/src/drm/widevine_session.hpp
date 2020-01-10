@@ -19,6 +19,10 @@ namespace carpi::spotify::drm {
         std::string _license_server_url{};
         std::string _access_token{};
 
+        std::condition_variable _license_event{};
+        std::mutex _license_lock;
+        bool _has_license = false;
+
         WidevineAdapter *_adapter = nullptr;
 
         void forward_license_request(const std::vector<uint8_t> &data);
@@ -32,7 +36,11 @@ namespace carpi::spotify::drm {
 
         }
 
+        void on_license_updated();
+
         void handle_message(cdm::MessageType message_type, const std::vector<uint8_t> &data);
+
+        void wait_for_license();
     };
 }
 

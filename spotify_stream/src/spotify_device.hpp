@@ -4,6 +4,7 @@
 #include <string>
 #include <net_utils/http_client.hpp>
 #include <common_utils/log.hpp>
+#include "drm/widevine_adapter.hpp"
 
 namespace carpi::spotify {
     class SpotifyDevice {
@@ -16,6 +17,8 @@ namespace carpi::spotify {
 
         std::atomic_uint64_t _sequence_number;
 
+        drm::WidevineAdapter _drm_frontend;
+
         void verify_feature_flags();
         void enable_notifications();
         void create_device();
@@ -23,6 +26,10 @@ namespace carpi::spotify {
 
     public:
         explicit SpotifyDevice(std::string access_token, std::string connection_id);
+
+        drm::WidevineAdapter& drm_frontend() {
+            return _drm_frontend;
+        }
 
         uint64_t next_sequence_number() {
             return ++_sequence_number;

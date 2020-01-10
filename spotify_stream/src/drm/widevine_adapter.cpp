@@ -237,7 +237,7 @@ namespace carpi::spotify::drm {
         fetch_license_server_url();
     }
 
-    void WidevineAdapter::update_session(const std::string &session_id, const std::vector<uint8_t> &license_response) {
+    void WidevineAdapter::update_session(WidevineSession* session, const std::string &session_id, const std::vector<uint8_t> &license_response) {
         uint32_t promise_id = 0;
         auto success = false;
         std::packaged_task<void(bool)> task{
@@ -259,5 +259,10 @@ namespace carpi::spotify::drm {
         task.get_future().get();
 
         log->info("Updating widevine session with license data was {}", success ? "successful" : "not successful");
+        if(!success) {
+            throw std::runtime_error{"Widevine session handling failed"};
+        }
+
+        session->on_license_updated();
     }
 }

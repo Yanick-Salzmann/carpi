@@ -23,22 +23,36 @@ namespace carpi::spotify::drm {
 
     void WidevineSession::forward_license_request(const std::vector<uint8_t> &data) {
         std::thread{
-            [=]() {
-                std::this_thread::sleep_for(std::chrono::milliseconds{100});
-                net::HttpRequest request{"POST", _license_server_url};
-                request.add_header("Authorization", fmt::format("Bearer {}", _access_token))
-                        .byte_body(data);
+                [=]() {
+                    std::this_thread::sleep_for(std::chrono::milliseconds{100});
+                    net::HttpRequest request{"POST", _license_server_url};
+                    request.add_header("Authorization", fmt::format("Bearer {}", _access_token))
+                            .byte_body(data);
 
-                const auto response = _client.execute(request);
-                if(response.status_code() != 200) {
-                    log->error("Widevine license request not accepted by license server: {} {} ({})", response.status_code(), response.status_text(), utils::bytes_to_utf8(response.body()));
-                    throw std::runtime_error{"Error requesting widevine license"};
+                    const auto response = _client.execute(request);
+                    if (response.status_code() != 200) {
+                        log->error("Widevine license request not accepted by license server: {} {} ({})", response.status_code(), response.status_text(), utils::bytes_to_utf8(response.body()));
+                        throw std::runtime_error{"Error requesting widevine license"};
+                    }
+
+                    log->info("Successfully requested widevine license from license server");
+                    _adapter->update_session(this, _session_id, response.body());
                 }
-
-                log->info("Successfully requested widevine license from license server");
-                _adapter->update_session(_session_id, response.body());
-            }
         }.detach();
 
+    }
+
+    void WidevineSession::on_license_updated() {
+        {
+            std::lock_guard<std::mutex> l{_license_lock};
+            _has_license = true;
+        }
+
+        _license_event.notify_all();
+    }
+
+    void WidevineSession::wait_for_license() {
+        std::unique_lock l{_license_lock};
+        _license_event.wait(l, [=]() { return _has_license; });
     }
 }

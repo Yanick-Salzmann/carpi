@@ -10,7 +10,8 @@ namespace carpi::spotify {
 
     SpotifyDevice::SpotifyDevice(std::string access_token, std::string connection_id) :
             _connection_id{std::move(connection_id)},
-            _access_token{std::move(access_token)} {
+            _access_token{std::move(access_token)},
+            _drm_frontend{_access_token}{
         _device_id = utils::bytes_to_hex(utils::random_bytes(20));
 
         verify_feature_flags();

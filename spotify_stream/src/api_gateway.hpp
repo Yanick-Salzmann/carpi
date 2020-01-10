@@ -13,6 +13,10 @@ namespace carpi::spotify {
         std::string _auth_api;
         std::string _app_certificate_endpoint;
         std::string _license_endpoint;
+        std::string _seektable_url;
+
+        std::string _audio_cdn_prefix;
+        std::string _audio_cdn_suffix;
 
         std::string _client_id{};
         std::string _client_secret{};
@@ -25,6 +29,8 @@ namespace carpi::spotify {
         void load_refresh_token_url();
         void load_app_cert_url();
         void load_license_url();
+        void load_seektable_url();
+        void load_audio_cdn();
 
         void load_application_key();
 
@@ -54,6 +60,12 @@ namespace carpi::spotify {
         [[nodiscard]] std::string license_endpoint() const {
             return _license_endpoint;
         }
+
+        [[nodiscard]] std::string seektable_endpoint() const {
+            return _seektable_url;
+        }
+
+        [[nodiscard]] std::string resolve_audio_file_cdn(const std::string& file_id);
     };
 }
 

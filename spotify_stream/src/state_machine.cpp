@@ -1,6 +1,8 @@
+#include <cstdint>
 #include "state_machine.hpp"
 #include "websocket_interface.hpp"
 #include "spotify_device.hpp"
+#include "media/media_player.hpp"
 
 namespace carpi::spotify {
     LOGGER_IMPL(StateMachine);
@@ -10,6 +12,7 @@ namespace carpi::spotify {
     StateMachine::StateMachine(SpotifyDevice &device, WebsocketInterface &wss) :
             _device{device},
             _wss{wss} {
+        _media_player = std::make_shared<media::MediaPlayer>(_device.access_token(), _device.drm_frontend());
         _wss.state_machine(this);
     }
 
@@ -52,6 +55,7 @@ namespace carpi::spotify {
         const std::string track_id = metadata["uri"];
         if (track_id != _current_track_id) {
             log->info("Switching to track {}", (std::string) metadata["name"]);
+            _media_player->play_song(active_track);
         }
 
         update_state(_current_state, paused);
