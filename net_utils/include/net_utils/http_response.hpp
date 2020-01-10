@@ -18,6 +18,10 @@ namespace carpi::net {
     public:
         HttpResponse(std::string status_line, std::multimap<std::string, std::string> headers, std::vector<uint8_t> body);
 
+        [[nodiscard]] std::string header(const std::string& key) const {
+            return _headers.lower_bound(key)->second;
+        }
+
         [[nodiscard]] std::string to_string() const;
 
         [[nodiscard]] const std::vector<uint8_t>& body() const {

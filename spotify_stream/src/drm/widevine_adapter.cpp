@@ -18,6 +18,8 @@ namespace carpi::spotify::drm {
 
         _cdm_library = dlopen(widevine_module.c_str(), RTLD_NOW);
         _create_cdm_instance = (decltype(_create_cdm_instance)) dlsym(_cdm_library, "CreateCdmInstance");
+        auto get_cdm_version = (decltype(GetCdmVersion) *) dlsym(_cdm_library, "GetCdmVersion");
+        log->info("Widevine Version: {}", get_cdm_version());
         const auto cdm = _create_cdm_instance(cdm::ContentDecryptionModule_10::kVersion, WIDEVINE_KEY_SYSTEM.c_str(), static_cast<uint32_t>(WIDEVINE_KEY_SYSTEM.size()), WidevineAdapter::create_cdm_host, this);
         _cdm = (cdm::ContentDecryptionModule_10 *) cdm;
 
@@ -25,7 +27,7 @@ namespace carpi::spotify::drm {
             _host->module(_cdm);
         }
 
-        _cdm->Initialize(true, true, false);
+        _cdm->Initialize(false, false, false);
 
         fetch_server_certificate();
         fetch_license_server_url();
@@ -44,7 +46,7 @@ namespace carpi::spotify::drm {
     }
 
     void WidevineAdapter::session_promise_resolved(uint32_t promise_id, const char *session_id, uint32_t session_id_size) {
-        std::packaged_task<std::string (const char*, uint32_t)>* session_task = nullptr;
+        std::packaged_task<std::string(const char *, uint32_t)> *session_task = nullptr;
         {
             std::lock_guard<std::mutex> l{_promise_lock};
             const auto itr = _session_promises.find(promise_id);
@@ -56,14 +58,14 @@ namespace carpi::spotify::drm {
             _session_promises.erase(itr);
         }
 
-        if(session_task) {
+        if (session_task) {
             (*session_task)(session_id, session_id_size);
         }
     }
 
     void WidevineAdapter::promise_failed(uint32_t promise_id, cdm::Exception exception, uint32_t system_code, const char *error_message, uint32_t error_message_size) {
-        std::packaged_task<void(bool)>* generic_task = nullptr;
-        std::packaged_task<std::string (const char*, uint32_t)>* session_task = nullptr;
+        std::packaged_task<void(bool)> *generic_task = nullptr;
+        std::packaged_task<std::string(const char *, uint32_t)> *session_task = nullptr;
 
         {
             std::lock_guard<std::mutex> l{_promise_lock};
@@ -80,11 +82,11 @@ namespace carpi::spotify::drm {
             }
         }
 
-        if(session_task) {
+        if (session_task) {
             (*session_task)(nullptr, 0);
         }
 
-        if(generic_task) {
+        if (generic_task) {
             (*generic_task)(false);
         }
     }
@@ -94,14 +96,14 @@ namespace carpi::spotify::drm {
 
         std::packaged_task<std::string(const char *, uint32_t)> task{
                 [this](const char *session_id, uint32_t size) {
-                    if(session_id == nullptr) {
+                    if (session_id == nullptr) {
                         return std::string{};
                     }
 
                     std::string id{session_id, session_id + size};
                     {
                         std::lock_guard<std::mutex> l{_session_lock};
-                        _active_sessions.emplace(id, std::make_shared<WidevineSession>(id, _license_server));
+                        _active_sessions.emplace(id, std::make_shared<WidevineSession>(this, id, _license_server, _access_token));
                     }
 
                     return id;
@@ -118,10 +120,10 @@ namespace carpi::spotify::drm {
             _session_promises.insert(std::make_pair<>(promise_id, &task));
         }
 
-        _cdm->CreateSessionAndGenerateRequest(promise_id, cdm::SessionType::kTemporary, cdm::InitDataType::kCenc, pssh_box.data(), pssh_box.size());
+        _cdm->CreateSessionAndGenerateRequest(promise_id, cdm::SessionType::kTemporary, cdm::InitDataType::kCenc, pssh_box.data(), static_cast<uint32_t>(pssh_box.size()));
 
         const auto session_id = promise.get();
-        if(session_id.empty()) {
+        if (session_id.empty()) {
             return nullptr;
         }
 
@@ -136,7 +138,7 @@ namespace carpi::spotify::drm {
         {
             std::lock_guard<std::mutex> l{_session_lock};
             const auto itr = _active_sessions.find(sess_id);
-            if(itr == _active_sessions.end()) {
+            if (itr == _active_sessions.end()) {
                 return;
             }
 
@@ -148,22 +150,28 @@ namespace carpi::spotify::drm {
 
     void WidevineAdapter::fetch_server_certificate() {
         net::HttpRequest req{"GET", sApiGateway->app_certificate_endpoint()};
-        req.add_header("Authorization", fmt::format("Bearer {}", _access_token));
+        req.add_header("Authorization", fmt::format("Bearer {}", _access_token))
+                .add_header("cache-control", "no-cache")
+                .add_header("referer", "https://sdk.scdn.co/embedded/index.html")
+                .add_header("pragma", "no-cache")
+                .add_header("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36");
+
 
         const auto response = _client.execute(req);
-        if(response.status_code() != 200) {
+        if (response.status_code() != 200) {
             log->error("Error fetching widevine application certificate: {} {} ({})", response.status_code(), response.status_text(), utils::bytes_to_utf8(response.body()));
             throw std::runtime_error{"Error getting widevine license certificate"};
         }
 
         const auto cert = response.body();
+        const auto hdr = response.header("content-length");
 
         uint32_t promise_id = 0;
         auto success = false;
-        std::packaged_task<void (bool)> task{
-            [&success](bool result) {
-                success = result;
-            }
+        std::packaged_task<void(bool)> task{
+                [&success](bool result) {
+                    success = result;
+                }
         };
 
         {
@@ -175,7 +183,7 @@ namespace carpi::spotify::drm {
         _cdm->SetServerCertificate(promise_id, cert.data(), static_cast<uint32_t>(cert.size()));
 
         task.get_future().get();
-        if(!success) {
+        if (!success) {
             log->error("There was an error setting widevine server certificate");
             throw std::runtime_error{"Error setting widevine certificate"};
         }
@@ -184,7 +192,7 @@ namespace carpi::spotify::drm {
     }
 
     void WidevineAdapter::promise_resolved(uint32_t promise_id) {
-        std::packaged_task<void(bool)>* task = nullptr;
+        std::packaged_task<void(bool)> *task = nullptr;
         {
             std::lock_guard<std::mutex> l{_promise_lock};
 
@@ -206,7 +214,7 @@ namespace carpi::spotify::drm {
 
         const auto response = _client.execute(req);
         const auto content = utils::bytes_to_utf8(response.body());
-        if(response.status_code() != 200) {
+        if (response.status_code() != 200) {
             log->error("Error fetching widevine license server URL: {} {} ({})", response.status_code(), response.status_text(), content);
             throw std::runtime_error{"Error fetching widevine license server"};
         }
@@ -228,10 +236,34 @@ namespace carpi::spotify::drm {
         std::lock_guard<std::mutex> l{_license_server_lock};
         time_t cur_time{};
         time(&cur_time);
-        if(cur_time < _license_server_expiration) {
+        if (cur_time < _license_server_expiration) {
             return;
         }
 
         fetch_license_server_url();
+    }
+
+    void WidevineAdapter::update_session(const std::string &session_id, const std::vector<uint8_t> &license_response) {
+        uint32_t promise_id = 0;
+        auto success = false;
+        std::packaged_task<void(bool)> task{
+                [&success](bool result) {
+                    success = result;
+                }
+        };
+
+        {
+            std::lock_guard<std::mutex> l{_promise_lock};
+            promise_id = _promise_id_generator++;
+            _generic_promises.emplace(promise_id, &task);
+        }
+
+        log->info("Updating session with {} bytes", license_response.size());
+        _cdm->UpdateSession(promise_id, session_id.data(), static_cast<uint32_t>(session_id.size()),
+                            license_response.data(), static_cast<uint32_t>(license_response.size()));
+
+        task.get_future().get();
+
+        log->info("Updating widevine session with license data was {}", success ? "successful" : "not successful");
     }
 }

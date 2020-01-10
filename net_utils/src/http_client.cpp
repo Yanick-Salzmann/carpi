@@ -56,9 +56,9 @@ namespace carpi::net {
 
             const auto idx_colon = header_line.find(':');
             if (idx_colon == std::string::npos) {
-                state->response_headers.emplace(utils::trim(header_line), "");
+                state->response_headers.emplace(utils::to_lower(utils::trim(header_line)), "");
             } else {
-                state->response_headers.emplace(utils::trim(header_line.substr(0, idx_colon)), utils::trim(header_line.substr(idx_colon + 1)));
+                state->response_headers.emplace(utils::to_lower(utils::trim(header_line.substr(0, idx_colon))), utils::trim(header_line.substr(idx_colon + 1)));
             }
 
             return size * elements;
@@ -117,7 +117,7 @@ namespace carpi::net {
         }
 
         const auto resp = HttpResponse{state.status_line, state.response_headers, state.response};
-        log->debug("HTTP/1.1 {} {} >>> {} {}", request.method(), request.url(), resp.status_code(), resp.status_text());
+        log->debug("HTTP/1.1 {} {} >>> {} {} ({} bytes)", request.method(), request.url(), resp.status_code(), resp.status_text(), resp.body().size());
         return resp;
     }
 }

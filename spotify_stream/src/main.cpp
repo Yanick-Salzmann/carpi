@@ -18,7 +18,7 @@ namespace carpi {
         oauth::RefreshFlow refresh_flow;
 
         drm::WidevineAdapter adapter{refresh_flow.access_token()};
-        adapter.create_session(utils::base64_decode("AAAAU3Bzc2gAAAAA7e+LqXnWSs6jyCfc1R0h7QAAADMIARIQhxNwwQHRySyqCqkzPF2ntxoHc3BvdGlmeSIUhxNwwQHRySyqCqkzPF2nt9a6RPk="));
+        adapter.create_session(utils::base64_decode("AAAAU3Bzc2gAAAAA7e+LqXnWSs6jyCfc1R0h7QAAADMIARIQYw72lEd8cwk+AygyvJYhuxoHc3BvdGlmeSIUYw72lEd8cwk+AygyvJYhu+B3nV0="));
 
         WebsocketInterface wss_interface{refresh_flow.access_token()};
         wss_interface.wait_for_login();

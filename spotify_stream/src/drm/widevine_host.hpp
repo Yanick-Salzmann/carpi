@@ -2,11 +2,14 @@
 #define CARPI_WIDEVINE_HOST_HPP
 
 #include "../cdm/content_decryption_module.hpp"
+#include <common_utils/log.hpp>
 
 namespace carpi::spotify::drm {
     class WidevineAdapter;
 
     class WidevineHost : public cdm::Host_10 {
+        LOGGER;
+
         cdm::ContentDecryptionModule_10* _module = nullptr;
         WidevineAdapter* _adapter = nullptr;
 

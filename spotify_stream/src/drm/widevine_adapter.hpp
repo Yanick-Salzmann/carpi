@@ -56,6 +56,8 @@ namespace carpi::spotify::drm {
         void promise_failed(uint32_t promise_id, cdm::Exception exception, uint32_t system_code, const char *error_message, uint32_t error_message_size);
         void session_message(const char *session_id, uint32_t session_id_size, cdm::MessageType message_type, const char *message, uint32_t message_size);
 
+        void update_session(const std::string& session_id, const std::vector<uint8_t>& license_response);
+
         std::shared_ptr<WidevineSession> create_session(const std::vector<uint8_t>& pssh_box);
     };
 }

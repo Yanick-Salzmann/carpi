@@ -50,6 +50,11 @@ namespace carpi::net {
             _body = utils::utf8_to_bytes(value);
             return *this;
         }
+
+        HttpRequest& byte_body(const std::vector<uint8_t>& value) {
+            _body = value;
+            return *this;
+        }
     };
 }
 
