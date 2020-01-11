@@ -58,6 +58,8 @@ namespace carpi::spotify::drm {
 
         void update_session(WidevineSession* session, const std::string& session_id, const std::vector<uint8_t>& license_response);
 
+        void decrypt_for_session(const std::string& session_id, const std::vector<uint8_t>& data);
+
         std::shared_ptr<WidevineSession> create_session(const std::vector<uint8_t>& pssh_box);
     };
 }

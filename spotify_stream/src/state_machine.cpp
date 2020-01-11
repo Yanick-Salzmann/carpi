@@ -54,6 +54,7 @@ namespace carpi::spotify {
 
         const std::string track_id = metadata["uri"];
         if (track_id != _current_track_id) {
+            _current_track_id = track_id;
             log->info("Switching to track {}", (std::string) metadata["name"]);
             _media_player->play_song(active_track);
         }

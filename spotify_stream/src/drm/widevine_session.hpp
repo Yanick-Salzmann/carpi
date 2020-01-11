@@ -6,6 +6,7 @@
 #include "../cdm/content_decryption_module.hpp"
 #include <common_utils/log.hpp>
 #include <net_utils/http_client.hpp>
+#include <cstdint>
 
 namespace carpi::spotify::drm {
     class WidevineAdapter;
@@ -41,6 +42,8 @@ namespace carpi::spotify::drm {
         void handle_message(cdm::MessageType message_type, const std::vector<uint8_t> &data);
 
         void wait_for_license();
+
+        std::vector<uint8_t> decode_data(const std::vector<uint8_t>& encoded);
     };
 }
 

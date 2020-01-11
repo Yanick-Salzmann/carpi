@@ -4,6 +4,8 @@
 #include "../drm/widevine_adapter.hpp"
 #include "../drm/widevine_session.hpp"
 
+#include <common_utils/log.hpp>
+
 namespace carpi::spotify::media {
     struct MediaMetaData {
         std::string file_url;
@@ -18,11 +20,15 @@ namespace carpi::spotify::media {
     };
 
     class MediaSource {
+        LOGGER;
+
         net::HttpClient _client{};
 
         drm::WidevineAdapter& _drm_frontend;
         std::shared_ptr<drm::WidevineSession> _drm_session;
         MediaMetaData _meta_data;
+
+        void download_to_file();
 
     public:
         MediaSource(MediaMetaData meta_data, drm::WidevineAdapter& drm);

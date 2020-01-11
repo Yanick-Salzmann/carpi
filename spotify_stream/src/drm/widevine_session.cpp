@@ -25,6 +25,7 @@ namespace carpi::spotify::drm {
         std::thread{
                 [=]() {
                     std::this_thread::sleep_for(std::chrono::milliseconds{100});
+
                     net::HttpRequest request{"POST", _license_server_url};
                     request.add_header("Authorization", fmt::format("Bearer {}", _access_token))
                             .byte_body(data);
@@ -39,7 +40,6 @@ namespace carpi::spotify::drm {
                     _adapter->update_session(this, _session_id, response.body());
                 }
         }.detach();
-
     }
 
     void WidevineSession::on_license_updated() {
@@ -54,5 +54,9 @@ namespace carpi::spotify::drm {
     void WidevineSession::wait_for_license() {
         std::unique_lock l{_license_lock};
         _license_event.wait(l, [=]() { return _has_license; });
+    }
+
+    std::vector<uint8_t> WidevineSession::decode_data(const std::vector<uint8_t> &encoded) {
+        _adapter->decrypt_for_session(_session_id, encoded);
     }
 }
