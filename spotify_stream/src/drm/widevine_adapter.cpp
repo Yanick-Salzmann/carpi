@@ -1,5 +1,6 @@
 #include <dlfcn.h>
 #include <nlohmann/json.hpp>
+#include <cstring>
 #include "widevine_adapter.hpp"
 #include "widevine_host.hpp"
 #include "widevine_session.hpp"
@@ -266,7 +267,57 @@ namespace carpi::spotify::drm {
         session->on_license_updated();
     }
 
-    void WidevineAdapter::decrypt_for_session(const std::string &session_id, const std::vector<uint8_t> &data) {
-        cdm::InputBuffer_2 ib;
+    void WidevineAdapter::decrypt(uuid_t key_id, const void *iv, std::size_t iv_size, const void *encrypted, std::size_t encrypted_size, std::vector<uint8_t> &decrypted) {
+        cdm::InputBuffer_2 buffer{};
+        buffer.iv_size = static_cast<uint32_t>(iv_size);
+        buffer.iv = (const uint8_t *) iv;
+        buffer.data = (const uint8_t *) encrypted;
+        buffer.data_size = static_cast<uint32_t>(encrypted_size);
+        buffer.encryption_scheme = cdm::EncryptionScheme::kCenc;
+        buffer.key_id = key_id;
+        buffer.key_id_size = sizeof(uuid_t);
+        buffer.num_subsamples = 0;
+
+        class DecryptionBuffer : public cdm::DecryptedBlock {
+            cdm::Buffer* _buffer = nullptr;
+            int64_t _timestamp = 0;
+
+        public:
+            void SetDecryptedBuffer(cdm::Buffer *buffer) override {
+                _buffer = buffer;
+            }
+
+            cdm::Buffer *DecryptedBuffer() override {
+                return _buffer;
+            }
+
+            void SetTimestamp(int64_t timestamp) override {
+                _timestamp = timestamp;
+            }
+
+            [[nodiscard]] int64_t Timestamp() const override {
+                return _timestamp;
+            }
+
+            void apply(std::vector<uint8_t>& out_data) {
+                if(_buffer == nullptr || !_buffer->Size()) {
+                    out_data.resize(0);
+                    return;
+                }
+
+                out_data.resize(_buffer->Size());
+                memcpy(out_data.data(), _buffer->Data(), _buffer->Size());
+            }
+        };
+
+        DecryptionBuffer out_buffer{};
+        const auto status = _cdm->Decrypt(buffer, &out_buffer);
+        if(status != cdm::kSuccess) {
+            log->error("Error decrypting data: {}", status);
+            throw std::runtime_error{"Error decrypting data"};
+        }
+
+        out_buffer.apply(decrypted);
+        _host->free_buffer(out_buffer.DecryptedBuffer());
     }
 }

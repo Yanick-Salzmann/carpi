@@ -22,6 +22,8 @@ namespace carpi::spotify::drm {
             _adapter = adapter;
         }
 
+        void free_buffer(cdm::Buffer* buffer);
+
         cdm::Buffer *Allocate(uint32_t capacity) override;
 
         void SetTimer(int64_t delay_ms, void *context) override;

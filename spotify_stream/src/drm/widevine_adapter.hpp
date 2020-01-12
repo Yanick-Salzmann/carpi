@@ -11,6 +11,7 @@
 #include <deque>
 #include <net_utils/http_client.hpp>
 #include <common_utils/log.hpp>
+#include <uuid/uuid.h>
 
 namespace carpi::spotify::drm {
     class WidevineHost;
@@ -58,7 +59,7 @@ namespace carpi::spotify::drm {
 
         void update_session(WidevineSession* session, const std::string& session_id, const std::vector<uint8_t>& license_response);
 
-        void decrypt_for_session(const std::string& session_id, const std::vector<uint8_t>& data);
+        void decrypt(uuid_t key_id, const void* iv, std::size_t iv_size, const void* encrypted, std::size_t encrypted_size, std::vector<uint8_t>& decrypted);
 
         std::shared_ptr<WidevineSession> create_session(const std::vector<uint8_t>& pssh_box);
     };

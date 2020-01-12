@@ -56,7 +56,7 @@ namespace carpi::spotify::drm {
         _license_event.wait(l, [=]() { return _has_license; });
     }
 
-    std::vector<uint8_t> WidevineSession::decode_data(const std::vector<uint8_t> &encoded) {
-        _adapter->decrypt_for_session(_session_id, encoded);
+    void WidevineSession::decrypt_sample(uuid_t key_id, const void* iv, std::size_t iv_size, const void* encrypted, std::size_t encrypted_size, std::vector<uint8_t>& decrypted) {
+        _adapter->decrypt(key_id, iv, iv_size, encrypted, encrypted_size, decrypted);
     }
 }

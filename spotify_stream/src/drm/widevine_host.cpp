@@ -42,7 +42,6 @@ namespace carpi::spotify::drm {
             return static_cast<uint32_t>(_buffer_size);
         }
 
-    protected:
         ~FixedBuffer() override = default;
     };
 
@@ -132,7 +131,6 @@ namespace carpi::spotify::drm {
 
 
     cdm::Buffer *WidevineHost::Allocate(uint32_t capacity) {
-        log->info("Allocating buffer of size {}", capacity);
         return new FixedBuffer{capacity};
     }
 
@@ -226,5 +224,9 @@ namespace carpi::spotify::drm {
 
     void WidevineHost::RequestStorageId(uint32_t version) {
 
+    }
+
+    void WidevineHost::free_buffer(cdm::Buffer *buffer) {
+        delete (FixedBuffer*) buffer;
     }
 }

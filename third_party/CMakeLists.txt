@@ -3,9 +3,9 @@ project(third_party)
 
 include(ExternalProject)
 
-set(SPDLOG_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/spdlog)
-set(JSON_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/json)
-set(TOML_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/toml)
+set(SPDLOG_ROOT ${CMAKE_CURRENT_BINARY_DIR}/spdlog)
+set(JSON_ROOT ${CMAKE_CURRENT_BINARY_DIR}/json)
+set(TOML_ROOT ${CMAKE_CURRENT_BINARY_DIR}/toml)
 
 ExternalProject_Add(
         spdlog

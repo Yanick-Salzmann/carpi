@@ -7,6 +7,10 @@
 #include <common_utils/log.hpp>
 #include <net_utils/http_client.hpp>
 #include <cstdint>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <uuid/uuid.h>
 
 namespace carpi::spotify::drm {
     class WidevineAdapter;
@@ -43,7 +47,7 @@ namespace carpi::spotify::drm {
 
         void wait_for_license();
 
-        std::vector<uint8_t> decode_data(const std::vector<uint8_t>& encoded);
+        void decrypt_sample(uuid_t key_id, const void* iv, std::size_t iv_size, const void* encrypted, std::size_t encrypted_size, std::vector<uint8_t>& decrypted);
     };
 }
 

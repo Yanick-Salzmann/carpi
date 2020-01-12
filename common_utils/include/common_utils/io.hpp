@@ -70,10 +70,9 @@ namespace carpi::utils {
 
         template<typename T, typename E = little_endian_policy>
         T read() {
-            static E policy;
             T ret{};
             read(&ret, sizeof ret);
-            policy(&ret, sizeof ret);
+            E()(&ret, sizeof ret);
             return ret;
         }
 
@@ -84,9 +83,8 @@ namespace carpi::utils {
 
         template<typename T, typename E = little_endian_policy>
         BinaryReader &read(T &value) {
-            static E policy;
             auto& ret = read(&value, sizeof value);
-            policy(&value, sizeof value);
+            E()(&value, sizeof value);
             return ret;
         }
 
