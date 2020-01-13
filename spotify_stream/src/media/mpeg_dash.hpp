@@ -164,7 +164,10 @@ namespace carpi::spotify::media {
         }
 
         void write_movie_header(FILE* file);
+        void write_movie_header(std::vector<uint8_t>& buffer);
+
         void write_movie_data(FILE* f, bool header_only = false);
+        void write_movie_data(std::vector<uint8_t>& buffer, bool header_only = false);
     };
 }
 

@@ -387,4 +387,22 @@ namespace carpi::spotify::media {
             fwrite(_movie_data.data(), 1, _movie_data.size(), f);
         }
     }
+
+    void MpegDashSegment::write_movie_header(std::vector<uint8_t> &buffer) {
+        uint32_t signature = MAKEFOURCC('m', 'o', 'o', 'f');
+        uint32_t size = htonl(static_cast<uint32_t>(_movie_header.size()) + 8);
+        buffer.insert(buffer.end(), (uint8_t*) &size, ((uint8_t*) &size) + 4);
+        buffer.insert(buffer.end(), (uint8_t*) &signature, ((uint8_t*) &signature) + 4);
+        buffer.insert(buffer.end(), _movie_header.begin(), _movie_header.end());
+    }
+
+    void MpegDashSegment::write_movie_data(std::vector<uint8_t> &buffer, bool header_only) {
+        uint32_t signature = MAKEFOURCC('m', 'd', 'a', 't');
+        uint32_t size = htonl(static_cast<uint32_t>(_movie_data.size()) + 8);
+        buffer.insert(buffer.end(), (uint8_t*) &size, ((uint8_t*) &size) + 4);
+        buffer.insert(buffer.end(), (uint8_t*) &signature, ((uint8_t*) &signature) + 4);
+        if(!header_only) {
+            buffer.insert(buffer.end(), _movie_data.begin(), _movie_data.end());
+        }
+    }
 }

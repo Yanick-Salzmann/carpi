@@ -3,6 +3,7 @@
 
 #include "../drm/widevine_adapter.hpp"
 #include "../drm/widevine_session.hpp"
+#include "mpeg_dash.hpp"
 
 #include <common_utils/log.hpp>
 
@@ -28,10 +29,22 @@ namespace carpi::spotify::media {
         std::shared_ptr<drm::WidevineSession> _drm_session;
         MediaMetaData _meta_data;
 
-        void download_to_file();
+        std::vector<std::pair<std::size_t, std::size_t>> _segment_table{};
+
+        std::vector<uint8_t> _header_data{};
+        std::shared_ptr<MpegDashHeader> _header{};
+
+        bool _header_delivered = false;
+        std::size_t _segment_index = 0;
+
+        void load_header();
+
+        std::vector<uint8_t> read_next_segment();
 
     public:
         MediaSource(MediaMetaData meta_data, drm::WidevineAdapter& drm);
+
+        std::vector<uint8_t> read_next_data();
     };
 }
 

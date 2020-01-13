@@ -5,6 +5,7 @@
 #include "spotify_device.hpp"
 #include "state_machine.hpp"
 #include "drm/widevine_adapter.hpp"
+#include "media/fmod_output.hpp"
 #include <common_utils/log.hpp>
 
 namespace carpi {
@@ -13,6 +14,7 @@ namespace carpi {
 
         utils::Logger log{"main"};
 
+        sFmodSystem->print_version();
 
         sApiGateway->load_urls();
         oauth::RefreshFlow refresh_flow;
