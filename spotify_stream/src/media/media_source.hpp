@@ -35,16 +35,29 @@ namespace carpi::spotify::media {
         std::shared_ptr<MpegDashHeader> _header{};
 
         bool _header_delivered = false;
+        bool _first_segment = true;
+
         std::size_t _segment_index = 0;
+        std::size_t _sample_index = 0;
+
+        std::size_t _seek_position = 0;
 
         void load_header();
+
+        void load_first_segment();
+
+        std::vector<uint8_t> fetch_segment_data(std::size_t index);
 
         std::vector<uint8_t> read_next_segment();
 
     public:
-        MediaSource(MediaMetaData meta_data, drm::WidevineAdapter& drm);
+        MediaSource(MediaMetaData meta_data, drm::WidevineAdapter& drm, std::size_t seek_offset);
 
         std::vector<uint8_t> read_next_data();
+
+        [[nodiscard]] std::size_t start_offset_samples() const {
+            return _sample_index;
+        }
     };
 }
 

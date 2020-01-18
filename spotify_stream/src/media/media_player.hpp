@@ -1,18 +1,11 @@
 #ifndef CARPI_MEDIA_PLAYER_HPP
 #define CARPI_MEDIA_PLAYER_HPP
 
-/**
- *   this._frontPaddingDuration = 1024 / 44100,
-     this._endPaddingDuration = (1024 - lastByteSize % 1024 + 2048) / n
-
-     segments = [ byte_size, time_size (/ timescale) ]
-     offset = first byte offset
- */
-
 #include "../drm/widevine_adapter.hpp"
 #include <nlohmann/json.hpp>
 #include <common_utils/log.hpp>
 #include "media_source.hpp"
+#include "fmod_output.hpp"
 
 namespace carpi::spotify::media {
     class MediaPlayer {
@@ -36,7 +29,7 @@ namespace carpi::spotify::media {
         std::shared_ptr<MediaSource> _media_source{};
 
         bool load_seek_table(const std::string& song_id);
-        void load_song_from_id(const std::string& song_id);
+        void load_song_from_id(const std::string& song_id, std::size_t seek_to);
 
         bool load_cdn(const std::string& song_id);
 
@@ -45,7 +38,7 @@ namespace carpi::spotify::media {
 
         }
 
-        void play_song(nlohmann::json track_data);
+        void play_song(nlohmann::json track_data, std::size_t seek_to);
     };
 }
 

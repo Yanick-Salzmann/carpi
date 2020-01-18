@@ -5,7 +5,7 @@
 namespace carpi::spotify::media {
 
     std::size_t SpotifyMediaStream::read(void *buffer, std::size_t size) {
-        if(_cur_segment_offset >= _segment_buffer.size()) {
+        if(_cur_segment_offset >= _segment_buffer.size() || _segment_buffer.empty()) {
             _segment_buffer = _media_source->read_next_data();
             if(_segment_buffer.empty()) {
                 return 0;
@@ -20,7 +20,7 @@ namespace carpi::spotify::media {
         if(_cur_segment_offset >= _segment_buffer.size()) {
             _segment_buffer = _media_source->read_next_data();
             if(_segment_buffer.empty()) {
-                return 0;
+                return to_read;
             }
 
             _cur_segment_offset = 0;

@@ -1,63 +1,65 @@
 #include "ffmpeg_converter.hpp"
 #include "media_stream.hpp"
+#include <common_utils/process.hpp>
+#include <algorithm>
+#include <unistd.h>
 
 namespace carpi::spotify::media {
     LOGGER_IMPL(FfmpegConverter);
 
-    int ffmpeg_read_callback(void *user_data, uint8_t *buf, int buf_size) {
-        return ((FfmpegConverter*) user_data)->handle_read_callback(buf, buf_size);
-    }
-
-    int ffmpeg_write_callback(void *user_data, uint8_t *buf, int buf_size) {
-        return ((FfmpegConverter*) user_data)->handle_write_callback(buf, buf_size);
-    }
-
     FfmpegConverter::FfmpegConverter(std::shared_ptr<MediaStream> upstream) : _upstream{std::move(upstream)} {
-        if(!_upstream->read_supported()) {
+        if (!_upstream->read_supported()) {
             log->error("FFMPEG input media stream does not support reading, this cannot work");
             throw std::runtime_error{"Input stream is not readable"};
         }
 
-        load_io_contexts();
-    }
+        _output_stream = std::make_shared<FfmpegConverterStream>();
 
-    void FfmpegConverter::load_io_contexts() {
-        _read_context = std::shared_ptr<AVIOContext>(
-                avio_alloc_context(
-                        _read_buffer,
-                        sizeof _read_buffer,
-                        0,
-                        this,
-                        ffmpeg_read_callback,
-                        nullptr,
-                        nullptr
-                ),
-                [](AVIOContext *ctx) {
-                    avio_context_free(&ctx);
+        auto sub_process = utils::launch_subprocess("ffmpeg", {"ffmpeg", "-hide_banner", "-loglevel", "error", "-i", "-", "-f", "s16le", "-acodec", "pcm_s16le", "-"});
+
+        _subprocess_threads.emplace_back(
+                [=]() {
+                    uint8_t buffer[8192]{};
+                    auto num_read = _upstream->read(buffer, sizeof buffer);
+                    while (num_read > 0) {
+                        write(sub_process.stdin_pipe, buffer, num_read);
+                        num_read = _upstream->read(buffer, sizeof buffer);
+                    }
+
+                    close(sub_process.stdin_pipe);
                 }
         );
 
-        _write_context = std::shared_ptr<AVIOContext>(
-                avio_alloc_context(
-                        _write_buffer,
-                        sizeof _write_buffer,
-                        1,
-                        this,
-                        nullptr,
-                        ffmpeg_write_callback,
-                        nullptr
-                ),
-                [](AVIOContext *ctx) {
-                    avio_context_free(&ctx);
+        _subprocess_threads.emplace_back(
+                [=]() {
+                    uint8_t buffer[8192]{};
+                    auto num_read = read(sub_process.stdout_pipe, buffer, 8192);
+                    while (num_read > 0) {
+                        _output_stream->write(buffer, static_cast<size_t>(num_read));
+                        num_read = read(sub_process.stdout_pipe, buffer, 8192);
+                    }
                 }
         );
+
+        _subprocess_threads.emplace_back(
+                [=]() {
+                    uint8_t buffer[8192]{};
+                    auto num_read = read(sub_process.stderr_pipe, buffer, 8192);
+                    while (num_read > 0) {
+                        fwrite(buffer, 1, static_cast<size_t>(num_read), stderr);
+                        num_read = read(sub_process.stderr_pipe, buffer, 8192);
+                    }
+                }
+        );
+
+        log->info("Conversion started");
     }
 
-    int FfmpegConverter::handle_read_callback(uint8_t *out_data, int size) {
-        return 0;
-    }
-
-    int FfmpegConverter::handle_write_callback(uint8_t *in_data, int size) {
-        return 0;
+    void FfmpegConverter::wait_for_completion() {
+        std::for_each(_subprocess_threads.begin(), _subprocess_threads.end(), [](std::thread &thread) {
+            if (thread.joinable()) {
+                thread.join();
+            }
+        });
     }
 }

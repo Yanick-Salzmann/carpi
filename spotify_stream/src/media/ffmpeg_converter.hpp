@@ -1,14 +1,11 @@
 #ifndef CARPI_FFMPEG_CONVERTER_HPP
 #define CARPI_FFMPEG_CONVERTER_HPP
 
-extern "C" {
-#include <libavcodec/avcodec.h>
-#include <libavformat/avio.h>
-#include <libavformat/avformat.h>
-};
-
 #include <memory>
+#include <vector>
+#include <thread>
 #include <common_utils/log.hpp>
+#include "ffmpeg_converter_stream.hpp"
 
 namespace carpi::spotify::media {
     class MediaStream;
@@ -16,26 +13,19 @@ namespace carpi::spotify::media {
     class FfmpegConverter {
         LOGGER;
 
-        friend int ffmpeg_write_callback(void *, uint8_t *, int);
-
-        friend int ffmpeg_read_callback(void *, uint8_t *, int);
-
-        uint8_t _read_buffer[4096]{};
-        uint8_t _write_buffer[4096]{};
-
-        std::shared_ptr<AVIOContext> _read_context{};
-        std::shared_ptr<AVIOContext> _write_context{};
+        std::vector<std::thread> _subprocess_threads{};
 
         std::shared_ptr<MediaStream> _upstream;
-
-        int handle_read_callback(uint8_t *out_data, int size);
-
-        int handle_write_callback(uint8_t *in_data, int size);
-
-        void load_io_contexts();
+        std::shared_ptr<FfmpegConverterStream> _output_stream;
 
     public:
-        FfmpegConverter(std::shared_ptr<MediaStream> upstream);
+        explicit FfmpegConverter(std::shared_ptr<MediaStream> upstream);
+
+        void wait_for_completion();
+
+        [[nodiscard]] std::shared_ptr<FfmpegConverterStream> output_stream() const {
+            return _output_stream;
+        }
     };
 }
 

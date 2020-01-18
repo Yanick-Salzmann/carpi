@@ -1,6 +1,8 @@
 #include "../cdm/content_decryption_module.hpp"
 #include "media_player.hpp"
 #include "../api_gateway.hpp"
+#include "ffmpeg_converter.hpp"
+#include "spotify_media_stream.hpp"
 #include <cstdint>
 #include <nlohmann/json.hpp>
 #include <common_utils/string.hpp>
@@ -10,7 +12,7 @@ namespace carpi::spotify::media {
 
     using nlohmann::json;
 
-    void MediaPlayer::play_song(json track_data) {
+    void MediaPlayer::play_song(json track_data, std::size_t seek_to) {
         const auto manifest = track_data["manifest"];
         const auto file_ids = manifest["file_ids_mp4"];
 
@@ -31,10 +33,10 @@ namespace carpi::spotify::media {
             return;
         }
 
-        load_song_from_id(max_file_id);
+        load_song_from_id(max_file_id, seek_to);
     }
 
-    void MediaPlayer::load_song_from_id(const std::string &song_id) {
+    void MediaPlayer::load_song_from_id(const std::string &song_id, std::size_t seek_to) {
         if (!load_seek_table(song_id)) {
             return;
         }
@@ -50,8 +52,17 @@ namespace carpi::spotify::media {
                     .index_range = _index_range,
                     .segments = _segments
                 },
-                _drm_module
+                _drm_module,
+                seek_to
         );
+
+        std::thread{
+            [=]() {
+                FfmpegConverter converter{std::make_shared<SpotifyMediaStream>(_media_source)};
+                sFmodSystem->open_sound(converter.output_stream(), _media_source->start_offset_samples());
+                converter.wait_for_completion();
+            }
+        }.detach();
     }
 
     bool MediaPlayer::load_seek_table(const std::string &song_id) {
