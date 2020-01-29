@@ -60,7 +60,7 @@ namespace carpi::spotify::media {
         log->info("FMOD version: {}.{}.{}", product, major, minor);
     }
 
-    void FmodSystem::open_sound(std::shared_ptr<MediaStream> stream, std::size_t pcm_offset) {
+    void FmodSystem::open_sound(std::shared_ptr<MediaStream> stream, std::size_t pcm_offset, bool paused) {
         if (!stream->read_supported()) {
             log->warn("Stream is not readable");
             throw std::runtime_error{"Stream is not readable"};
@@ -96,7 +96,7 @@ namespace carpi::spotify::media {
             throw std::runtime_error{"Error creating sound"};
         }
 
-        error = _system->playSound(_active_sound, nullptr, false, &_active_channel);
+        error = _system->playSound(_active_sound, nullptr, paused, &_active_channel);
         if (error != FMOD_OK) {
             log_error(error, "FMOD::System::playSound");
             throw std::runtime_error{"Error playing sound"};
@@ -106,7 +106,24 @@ namespace carpi::spotify::media {
     void FmodSystem::main_loop() {
         while(_is_running) {
             _system->update();
+
+            if(_active_channel && _media_callback) {
+                auto is_playing = false;
+                _active_channel->isPlaying(&is_playing);
+                if(is_playing) {
+                    uint32_t position = 0;
+                    _active_channel->getPosition(&position, FMOD_TIMEUNIT_MS);
+                    _media_callback(position);
+                }
+            }
+
             std::this_thread::sleep_for(std::chrono::milliseconds{20});
+        }
+    }
+
+    void FmodSystem::paused(bool paused) {
+        if(_active_channel) {
+            _active_channel->setPaused(paused);
         }
     }
 }

@@ -12,7 +12,13 @@ namespace carpi::spotify::media {
 
     using nlohmann::json;
 
-    void MediaPlayer::play_song(json track_data, std::size_t seek_to) {
+    MediaPlayer::MediaPlayer(std::string access_token, drm::WidevineAdapter &drm) : _access_token{std::move(access_token)}, _drm_module{drm} {
+        sFmodSystem->register_media_system_update_callback([=](auto position) {
+            handle_media_stream_update(position, 0);
+        });
+    }
+
+    void MediaPlayer::play_song(json track_data, std::size_t seek_to, bool paused) {
         const auto manifest = track_data["manifest"];
         const auto file_ids = manifest["file_ids_mp4"];
 
@@ -33,10 +39,10 @@ namespace carpi::spotify::media {
             return;
         }
 
-        load_song_from_id(max_file_id, seek_to);
+        load_song_from_id(max_file_id, seek_to, paused);
     }
 
-    void MediaPlayer::load_song_from_id(const std::string &song_id, std::size_t seek_to) {
+    void MediaPlayer::load_song_from_id(const std::string &song_id, std::size_t seek_to, bool paused) {
         if (!load_seek_table(song_id)) {
             return;
         }
@@ -59,7 +65,7 @@ namespace carpi::spotify::media {
         std::thread{
             [=]() {
                 FfmpegConverter converter{std::make_shared<SpotifyMediaStream>(_media_source)};
-                sFmodSystem->open_sound(converter.output_stream(), _media_source->start_offset_samples());
+                sFmodSystem->open_sound(converter.output_stream(), _media_source->start_offset_samples(), paused);
                 converter.wait_for_completion();
             }
         }.detach();
@@ -115,5 +121,17 @@ namespace carpi::spotify::media {
         log->info("Audio file CDN URL: {}", _file_url);
 
         return true;
+    }
+
+    MediaPlayer &MediaPlayer::paused(bool is_paused) {
+        _is_paused = is_paused;
+        sFmodSystem->paused(is_paused);
+        return *this;
+    }
+
+    void MediaPlayer::handle_media_stream_update(std::size_t position, std::size_t duration) {
+        if(_media_position_callback) {
+            _media_position_callback(std::min(position, duration), duration);
+        }
     }
 }

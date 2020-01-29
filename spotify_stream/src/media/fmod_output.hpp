@@ -6,6 +6,7 @@
 #include <fmod_errors.h>
 #include <common_utils/log.hpp>
 #include <common_utils/singleton.hpp>
+#include <functional>
 
 namespace carpi::spotify::media {
     class MediaStream;
@@ -16,11 +17,13 @@ namespace carpi::spotify::media {
         friend FMOD_RESULT pcm_read_data(FMOD_SOUND *sound, void *data, unsigned int datalen);
 
         FMOD::System *_system;
-        FMOD::Sound* _active_sound = nullptr;
-        FMOD::Channel* _active_channel = nullptr;
+        FMOD::Sound *_active_sound = nullptr;
+        FMOD::Channel *_active_channel = nullptr;
 
         std::thread _system_updater;
         bool _is_running = true;
+
+        std::function<void(std::size_t)> _media_callback{};
 
         std::shared_ptr<MediaStream> _active_stream = nullptr;
 
@@ -30,11 +33,18 @@ namespace carpi::spotify::media {
 
     public:
         FmodSystem();
+
         ~FmodSystem();
 
         void print_version();
 
-        void open_sound(std::shared_ptr<MediaStream> stream, std::size_t pcm_offset);
+        void open_sound(std::shared_ptr<MediaStream> stream, std::size_t pcm_offset, bool paused);
+
+        void paused(bool paused);
+
+        void register_media_system_update_callback(std::function<void(std::size_t)> callback) {
+            _media_callback = std::move(callback);
+        }
     };
 }
 
