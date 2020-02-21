@@ -6,7 +6,7 @@
 #include <vector>
 
 namespace carpi::net {
-    class HttpResponse {
+    class http_response {
         std::string _status_line;
         std::multimap<std::string, std::string> _headers;
         std::vector<uint8_t> _body;
@@ -16,7 +16,7 @@ namespace carpi::net {
         std::string _status_text;
 
     public:
-        HttpResponse(std::string status_line, std::multimap<std::string, std::string> headers, std::vector<uint8_t> body);
+        http_response(std::string status_line, std::multimap<std::string, std::string> headers, std::vector<uint8_t> body);
 
         [[nodiscard]] std::string header(const std::string& key) const {
             return _headers.lower_bound(key)->second;

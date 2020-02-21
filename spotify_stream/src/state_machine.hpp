@@ -17,7 +17,7 @@ namespace carpi::spotify {
     class StateMachine {
         LOGGER;
 
-        net::HttpClient _client;
+        net::http_client _client;
 
         SpotifyDevice &_device;
         WebsocketInterface &_wss;
@@ -35,7 +35,7 @@ namespace carpi::spotify {
 
         void update_state(const std::string &state_id, bool paused);
 
-        net::HttpRequest create_request(const std::string &method, const std::string &path);
+        net::http_request create_request(const std::string &method, const std::string &path);
 
     public:
         StateMachine(SpotifyDevice &_device, WebsocketInterface &_wss);

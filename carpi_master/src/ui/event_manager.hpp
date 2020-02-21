@@ -15,7 +15,7 @@ namespace carpi::ui {
         }
     };
 
-    class EventManager : public utils::Singleton<EventManager> {
+    class EventManager : public utils::singleton<EventManager> {
         class EventHandler {
         public:
             virtual ~EventHandler() = default;

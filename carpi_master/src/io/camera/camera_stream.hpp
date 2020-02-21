@@ -9,7 +9,7 @@
 #include <memory>
 
 namespace carpi::io::camera {
-    class CameraStream : public utils::Singleton<CameraStream> {
+    class CameraStream : public utils::singleton<CameraStream> {
         LOGGER;
 
         const uint32_t CAMERA_WIDTH = video::RawCameraStream::calculate_width(352);

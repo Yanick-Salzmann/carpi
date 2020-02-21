@@ -13,12 +13,12 @@ namespace carpi::net {
     LOGGER_IMPL(WebsocketClient);
 
     WebsocketClient::WebsocketClient(const std::string &wss_address, std::function<void(const std::string &)> callback) :
-            _target_url{UrlParser::parse(wss_address)},
+            _target_url{url_parser::parse(wss_address)},
             _raw_address{wss_address},
             _packet_callback{std::move(callback)} {
         verify_wss_url();
 
-        _socket = std::make_shared<SslSocket>();
+        _socket = std::make_shared<ssl_socket>();
 
         const auto port = static_cast<uint16_t>(_target_url.port > 0 ? _target_url.port : 443);
         _socket->connect(_target_url.host, port);
@@ -53,7 +53,7 @@ namespace carpi::net {
     }
 
     void WebsocketClient::upgrade_connection() {
-        HttpRequest request{"GET", _raw_address};
+        http_request request{"GET", _raw_address};
         request.add_header("Connection", "Upgrade")
                 .add_header("Pragma", "no-cache")
                 .add_header("User-Agent", "carpi")

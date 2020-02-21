@@ -5,7 +5,7 @@
 
 namespace carpi::utils {
     template<typename T>
-    class Singleton {
+    class singleton {
     public:
         static std::shared_ptr<T> instance() {
             static auto instance = std::make_shared<T>();

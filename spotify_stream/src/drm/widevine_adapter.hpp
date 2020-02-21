@@ -20,7 +20,7 @@ namespace carpi::spotify::drm {
     class WidevineAdapter {
         LOGGER;
 
-        net::HttpClient _client{};
+        net::http_client _client{};
         std::string _access_token{};
 
         std::mutex _license_server_lock;

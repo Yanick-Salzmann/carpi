@@ -16,7 +16,7 @@
 #include "bluetooth_device.hpp"
 
 namespace carpi::bluetooth {
-    class BluetoothManager : public utils::Singleton<BluetoothManager> {
+    class BluetoothManager : public utils::singleton<BluetoothManager> {
         LOGGER;
 
         int32_t _device_id = 0;

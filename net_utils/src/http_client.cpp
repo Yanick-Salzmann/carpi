@@ -7,7 +7,7 @@
 
 namespace carpi::net {
     static std::once_flag _curl_once_flag;
-    LOGGER_IMPL(HttpClient);
+    LOGGER_IMPL(http_client);
 
     struct HttpClientState {
         std::string status_line{};
@@ -65,9 +65,10 @@ namespace carpi::net {
         }
     }
 
-    HttpClient::HttpClient() {
+    http_client::http_client() {
         std::call_once(_curl_once_flag, []() {
             curl_global_init(CURL_GLOBAL_ALL);
+            log->info("CURL version: {}", curl_version());
         });
 
         pthread_mutex_init(&_request_lock, nullptr);
@@ -83,11 +84,11 @@ namespace carpi::net {
         curl_easy_setopt(_curl, CURLOPT_ERRORBUFFER, _curl_error_buffer);
     }
 
-    HttpClient::~HttpClient() {
+    http_client::~http_client() {
         curl_easy_cleanup(_curl);
     }
 
-    HttpResponse HttpClient::execute(const HttpRequest &request) {
+    http_response http_client::execute(const http_request &request) {
         pthread_mutex_lock(&_request_lock);
         curl_slist *header_list = nullptr;
         try {
@@ -116,7 +117,7 @@ namespace carpi::net {
             throw std::runtime_error{"Error executing HTTP request"};
         }
 
-        const auto resp = HttpResponse{state.status_line, state.response_headers, state.response};
+        const auto resp = http_response{state.status_line, state.response_headers, state.response};
         log->debug("HTTP/1.1 {} {} >>> {} {} ({} bytes)", request.method(), request.url(), resp.status_code(), resp.status_text(), resp.body().size());
         return resp;
     }

@@ -56,4 +56,15 @@ namespace carpi::utils {
             parts[index] = value.substr(last_index);
         }
     }
+
+    std::string replace_all(const std::string &str, const char &chr, const char &replace) {
+        std::string ret = str;
+        auto next_pos = ret.find(chr);
+        while(next_pos != std::string::npos) {
+            ret[next_pos] = replace;
+            next_pos = ret.find(chr, next_pos + 1);
+        }
+
+        return ret;
+    }
 }

@@ -1,9 +1,9 @@
 #include "net_utils/url_parser.hpp"
 
 namespace carpi::net {
-    LOGGER_IMPL(UrlParser);
+    LOGGER_IMPL(url_parser);
 
-    Url UrlParser::parse(const std::string &address) {
+    parsed_url url_parser::parse(const std::string &address) {
         const auto url = curl_url();
         if (url == nullptr) {
             log->error("Error allocating CURL url parser instance");
@@ -28,11 +28,13 @@ namespace carpi::net {
           .path = to_string(url, CURLUPART_PATH),
           .query = to_string(url, CURLUPART_QUERY),
           .fragment = to_string(url, CURLUPART_FRAGMENT),
+#if LIBCURL_VERSION_MAJOR > 7 && LIBCURL_VERSION_MINOR >= 68
           .zone_id = to_string(url, CURLUPART_ZONEID)
+#endif
         };
     }
 
-    std::string UrlParser::to_string(CURLU *url, CURLUPart part) {
+    std::string url_parser::to_string(CURLU *url, CURLUPart part) {
         char* url_part = nullptr;
         const auto error_code = curl_url_get(url, part, &url_part, 0);
         if(error_code || !url_part) {
@@ -44,7 +46,7 @@ namespace carpi::net {
         return content;
     }
 
-    int32_t UrlParser::to_int32(CURLU *url, CURLUPart part) {
+    int32_t url_parser::to_int32(CURLU *url, CURLUPart part) {
         const auto str_value = to_string(url, part);
         if(str_value.empty()) {
             return -1;

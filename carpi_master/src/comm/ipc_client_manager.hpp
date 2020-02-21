@@ -15,7 +15,7 @@ namespace carpi::comm {
     class IpcConnection;
     typedef std::shared_ptr<IpcConnection> IpcConnectionPtr;
 
-    class IpcClientManager : public utils::Singleton<IpcClientManager> {
+    class IpcClientManager : public utils::singleton<IpcClientManager> {
         LOGGER;
 
         std::map<ipc::IpcType, IpcConnectionPtr> _connections;

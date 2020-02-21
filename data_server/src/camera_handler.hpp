@@ -19,7 +19,7 @@
 namespace carpi::data {
     class Range;
 
-    class CameraHandler : public utils::Singleton<CameraHandler> {
+    class CameraHandler : public utils::singleton<CameraHandler> {
         LOGGER;
 
         struct RangeRequest {

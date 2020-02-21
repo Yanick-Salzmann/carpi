@@ -4,9 +4,9 @@
 #include "net_utils/udp_multicast.hpp"
 
 namespace carpi::net {
-    LOGGER_IMPL(UdpMulticast);
+    LOGGER_IMPL(upd_multicast);
 
-    UdpMulticast::UdpMulticast(const std::string &address, uint16_t port, bool receiver) {
+    upd_multicast::upd_multicast(const std::string &address, uint16_t port, bool receiver) {
         _addr4.sin_family = AF_INET;
         _addr6.sin6_family = AF_INET6;
 
@@ -46,7 +46,7 @@ namespace carpi::net {
         }
     }
 
-    void UdpMulticast::bind_receiver(const in_addr &gaddr4, const in6_addr &gaddr6) {
+    void upd_multicast::bind_receiver(const in_addr &gaddr4, const in6_addr &gaddr6) {
         if (_addr_family == AF_INET) {
             if (bind(_socket, (const sockaddr *) &_addr4, sizeof _addr4) < 0) {
                 log->error("Error binding UDP socket: {} (errno={})", utils::error_to_string(errno), errno);
@@ -79,7 +79,7 @@ namespace carpi::net {
         }
     }
 
-    std::ptrdiff_t UdpMulticast::send_data(const std::vector<uint8_t> &data) {
+    std::ptrdiff_t upd_multicast::send_data(const std::vector<uint8_t> &data) {
         if (_addr_family == AF_INET) {
             return sendto(_socket, data.data(), data.size(), 0, (const sockaddr *) &_addr4, sizeof _addr4);
         } else {
@@ -87,11 +87,11 @@ namespace carpi::net {
         }
     }
 
-    std::ptrdiff_t UdpMulticast::read_data(std::vector<uint8_t> &data) {
+    std::ptrdiff_t upd_multicast::read_data(std::vector<uint8_t> &data) {
         return read_data(data.data(), data.size());
     }
 
-    std::ptrdiff_t UdpMulticast::read_data(void *buffer, std::size_t to_read) {
+    std::ptrdiff_t upd_multicast::read_data(void *buffer, std::size_t to_read) {
         if (_addr_family == AF_INET) {
             sockaddr_in remote_addr{};
             socklen_t remote_len = sizeof remote_addr;
@@ -103,7 +103,7 @@ namespace carpi::net {
         }
     }
 
-    void UdpMulticast::close() {
+    void upd_multicast::close() {
         ::close(_socket);
     }
 }

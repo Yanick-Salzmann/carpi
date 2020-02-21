@@ -6,7 +6,7 @@
 #include <toml.hpp>
 
 namespace carpi::spotify {
-    class ApiGateway : public utils::Singleton<ApiGateway> {
+    class ApiGateway : public utils::singleton<ApiGateway> {
         LOGGER;
 
         std::string _gew_dealer;

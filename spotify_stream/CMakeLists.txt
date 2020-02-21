@@ -8,7 +8,7 @@ configure_file(resources/config.toml resources/config.toml)
 
 find_package(FFmpeg REQUIRED)
 
-add_executable(spotify_stream src/main.cpp src/websocket_interface.hpp src/websocket_interface.cpp src/oauth/refresh_flow.hpp src/oauth/refresh_flow.cpp src/api_gateway.hpp src/api_gateway.cpp src/spotify_device.hpp src/spotify_device.cpp src/state_machine.hpp src/state_machine.cpp src/media/media_player.hpp src/media/media_player.cpp src/media/media_source.hpp src/media/media_source.cpp src/cdm/content_decryption_module.hpp src/cdm/content_decryption_module_export.hpp src/cdm/content_decryption_module_proxy.hpp src/drm/widevine_adapter.hpp src/drm/widevine_adapter.cpp src/drm/widevine_host.hpp src/drm/widevine_host.cpp src/drm/widevine_session.hpp src/drm/widevine_session.cpp src/media/mpeg_dash.hpp src/media/mpeg_dash.cpp src/media/media_stream.hpp src/media/media_stream.cpp src/media/fmod_output.hpp src/media/fmoud_output.cpp src/media/ffmpeg_converter.hpp src/media/ffmpeg_converter.cpp src/media/spotify_media_stream.hpp src/media/spotify_media_stream.cpp src/media/ffmpeg_converter_stream.hpp src/media/ffmpeg_converter_stream.cpp)
+add_executable(spotify_stream src/main.cpp src/websocket_interface.hpp src/websocket_interface.cpp src/oauth/refresh_flow.hpp src/oauth/refresh_flow.cpp src/api_gateway.hpp src/api_gateway.cpp src/spotify_device.hpp src/spotify_device.cpp src/state_machine.hpp src/state_machine.cpp src/media/media_player.hpp src/media/media_player.cpp src/media/media_source.hpp src/media/media_source.cpp src/cdm/content_decryption_module.hpp src/cdm/content_decryption_module_export.hpp src/cdm/content_decryption_module_proxy.hpp src/drm/widevine_adapter.hpp src/drm/widevine_adapter.cpp src/drm/widevine_host.hpp src/drm/widevine_host.cpp src/drm/widevine_session.hpp src/drm/widevine_session.cpp src/media/mpeg_dash.hpp src/media/mpeg_dash.cpp src/media/media_stream.hpp src/media/media_stream.cpp src/media/fmod_output.hpp src/media/fmoud_output.cpp src/media/ffmpeg_converter.hpp src/media/ffmpeg_converter.cpp src/media/spotify_media_stream.hpp src/media/spotify_media_stream.cpp src/media/ffmpeg_converter_stream.hpp src/media/ffmpeg_converter_stream.cpp src/media/track_downloader.cpp src/media/track_downloader.hpp src/web/playlist.hpp src/web/playlist.cpp src/web/web_api_accessor.hpp src/web/web_api_accessor.cpp)
 
 add_dependencies(spotify_stream net_utils toml json)
 
@@ -27,7 +27,8 @@ target_link_libraries(
         spotify_stream
         net_utils
         Threads::Threads
-        dl
+        ${CMAKE_DL_LIBS}
+        -lstdc++fs
         ${FFMPEG_LIBRARIES}
 )
 

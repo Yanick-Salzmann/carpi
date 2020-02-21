@@ -26,7 +26,7 @@ namespace carpi::spotify::drm {
                 [=]() {
                     std::this_thread::sleep_for(std::chrono::milliseconds{100});
 
-                    net::HttpRequest request{"POST", _license_server_url};
+                    net::http_request request{"POST", _license_server_url};
                     request.add_header("Authorization", fmt::format("Bearer {}", _access_token))
                             .byte_body(data);
 

@@ -7,12 +7,12 @@
 #include <common_utils/conversion.hpp>
 
 namespace carpi::net {
-    class HttpRequest {
+    class http_request {
         typedef std::multimap<std::string, std::string> header_map;
 
         std::string _method;
         std::string _raw_url;
-        Url _url;
+        parsed_url _url;
 
         std::vector<uint8_t> _body{};
 
@@ -23,7 +23,7 @@ namespace carpi::net {
         static std::string format_header_for_curl(header_map::const_iterator iterator);
 
     public:
-        HttpRequest(std::string method, const std::string& url);
+        http_request(std::string method, const std::string& url);
 
         [[nodiscard]] std::vector<uint8_t> send_data() const;
 
@@ -35,7 +35,7 @@ namespace carpi::net {
             return _raw_url;
         }
 
-        HttpRequest& add_header(const std::string& key, const std::string& value) {
+        http_request& add_header(const std::string& key, const std::string& value) {
             _headers.emplace(key, value);
             return *this;
         }
@@ -46,12 +46,12 @@ namespace carpi::net {
             return _body;
         }
 
-        HttpRequest& string_body(const std::string& value) {
+        http_request& string_body(const std::string& value) {
             _body = utils::utf8_to_bytes(value);
             return *this;
         }
 
-        HttpRequest& byte_body(const std::vector<uint8_t>& value) {
+        http_request& byte_body(const std::vector<uint8_t>& value) {
             _body = value;
             return *this;
         }

@@ -86,8 +86,8 @@ namespace carpi::spotify {
         const auto resp = _client.execute(req);
     }
 
-    net::HttpRequest StateMachine::create_request(const std::string &method, const std::string &path) {
-        return net::HttpRequest{method, fmt::format("https://api.spotify.com/v1/track-playback/v1/devices/{}/{}", _device.device_id(), path)}
+    net::http_request StateMachine::create_request(const std::string &method, const std::string &path) {
+        return net::http_request{method, fmt::format("https://api.spotify.com/v1/track-playback/v1/devices/{}/{}", _device.device_id(), path)}
                 .add_header("Authorization", fmt::format("Bearer {}", _device.access_token()));
     }
 

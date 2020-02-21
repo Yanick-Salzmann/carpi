@@ -150,7 +150,7 @@ namespace carpi::spotify::drm {
     }
 
     void WidevineAdapter::fetch_server_certificate() {
-        net::HttpRequest req{"GET", sApiGateway->app_certificate_endpoint()};
+        net::http_request req{"GET", sApiGateway->app_certificate_endpoint()};
         req.add_header("Authorization", fmt::format("Bearer {}", _access_token));
 
         const auto response = _client.execute(req);
@@ -204,7 +204,7 @@ namespace carpi::spotify::drm {
     }
 
     void WidevineAdapter::fetch_license_server_url() {
-        net::HttpRequest req{"GET", sApiGateway->license_endpoint()};
+        net::http_request req{"GET", sApiGateway->license_endpoint()};
         req.add_header("Authorization", fmt::format("Bearer {}", _access_token));
 
         const auto response = _client.execute(req);

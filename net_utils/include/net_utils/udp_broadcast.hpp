@@ -8,7 +8,7 @@
 #include <vector>
 
 namespace carpi::net {
-    class UdpBroadcast {
+    class udp_broadcast {
         LOGGER;
 
         int _socket = 0;
@@ -20,7 +20,7 @@ namespace carpi::net {
         void convert_to_receiver();
 
     public:
-        explicit UdpBroadcast(uint16_t port, bool receiver);
+        explicit udp_broadcast(uint16_t port, bool receiver);
 
         std::ptrdiff_t send_data(const std::vector<uint8_t>& data);
         std::ptrdiff_t read_data(std::vector<uint8_t>& data);

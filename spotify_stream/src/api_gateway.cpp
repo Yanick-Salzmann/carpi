@@ -22,8 +22,8 @@ namespace carpi::spotify {
     void ApiGateway::load_dealer_url() {
         using nlohmann::json;
 
-        net::HttpClient client{};
-        net::HttpRequest request{"GET", "https://apresolve.spotify.com/?type=dealer"};
+        net::http_client client{};
+        net::http_request request{"GET", "https://apresolve.spotify.com/?type=dealer"};
 
         const auto response = client.execute(request);
         auto body = response.body();

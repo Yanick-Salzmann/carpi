@@ -5,7 +5,7 @@
 #include <obd/ObdInterface.hpp>
 
 namespace carpi::io::obd {
-    class ObdConnectionManager : public utils::Singleton<ObdConnectionManager> {
+    class ObdConnectionManager : public utils::singleton<ObdConnectionManager> {
         std::shared_ptr<carpi::obd::ObdInterface> _connection;
 
     public:

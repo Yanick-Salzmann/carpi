@@ -6,7 +6,7 @@
 #include <curl/curl.h>
 
 namespace carpi::net {
-    struct Url {
+    struct parsed_url {
         std::string scheme;
         std::string user;
         std::string password;
@@ -19,15 +19,15 @@ namespace carpi::net {
         std::string zone_id;
     };
 
-    class UrlParser {
+    class url_parser {
         LOGGER;
 
         static std::string to_string(CURLU* url, CURLUPart part);
         static int32_t to_int32(CURLU* url, CURLUPart part);
     public:
-        UrlParser() = delete;
+        url_parser() = delete;
 
-        static Url parse(const std::string& url);
+        static parsed_url parse(const std::string& url);
     };
 }
 

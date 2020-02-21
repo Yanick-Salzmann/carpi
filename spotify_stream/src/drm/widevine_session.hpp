@@ -18,7 +18,7 @@ namespace carpi::spotify::drm {
     class WidevineSession {
         LOGGER;
 
-        net::HttpClient _client{};
+        net::http_client _client{};
 
         std::string _session_id{};
         std::string _license_server_url{};

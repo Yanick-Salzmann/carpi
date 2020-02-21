@@ -11,7 +11,7 @@
 namespace carpi::spotify::media {
     class MediaStream;
 
-    class FmodSystem : public utils::Singleton<FmodSystem> {
+    class FmodSystem : public utils::singleton<FmodSystem> {
         LOGGER;
 
         friend FMOD_RESULT pcm_read_data(FMOD_SOUND *sound, void *data, unsigned int datalen);

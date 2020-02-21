@@ -5,7 +5,7 @@
 #include <common_utils/log.hpp>
 
 namespace carpi::net {
-    class SslSocket {
+    class ssl_socket {
         LOGGER;
 
         bool _is_connected = false;
@@ -18,8 +18,8 @@ namespace carpi::net {
         void print_ssl_errors();
 
     public:
-        SslSocket();
-        ~SslSocket();
+        ssl_socket();
+        ~ssl_socket();
 
         void connect(const std::string& host, uint16_t port);
 
@@ -29,7 +29,7 @@ namespace carpi::net {
         void write(const void* buffer, std::size_t num_bytes);
 
         template<typename T>
-        SslSocket& write(T& value) {
+        ssl_socket& write(T& value) {
             write(&value, sizeof value);
             return *this;
         }

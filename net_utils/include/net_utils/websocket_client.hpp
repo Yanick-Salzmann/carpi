@@ -10,7 +10,7 @@
 #include <functional>
 
 namespace carpi::net {
-    class SslSocket;
+    class ssl_socket;
 
     class WebsocketClient {
         LOGGER;
@@ -19,9 +19,9 @@ namespace carpi::net {
 
         std::function<void (const std::string&)> _packet_callback;
 
-        Url _target_url;
+        parsed_url _target_url;
         std::string _raw_address;
-        std::shared_ptr<SslSocket> _socket;
+        std::shared_ptr<ssl_socket> _socket;
 
         std::thread _read_thread;
 

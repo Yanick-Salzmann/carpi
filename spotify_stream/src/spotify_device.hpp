@@ -10,7 +10,7 @@ namespace carpi::spotify {
     class SpotifyDevice {
         LOGGER;
 
-        net::HttpClient _client;
+        net::http_client _client;
         std::string _connection_id;
         std::string _access_token;
         std::string _device_id;

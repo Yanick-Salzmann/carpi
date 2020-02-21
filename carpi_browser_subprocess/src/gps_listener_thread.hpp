@@ -9,10 +9,10 @@
 #include <bluetooth_utils/bluetooth_connection.hpp>
 
 namespace carpi {
-    class GpsListenerThread : public utils::Singleton<GpsListenerThread> {
+    class GpsListenerThread : public utils::singleton<GpsListenerThread> {
         LOGGER;
 
-        std::shared_ptr<net::UdpMulticast> _multicast;
+        std::shared_ptr<net::upd_multicast> _multicast;
         std::shared_ptr<bluetooth::BluetoothConnection> _bluetooth_connection;
 
         bool _is_bluetooth_mode = false;

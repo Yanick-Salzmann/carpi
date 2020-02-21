@@ -9,7 +9,7 @@ namespace carpi::ipc {
     class NetBroadcast {
         LOGGER;
 
-        std::shared_ptr<net::UdpMulticast> _broadcast;
+        std::shared_ptr<net::upd_multicast> _broadcast;
 
     public:
         NetBroadcast(std::string address, uint16_t port);

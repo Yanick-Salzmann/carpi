@@ -6,6 +6,7 @@
 #include "mpeg_dash.hpp"
 
 #include <common_utils/log.hpp>
+#include <stdexcept>
 
 namespace carpi::spotify::media {
     struct MediaMetaData {
@@ -20,10 +21,16 @@ namespace carpi::spotify::media {
         std::vector<std::pair<std::size_t, std::size_t>> segments{};
     };
 
+    enum class seek_unit {
+        milliseconds,
+        seconds,
+        samples
+    };
+
     class MediaSource {
         LOGGER;
 
-        net::HttpClient _client{};
+        net::http_client _client{};
 
         drm::WidevineAdapter& _drm_frontend;
         std::shared_ptr<drm::WidevineSession> _drm_session;
@@ -35,7 +42,6 @@ namespace carpi::spotify::media {
         std::shared_ptr<MpegDashHeader> _header{};
 
         bool _header_delivered = false;
-        bool _first_segment = true;
 
         std::size_t _segment_index = 0;
         std::size_t _sample_index = 0;
@@ -43,8 +49,6 @@ namespace carpi::spotify::media {
         std::size_t _seek_position = 0;
 
         void load_header();
-
-        void load_first_segment();
 
         std::vector<uint8_t> fetch_segment_data(std::size_t index);
 
@@ -58,6 +62,8 @@ namespace carpi::spotify::media {
         [[nodiscard]] std::size_t start_offset_samples() const {
             return _sample_index;
         }
+
+        MediaSource& seek_position(std::size_t seek_position, seek_unit unit = seek_unit::milliseconds);
     };
 }
 

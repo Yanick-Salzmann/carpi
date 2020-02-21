@@ -4,11 +4,11 @@
 #include <common_utils/conversion.hpp>
 
 namespace carpi::net {
-    HttpRequest::HttpRequest(std::string method, const std::string &url) : _method(std::move(method)), _url(UrlParser::parse(url)), _raw_url(url) {
+    http_request::http_request(std::string method, const std::string &url) : _method(std::move(method)), _url(url_parser::parse(url)), _raw_url(url) {
 
     }
 
-    std::vector<uint8_t> HttpRequest::send_data() const {
+    std::vector<uint8_t> http_request::send_data() const {
 
 
         std::stringstream stream;
@@ -26,7 +26,7 @@ namespace carpi::net {
         return utils::utf8_to_bytes(stream.str());
     }
 
-    bool HttpRequest::has_header(const std::string &name) const {
+    bool http_request::has_header(const std::string &name) const {
         const auto name_lower = utils::to_lower(name);
         for(const auto& pair : _headers) {
             auto key_lower = utils::to_lower(pair.first);
@@ -38,7 +38,7 @@ namespace carpi::net {
         return false;
     }
 
-    void HttpRequest::configure_client(CURL *curl, curl_slist** header_list) const {
+    void http_request::configure_client(CURL *curl, curl_slist** header_list) const {
         curl_easy_setopt(curl, CURLOPT_URL, _raw_url.c_str());
 
         const auto lower_method = utils::to_lower(_method);
@@ -83,7 +83,7 @@ namespace carpi::net {
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, *header_list);
     }
 
-    std::string HttpRequest::format_header_for_curl(std::multimap<std::string, std::string>::const_iterator iterator) {
+    std::string http_request::format_header_for_curl(std::multimap<std::string, std::string>::const_iterator iterator) {
         const auto key = iterator->first;
         const auto value = iterator->second;
         if(value.empty()) {

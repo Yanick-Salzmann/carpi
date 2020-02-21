@@ -8,7 +8,7 @@
 #include <arpa/inet.h>
 
 namespace carpi::net {
-    class UdpMulticast {
+    class upd_multicast {
         LOGGER;
 
         int32_t _socket = 0;
@@ -20,7 +20,7 @@ namespace carpi::net {
         void bind_receiver(const in_addr& gaddr4, const in6_addr& gaddr6);
 
     public:
-        explicit UdpMulticast(const std::string& address, uint16_t port, bool receiver = false);
+        explicit upd_multicast(const std::string& address, uint16_t port, bool receiver = false);
 
         std::ptrdiff_t send_data(const std::vector<uint8_t>& data);
         std::ptrdiff_t read_data(std::vector<uint8_t>& data);

@@ -38,7 +38,7 @@ namespace carpi::ui::events {
         [[nodiscard]] nlohmann::json to_json() const;
     };
 
-    class BluetoothEvents : public utils::Singleton<BluetoothEvents> {
+    class BluetoothEvents : public utils::singleton<BluetoothEvents> {
         LOGGER;
 
         static BluetoothResponse fetch_devices();

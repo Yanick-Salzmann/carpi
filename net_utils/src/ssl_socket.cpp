@@ -10,11 +10,11 @@
 #include <unistd.h>
 
 namespace carpi::net {
-    LOGGER_IMPL(SslSocket);
+    LOGGER_IMPL(ssl_socket);
 
     static std::once_flag _ssl_socket_once_flag{};
 
-    SslSocket::SslSocket() {
+    ssl_socket::ssl_socket() {
         std::call_once(_ssl_socket_once_flag, [=]() {
             SSL_library_init();
             SSLeay_add_ssl_algorithms();
@@ -30,7 +30,7 @@ namespace carpi::net {
         }
     }
 
-    SslSocket::~SslSocket() {
+    ssl_socket::~ssl_socket() {
         if (_ssl != nullptr) {
             SSL_free(_ssl);
         }
@@ -42,7 +42,7 @@ namespace carpi::net {
         shutdown();
     }
 
-    void SslSocket::print_ssl_errors() {
+    void ssl_socket::print_ssl_errors() {
         std::stringstream stream;
         stream << "Error executing OpenSSL function:" << std::endl;
 
@@ -60,7 +60,7 @@ namespace carpi::net {
         log->error(stream.str());
     }
 
-    void SslSocket::connect(const std::string &host, uint16_t port) {
+    void ssl_socket::connect(const std::string &host, uint16_t port) {
         if (_is_connected) {
             log->warn("Socket is already connected");
             throw std::runtime_error{"Cannot connect socket multiple times"};
@@ -115,7 +115,7 @@ namespace carpi::net {
         }
     }
 
-    void SslSocket::write(const void *buffer, std::size_t num_bytes) {
+    void ssl_socket::write(const void *buffer, std::size_t num_bytes) {
         const auto rc = SSL_write(_ssl, buffer, static_cast<int32_t>(num_bytes));
         if (rc <= 0) {
             print_ssl_errors();
@@ -123,9 +123,8 @@ namespace carpi::net {
         }
     }
 
-    std::string SslSocket::to_string() {
-        sockaddr_in6* addr = (sockaddr_in6*) _remote_addr;
-
+    std::string ssl_socket::to_string() {
+        const auto* addr = (sockaddr_in6*) _remote_addr;
 
         std::stringstream stream;
         stream << "<SslSocket remote=";
@@ -155,7 +154,7 @@ namespace carpi::net {
         return stream.str();
     }
 
-    uint8_t SslSocket::read_one() {
+    uint8_t ssl_socket::read_one() {
         uint8_t ret{};
         const auto rc = SSL_read(_ssl, &ret, sizeof ret);
         if(rc <= 0) {
@@ -166,7 +165,7 @@ namespace carpi::net {
         return ret;
     }
 
-    void SslSocket::read_all(void *buffer, std::size_t num_bytes) {
+    void ssl_socket::read_all(void *buffer, std::size_t num_bytes) {
         auto cur_ptr = (uint8_t*) buffer;
         std::size_t to_read = num_bytes;
         while(to_read) {
@@ -181,7 +180,7 @@ namespace carpi::net {
         }
     }
 
-    void SslSocket::shutdown() {
+    void ssl_socket::shutdown() {
         if(_socket < 0) {
             return;
         }

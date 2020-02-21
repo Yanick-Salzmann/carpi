@@ -8,7 +8,7 @@
 #include <common_utils/log.hpp>
 
 namespace carpi::net {
-    class HttpClient {
+    class http_client {
         LOGGER;
 
         pthread_mutex_t _request_lock;
@@ -17,10 +17,10 @@ namespace carpi::net {
         CURL* _curl;
 
     public:
-        HttpClient();
-        ~HttpClient();
+        http_client();
+        ~http_client();
 
-        HttpResponse execute(const HttpRequest& request);
+        http_response execute(const http_request& request);
     };
 }
 

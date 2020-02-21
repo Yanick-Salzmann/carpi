@@ -3,7 +3,7 @@
 #include <sstream>
 
 namespace carpi::net {
-    HttpResponse::HttpResponse(std::string status_line, std::multimap<std::string, std::string> headers, std::vector<uint8_t> body) :
+    http_response::http_response(std::string status_line, std::multimap<std::string, std::string> headers, std::vector<uint8_t> body) :
             _status_line{std::move(status_line)},
             _headers{std::move(headers)},
             _body{std::move(body)} {
@@ -23,7 +23,7 @@ namespace carpi::net {
         _status_text = _status_line.substr(status_end + 1);
     }
 
-    std::string HttpResponse::to_string() const {
+    std::string http_response::to_string() const {
         std::stringstream header_stream;
         header_stream << "[";
 

@@ -48,7 +48,7 @@ namespace carpi::spotify {
         req_payload["volume"] = 65535;
         req_payload["client_version"] = "harmony:3.19.1-441cc8f";
 
-        net::HttpRequest req{"POST", "https://api.spotify.com/v1/track-playback/v1/devices"};
+        net::http_request req{"POST", "https://api.spotify.com/v1/track-playback/v1/devices"};
         req.add_header("Authorization", fmt::format("Bearer {}", _access_token))
                 .add_header("Content-Type", "application/json")
                 .add_header("Referer", "https://sdk.scdn.co/embedded/index.html")
@@ -73,7 +73,7 @@ namespace carpi::spotify {
     }
 
     void SpotifyDevice::enable_notifications() {
-        net::HttpRequest req{"PUT", fmt::format("https://api.spotify.com/v1/me/notifications/user?connection_id={}", _connection_id)};
+        net::http_request req{"PUT", fmt::format("https://api.spotify.com/v1/me/notifications/user?connection_id={}", _connection_id)};
         req.add_header("Content-Length", "0")
                 .add_header("Authorization", fmt::format("Bearer {}", _access_token));
 
@@ -85,7 +85,7 @@ namespace carpi::spotify {
     }
 
     void SpotifyDevice::setup_volume() {
-        net::HttpRequest req{"PUT", fmt::format("https://api.spotify.com/v1/track-playback/v1/devices/{}/volume", _device_id)};
+        net::http_request req{"PUT", fmt::format("https://api.spotify.com/v1/track-playback/v1/devices/{}/volume", _device_id)};
         req.add_header("Authorization", fmt::format("Bearer {}", _access_token))
                 .string_body(R"({"seq_num": null, "volume": 65535, "command_id": ""})");
 
@@ -97,12 +97,12 @@ namespace carpi::spotify {
     }
 
     void SpotifyDevice::verify_feature_flags() {
-        net::HttpRequest req{"GET", "https://api.spotify.com/v1/me/feature-flags?tests=tps_send_all_state_updates"};
+        net::http_request req{"GET", "https://api.spotify.com/v1/me/feature-flags?tests=tps_send_all_state_updates"};
         req.add_header("Authorization", fmt::format("Bearer {}", _access_token));
 
         _client.execute(req);
 
-        req = net::HttpRequest{"GET", "https://api.spotify.com/v1/melody/v1/check_scope?scope=web-playback"};
+        req = net::http_request{"GET", "https://api.spotify.com/v1/melody/v1/check_scope?scope=web-playback"};
         req.add_header("Authorization", fmt::format("Bearer {}", _access_token));
 
         _client.execute(req);

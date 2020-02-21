@@ -14,25 +14,7 @@ namespace carpi::spotify::media {
             cur_offset += pair.first;
         }
 
-        _seek_position = (std::size_t) (seek_offset * 44.1f); // seconds * 44100, but seek_offset is in milliseconds so milliseconds * 44.1
-        auto segment_found = false;
-        auto cur_time = 0;
-        for (auto i = std::size_t{0}; i < _meta_data.segments.size() - 1; ++i) {
-            const auto length = _meta_data.segments[i].second;
-            if (cur_time <= _seek_position && (cur_time + length) > _seek_position) {
-                segment_found = true;
-                _segment_index = i;
-                break;
-            }
-
-            cur_time += length;
-        }
-
-        if (!segment_found) {
-            _segment_index = static_cast<size_t>(-1);
-        } else {
-            _sample_index = (_seek_position - cur_time) / 1024;
-        }
+        seek_position(seek_offset, seek_unit::milliseconds);
     }
 
     std::vector<uint8_t> MediaSource::read_next_data() {
@@ -40,11 +22,6 @@ namespace carpi::spotify::media {
             load_header();
             _header_delivered = true;
             return _header_data;
-        }
-
-        if (_first_segment) {
-            load_first_segment();
-            _first_segment = false;
         }
 
         return read_next_segment();
@@ -97,7 +74,7 @@ namespace carpi::spotify::media {
 
     void MediaSource::load_header() {
         const auto resp = _client.execute(
-                net::HttpRequest{"GET", _meta_data.file_url}
+                net::http_request{"GET", _meta_data.file_url}
                         .add_header("Range", fmt::format("bytes=0-{}", _meta_data.offset - 1))
         );
 
@@ -116,18 +93,46 @@ namespace carpi::spotify::media {
         log->info("MP4 default encryption: {}", _header->default_ecrypted() ? "encrypted" : "not encrypted");
     }
 
-    void MediaSource::load_first_segment() {
-
-    }
-
     std::vector<uint8_t> MediaSource::fetch_segment_data(std::size_t index) {
         const auto &pair = _segment_table[index];
-        const auto data = _client.execute(net::HttpRequest{"GET", _meta_data.file_url}.add_header("Range", fmt::format("bytes={}-{}", pair.first, pair.first + pair.second - 1)));
+        const auto data = _client.execute(net::http_request{"GET", _meta_data.file_url}.add_header("Range", fmt::format("bytes={}-{}", pair.first, pair.first + pair.second - 1)));
         if (data.status_code() != 200 && data.status_code() != 206) {
             log->error("Error fetching MP4 segment: {} {} ({})", data.status_code(), data.status_text(), utils::bytes_to_utf8(data.body()));
             return {};
         }
 
         return data.body();
+    }
+
+    MediaSource &MediaSource::seek_position(std::size_t seek_position, seek_unit unit) {
+        if(unit == seek_unit::milliseconds) {
+            _seek_position =
+                    (std::size_t) (seek_position * 44.1f); // 44100 per second -> 44100 / 1000 per millisecond
+        } else if(unit == seek_unit::seconds) {
+            _seek_position = seek_position * 44100;
+        } else {
+            _seek_position = seek_position;
+        }
+
+        auto segment_found = false;
+        auto cur_time = 0;
+        for (auto i = std::size_t{0}; i < _meta_data.segments.size() - 1; ++i) {
+            const auto length = _meta_data.segments[i].second;
+            if (cur_time <= _seek_position && (cur_time + length) > _seek_position) {
+                segment_found = true;
+                _segment_index = i;
+                break;
+            }
+
+            cur_time += length;
+        }
+
+        if (!segment_found) {
+            _segment_index = static_cast<size_t>(-1);
+        } else {
+            _sample_index = (_seek_position - cur_time) / 1024;
+        }
+
+        return *this;
     }
 }

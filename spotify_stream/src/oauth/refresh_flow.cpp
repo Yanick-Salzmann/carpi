@@ -36,8 +36,8 @@ namespace carpi::spotify::oauth {
     }
 
     void RefreshFlow::generate_token() {
-        net::HttpClient client{};
-        net::HttpRequest req{"POST", sApiGateway->accounts_api()};
+        net::http_client client{};
+        net::http_request req{"POST", sApiGateway->accounts_api()};
         req.add_header("Authorization", fmt::format("Basic {}", utils::base64_encode(fmt::format("{}:{}", sApiGateway->client_id(), sApiGateway->client_secret()))))
                 .add_header("Accept", "application/json")
                 .add_header("Content-Type", "application/x-www-form-urlencoded")

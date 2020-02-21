@@ -4,9 +4,9 @@
 #include <arpa/inet.h>
 
 namespace carpi::net {
-    LOGGER_IMPL(UdpBroadcast);
+    LOGGER_IMPL(udp_broadcast);
 
-    UdpBroadcast::UdpBroadcast(uint16_t port, bool receiver) {
+    udp_broadcast::udp_broadcast(uint16_t port, bool receiver) {
         if(!get_broadcast_address(_address_family, _ip4_addr, _ip6_addr)) {
             log->error("Error fetching broadcast address");
             throw std::runtime_error{"Error getting broadcast address"};
@@ -31,7 +31,7 @@ namespace carpi::net {
         }
     }
 
-    std::ptrdiff_t UdpBroadcast::send_data(const std::vector<uint8_t> &data) {
+    std::ptrdiff_t udp_broadcast::send_data(const std::vector<uint8_t> &data) {
         if(_address_family == AF_INET) {
             return sendto(_socket, data.data(), data.size(), 0, (const sockaddr*) &_ip4_addr, sizeof _ip4_addr);
         } else {
@@ -39,11 +39,11 @@ namespace carpi::net {
         }
     }
 
-    std::ptrdiff_t UdpBroadcast::read_data(std::vector<uint8_t> &data) {
+    std::ptrdiff_t udp_broadcast::read_data(std::vector<uint8_t> &data) {
         return read_data(data.data(), data.size());
     }
 
-    void UdpBroadcast::convert_to_receiver() {
+    void udp_broadcast::convert_to_receiver() {
         const sockaddr* addr_ptr = nullptr;
         socklen_t len = 0;
         if(_address_family == AF_INET) {
@@ -62,7 +62,7 @@ namespace carpi::net {
         log->info("UDP broadcast bound to port: {}", htons(_ip4_addr.sin_port));
     }
 
-    std::ptrdiff_t UdpBroadcast::read_data(void *buffer, std::size_t to_read) {
+    std::ptrdiff_t udp_broadcast::read_data(void *buffer, std::size_t to_read) {
         if(_address_family == AF_INET) {
             sockaddr_in remote_addr{};
             socklen_t remote_len = sizeof remote_addr;

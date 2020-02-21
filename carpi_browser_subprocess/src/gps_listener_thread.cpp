@@ -32,7 +32,7 @@ namespace carpi {
             const auto udp_cfg = toml::find(gps_data_cfg, "udp");
             const auto bcast_address = toml::find<std::string>(udp_cfg, "address");
             const auto bcast_port = toml::find<uint16_t>(udp_cfg, "port");
-            _multicast = std::make_shared<net::UdpMulticast>(bcast_address, bcast_port, true);
+            _multicast = std::make_shared<net::upd_multicast>(bcast_address, bcast_port, true);
         }
     }
 
