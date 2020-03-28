@@ -11,6 +11,7 @@
 #include <fstream>
 #include <wiring_utils/fingerprint_sensor.hpp>
 #include <spdlog/spdlog.h>
+#include <wiring_utils/tm1637_display.hpp>
 
 bool is_interrupted = false;
 
@@ -26,13 +27,18 @@ namespace carpi {
         }
         utils::Logger log{"Main"};
 
-        wiring::FingerprintSensor fps{argv[1], 19200};
-        log->info("Number of users: {}", (uint32_t) fps.user_count());
+        wiring::tm1637_display display{11, 13};
+        display.brightness(7)
+                .turn_on();
 
-        log->info("User List: {}", fmt::join(fps.user_list(), ", "));
-        while(true) {
-            log->info("User 5 found: {}", fps.match_user(5));
-            std::this_thread::sleep_for(std::chrono::seconds{2});
+        std::string line{};
+        while(std::getline(std::cin, line)) {
+            const auto has_hex = std::find_if(line.begin(), line.end(), [](const auto& c) { return (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F'); }) != line.end();
+            if(!has_hex) {
+                display.show_number(static_cast<int16_t>(std::stoul(line)));
+            } else {
+                display.show_hex_number(static_cast<uint16_t>(std::stoul(line, nullptr, 16)));
+            }
         }
 
         auto cfg = toml::parse("resources/config.toml");

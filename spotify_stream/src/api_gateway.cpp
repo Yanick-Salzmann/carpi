@@ -17,6 +17,7 @@ namespace carpi::spotify {
         load_license_url();
         load_seektable_url();
         load_audio_cdn();
+        load_web_api_url();
     }
 
     void ApiGateway::load_dealer_url() {
@@ -101,5 +102,10 @@ namespace carpi::spotify {
         _audio_cdn_prefix = toml::find<std::string>(_api_cfg, "audio_cdn_prefix");
         _audio_cdn_suffix = toml::find<std::string>(_api_cfg, "audio_cdn_suffix");
         log->info("Using audio CDN resolver {}{{}}{}", _audio_cdn_prefix, _audio_cdn_suffix);
+    }
+
+    void ApiGateway::load_web_api_url() {
+        _web_api_url = toml::find<std::string>(_api_cfg, "web_api");
+        log->info("Using web api root URL: {}", _web_api_url);
     }
 }

@@ -67,4 +67,22 @@ namespace carpi::utils {
 
         return ret;
     }
+
+    bool starts_with(const std::string &str, const std::string &pattern, bool ignore_case) {
+        if(str.length() < pattern.length()) {
+            return false;
+        }
+
+        if(!ignore_case) {
+            return str.substr(0, pattern.length()) == pattern;
+        } else {
+            for(auto i = 0u; i < pattern.length(); ++i) {
+                if(std::tolower(str[i]) != std::tolower(pattern[i])) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
 }

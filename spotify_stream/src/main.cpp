@@ -6,6 +6,7 @@
 #include "state_machine.hpp"
 #include "drm/widevine_adapter.hpp"
 #include "media/fmod_output.hpp"
+#include "web/web_api_accessor.hpp"
 #include <common_utils/log.hpp>
 
 namespace carpi {
@@ -18,6 +19,10 @@ namespace carpi {
 
         sApiGateway->load_urls();
         oauth::RefreshFlow refresh_flow;
+
+        spotify_web_api->init(refresh_flow.access_token());
+        auto state = spotify_web_api->playstate();
+        log->info(state.currently_playing().to_string());
 
         WebsocketInterface wss_interface{refresh_flow.access_token()};
         wss_interface.wait_for_login();

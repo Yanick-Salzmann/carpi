@@ -40,7 +40,16 @@ namespace carpi::spotify::media {
             mkdir(folder.c_str(), 0755);
         }
 
-        return fmt::format("{}/{}/{}.mp3", base_folder, _meta_data.artist, _meta_data.title);
+        std::stringstream title{};
+        for(const auto& chr : _meta_data.title) {
+            if(chr == '/' || chr == '\\') {
+                continue;
+            } else {
+                title << chr;
+            }
+        }
+
+        return fmt::format("{}/{}/{}.mp3", base_folder, _meta_data.artist, title.str());
     }
 
     utils::SubProcess track_downloader::launch_converter(const std::string &output_file) {

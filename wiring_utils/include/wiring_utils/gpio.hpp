@@ -18,16 +18,28 @@ namespace carpi::wiring {
 
         }
 
-        void mode(GpioMode mode);
+        GpioPin& mode(GpioMode mode);
+
+        GpioPin& input() {
+            mode(GpioMode::INPUT_MODE);
+            return *this;
+        }
+
+        GpioPin& output() {
+            mode(GpioMode::OUTPUT_MODE);
+            return *this;
+        }
 
         [[nodiscard]] auto mode() const -> GpioMode {
             return _mode;
         }
 
-        void high() const;
-        void low() const;
+        GpioPin& high();
+        GpioPin& low();
 
-        bool state() const;
+        [[nodiscard]] bool state() const;
+
+        uint8_t read();
     };
 
     class Gpio {
