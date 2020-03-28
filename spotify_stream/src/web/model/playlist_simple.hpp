@@ -1,18 +1,16 @@
-#ifndef CARPI_PLAYLIST_HPP
-#define CARPI_PLAYLIST_HPP
+#ifndef CARPI_PLAYLIST_SIMPLE_HPP
+#define CARPI_PLAYLIST_SIMPLE_HPP
 
 #include <string>
-#include <nlohmann/json.hpp>
 #include <vector>
-#include "followers.hpp"
+#include <nlohmann/json.hpp>
 #include "image.hpp"
 
 namespace carpi::spotify::web::model {
-    struct playlist {
+    struct playlist_simple {
         bool collaborative;
         std::string description;
         std::vector<nlohmann::json> external_urls;
-        followers fllwrs;
         std::string href;
         std::string id;
         std::vector<image> images;
@@ -26,4 +24,4 @@ namespace carpi::spotify::web::model {
     };
 }
 
-#endif //CARPI_PLAYLIST_HPP
+#endif //CARPI_PLAYLIST_SIMPLE_HPP
