@@ -5,15 +5,6 @@
 #include <nlohmann/json.hpp>
 
 namespace carpi::spotify::web::model {
-    struct artist_simplified {
-        nlohmann::json external_urls;
-        std::string href;
-        std::string id;
-        std::string name;
-        std::string type;
-        std::string uri;
-    };
-
     struct artist {
         nlohmann::json external_urls;
         nlohmann::json followers;
